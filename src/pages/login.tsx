@@ -10,7 +10,7 @@ import {
   Input,
   Notification,
   Select,
-  Spin
+  Spin,
 } from '@arco-design/web-react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useDebounce } from 'use-debounce'
@@ -22,14 +22,14 @@ import { getDepartmentsByToken } from '@/api/common/get-departments-by-token'
 import { login, type LoginReq } from '@/api/common/login'
 import {
   switchAuthorzie,
-  type SwitchAuthorzieReq
+  type SwitchAuthorzieReq,
 } from '@/api/common/switch-authorzie'
 import type { RefInputType } from '@arco-design/web-react/es/Input'
 
 const searchSchema = type({
-  redirect: 'string',
+  'redirect?': 'string',
   'code?': 'string',
-  'type?': '1'
+  'type?': '1',
 })
 
 export const Route = createFileRoute('/login')({
@@ -38,17 +38,17 @@ export const Route = createFileRoute('/login')({
     meta: [{ title: '登录 | 振东健康城' }],
     script: [
       {
-        src: 'https://wwcdn.weixin.qq.com/node/wework/wwopen/js/wwLogin-1.2.7.js'
+        src: 'https://wwcdn.weixin.qq.com/node/wework/wwopen/js/wwLogin-1.2.7.js',
       },
       {
-        src: 'https://res.wx.qq.com/wwopen/js/jsapi/jweixin-1.0.0.js'
+        src: 'https://res.wx.qq.com/wwopen/js/jsapi/jweixin-1.0.0.js',
       },
       {
-        src: 'https://open.work.weixin.qq.com/wwopen/js/jwxwork-1.0.0.js'
-      }
-    ]
+        src: 'https://open.work.weixin.qq.com/wwopen/js/jwxwork-1.0.0.js',
+      },
+    ],
   }),
-  component: AuthView
+  component: AuthView,
 })
 
 type AuthForm = {
@@ -75,13 +75,13 @@ function AuthView() {
   const { data: departmentInfo } = useQuery({
     queryKey: ['auth-departmentList', debouncedUsername, debouncedPassword],
     queryFn: () => getDepartmentsForAccount({ username, password }),
-    enabled: !!debouncedUsername && !!debouncedPassword
+    enabled: !!debouncedUsername && !!debouncedPassword,
   })
   const departmentsOptions = useMemo(() => {
     return (
       departmentInfo?.departments?.map((d) => ({
         label: d?.name ?? '',
-        value: d?.id ?? ''
+        value: d?.id ?? '',
       })) ?? []
     )
   }, [departmentInfo])
@@ -144,13 +144,13 @@ function AuthView() {
         authUrl.searchParams.append('connect_redirect', '1')
         authUrl.hash = 'wechat_redirect'
         window.wx.invoke('openDefaultBrowser', {
-          url: authUrl.toString()
+          url: authUrl.toString(),
         })
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       fail: (res: any) => {
         Notification.error({ content: res.errMsg })
-      }
+      },
     })
   }
 
@@ -170,14 +170,14 @@ function AuthView() {
         throw new Error('获取 token 失败')
       }
       const departmentsRes = await getDepartmentsByToken({
-        token: firstAuthRes.access_token
+        token: firstAuthRes.access_token,
       })
       if (departmentsRes.is_super || departmentsRes.departments?.length === 1) {
         void handleLoginSuccess({
           ...firstAuthRes,
           department_id: departmentsRes.is_super
             ? firstAuthRes.department_id
-            : departmentsRes.departments?.[0]?.id
+            : departmentsRes.departments?.[0]?.id,
         })
         return
       }
@@ -215,11 +215,11 @@ function AuthView() {
       token: data.access_token,
       departmentId: data.department_id,
       username: data.username,
-      expiredAt: dayjs().add(data.expires_in, 'seconds').unix()
+      expiredAt: dayjs().add(data.expires_in, 'seconds').unix(),
     })
     await navigate({
       to: search.redirect ?? '/',
-      replace: true
+      replace: true,
     })
     Notification.success({ content: '登录成功' })
   }
@@ -227,17 +227,17 @@ function AuthView() {
   const { mutate: loginMutate, isPending: loginPending } = useMutation({
     mutationKey: ['login'],
     mutationFn: (req: LoginReq) => login(req),
-    onSuccess: (data) => handleLoginSuccess(data)
+    onSuccess: (data) => handleLoginSuccess(data),
   })
 
   const {
     mutate: ssoChooseDepartmentMutate,
-    isPending: ssoChooseDepartmentPending
+    isPending: ssoChooseDepartmentPending,
   } = useMutation({
     mutationKey: ['sso-choose-department', tempToken],
     mutationFn: (req: SwitchAuthorzieReq) => switchAuthorzie(req),
     onSuccess: (data) => handleLoginSuccess(data),
-    onError: () => setPageState(null)
+    onError: () => setPageState(null),
   })
 
   /**
@@ -251,14 +251,14 @@ function AuthView() {
       }
       ssoChooseDepartmentMutate({
         department_id: values.department_id,
-        token: tempToken!
+        token: tempToken!,
       })
       return
     }
     loginMutate({
       username: values.username,
       password: values.password,
-      department_id: values.department_id ?? null
+      department_id: values.department_id ?? null,
     })
   }
 

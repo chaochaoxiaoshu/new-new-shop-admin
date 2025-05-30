@@ -14,6 +14,7 @@ import { Route as rootRoute } from './pages/__root'
 import { Route as LoginImport } from './pages/login'
 import { Route as ProtectedRouteImport } from './pages/_protected/route'
 import { Route as ProtectedIndexImport } from './pages/_protected/index'
+import { Route as ProtectedCommodityMerchandiseConIndexImport } from './pages/_protected/commodity/merchandiseCon/index'
 
 // Create/Update Routes
 
@@ -33,6 +34,13 @@ const ProtectedIndexRoute = ProtectedIndexImport.update({
   path: '/',
   getParentRoute: () => ProtectedRouteRoute,
 } as any)
+
+const ProtectedCommodityMerchandiseConIndexRoute =
+  ProtectedCommodityMerchandiseConIndexImport.update({
+    id: '/commodity/merchandiseCon/',
+    path: '/commodity/merchandiseCon/',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -59,6 +67,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedIndexImport
       parentRoute: typeof ProtectedRouteImport
     }
+    '/_protected/commodity/merchandiseCon/': {
+      id: '/_protected/commodity/merchandiseCon/'
+      path: '/commodity/merchandiseCon'
+      fullPath: '/commodity/merchandiseCon'
+      preLoaderRoute: typeof ProtectedCommodityMerchandiseConIndexImport
+      parentRoute: typeof ProtectedRouteImport
+    }
   }
 }
 
@@ -66,10 +81,13 @@ declare module '@tanstack/react-router' {
 
 interface ProtectedRouteRouteChildren {
   ProtectedIndexRoute: typeof ProtectedIndexRoute
+  ProtectedCommodityMerchandiseConIndexRoute: typeof ProtectedCommodityMerchandiseConIndexRoute
 }
 
 const ProtectedRouteRouteChildren: ProtectedRouteRouteChildren = {
   ProtectedIndexRoute: ProtectedIndexRoute,
+  ProtectedCommodityMerchandiseConIndexRoute:
+    ProtectedCommodityMerchandiseConIndexRoute,
 }
 
 const ProtectedRouteRouteWithChildren = ProtectedRouteRoute._addFileChildren(
@@ -80,11 +98,13 @@ export interface FileRoutesByFullPath {
   '': typeof ProtectedRouteRouteWithChildren
   '/login': typeof LoginRoute
   '/': typeof ProtectedIndexRoute
+  '/commodity/merchandiseCon': typeof ProtectedCommodityMerchandiseConIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/': typeof ProtectedIndexRoute
+  '/commodity/merchandiseCon': typeof ProtectedCommodityMerchandiseConIndexRoute
 }
 
 export interface FileRoutesById {
@@ -92,14 +112,20 @@ export interface FileRoutesById {
   '/_protected': typeof ProtectedRouteRouteWithChildren
   '/login': typeof LoginRoute
   '/_protected/': typeof ProtectedIndexRoute
+  '/_protected/commodity/merchandiseCon/': typeof ProtectedCommodityMerchandiseConIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '' | '/login' | '/'
+  fullPaths: '' | '/login' | '/' | '/commodity/merchandiseCon'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/'
-  id: '__root__' | '/_protected' | '/login' | '/_protected/'
+  to: '/login' | '/' | '/commodity/merchandiseCon'
+  id:
+    | '__root__'
+    | '/_protected'
+    | '/login'
+    | '/_protected/'
+    | '/_protected/commodity/merchandiseCon/'
   fileRoutesById: FileRoutesById
 }
 
@@ -130,7 +156,8 @@ export const routeTree = rootRoute
     "/_protected": {
       "filePath": "_protected/route.tsx",
       "children": [
-        "/_protected/"
+        "/_protected/",
+        "/_protected/commodity/merchandiseCon/"
       ]
     },
     "/login": {
@@ -138,6 +165,10 @@ export const routeTree = rootRoute
     },
     "/_protected/": {
       "filePath": "_protected/index.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/commodity/merchandiseCon/": {
+      "filePath": "_protected/commodity/merchandiseCon/index.tsx",
       "parent": "/_protected"
     }
   }

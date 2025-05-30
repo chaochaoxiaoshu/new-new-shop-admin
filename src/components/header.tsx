@@ -1,16 +1,17 @@
 import { Avatar, Button, Dropdown, Menu } from '@arco-design/web-react'
 import { useUserStore } from '@/stores/user-store'
-import { redirect } from '@tanstack/react-router'
+import { useNavigate } from '@tanstack/react-router'
 import { ChevronDownIcon, UserIcon } from 'lucide-react'
 
 export function Header() {
   const username = useUserStore((store) => store.username)
+  const navigate = useNavigate()
 
   const handleExit = () => {
     useUserStore.getState().logout()
-    redirect({
+    navigate({
       to: '/login',
-      search: { redirect: location.href.replace('/newmanage', '') }
+      search: { redirect: '/' },
     })
   }
 

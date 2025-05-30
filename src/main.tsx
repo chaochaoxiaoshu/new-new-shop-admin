@@ -1,3 +1,5 @@
+import './wdyr'
+
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
@@ -10,7 +12,7 @@ const router = createRouter({
   routeTree,
   basepath: '/newmanage',
   defaultPreload: 'intent',
-  defaultStaleTime: 30_000
+  defaultStaleTime: 30_000,
 })
 
 declare module '@tanstack/react-router' {

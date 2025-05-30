@@ -3,7 +3,7 @@ import { useUserStore } from '../stores/user-store'
 import { redirect } from '@tanstack/react-router'
 
 export const unprotectedApi = ky.create({
-  prefixUrl: import.meta.env.DEV ? '/api' : 'https://shop.shanshu.work'
+  prefixUrl: import.meta.env.DEV ? '/api' : 'https://shop.shanshu.work',
 })
 
 export const api = unprotectedApi.extend(() => {
@@ -11,7 +11,7 @@ export const api = unprotectedApi.extend(() => {
 
   return {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     },
     hooks: {
       afterResponse: [
@@ -20,24 +20,23 @@ export const api = unprotectedApi.extend(() => {
             useUserStore.getState().logout()
             redirect({
               to: '/login',
-              search: { redirect: location.href.replace('/newmanage', '') }
+              search: { redirect: location.href.replace('/newmanage', '') },
             })
             throw new Error('Unauthorized')
           }
-          const data: { result: { errcode: number } } = await response
-            .clone()
-            .json()
-          if (data.result.errcode === 401) {
+          const cloned = response.clone()
+          const data: { result: { errcode: number } } = await cloned.json()
+          if (data.result?.errcode === 401) {
             useUserStore.getState().logout()
             redirect({
               to: '/login',
-              search: { redirect: location.href.replace('/newmanage', '') }
+              search: { redirect: location.href.replace('/newmanage', '') },
             })
             throw new Error('Unauthorized')
           }
           return response
-        }
-      ]
-    }
+        },
+      ],
+    },
   }
 })

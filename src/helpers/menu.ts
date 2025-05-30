@@ -10,7 +10,7 @@ import {
   SettingsIcon,
   StoreIcon,
   WalletIcon,
-  type LucideIcon
+  type LucideIcon,
 } from 'lucide-react'
 
 export function getMenuListWithIcons(menuList: MenuItemData[]) {
@@ -24,11 +24,11 @@ export function getMenuListWithIcons(menuList: MenuItemData[]) {
     统计: ChartAreaIcon,
     钱包: WalletIcon,
     站点: RssIcon,
-    设置: SettingsIcon
+    设置: SettingsIcon,
   }
   return menuList.map((item) => ({
     ...item,
-    meta: { icon: icons[item.name] }
+    meta: { icon: icons[item.name] },
   }))
 }
 
@@ -53,4 +53,30 @@ export function processMenuList(
     })
   }
   return processMenuItems(items)
+}
+
+export function getMatchedItems(items: MenuItemData[], currentPath: string) {
+  const findMenuPathByPath = (
+    menuList: MenuItemData[],
+    targetPath: string,
+    parentPath: MenuItemData[] = []
+  ): MenuItemData[] | null => {
+    for (const item of menuList) {
+      // 当前路径
+      const currentPath = [...parentPath, item]
+      // 找到匹配项
+      if (item.path === targetPath) {
+        return currentPath
+      }
+      // 递归查找子菜单
+      if (item.children && item.children.length > 0) {
+        const found = findMenuPathByPath(item.children, targetPath, currentPath)
+        if (found) {
+          return found
+        }
+      }
+    }
+    return null
+  }
+  return findMenuPathByPath(items, currentPath) ?? []
 }
