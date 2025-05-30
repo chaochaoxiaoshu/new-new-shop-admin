@@ -39,6 +39,10 @@
   }
 }
 
+.arco-menu-inner {
+  padding: 8px !important;
+}
+
 .arco-menu-selected {
   background-color: rgb(var(--primary-2)) !important;
 }
