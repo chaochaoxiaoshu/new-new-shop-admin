@@ -16,7 +16,7 @@ export function Header() {
   }
 
   return (
-    <header className='flex items-center h-[60px] pl-6 pr-2 border-b bg-white'>
+    <header className='flex items-center h-[60px] pl-6 pr-2 border-b bg-background'>
       <div className='flex items-center'>L</div>
       <div className='ml-auto'>
         <Dropdown

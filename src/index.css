@@ -38,3 +38,7 @@
     background: transparent;
   }
 }
+
+.arco-menu-selected {
+  background-color: rgb(var(--primary-2)) !important;
+}
