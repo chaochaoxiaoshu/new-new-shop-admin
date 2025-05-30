@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    --accent: #f86b52;
+    --fg: #111827;
+    --bg: white;
+    --muted-fg: #111827;
+    --muted: #f3f4f6;
+    --card: white;
+    --border: #e5e7eb;
+
+    --primary-6: 248, 107, 82;
+    --primary-5: 249, 141, 117;
+    --primary-7: 197, 73, 54;
+    --primary-4: 251, 178, 158;
+    --primary-3: 253, 214, 202;
+    --primary-2: 254, 242, 238;
+    --primary-1: 254, 242, 238;
+  }
+
+  body {
+    @apply bg-muted text-foreground;
+  }
+}
