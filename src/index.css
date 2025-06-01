@@ -46,3 +46,7 @@
 .arco-menu-selected {
   background-color: rgb(var(--primary-2)) !important;
 }
+
+.arco-menu-collapse {
+  width: 60px !important;
+}

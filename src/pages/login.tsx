@@ -217,7 +217,7 @@ function AuthView() {
       username: data.username,
       expiredAt: dayjs().add(data.expires_in, 'seconds').unix(),
     })
-    await navigate({
+    navigate({
       to: search.redirect ?? '/',
       replace: true,
     })

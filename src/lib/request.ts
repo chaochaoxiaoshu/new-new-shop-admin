@@ -7,13 +7,16 @@ export const unprotectedApi = ky.create({
 })
 
 export const api = unprotectedApi.extend(() => {
-  const token = useUserStore.getState().token
-
   return {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
     hooks: {
+      beforeRequest: [
+        (request) => {
+          const token = useUserStore.getState().token
+          if (token) {
+            request.headers.set('Authorization', `Bearer ${token}`)
+          }
+        },
+      ],
       afterResponse: [
         async (_request, _options, response) => {
           if (response.status === 401) {
