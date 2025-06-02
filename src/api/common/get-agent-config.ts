@@ -16,12 +16,13 @@ export type GetAgentConfigRes = Partial<{
 /**
  * SSO 获取企业微信 agentConfig
  */
-export const getAgentConfig = async (req: GetAgentConfigReq) => {
-  const params = new URLSearchParams(req)
-  const res = await api
+export const getAgentConfig = (req: GetAgentConfigReq) =>
+  api
     .get<ApiResponse<GetAgentConfigRes>>(
-      `jshop-user/api/v1/manage/get-agent-config?${params.toString()}`
+      'jshop-user/api/v1/manage/get-agent-config',
+      {
+        searchParams: req,
+      }
     )
     .json()
-  return res.result
-}
+    .then((res) => res.result)

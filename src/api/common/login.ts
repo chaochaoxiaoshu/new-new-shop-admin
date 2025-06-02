@@ -15,11 +15,10 @@ export type LoginRes = Partial<{
   username: string
 }>
 
-export const login = async (req: LoginReq) => {
-  const res = await unprotectedApi
+export const login = (req: LoginReq) =>
+  unprotectedApi
     .post<ApiResponse<LoginRes>>('jshop-user/api/v1/manage/authorize', {
-      json: req
+      json: req,
     })
     .json()
-  return res.result
-}
+    .then((res) => res.result)

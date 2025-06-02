@@ -12,10 +12,8 @@ export type GetActionPermissionRes = Partial<{
   items: ActionPermissionItem[]
 }>
 
-export const getActionPermission = async () => {
-  const res = await api
+export const getActionPermission = () =>
+  api
     .get<ApiResponse<GetActionPermissionRes>>('jshop-user/api/v1/users-button')
     .json()
-
-  return res.result
-}
+    .then((res) => res.result)

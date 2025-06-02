@@ -17,15 +17,13 @@ export type GetDepartmentsForAccountRes = Partial<{
 /**
  * 使用账号密码获取账号的事业部列表
  */
-export const getDepartmentsForAccount = async (
-  req: GetDepartmentsForAccountReq
-) => {
-  const params = new URLSearchParams(req)
-  const res = await unprotectedApi
+export const getDepartmentsForAccount = (req: GetDepartmentsForAccountReq) =>
+  unprotectedApi
     .get<ApiResponse<GetDepartmentsForAccountRes>>(
-      `jshop-user/api/v1/manage-info?${params.toString()}`
+      'jshop-user/api/v1/manage-info',
+      {
+        searchParams: req,
+      }
     )
     .json()
-
-  return res.result
-}
+    .then((res) => res.result)

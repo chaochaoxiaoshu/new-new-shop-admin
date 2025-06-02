@@ -21,11 +21,10 @@ export type GetPlatformInfoRes = Partial<{
   }
 }>
 
-export const getPlatformInfo = async (req: GetPlatformInfoReq) => {
-  const params = new URLSearchParams(req)
-  const res = await api
-    .get<ApiResponse<GetPlatformInfoRes>>(`platform-info?${params.toString()}`)
+export const getPlatformInfo = (req: GetPlatformInfoReq) =>
+  api
+    .get<ApiResponse<GetPlatformInfoRes>>('platform-info', {
+      searchParams: req,
+    })
     .json()
-
-  return res.result
-}
+    .then((res) => res.result)

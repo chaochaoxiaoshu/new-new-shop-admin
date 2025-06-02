@@ -1,7 +1,15 @@
-import { Avatar, Button, Dropdown, Menu } from '@arco-design/web-react'
+import {
+  Avatar,
+  Button,
+  Dropdown,
+  Menu,
+  Notification,
+} from '@arco-design/web-react'
 import { useUserStore } from '@/stores/user-store'
 import { useNavigate } from '@tanstack/react-router'
 import { ChevronDownIcon, UserIcon } from 'lucide-react'
+
+import logo from '@/assets/logo.png'
 
 export function Header() {
   const username = useUserStore((store) => store.username)
@@ -13,11 +21,12 @@ export function Header() {
       to: '/login',
       search: { redirect: '/' },
     })
+    Notification.success({ content: '退出成功' })
   }
 
   return (
     <header className='flex items-center h-[60px] pl-6 pr-2 border-b bg-background'>
-      <div className='flex items-center'>L</div>
+      <img src={logo} alt='logo' className='w-32' />
       <div className='ml-auto'>
         <Dropdown
           trigger='click'

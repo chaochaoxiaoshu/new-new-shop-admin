@@ -16,17 +16,15 @@ export type GetDepartmentsByTokenRes = Partial<{
 /**
  * SSO 使用第一个 token 获取账号的事业部列表
  */
-export const getDepartmentsByToken = async (req: GetDepartmentsByTokenReq) => {
-  const res = await api
+export const getDepartmentsByToken = (req: GetDepartmentsByTokenReq) =>
+  api
     .get<ApiResponse<GetDepartmentsByTokenRes>>(
       'jshop-user/api/v1/manage-info-by-token',
       {
         headers: {
-          Authorization: `Bearer ${req.token}`
-        }
+          Authorization: `Bearer ${req.token}`,
+        },
       }
     )
     .json()
-
-  return res.result
-}
+    .then((res) => res.result)

@@ -17,15 +17,13 @@ export type SwitchAuthorzieRes = Partial<{
 /**
  * SSO 提交所选的事业部
  */
-export const switchAuthorzie = async (req: SwitchAuthorzieReq) => {
-  const res = await unprotectedApi
+export const switchAuthorzie = (req: SwitchAuthorzieReq) =>
+  unprotectedApi
     .post<ApiResponse<SwitchAuthorzieRes>>(
       'jshop-user/api/v1/manage/switch-authorize',
       {
-        json: req
+        json: req,
       }
     )
     .json()
-
-  return res.result
-}
+    .then((res) => res.result)

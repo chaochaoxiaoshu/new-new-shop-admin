@@ -15,14 +15,8 @@ export type GetMenuListRes = Partial<{
   items: MenuItemData[]
 }>
 
-export const getMenuList = async () => {
-  try {
-    const res = await api
-      .get<ApiResponse<GetMenuListRes>>('jshop-user/api/v1/manage-menu')
-      .json()
-    return res.result
-  } catch (error) {
-    console.error(error)
-    return null
-  }
-}
+export const getMenuList = () =>
+  api
+    .get<ApiResponse<GetMenuListRes>>('jshop-user/api/v1/manage-menu')
+    .json()
+    .then((res) => res.result)

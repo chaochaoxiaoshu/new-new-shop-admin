@@ -16,12 +16,13 @@ export type WeComAuthorizeRes = Partial<{
 /**
  * SSO 使用 code 鉴权
  */
-export const wecomAuthorize = async (req: WeComAuthorizeReq) => {
-  const param = new URLSearchParams(req)
-  const res = await unprotectedApi
+export const wecomAuthorize = (req: WeComAuthorizeReq) =>
+  unprotectedApi
     .get<ApiResponse<WeComAuthorizeRes>>(
-      `jshop-user/api/v1/manage/wecom-authorize?${param.toString()}`
+      'jshop-user/api/v1/manage/wecom-authorize',
+      {
+        searchParams: req,
+      }
     )
     .json()
-  return res.result
-}
+    .then((res) => res.result)

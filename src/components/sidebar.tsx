@@ -7,7 +7,6 @@ import {
 } from '@/helpers/menu'
 import { Menu } from '@arco-design/web-react'
 import { useQuery } from '@tanstack/react-query'
-import { useUserStore } from '@/stores/user-store'
 import { useLocation, useNavigate, useRouter } from '@tanstack/react-router'
 import type { LucideIcon } from 'lucide-react'
 
@@ -86,7 +85,7 @@ function useMenuList() {
   const navigate = useNavigate()
   const router = useRouter()
 
-  const isAuthenticated = useUserStore((store) => store.isAuthenticated())
+  const CACHE_KEY = 'menu-list-cache'
 
   /**
    * 菜单数据，菜单项有 path，子菜单没有 path
@@ -94,8 +93,28 @@ function useMenuList() {
   const { data: menuData } = useQuery({
     queryKey: ['menu-list'],
     queryFn: getMenuList,
-    enabled: isAuthenticated,
+    /**
+     * staleTime 这里设置成 0，是因为普通的路由跳转不会导致重新请求 menuData，
+     * 只有刷新页面或重新登录时会，所以不需要缓存这个请求
+     * 而重新登录时又必须马上刷新这个数据，否则看起来像是 bug
+     */
+    staleTime: 0,
+    /**
+     * 这里把缓存在 localStorage 中的数据当作占位数据，避免刷新页面时左侧侧边栏闪烁
+     */
+    placeholderData: () => {
+      const cached = localStorage.getItem(CACHE_KEY)
+      if (!cached) return
+      return JSON.parse(cached) as Partial<{ items: MenuItemData[] }>
+    },
   })
+
+  useEffect(() => {
+    if (menuData) {
+      localStorage.setItem(CACHE_KEY, JSON.stringify(menuData))
+    }
+  }, [menuData])
+
   /**
    * 补全了一级子菜单的图标和子菜单的 path 后的菜单数据
    */
