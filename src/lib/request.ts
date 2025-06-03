@@ -1,9 +1,11 @@
 import ky from 'ky'
-import { useUserStore } from '../stores/user-store'
+
 import { redirect } from '@tanstack/react-router'
 
+import { useUserStore } from '../stores/user-store'
+
 export const unprotectedApi = ky.create({
-  prefixUrl: import.meta.env.DEV ? '/api' : 'https://shop.shanshu.work',
+  prefixUrl: import.meta.env.DEV ? '/api' : 'https://shop.shanshu.work'
 })
 
 export const api = unprotectedApi.extend(() => {
@@ -15,7 +17,7 @@ export const api = unprotectedApi.extend(() => {
           if (token) {
             request.headers.set('Authorization', `Bearer ${token}`)
           }
-        },
+        }
       ],
       afterResponse: [
         async (_request, _options, response) => {
@@ -23,7 +25,7 @@ export const api = unprotectedApi.extend(() => {
             useUserStore.getState().logout()
             redirect({
               to: '/login',
-              search: { redirect: location.href.replace('/newmanage', '') },
+              search: { redirect: location.href.replace('/newmanage', '') }
             })
             throw new Error('Unauthorized')
           }
@@ -33,13 +35,13 @@ export const api = unprotectedApi.extend(() => {
             useUserStore.getState().logout()
             redirect({
               to: '/login',
-              search: { redirect: location.href.replace('/newmanage', '') },
+              search: { redirect: location.href.replace('/newmanage', '') }
             })
             throw new Error('Unauthorized')
           }
           return response
-        },
-      ],
-    },
+        }
+      ]
+    }
   }
 })

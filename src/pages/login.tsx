@@ -1,35 +1,30 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { type } from 'arktype'
 import dayjs from 'dayjs'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { useUserStore } from '@/stores/user-store'
-import {
-  Button,
-  Form,
-  FormInstance,
-  Input,
-  Notification,
-  Select,
-  Spin,
-} from '@arco-design/web-react'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useDebounce } from 'use-debounce'
-import { checkWxApiReady } from '@/helpers/auth'
-import { getDepartmentsForAccount } from '@/api/common/get-departments-for-account'
-import { getAgentConfig } from '@/api/common/get-agent-config'
-import { wecomAuthorize } from '@/api/common/wecom-authorize'
-import { getDepartmentsByToken } from '@/api/common/get-departments-by-token'
-import { login, type LoginReq } from '@/api/common/login'
-import {
-  switchAuthorzie,
-  type SwitchAuthorzieReq,
-} from '@/api/common/switch-authorzie'
+
+import { Button, Form, FormInstance, Input, Notification, Select, Spin } from '@arco-design/web-react'
 import type { RefInputType } from '@arco-design/web-react/es/Input'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
+
+import {
+  type LoginReq,
+  type SwitchAuthorzieReq,
+  getAgentConfig,
+  getDepartmentsByToken,
+  getDepartmentsForAccount,
+  login,
+  switchAuthorzie,
+  wecomAuthorize
+} from '@/api'
+import { checkWxApiReady } from '@/helpers'
+import { useUserStore } from '@/stores'
 
 const searchSchema = type({
   'redirect?': 'string',
   'code?': 'string',
-  'type?': '1',
+  'type?': '1'
 })
 
 export const Route = createFileRoute('/login')({
@@ -38,17 +33,17 @@ export const Route = createFileRoute('/login')({
     meta: [{ title: '登录 | 振东健康城' }],
     script: [
       {
-        src: 'https://wwcdn.weixin.qq.com/node/wework/wwopen/js/wwLogin-1.2.7.js',
+        src: 'https://wwcdn.weixin.qq.com/node/wework/wwopen/js/wwLogin-1.2.7.js'
       },
       {
-        src: 'https://res.wx.qq.com/wwopen/js/jsapi/jweixin-1.0.0.js',
+        src: 'https://res.wx.qq.com/wwopen/js/jsapi/jweixin-1.0.0.js'
       },
       {
-        src: 'https://open.work.weixin.qq.com/wwopen/js/jwxwork-1.0.0.js',
-      },
-    ],
+        src: 'https://open.work.weixin.qq.com/wwopen/js/jwxwork-1.0.0.js'
+      }
+    ]
   }),
-  component: AuthView,
+  component: AuthView
 })
 
 type AuthForm = {
@@ -75,13 +70,13 @@ function AuthView() {
   const { data: departmentInfo } = useQuery({
     queryKey: ['auth-departmentList', debouncedUsername, debouncedPassword],
     queryFn: () => getDepartmentsForAccount({ username, password }),
-    enabled: !!debouncedUsername && !!debouncedPassword,
+    enabled: !!debouncedUsername && !!debouncedPassword
   })
   const departmentsOptions = useMemo(() => {
     return (
       departmentInfo?.departments?.map((d) => ({
         label: d?.name ?? '',
-        value: d?.id ?? '',
+        value: d?.id ?? ''
       })) ?? []
     )
   }, [departmentInfo])
@@ -95,10 +90,7 @@ function AuthView() {
    * null: 没有单点登录，显示正常的登录表单
    */
   const [pageState, setPageState] = useState<
-    | 'sso-placeholder'
-    | 'sso-in-browser-pending'
-    | 'sso-in-browser-choose-department'
-    | null
+    'sso-placeholder' | 'sso-in-browser-pending' | 'sso-in-browser-choose-department' | null
   >(null)
 
   /**
@@ -133,9 +125,7 @@ function AuthView() {
       ...agentConfigRes,
       jsApiList: ['openDefaultBrowser'],
       success: () => {
-        const authUrl = new URL(
-          'https://open.weixin.qq.com/connect/oauth2/authorize'
-        )
+        const authUrl = new URL('https://open.weixin.qq.com/connect/oauth2/authorize')
         authUrl.searchParams.append('appid', agentConfigRes.corpid!)
         authUrl.searchParams.append('redirect_uri', window.location.href)
         authUrl.searchParams.append('response_type', 'code')
@@ -144,13 +134,13 @@ function AuthView() {
         authUrl.searchParams.append('connect_redirect', '1')
         authUrl.hash = 'wechat_redirect'
         window.wx.invoke('openDefaultBrowser', {
-          url: authUrl.toString(),
+          url: authUrl.toString()
         })
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       fail: (res: any) => {
         Notification.error({ content: res.errMsg })
-      },
+      }
     })
   }
 
@@ -170,14 +160,12 @@ function AuthView() {
         throw new Error('获取 token 失败')
       }
       const departmentsRes = await getDepartmentsByToken({
-        token: firstAuthRes.access_token,
+        token: firstAuthRes.access_token
       })
       if (departmentsRes.is_super || departmentsRes.departments?.length === 1) {
         void handleLoginSuccess({
           ...firstAuthRes,
-          department_id: departmentsRes.is_super
-            ? firstAuthRes.department_id
-            : departmentsRes.departments?.[0]?.id,
+          department_id: departmentsRes.is_super ? firstAuthRes.department_id : departmentsRes.departments?.[0]?.id
         })
         return
       }
@@ -215,11 +203,11 @@ function AuthView() {
       token: data.access_token,
       departmentId: data.department_id,
       username: data.username,
-      expiredAt: dayjs().add(data.expires_in, 'seconds').unix(),
+      expiredAt: dayjs().add(data.expires_in, 'seconds').unix()
     })
     navigate({
       to: search.redirect ?? '/',
-      replace: true,
+      replace: true
     })
     Notification.success({ content: '登录成功' })
   }
@@ -227,17 +215,14 @@ function AuthView() {
   const { mutate: loginMutate, isPending: loginPending } = useMutation({
     mutationKey: ['login'],
     mutationFn: (req: LoginReq) => login(req),
-    onSuccess: (data) => handleLoginSuccess(data),
+    onSuccess: (data) => handleLoginSuccess(data)
   })
 
-  const {
-    mutate: ssoChooseDepartmentMutate,
-    isPending: ssoChooseDepartmentPending,
-  } = useMutation({
+  const { mutate: ssoChooseDepartmentMutate, isPending: ssoChooseDepartmentPending } = useMutation({
     mutationKey: ['sso-choose-department', tempToken],
     mutationFn: (req: SwitchAuthorzieReq) => switchAuthorzie(req),
     onSuccess: (data) => handleLoginSuccess(data),
-    onError: () => setPageState(null),
+    onError: () => setPageState(null)
   })
 
   /**
@@ -251,14 +236,14 @@ function AuthView() {
       }
       ssoChooseDepartmentMutate({
         department_id: values.department_id,
-        token: tempToken!,
+        token: tempToken!
       })
       return
     }
     loginMutate({
       username: values.username,
       password: values.password,
-      department_id: values.department_id ?? null,
+      department_id: values.department_id ?? null
     })
   }
 
@@ -270,9 +255,7 @@ function AuthView() {
           src='https://qiniu.zdjt.com/shop/ReH1Z6dQlq88YSQwgu47uJ2610UVwijRf5.png'
           alt='placeholder'
         />
-        <div className='text-sm text-gray-500 mt-6'>
-          已在系统默认浏览器中打开
-        </div>
+        <div className='text-sm text-gray-500 mt-6'>已在系统默认浏览器中打开</div>
       </div>
     )
   }
@@ -288,45 +271,25 @@ function AuthView() {
   return (
     <div className='flex justify-center items-center h-screen bg-[url("https://qiniu.zdjt.com/shop/K168hi5uPMV8a5f689pwVh1D8mx06pycT0.jpeg")] bg-cover bg-no-repeat'>
       <div className='flex flex-col w-[480px] bg-white/60 p-12 rounded-sm'>
-        <img
-          src='https://qiniu.zdjt.com/shop/D1w6t8Q68a5w6g19tV6z2Ns193Ra5ugo30.png'
-          alt='Logo'
-        />
-        <span className='text-center mt-8 text-base'>
-          振东集团 -为中国人设计，让中国人健康！
-        </span>
+        <img src='https://qiniu.zdjt.com/shop/D1w6t8Q68a5w6g19tV6z2Ns193Ra5ugo30.png' alt='Logo' />
+        <span className='text-center mt-8 text-base'>振东集团 -为中国人设计，让中国人健康！</span>
         <div className='mt-8'>
           <Form form={form} layout='vertical' onSubmit={handleSubmit}>
             {pageState === null && (
               <>
-                <Form.Item
-                  field='username'
-                  rules={[{ required: true, message: '请输入账号' }]}
-                >
+                <Form.Item field='username' rules={[{ required: true, message: '请输入账号' }]}>
                   <Input placeholder='请输入账号' />
                 </Form.Item>
-                <Form.Item
-                  field='password'
-                  rules={[{ required: true, message: '请输入密码' }]}
-                >
-                  <Input
-                    ref={passwordInputRef}
-                    type='password'
-                    placeholder='请输入密码'
-                  />
+                <Form.Item field='password' rules={[{ required: true, message: '请输入密码' }]}>
+                  <Input ref={passwordInputRef} type='password' placeholder='请输入密码' />
                 </Form.Item>
               </>
             )}
-            {departmentInfo?.departments &&
-              departmentInfo.departments.length > 0 && (
-                <Form.Item field='department_id'>
-                  <Select
-                    options={departmentsOptions}
-                    placeholder='请选择事业部'
-                    allowClear
-                  />
-                </Form.Item>
-              )}
+            {departmentInfo?.departments && departmentInfo.departments.length > 0 && (
+              <Form.Item field='department_id'>
+                <Select options={departmentsOptions} placeholder='请选择事业部' allowClear />
+              </Form.Item>
+            )}
             <Button
               type='primary'
               htmlType='submit'

@@ -1,5 +1,6 @@
-import type { ApiResponse } from '@/api/types'
-import { unprotectedApi } from '@/lib/request'
+import { unprotectedApi } from '@/lib'
+
+import type { ApiResponse } from '..'
 
 export type LoginReq = {
   username: string
@@ -18,7 +19,7 @@ export type LoginRes = Partial<{
 export const login = (req: LoginReq) =>
   unprotectedApi
     .post<ApiResponse<LoginRes>>('jshop-user/api/v1/manage/authorize', {
-      json: req,
+      json: req
     })
     .json()
     .then((res) => res.result)

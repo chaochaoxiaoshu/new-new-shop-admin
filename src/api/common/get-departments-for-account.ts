@@ -1,5 +1,6 @@
-import type { ApiResponse } from '@/api/types'
-import { unprotectedApi } from '@/lib/request'
+import { unprotectedApi } from '@/lib'
+
+import type { ApiResponse } from '..'
 
 export type GetDepartmentsForAccountReq = {
   username: string
@@ -19,11 +20,8 @@ export type GetDepartmentsForAccountRes = Partial<{
  */
 export const getDepartmentsForAccount = (req: GetDepartmentsForAccountReq) =>
   unprotectedApi
-    .get<ApiResponse<GetDepartmentsForAccountRes>>(
-      'jshop-user/api/v1/manage-info',
-      {
-        searchParams: req,
-      }
-    )
+    .get<ApiResponse<GetDepartmentsForAccountRes>>('jshop-user/api/v1/manage-info', {
+      searchParams: req
+    })
     .json()
     .then((res) => res.result)

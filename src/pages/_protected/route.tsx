@@ -1,10 +1,12 @@
-import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
-import { useUserStore } from '@/stores/user-store'
+import { useEffect } from 'react'
+
+import { Notification } from '@arco-design/web-react'
+import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
+
+import { getActionPermission } from '@/api'
 import { Header } from '@/components/header'
 import { Sidebar } from '@/components/sidebar'
-import { getActionPermission } from '@/api/common/get-action-permission'
-import { useEffect } from 'react'
-import { Notification } from '@arco-design/web-react'
+import { useUserStore } from '@/stores'
 
 export const Route = createFileRoute('/_protected')({
   beforeLoad: ({ location }) => {
@@ -12,11 +14,11 @@ export const Route = createFileRoute('/_protected')({
       throw redirect({
         to: '/login',
         search: { redirect: location.href.replace('/newmanage', '') },
-        replace: true,
+        replace: true
       })
     }
   },
-  component: ProtectedView,
+  component: ProtectedView
 })
 
 function ProtectedView() {
@@ -27,7 +29,7 @@ function ProtectedView() {
     } catch (error) {
       console.error(error)
       Notification.error({
-        content: '获取按钮权限时发生错误',
+        content: '获取按钮权限时发生错误'
       })
     }
   }

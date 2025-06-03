@@ -1,7 +1,8 @@
 import dayjs from 'dayjs'
 import { create } from 'zustand'
-import { persist, createJSONStorage } from 'zustand/middleware'
-import type { ActionPermissionItem } from '@/api/common/get-action-permission'
+import { createJSONStorage, persist } from 'zustand/middleware'
+
+import type { ActionPermissionItem } from '@/api'
 
 type UserStoreState = {
   token: string | null
@@ -20,7 +21,7 @@ type UserStoreActions = {
     token,
     expiredAt,
     departmentId,
-    username,
+    username
   }: {
     token: string
     expiredAt: number
@@ -48,23 +49,20 @@ export const useUserStore = create<UserStoreState & UserStoreActions>()(
         if (dayjs().unix() > get().expiredAt!) return false
         return true
       },
-      login: ({ token, expiredAt, departmentId, username }) =>
-        set({ token, expiredAt, departmentId, username }),
+      login: ({ token, expiredAt, departmentId, username }) => set({ token, expiredAt, departmentId, username }),
       logout: () =>
         set({
           token: null,
           expiredAt: null,
           departmentId: null,
-          username: null,
+          username: null
         }),
       setActionButtonList: (val) => set({ actionButtonList: val }),
-      checkActionPermisstion: (path) =>
-        get().actionButtonList?.some((item) => item.front_path === path) ??
-        false,
+      checkActionPermisstion: (path) => get().actionButtonList?.some((item) => item.front_path === path) ?? false
     }),
     {
       name: 'shop-admin-user-store',
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => localStorage)
     }
   )
 )

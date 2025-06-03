@@ -1,21 +1,16 @@
+import type { LucideIcon } from 'lucide-react'
 import React, { useEffect, useMemo, useState } from 'react'
-import { getMenuList, MenuItemData } from '@/api/common/get-menu-list'
-import {
-  getMatchedItems,
-  getMenuListWithIcons,
-  processMenuList,
-} from '@/helpers/menu'
+
 import { Menu } from '@arco-design/web-react'
 import { useQuery } from '@tanstack/react-query'
 import { useLocation, useNavigate, useRouter } from '@tanstack/react-router'
-import type { LucideIcon } from 'lucide-react'
+
+import { MenuItemData, getMenuList } from '@/api'
+import { getMatchedItems, getMenuListWithIcons, processMenuList } from '@/helpers'
 
 type MenuItemWithIcon = MenuItemData & { meta?: { icon: LucideIcon } }
 
-function renderMenu(
-  items: MenuItemWithIcon[],
-  handlePreloadRoute: (path: string) => void
-) {
+function renderMenu(items: MenuItemWithIcon[], handlePreloadRoute: (path: string) => void) {
   return items.map((item) => {
     if (item.children && item.children.length > 0) {
       return (
@@ -23,9 +18,7 @@ function renderMenu(
           key={item.path}
           title={
             <>
-              {item.meta?.icon && (
-                <item.meta.icon className='inline size-5 mr-4' />
-              )}
+              {item.meta?.icon && <item.meta.icon className='inline size-5 mr-4' />}
               {item.name}
             </>
           }
@@ -35,10 +28,7 @@ function renderMenu(
       )
     } else {
       return (
-        <Menu.Item
-          key={item.path}
-          onMouseEnter={() => handlePreloadRoute(item.path)}
-        >
+        <Menu.Item key={item.path} onMouseEnter={() => handlePreloadRoute(item.path)}>
           {item.meta?.icon && <item.meta.icon className='inline size-5 mr-4' />}
           {item.name}
         </Menu.Item>
@@ -48,14 +38,8 @@ function renderMenu(
 }
 
 export const Sidebar = React.memo(() => {
-  const {
-    menuList,
-    selectedKeys,
-    openKeys,
-    handlePreloadRoute,
-    handleClickSubMenu,
-    handleClickMenuItem,
-  } = useMenuList()
+  const { menuList, selectedKeys, openKeys, handlePreloadRoute, handleClickSubMenu, handleClickMenuItem } =
+    useMenuList()
 
   return (
     <div className='h-full border-r'>
@@ -66,7 +50,7 @@ export const Sidebar = React.memo(() => {
         style={{
           width: 220,
           height: '100%',
-          overflowY: 'auto',
+          overflowY: 'auto'
         }}
         levelIndent={36}
         onClickSubMenu={handleClickSubMenu}
@@ -106,7 +90,7 @@ function useMenuList() {
       const cached = localStorage.getItem(CACHE_KEY)
       if (!cached) return
       return JSON.parse(cached) as Partial<{ items: MenuItemData[] }>
-    },
+    }
   })
 
   useEffect(() => {
@@ -118,26 +102,17 @@ function useMenuList() {
   /**
    * 补全了一级子菜单的图标和子菜单的 path 后的菜单数据
    */
-  const menuList = useMemo(
-    () => processMenuList(getMenuListWithIcons(menuData?.items || [])),
-    [menuData]
-  )
+  const menuList = useMemo(() => processMenuList(getMenuListWithIcons(menuData?.items || [])), [menuData])
 
   /**
    * 当前路由匹配的菜单项列表（从菜单树自上而下）
    */
-  const matchedItems = useMemo(
-    () => getMatchedItems(menuList, pathname),
-    [menuList, pathname]
-  )
+  const matchedItems = useMemo(() => getMatchedItems(menuList, pathname), [menuList, pathname])
 
   /**
    * 当前选中的 keys(paths)（从菜单树自上而下）
    */
-  const selectedKeys = useMemo(
-    () => matchedItems.map((item) => item.path) ?? [],
-    [matchedItems]
-  )
+  const selectedKeys = useMemo(() => matchedItems.map((item) => item.path) ?? [], [matchedItems])
   /**
    * 当前打开的 SubMenu，跟随路由变化，也跟随子菜单点击交互变化
    */
@@ -193,6 +168,6 @@ function useMenuList() {
     openKeys,
     handlePreloadRoute,
     handleClickMenuItem,
-    handleClickSubMenu,
+    handleClickSubMenu
   }
 }

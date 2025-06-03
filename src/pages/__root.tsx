@@ -1,6 +1,8 @@
-import { queryClient } from '@/lib/query-client'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { createRootRoute, Outlet } from '@tanstack/react-router'
+import { Outlet, createRootRoute } from '@tanstack/react-router'
+
+import { queryClient } from '@/lib'
+
 // import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 
 export const Route = createRootRoute({
@@ -11,5 +13,5 @@ export const Route = createRootRoute({
       </QueryClientProvider>
       {/* <TanStackRouterDevtools position='top-left' /> */}
     </>
-  ),
+  )
 })

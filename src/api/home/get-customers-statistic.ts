@@ -1,4 +1,5 @@
-import { api } from '@/lib/request'
+import { api } from '@/lib'
+
 import type { PaginatedResponse } from '../types'
 
 export type GetCustomersStatisticReq = {
@@ -13,9 +14,8 @@ export type GetCustomersStatisticRes = Partial<{
 
 export const getCustomersStatistic = (req: GetCustomersStatisticReq) =>
   api
-    .get<PaginatedResponse<GetCustomersStatisticRes>>(
-      'jshop-user/api/v1/home-page/user-statistics',
-      { searchParams: req }
-    )
+    .get<PaginatedResponse<GetCustomersStatisticRes>>('jshop-user/api/v1/home-page/user-statistics', {
+      searchParams: req
+    })
     .json()
     .then((res) => res.result)

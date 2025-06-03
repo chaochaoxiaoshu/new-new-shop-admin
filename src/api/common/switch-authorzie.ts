@@ -1,5 +1,6 @@
-import { unprotectedApi } from '@/lib/request'
-import type { ApiResponse } from '@/api/types'
+import { unprotectedApi } from '@/lib'
+
+import type { ApiResponse } from '..'
 
 export type SwitchAuthorzieReq = {
   department_id: number
@@ -19,11 +20,8 @@ export type SwitchAuthorzieRes = Partial<{
  */
 export const switchAuthorzie = (req: SwitchAuthorzieReq) =>
   unprotectedApi
-    .post<ApiResponse<SwitchAuthorzieRes>>(
-      'jshop-user/api/v1/manage/switch-authorize',
-      {
-        json: req,
-      }
-    )
+    .post<ApiResponse<SwitchAuthorzieRes>>('jshop-user/api/v1/manage/switch-authorize', {
+      json: req
+    })
     .json()
     .then((res) => res.result)

@@ -1,17 +1,18 @@
-import { MenuItemData } from '@/api/common/get-menu-list'
 import {
   BriefcaseBusinessIcon,
   ChartAreaIcon,
   ChartPieIcon,
   ClipboardListIcon,
   HouseIcon,
+  type LucideIcon,
   MonitorIcon,
   RssIcon,
   SettingsIcon,
   StoreIcon,
-  WalletIcon,
-  type LucideIcon,
+  WalletIcon
 } from 'lucide-react'
+
+import { MenuItemData } from '@/api'
 
 export function getMenuListWithIcons(menuList: MenuItemData[]) {
   const icons: Record<string, LucideIcon> = {
@@ -24,17 +25,15 @@ export function getMenuListWithIcons(menuList: MenuItemData[]) {
     统计: ChartAreaIcon,
     钱包: WalletIcon,
     站点: RssIcon,
-    设置: SettingsIcon,
+    设置: SettingsIcon
   }
   return menuList.map((item) => ({
     ...item,
-    meta: { icon: icons[item.name] },
+    meta: { icon: icons[item.name] }
   }))
 }
 
-export function processMenuList(
-  items: (MenuItemData & { meta: { icon: LucideIcon } })[]
-) {
+export function processMenuList(items: (MenuItemData & { meta: { icon: LucideIcon } })[]) {
   const processMenuItems = (
     items: (MenuItemData & { meta: { icon: LucideIcon } })[]
   ): (MenuItemData & { meta: { icon: LucideIcon } })[] => {
@@ -45,9 +44,7 @@ export function processMenuList(
       if (newItem.children && newItem.children.length > 0) {
         newItem.path = `${newItem.depth}-${newItem.name}`
         // 递归处理子项
-        newItem.children = processMenuItems(
-          newItem.children as (MenuItemData & { meta: { icon: LucideIcon } })[]
-        )
+        newItem.children = processMenuItems(newItem.children as (MenuItemData & { meta: { icon: LucideIcon } })[])
       }
       return newItem
     })

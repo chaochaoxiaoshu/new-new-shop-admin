@@ -1,4 +1,5 @@
-import { api } from '@/lib/request'
+import { api } from '@/lib'
+
 import type { ApiResponse } from '../types'
 
 export type MenuItemData = {

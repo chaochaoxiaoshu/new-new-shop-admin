@@ -1,5 +1,6 @@
-import type { ApiResponse } from '@/api/types'
-import { api } from '@/lib/request'
+import { api } from '@/lib'
+
+import type { ApiResponse } from '..'
 
 export type GetDepartmentsByTokenReq = {
   token: string
@@ -18,13 +19,10 @@ export type GetDepartmentsByTokenRes = Partial<{
  */
 export const getDepartmentsByToken = (req: GetDepartmentsByTokenReq) =>
   api
-    .get<ApiResponse<GetDepartmentsByTokenRes>>(
-      'jshop-user/api/v1/manage-info-by-token',
-      {
-        headers: {
-          Authorization: `Bearer ${req.token}`,
-        },
+    .get<ApiResponse<GetDepartmentsByTokenRes>>('jshop-user/api/v1/manage-info-by-token', {
+      headers: {
+        Authorization: `Bearer ${req.token}`
       }
-    )
+    })
     .json()
     .then((res) => res.result)

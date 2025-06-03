@@ -1,5 +1,6 @@
+import { api } from '@/lib'
+
 import type { ApiResponse } from '../types'
-import { api } from '@/lib/request'
 
 export type GetTodoBoardReq = {
   department_id: number
@@ -15,7 +16,7 @@ export type GetTodoBoardRes = Partial<{
 export const getTodoBoard = (req: GetTodoBoardReq) =>
   api
     .get<ApiResponse<GetTodoBoardRes>>('jshop-report/api/v1/todo-list', {
-      searchParams: req,
+      searchParams: req
     })
     .json()
     .then((res) => res.result)

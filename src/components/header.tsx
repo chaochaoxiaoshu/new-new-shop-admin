@@ -1,15 +1,10 @@
-import {
-  Avatar,
-  Button,
-  Dropdown,
-  Menu,
-  Notification,
-} from '@arco-design/web-react'
-import { useUserStore } from '@/stores/user-store'
-import { useNavigate } from '@tanstack/react-router'
 import { ChevronDownIcon, UserIcon } from 'lucide-react'
 
+import { Avatar, Button, Dropdown, Menu, Notification } from '@arco-design/web-react'
+import { useNavigate } from '@tanstack/react-router'
+
 import logo from '@/assets/logo.png'
+import { useUserStore } from '@/stores'
 
 export function Header() {
   const username = useUserStore((store) => store.username)
@@ -19,7 +14,7 @@ export function Header() {
     useUserStore.getState().logout()
     navigate({
       to: '/login',
-      search: { redirect: '/' },
+      search: { redirect: '/' }
     })
     Notification.success({ content: '退出成功' })
   }

@@ -19,19 +19,7 @@ export function completeDateFormat(dateStr: string) {
 }
 
 export function numberToChinese(num: number) {
-  const chineseNumbers = [
-    '零',
-    '一',
-    '二',
-    '三',
-    '四',
-    '五',
-    '六',
-    '七',
-    '八',
-    '九',
-    '十',
-  ]
+  const chineseNumbers = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十']
   if (num <= 10) {
     return chineseNumbers[num]
   } else if (num < 20) {

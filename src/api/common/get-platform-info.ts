@@ -1,4 +1,5 @@
-import { api } from '@/lib/request'
+import { api } from '@/lib'
+
 import type { ApiResponse } from '../types'
 
 export type GetPlatformInfoReq = {
@@ -24,7 +25,7 @@ export type GetPlatformInfoRes = Partial<{
 export const getPlatformInfo = (req: GetPlatformInfoReq) =>
   api
     .get<ApiResponse<GetPlatformInfoRes>>('platform-info', {
-      searchParams: req,
+      searchParams: req
     })
     .json()
     .then((res) => res.result)
