@@ -1,7 +1,7 @@
-import { useSize } from 'ahooks'
 import { useRef } from 'react'
 
 import { TableSizeContext } from './context'
+import { useClientHeight } from '@/hooks'
 
 interface TableLayoutProps {
   header?: React.ReactNode
@@ -15,10 +15,10 @@ export function TableLayout(props: TableLayoutProps) {
   const { header, children } = props
 
   const tableAreaRef = useRef<HTMLDivElement>(null)
-  const size = useSize(tableAreaRef)
+  const { height } = useClientHeight(tableAreaRef)
 
   return (
-    <TableSizeContext.Provider value={{ height: size?.height ?? 600 }}>
+    <TableSizeContext.Provider value={{ height }}>
       <div className='flex-auto flex flex-col px-4 py-6 min-w-[720px] h-full rounded-md bg-white'>
         {header}
         {/* 使用一个绝对定位，防止 Table 撑起容器的高度，影响高度计算 */}
