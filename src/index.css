@@ -19,6 +19,16 @@
     --primary-3: 253, 214, 202;
     --primary-2: 254, 242, 238;
     --primary-1: 254, 242, 238;
+    --link-6: 248, 107, 82;
+    --link-5: 249, 141, 117;
+    --link-7: 197, 73, 54;
+    --link-4: 251, 178, 158;
+    --link-3: 253, 214, 202;
+    --link-2: 254, 242, 238;
+    --link-1: 254, 242, 238;
+    --color-primary-light-1: rgb(254, 242, 238);
+    --color-primary-light-3: rgb(248, 107, 82);
+    --color-link-light-4: 247, 74, 26;
   }
 
   body {
@@ -27,6 +37,7 @@
 
   *::-webkit-scrollbar {
     width: 4px;
+    height: 4px;
   }
 
   *::-webkit-scrollbar-thumb {
@@ -49,4 +60,14 @@
 
 .arco-menu-collapse {
   width: 60px !important;
+}
+
+.table-layout-header .arco-input,
+.table-layout-header .arco-select .arco-select-view {
+  @apply bg-white border-gray-200 rounded-[4px];
+}
+
+.table-layout-header .arco-input:focus,
+.table-layout-header .arco-select .arco-select-view:focus {
+  @apply border-[var(--accent)];
 }

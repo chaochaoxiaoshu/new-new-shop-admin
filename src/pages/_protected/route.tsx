@@ -47,9 +47,10 @@ function ProtectedView() {
         <div className='flex-none overflow-y-auto'>
           <Sidebar />
         </div>
-        <div className='flex-auto overflow-y-auto'>
-          <div className='flex flex-col p-4'>
-            <div className='flex-auto'>
+        <div className='flex-auto max-h-[calc(100vh-60px)] overflow-y-auto'>
+          <div className='flex flex-col p-4 min-h-full'>
+            {/* TODO: 面包蟹 */}
+            <div className='flex-auto flex flex-col h-full'>
               <Outlet />
             </div>
           </div>

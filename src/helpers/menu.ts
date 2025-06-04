@@ -52,28 +52,63 @@ export function processMenuList(items: (MenuItemData & { meta: { icon: LucideIco
   return processMenuItems(items)
 }
 
+// export function getMatchedItems(items: MenuItemData[], currentPath: string) {
+//   const findMenuPathByPath = (
+//     menuList: MenuItemData[],
+//     targetPath: string,
+//     parentPath: MenuItemData[] = []
+//   ): MenuItemData[] | null => {
+//     for (const item of menuList) {
+//       // 当前路径
+//       const currentPath = [...parentPath, item]
+//       // 找到匹配项
+//       if (item.path && targetPath.startsWith(item.path)) {
+//         return currentPath
+//       }
+//       // 递归查找子菜单
+//       if (item.children && item.children.length > 0) {
+//         const found = findMenuPathByPath(item.children, targetPath, currentPath)
+//         if (found) {
+//           return found
+//         }
+//       }
+//     }
+//     return null
+//   }
+//   return findMenuPathByPath(items, currentPath) ?? []
+// }
+
 export function getMatchedItems(items: MenuItemData[], currentPath: string) {
-  const findMenuPathByPath = (
+  // 保存所有匹配的路径及其菜单项
+  const allMatches: { path: string; items: MenuItemData[] }[] = []
+
+  const findAllMenuPathsByPath = (
     menuList: MenuItemData[],
     targetPath: string,
     parentPath: MenuItemData[] = []
-  ): MenuItemData[] | null => {
+  ): void => {
     for (const item of menuList) {
-      // 当前路径
       const currentPath = [...parentPath, item]
-      // 找到匹配项
-      if (item.path === targetPath) {
-        return currentPath
+
+      // 如果当前菜单项有路径且目标路径以它开头
+      if (item.path && targetPath.startsWith(item.path)) {
+        // 收集匹配项
+        allMatches.push({ path: item.path, items: currentPath })
       }
-      // 递归查找子菜单
+
+      // 继续递归查找子菜单，不要提前返回
       if (item.children && item.children.length > 0) {
-        const found = findMenuPathByPath(item.children, targetPath, currentPath)
-        if (found) {
-          return found
-        }
+        findAllMenuPathsByPath(item.children, targetPath, currentPath)
       }
     }
-    return null
   }
-  return findMenuPathByPath(items, currentPath) ?? []
+
+  // 收集所有匹配项
+  findAllMenuPathsByPath(items, currentPath)
+
+  // 按路径长度降序排序，选择最长匹配
+  allMatches.sort((a, b) => b.path.length - a.path.length)
+
+  // 返回最长匹配，如果没有匹配则返回空数组
+  return allMatches.length > 0 ? allMatches[0].items : []
 }

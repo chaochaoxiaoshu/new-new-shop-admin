@@ -1,6 +1,8 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
+import type { ColumnProps } from '@arco-design/web-react/es/Table'
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
@@ -29,4 +31,23 @@ export function numberToChinese(num: number) {
     const ones = num % 10
     return chineseNumbers[tens] + '十' + (ones > 0 ? chineseNumbers[ones] : '')
   }
+}
+
+export function toSearchParams(obj: Record<string, unknown>): URLSearchParams {
+  const params = new URLSearchParams()
+  for (const key in obj) {
+    const value = obj[key]
+    if (Array.isArray(value)) {
+      value.forEach((v) => params.append(key, String(v)))
+    } else if (value !== undefined && value !== null) {
+      params.set(key, String(value))
+    }
+  }
+  return params
+}
+
+export function defineTableColumns<T>(columns: ColumnProps<T>[]) {
+  const totalWidth = columns.reduce((total, column) => total + ((column.width as number | undefined) || 0), 0)
+
+  return { columns, totalWidth }
 }

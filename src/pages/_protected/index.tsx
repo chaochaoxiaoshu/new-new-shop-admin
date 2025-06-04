@@ -153,14 +153,20 @@ function TodoBoardItem(props: TodoBoardItemProps) {
 }
 
 function Shortcuts() {
+  const departmentId = useUserStore.getState().departmentId
+
   return (
     <div className='flex-auto grid grid-cols-6 lg:grid-cols-4 2xl:grid-cols-8 py-2 lg:py-0 2xl:px-2 bg-white rounded-md overflow-hidden'>
-      <ShortcutsItem destination='/commodity/merchandiseCon' icon={Store} label='商品'></ShortcutsItem>
-      <ShortcutsItem destination='/order' icon={BriefcaseBusiness} label='订单'></ShortcutsItem>
-      <ShortcutsItem destination='/order/billLading' icon={BriefcaseBusiness} label='自提单'></ShortcutsItem>
-      <ShortcutsItem destination='/client/account' icon={ChartPie} label='会员'></ShortcutsItem>
-      <ShortcutsItem destination='/setting/notice' icon={Monitor} label='公告'></ShortcutsItem>
-      <ShortcutsItem destination='/setting/manage' icon={Settings} label='平台设置'></ShortcutsItem>
+      <ShortcutsItem destination='/commodity/merchandiseCon' icon={Store} label='商品' />
+      <ShortcutsItem destination='/order' icon={BriefcaseBusiness} label='订单' />
+      <ShortcutsItem destination='/order/billLading' icon={BriefcaseBusiness} label='自提单' />
+      {departmentId === 0 && (
+        <>
+          <ShortcutsItem destination='/client/account' icon={ChartPie} label='会员' />
+          <ShortcutsItem destination='/setting/notice' icon={Monitor} label='公告' />
+          <ShortcutsItem destination='/setting/manage' icon={Settings} label='平台设置' />
+        </>
+      )}
     </div>
   )
 }
