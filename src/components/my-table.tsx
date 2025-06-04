@@ -27,7 +27,6 @@ export function MyTable(props: TableProps) {
       {...props}
       borderCell
       scroll={{ x: props.scroll?.x, y: height ? height - 84 : 1 }}
-      style={{ height: `${height}px` }}
       pagination={pagination}
       renderPagination={(paginationNode) => (
         <div className='flex justify-between items-center mt-4'>

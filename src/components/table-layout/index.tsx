@@ -1,7 +1,8 @@
 import { useRef } from 'react'
 
-import { TableSizeContext } from './context'
 import { useClientHeight } from '@/hooks'
+
+import { TableSizeContext } from './context'
 
 interface TableLayoutProps {
   header?: React.ReactNode
