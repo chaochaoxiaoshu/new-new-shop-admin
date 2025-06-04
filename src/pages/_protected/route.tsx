@@ -4,6 +4,7 @@ import { Notification } from '@arco-design/web-react'
 import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
 
 import { getActionPermission } from '@/api'
+import { MyBreadcrumb } from '@/components/breadcrumb'
 import { Header } from '@/components/header'
 import { Sidebar } from '@/components/sidebar'
 import { useUserStore } from '@/stores'
@@ -49,7 +50,9 @@ function ProtectedView() {
         </div>
         <div className='flex-auto max-h-[calc(100vh-60px)] overflow-y-auto'>
           <div className='flex flex-col p-4 min-h-full'>
-            {/* TODO: 面包蟹 */}
+            <div className='flex-none h-6 mb-4'>
+              <MyBreadcrumb />
+            </div>
             <div className='flex-auto flex flex-col h-full'>
               <Outlet />
             </div>
