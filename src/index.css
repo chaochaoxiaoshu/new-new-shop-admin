@@ -50,24 +50,44 @@
   }
 }
 
+/* 修复菜单栏四边距等宽 */
 .arco-menu-inner {
   padding: 8px !important;
 }
 
+/* 修复菜单栏 Item 布局（图标被 tailwind 重置为 display block，导致无法水平对齐布局） */
+.arco-menu-item {
+  display: flex !important;
+  align-items: center !important;
+}
+.arco-menu-inline-header > :first-child {
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* 覆盖菜单栏选中时的背景颜色 */
 .arco-menu-selected {
   background-color: rgb(var(--primary-2)) !important;
 }
 
+/* 覆盖菜单栏折叠时的宽度 */
 .arco-menu-collapse {
   width: 60px !important;
 }
 
+/* 覆盖位于 table-layout-header 下的 arco-input 和 arco-select 等组件的样式 */
 .table-layout-header .arco-input,
 .table-layout-header .arco-select .arco-select-view {
   @apply bg-white border-gray-200 rounded-[4px];
 }
 
+/* 覆盖位于 table-layout-header 下的 arco-input 和 arco-select 等组件 focus 时的样式 */
 .table-layout-header .arco-input:focus,
 .table-layout-header .arco-select .arco-select-view:focus {
   @apply border-[var(--accent)];
+}
+
+/* 修复 FormItemLabel 的布局 (tailwind preflight) */
+.arco-form-item-symbol {
+  display: inline-block !important;
 }

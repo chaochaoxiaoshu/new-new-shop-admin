@@ -3,7 +3,15 @@ import dayjs from 'dayjs'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useDebounce } from 'use-debounce'
 
-import { Button, Form, FormInstance, Input, Notification, Select, Spin } from '@arco-design/web-react'
+import {
+  Button,
+  Form,
+  FormInstance,
+  Input,
+  Notification,
+  Select,
+  Spin
+} from '@arco-design/web-react'
 import type { RefInputType } from '@arco-design/web-react/es/Input'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
@@ -90,7 +98,10 @@ function AuthView() {
    * null: 没有单点登录，显示正常的登录表单
    */
   const [pageState, setPageState] = useState<
-    'sso-placeholder' | 'sso-in-browser-pending' | 'sso-in-browser-choose-department' | null
+    | 'sso-placeholder'
+    | 'sso-in-browser-pending'
+    | 'sso-in-browser-choose-department'
+    | null
   >(null)
 
   /**
@@ -125,7 +136,9 @@ function AuthView() {
       ...agentConfigRes,
       jsApiList: ['openDefaultBrowser'],
       success: () => {
-        const authUrl = new URL('https://open.weixin.qq.com/connect/oauth2/authorize')
+        const authUrl = new URL(
+          'https://open.weixin.qq.com/connect/oauth2/authorize'
+        )
         authUrl.searchParams.append('appid', agentConfigRes.corpid!)
         authUrl.searchParams.append('redirect_uri', window.location.href)
         authUrl.searchParams.append('response_type', 'code')
@@ -165,7 +178,9 @@ function AuthView() {
       if (departmentsRes.is_super || departmentsRes.departments?.length === 1) {
         void handleLoginSuccess({
           ...firstAuthRes,
-          department_id: departmentsRes.is_super ? firstAuthRes.department_id : departmentsRes.departments?.[0]?.id
+          department_id: departmentsRes.is_super
+            ? firstAuthRes.department_id
+            : departmentsRes.departments?.[0]?.id
         })
         return
       }
@@ -218,7 +233,10 @@ function AuthView() {
     onSuccess: (data) => handleLoginSuccess(data)
   })
 
-  const { mutate: ssoChooseDepartmentMutate, isPending: ssoChooseDepartmentPending } = useMutation({
+  const {
+    mutate: ssoChooseDepartmentMutate,
+    isPending: ssoChooseDepartmentPending
+  } = useMutation({
     mutationKey: ['sso-choose-department', tempToken],
     mutationFn: (req: SwitchAuthorzieReq) => switchAuthorzie(req),
     onSuccess: (data) => handleLoginSuccess(data),
@@ -255,7 +273,9 @@ function AuthView() {
           src='https://qiniu.zdjt.com/shop/ReH1Z6dQlq88YSQwgu47uJ2610UVwijRf5.png'
           alt='placeholder'
         />
-        <div className='text-sm text-gray-500 mt-6'>已在系统默认浏览器中打开</div>
+        <div className='text-sm text-gray-500 mt-6'>
+          已在系统默认浏览器中打开
+        </div>
       </div>
     )
   }
@@ -271,25 +291,45 @@ function AuthView() {
   return (
     <div className='flex justify-center items-center h-screen bg-[url("https://qiniu.zdjt.com/shop/K168hi5uPMV8a5f689pwVh1D8mx06pycT0.jpeg")] bg-cover bg-no-repeat'>
       <div className='flex flex-col w-[480px] bg-white/60 p-12 rounded-sm'>
-        <img src='https://qiniu.zdjt.com/shop/D1w6t8Q68a5w6g19tV6z2Ns193Ra5ugo30.png' alt='Logo' />
-        <span className='text-center mt-8 text-base'>振东集团 -为中国人设计，让中国人健康！</span>
+        <img
+          src='https://qiniu.zdjt.com/shop/D1w6t8Q68a5w6g19tV6z2Ns193Ra5ugo30.png'
+          alt='Logo'
+        />
+        <span className='text-center mt-8 text-base'>
+          振东集团 -为中国人设计，让中国人健康！
+        </span>
         <div className='mt-8'>
           <Form form={form} layout='vertical' onSubmit={handleSubmit}>
             {pageState === null && (
               <>
-                <Form.Item field='username' rules={[{ required: true, message: '请输入账号' }]}>
+                <Form.Item
+                  field='username'
+                  rules={[{ required: true, message: '请输入账号' }]}
+                >
                   <Input placeholder='请输入账号' />
                 </Form.Item>
-                <Form.Item field='password' rules={[{ required: true, message: '请输入密码' }]}>
-                  <Input ref={passwordInputRef} type='password' placeholder='请输入密码' />
+                <Form.Item
+                  field='password'
+                  rules={[{ required: true, message: '请输入密码' }]}
+                >
+                  <Input
+                    ref={passwordInputRef}
+                    type='password'
+                    placeholder='请输入密码'
+                  />
                 </Form.Item>
               </>
             )}
-            {departmentInfo?.departments && departmentInfo.departments.length > 0 && (
-              <Form.Item field='department_id'>
-                <Select options={departmentsOptions} placeholder='请选择事业部' allowClear />
-              </Form.Item>
-            )}
+            {departmentInfo?.departments &&
+              departmentInfo.departments.length > 0 && (
+                <Form.Item field='department_id'>
+                  <Select
+                    options={departmentsOptions}
+                    placeholder='请选择事业部'
+                    allowClear
+                  />
+                </Form.Item>
+              )}
             <Button
               type='primary'
               htmlType='submit'

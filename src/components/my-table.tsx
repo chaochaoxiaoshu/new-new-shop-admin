@@ -30,7 +30,9 @@ export function MyTable(props: TableProps) {
       pagination={pagination}
       renderPagination={(paginationNode) => (
         <div className='flex justify-between items-center mt-4'>
-          {typeof props.pagination === 'object' && <span>共 {props.pagination?.total} 条</span>}
+          {typeof props.pagination === 'object' && (
+            <span>共 {props.pagination?.total} 条</span>
+          )}
           {paginationNode}
         </div>
       )}

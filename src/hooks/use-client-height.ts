@@ -6,7 +6,9 @@ import { useCallback, useLayoutEffect, useState } from 'react'
  * 这个钩子用于在 TableLayout 中测量 Table 的可用空间，
  * 获取到的高度用于给 Table 设置 scrollY。
  */
-export function useClientHeight<T extends HTMLElement>(ref: React.RefObject<T>) {
+export function useClientHeight<T extends HTMLElement>(
+  ref: React.RefObject<T>
+) {
   const [height, setHeight] = useState<number>()
 
   const updateHeight = useCallback(() => {

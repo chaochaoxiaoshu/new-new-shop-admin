@@ -19,6 +19,9 @@ export type GetAdminCategoriesRes = Partial<{
 
 export const getAdminCategories = (req: GetAdminCategoriesReq) =>
   api
-    .get<PaginatedResponse<GetAdminCategoriesRes>>('jshop-goods/api/v1/goods-cat-list', { searchParams: req })
+    .get<PaginatedResponse<GetAdminCategoriesRes>>(
+      'jshop-goods/api/v1/goods-cat-list',
+      { searchParams: req }
+    )
     .json()
     .then((res) => res.result)

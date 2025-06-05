@@ -18,10 +18,15 @@ export type GetAdminSecondaryCategoriesRes = Partial<{
   utime: number
 }>
 
-export const getAdminSecondaryCategories = (req: GetAdminSecondaryCategoriesReq) =>
+export const getAdminSecondaryCategories = (
+  req: GetAdminSecondaryCategoriesReq
+) =>
   api
-    .get<PaginatedResponse<GetAdminSecondaryCategoriesRes>>(`jshop-goods/api/v1/goods-cat-detail-list/${req.id}`, {
-      searchParams: req
-    })
+    .get<PaginatedResponse<GetAdminSecondaryCategoriesRes>>(
+      `jshop-goods/api/v1/goods-cat-detail-list/${req.id}`,
+      {
+        searchParams: req
+      }
+    )
     .json()
     .then((res) => res.result)

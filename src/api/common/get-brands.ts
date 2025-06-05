@@ -19,8 +19,11 @@ export type GetBrandsRes = Partial<{
  */
 export const getBrands = (req: GetBrandsReq) =>
   api
-    .get<Omit<PaginatedResponse<GetBrandsRes>, 'paginate'>>('jshop-goods/api/v1/brands', {
-      searchParams: req
-    })
+    .get<Omit<PaginatedResponse<GetBrandsRes>, 'paginate'>>(
+      'jshop-goods/api/v1/brands',
+      {
+        searchParams: req
+      }
+    )
     .json()
     .then((res) => res.result)

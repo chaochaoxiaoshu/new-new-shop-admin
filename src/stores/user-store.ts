@@ -49,7 +49,8 @@ export const useUserStore = create<UserStoreState & UserStoreActions>()(
         if (dayjs().unix() > get().expiredAt!) return false
         return true
       },
-      login: ({ token, expiredAt, departmentId, username }) => set({ token, expiredAt, departmentId, username }),
+      login: ({ token, expiredAt, departmentId, username }) =>
+        set({ token, expiredAt, departmentId, username }),
       logout: () =>
         set({
           token: null,
@@ -58,7 +59,9 @@ export const useUserStore = create<UserStoreState & UserStoreActions>()(
           username: null
         }),
       setActionButtonList: (val) => set({ actionButtonList: val }),
-      checkActionPermisstion: (path) => get().actionButtonList?.some((item) => item.front_path === path) ?? false
+      checkActionPermisstion: (path) =>
+        get().actionButtonList?.some((item) => item.front_path === path) ??
+        false
     }),
     {
       name: 'shop-admin-user-store',

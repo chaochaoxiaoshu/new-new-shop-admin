@@ -12,13 +12,33 @@ import {
   Store
 } from 'lucide-react'
 import { useRef, useState } from 'react'
-import { Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, XAxis, YAxis } from 'recharts'
+import {
+  Area,
+  AreaChart,
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Legend,
+  XAxis,
+  YAxis
+} from 'recharts'
 
-import { DatePicker, Divider, Select, Spin, Tooltip } from '@arco-design/web-react'
+import {
+  DatePicker,
+  Divider,
+  Select,
+  Spin,
+  Tooltip
+} from '@arco-design/web-react'
 import { queryOptions, useQuery } from '@tanstack/react-query'
 import { Link, createFileRoute } from '@tanstack/react-router'
 
-import { getCustomersStatistic, getOrdersStatistic, getShopOrderData, getTodoBoard } from '@/api'
+import {
+  getCustomersStatistic,
+  getOrdersStatistic,
+  getShopOrderData,
+  getTodoBoard
+} from '@/api'
 import todo0 from '@/assets/home/todo_0.png'
 import todo1 from '@/assets/home/todo_1.png'
 import todo2 from '@/assets/home/todo_2.png'
@@ -53,7 +73,11 @@ const customersStatisticQueryOptions = queryOptions({
     })
 })
 
-function getDataQueryOptions(precision: Precision, date: string, by?: 'store' | 'customer') {
+function getDataQueryOptions(
+  precision: Precision,
+  date: string,
+  by?: 'store' | 'customer'
+) {
   const precisionMap = {
     day: 1,
     month: 2,
@@ -76,7 +100,9 @@ export const Route = createFileRoute('/_protected/')({
     void queryClient.prefetchQuery(toboBoardQueryOptions)
     void queryClient.prefetchQuery(ordersStatisticQueryOptions)
     void queryClient.prefetchQuery(customersStatisticQueryOptions)
-    void queryClient.prefetchQuery(getDataQueryOptions('day', dayjs(new Date()).format('YYYY-MM-DD')))
+    void queryClient.prefetchQuery(
+      getDataQueryOptions('day', dayjs(new Date()).format('YYYY-MM-DD'))
+    )
   },
   component: HomeView
 })
@@ -157,14 +183,38 @@ function Shortcuts() {
 
   return (
     <div className='flex-auto grid grid-cols-6 lg:grid-cols-4 2xl:grid-cols-8 py-2 lg:py-0 2xl:px-2 bg-white rounded-md overflow-hidden'>
-      <ShortcutsItem destination='/commodity/merchandiseCon' icon={Store} label='商品' />
-      <ShortcutsItem destination='/order' icon={BriefcaseBusiness} label='订单' />
-      <ShortcutsItem destination='/order/billLading' icon={BriefcaseBusiness} label='自提单' />
+      <ShortcutsItem
+        destination='/commodity/merchandiseCon'
+        icon={Store}
+        label='商品'
+      />
+      <ShortcutsItem
+        destination='/order'
+        icon={BriefcaseBusiness}
+        label='订单'
+      />
+      <ShortcutsItem
+        destination='/order/billLading'
+        icon={BriefcaseBusiness}
+        label='自提单'
+      />
       {departmentId === 0 && (
         <>
-          <ShortcutsItem destination='/client/account' icon={ChartPie} label='会员' />
-          <ShortcutsItem destination='/setting/notice' icon={Monitor} label='公告' />
-          <ShortcutsItem destination='/setting/manage' icon={Settings} label='平台设置' />
+          <ShortcutsItem
+            destination='/client/account'
+            icon={ChartPie}
+            label='会员'
+          />
+          <ShortcutsItem
+            destination='/setting/notice'
+            icon={Monitor}
+            label='公告'
+          />
+          <ShortcutsItem
+            destination='/setting/manage'
+            icon={Settings}
+            label='平台设置'
+          />
         </>
       )}
     </div>
@@ -202,7 +252,9 @@ function StoreData() {
    */
   const completedDate = completeDateFormat(date)
 
-  const { data, isPending } = useQuery(getDataQueryOptions(precision, date, 'store'))
+  const { data, isPending } = useQuery(
+    getDataQueryOptions(precision, date, 'store')
+  )
 
   return (
     <Spin loading={isPending} className='row-span-6'>
@@ -211,7 +263,11 @@ function StoreData() {
           <div className='font-medium'>店铺数据</div>
           <div className='flex'>
             <div className='flex-2'>
-              <Select value={precision} size='mini' onChange={(val) => setPrecision(val)}>
+              <Select
+                value={precision}
+                size='mini'
+                onChange={(val) => setPrecision(val)}
+              >
                 <Select.Option value='day'>按日搜索</Select.Option>
                 <Select.Option value='month'>按月搜索</Select.Option>
                 <Select.Option value='year'>按年搜索</Select.Option>
@@ -326,7 +382,11 @@ function StoreData() {
           >
             {data?.conversion_rate ? `${data?.conversion_rate}%` : '0%'}
           </StoreDataItem>
-          <StoreDataItem label='佣金发放' hide-yoy-qoq tip-text='佣金成功发放总额'>
+          <StoreDataItem
+            label='佣金发放'
+            hide-yoy-qoq
+            tip-text='佣金成功发放总额'
+          >
             {data?.distribution_total ?? 0}
           </StoreDataItem>
         </div>
@@ -358,28 +418,43 @@ function StoreDataItem(props: StoreDataItemProps) {
           <div className='flex items-center'>
             <span className='text-nowrap'>{label}</span>
             <Tooltip content={tipText}>
-              <img className='ml-1 size-3' src='https://qiniu.zdjt.com/shop/1NmkY7J1u5a82I4JYd6IpfqEkzu3APh6t0.png' />
+              <img
+                className='ml-1 size-3'
+                src='https://qiniu.zdjt.com/shop/1NmkY7J1u5a82I4JYd6IpfqEkzu3APh6t0.png'
+              />
             </Tooltip>
           </div>
           {!hideYoyQoq && (
             <>
               <div className='flex items-center ml-auto space-x-1 min-w-[100px]'>
                 <span>同比</span>
-                <span className='text-[var(--color-text-1)] font-medium'>{yoy ? `${yoy}%` : '-'}</span>
+                <span className='text-[var(--color-text-1)] font-medium'>
+                  {yoy ? `${yoy}%` : '-'}
+                </span>
                 {typeof yoy !== 'undefined' && (
                   <>
-                    {yoy > 0 && <ArrowUp className='flex-none size-4 text-[rgb(var(--primary-6))]' />}
-                    {yoy < 0 && <ArrowDown className='flex-none size-4 text-green-500' />}
+                    {yoy > 0 && (
+                      <ArrowUp className='flex-none size-4 text-[rgb(var(--primary-6))]' />
+                    )}
+                    {yoy < 0 && (
+                      <ArrowDown className='flex-none size-4 text-green-500' />
+                    )}
                   </>
                 )}
               </div>
               <div className='flex items-center space-x-1 min-w-[100px]'>
                 <span>环比</span>
-                <span className='text-[var(--color-text-1)] font-medium'>{qoq ? `${qoq}%` : '-'}</span>
+                <span className='text-[var(--color-text-1)] font-medium'>
+                  {qoq ? `${qoq}%` : '-'}
+                </span>
                 {typeof qoq !== 'undefined' && (
                   <>
-                    {qoq > 0 && <ArrowUp className='flex-none size-4 text-[rgb(var(--primary-6))]' />}
-                    {qoq < 0 && <ArrowDown className='flex-none size-4 text-green-500' />}
+                    {qoq > 0 && (
+                      <ArrowUp className='flex-none size-4 text-[rgb(var(--primary-6))]' />
+                    )}
+                    {qoq < 0 && (
+                      <ArrowDown className='flex-none size-4 text-green-500' />
+                    )}
                   </>
                 )}
               </div>
@@ -410,16 +485,26 @@ function StatisticCharts() {
     }
   })()
 
-  const { data: ordersStatistic, isPending: ordersStatisticPending } = useQuery(ordersStatisticQueryOptions)
-  const { data: customersStatistic, isPending: customersStatisticPending } = useQuery(customersStatisticQueryOptions)
+  const { data: ordersStatistic, isPending: ordersStatisticPending } = useQuery(
+    ordersStatisticQueryOptions
+  )
+  const { data: customersStatistic, isPending: customersStatisticPending } =
+    useQuery(customersStatisticQueryOptions)
 
   return (
-    <div ref={containerRef} className='lg:row-span-11 flex flex-col p-4 bg-white rounded-md'>
+    <div
+      ref={containerRef}
+      className='lg:row-span-11 flex flex-col p-4 bg-white rounded-md'
+    >
       <div className='flex items-center justify-between mb-6'>
         <div className='font-medium'>最近七天订单量统计</div>
       </div>
       <Spin loading={ordersStatisticPending}>
-        <AreaChart width={chartWidth} height={chartHeight} data={ordersStatistic?.items ?? []}>
+        <AreaChart
+          width={chartWidth}
+          height={chartHeight}
+          data={ordersStatistic?.items ?? []}
+        >
           <defs>
             <linearGradient id='colorShip' x1='0' y1='0' x2='0' y2='1'>
               <stop offset='5%' stopColor='#504AE8' stopOpacity={0.2} />
@@ -440,7 +525,13 @@ function StatisticCharts() {
             fontSize={12}
             tickFormatter={(value) => dayjs(value as string).format('MM-DD')}
           />
-          <YAxis width={16} interval={0} stroke='#6b7280' allowDecimals={false} fontSize={12} />
+          <YAxis
+            width={16}
+            interval={0}
+            stroke='#6b7280'
+            allowDecimals={false}
+            fontSize={12}
+          />
           <Tooltip />
           <Legend />
           <Area
@@ -468,7 +559,11 @@ function StatisticCharts() {
         <div className='font-medium'>会员统计</div>
       </div>
       <Spin loading={customersStatisticPending}>
-        <BarChart width={chartWidth} height={chartHeight} data={customersStatistic?.items ?? []}>
+        <BarChart
+          width={chartWidth}
+          height={chartHeight}
+          data={customersStatistic?.items ?? []}
+        >
           <CartesianGrid stroke='#e5e7eb' strokeDasharray='3 3' />
           <XAxis
             dataKey='date'
@@ -478,7 +573,13 @@ function StatisticCharts() {
             fontSize={12}
             tickFormatter={(value) => dayjs(value as string).format('MM-DD')}
           />
-          <YAxis width={16} interval={0} stroke='#6b7280' allowDecimals={false} fontSize={12} />
+          <YAxis
+            width={16}
+            interval={0}
+            stroke='#6b7280'
+            allowDecimals={false}
+            fontSize={12}
+          />
           <Tooltip />
           <Legend />
           <Bar dataKey='active_total' name='活跃' fill='#504AE8' />
@@ -497,7 +598,9 @@ function CustomerData() {
    */
   const completedDate = completeDateFormat(date)
 
-  const { data, isPending } = useQuery(getDataQueryOptions(precision, date, 'customer'))
+  const { data, isPending } = useQuery(
+    getDataQueryOptions(precision, date, 'customer')
+  )
 
   return (
     <Spin loading={isPending} className='row-span-5'>
@@ -506,7 +609,11 @@ function CustomerData() {
           <div className='font-medium'>客户数据</div>
           <div className='flex'>
             <div className='flex-2'>
-              <Select value={precision} size='mini' onChange={(val) => setPrecision(val)}>
+              <Select
+                value={precision}
+                size='mini'
+                onChange={(val) => setPrecision(val)}
+              >
                 <Select.Option value='day'>按日搜索</Select.Option>
                 <Select.Option value='month'>按月搜索</Select.Option>
                 <Select.Option value='year'>按年搜索</Select.Option>
@@ -605,25 +712,39 @@ function CustomerDataItem(props: CustomerDataItemProps) {
       >
         <props.icon className='text-white size-4' />
       </div>
-      <span className='ml-4 text-xs text-[var(--color-text-2)] w-48'>{label}</span>
+      <span className='ml-4 text-xs text-[var(--color-text-2)] w-48'>
+        {label}
+      </span>
       <span className='text-base text-[var(--color-text-1)]'>{children}</span>
       <div className='flex items-center ml-auto space-x-1 text-xs text-[var(--color-text-2)] w-[100px]'>
         <span>同比</span>
-        <span className='text-[var(--color-text-1)] font-medium'>{yoy ? `${yoy}%` : '-'}</span>
+        <span className='text-[var(--color-text-1)] font-medium'>
+          {yoy ? `${yoy}%` : '-'}
+        </span>
         {typeof yoy !== 'undefined' && (
           <>
-            {yoy > 0 && <ArrowUp className='flex-none size-4 text-[rgb(var(--primary-6))]' />}
-            {yoy < 0 && <ArrowDown className='flex-none size-4 text-green-500' />}
+            {yoy > 0 && (
+              <ArrowUp className='flex-none size-4 text-[rgb(var(--primary-6))]' />
+            )}
+            {yoy < 0 && (
+              <ArrowDown className='flex-none size-4 text-green-500' />
+            )}
           </>
         )}
       </div>
       <div className='flex items-center space-x-1 text-xs text-[var(--color-text-2)] w-[100px]'>
         <span>环比</span>
-        <span className='text-[var(--color-text-1)] font-medium'>{qoq ? `${qoq}%` : '-'}</span>
+        <span className='text-[var(--color-text-1)] font-medium'>
+          {qoq ? `${qoq}%` : '-'}
+        </span>
         {typeof qoq !== 'undefined' && (
           <>
-            {qoq > 0 && <ArrowUp className='flex-none size-4 text-[rgb(var(--primary-6))]' />}
-            {qoq < 0 && <ArrowDown className='flex-none size-4 text-green-500' />}
+            {qoq > 0 && (
+              <ArrowUp className='flex-none size-4 text-[rgb(var(--primary-6))]' />
+            )}
+            {qoq < 0 && (
+              <ArrowDown className='flex-none size-4 text-green-500' />
+            )}
           </>
         )}
       </div>

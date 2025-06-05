@@ -6,11 +6,18 @@ import { useQuery } from '@tanstack/react-query'
 import { useLocation, useNavigate, useRouter } from '@tanstack/react-router'
 
 import { MenuItemData, getMenuList } from '@/api'
-import { getMatchedItems, getMenuListWithIcons, processMenuList } from '@/helpers'
+import {
+  getMatchedItems,
+  getMenuListWithIcons,
+  processMenuList
+} from '@/helpers'
 
 type MenuItemWithIcon = MenuItemData & { meta?: { icon: LucideIcon } }
 
-function renderMenu(items: MenuItemWithIcon[], handlePreloadRoute: (path: string) => void) {
+function renderMenu(
+  items: MenuItemWithIcon[],
+  handlePreloadRoute: (path: string) => void
+) {
   return items.map((item) => {
     if (item.children && item.children.length > 0) {
       return (
@@ -18,7 +25,7 @@ function renderMenu(items: MenuItemWithIcon[], handlePreloadRoute: (path: string
           key={item.path}
           title={
             <>
-              {item.meta?.icon && <item.meta.icon className='inline size-5 mr-4' />}
+              {item.meta?.icon && <item.meta.icon className='size-5 mr-4' />}
               {item.name}
             </>
           }
@@ -28,8 +35,11 @@ function renderMenu(items: MenuItemWithIcon[], handlePreloadRoute: (path: string
       )
     } else {
       return (
-        <Menu.Item key={item.path} onMouseEnter={() => handlePreloadRoute(item.path)}>
-          {item.meta?.icon && <item.meta.icon className='inline size-5 mr-4' />}
+        <Menu.Item
+          key={item.path}
+          onMouseEnter={() => handlePreloadRoute(item.path)}
+        >
+          {item.meta?.icon && <item.meta.icon className='size-5 mr-4' />}
           {item.name}
         </Menu.Item>
       )
@@ -38,15 +48,20 @@ function renderMenu(items: MenuItemWithIcon[], handlePreloadRoute: (path: string
 }
 
 export const Sidebar = React.memo(() => {
-  const { menuList, selectedKeys, openKeys, handlePreloadRoute, handleClickSubMenu, handleClickMenuItem } =
-    useMenuList()
+  const {
+    menuList,
+    selectedKeys,
+    openKeys,
+    handlePreloadRoute,
+    handleClickSubMenu,
+    handleClickMenuItem
+  } = useMenuList()
 
   return (
     <div className='h-full border-r'>
       <Menu
         selectedKeys={selectedKeys}
         openKeys={openKeys}
-        hasCollapseButton
         style={{
           width: 220,
           height: '100%',
@@ -102,17 +117,26 @@ function useMenuList() {
   /**
    * 补全了一级子菜单的图标和子菜单的 path 后的菜单数据
    */
-  const menuList = useMemo(() => processMenuList(getMenuListWithIcons(menuData?.items || [])), [menuData])
+  const menuList = useMemo(
+    () => processMenuList(getMenuListWithIcons(menuData?.items || [])),
+    [menuData]
+  )
 
   /**
    * 当前路由匹配的菜单项列表（从菜单树自上而下）
    */
-  const matchedItems = useMemo(() => getMatchedItems(menuList, pathname), [menuList, pathname])
+  const matchedItems = useMemo(
+    () => getMatchedItems(menuList, pathname),
+    [menuList, pathname]
+  )
 
   /**
    * 当前选中的 keys(paths)（从菜单树自上而下）
    */
-  const selectedKeys = useMemo(() => matchedItems.map((item) => item.path) ?? [], [matchedItems])
+  const selectedKeys = useMemo(
+    () => matchedItems.map((item) => item.path) ?? [],
+    [matchedItems]
+  )
   /**
    * 当前打开的 SubMenu，跟随路由变化，也跟随子菜单点击交互变化
    */

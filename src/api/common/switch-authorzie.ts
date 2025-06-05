@@ -20,8 +20,11 @@ export type SwitchAuthorzieRes = Partial<{
  */
 export const switchAuthorzie = (req: SwitchAuthorzieReq) =>
   unprotectedApi
-    .post<ApiResponse<SwitchAuthorzieRes>>('jshop-user/api/v1/manage/switch-authorize', {
-      json: req
-    })
+    .post<ApiResponse<SwitchAuthorzieRes>>(
+      'jshop-user/api/v1/manage/switch-authorize',
+      {
+        json: req
+      }
+    )
     .json()
     .then((res) => res.result)

@@ -8,7 +8,11 @@ import { type RouteTreeNode, routeTree } from '@/helpers'
 /**
  * 递归查找与给定路径匹配的路由数组，用于渲染面包屑
  */
-function findPath(root: RouteTreeNode, targetPath: string, path: RouteTreeNode[] = []): RouteTreeNode[] | null {
+function findPath(
+  root: RouteTreeNode,
+  targetPath: string,
+  path: RouteTreeNode[] = []
+): RouteTreeNode[] | null {
   path.push(root)
   if (root.path === targetPath) {
     return path

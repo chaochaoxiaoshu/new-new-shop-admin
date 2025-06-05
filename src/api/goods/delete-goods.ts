@@ -6,4 +6,5 @@ export type DeleteGoodsReq = {
 
 export type DeleteGoodsRes = null
 
-export const deleteGoods = (req: DeleteGoodsReq) => api.delete(`jshop-goods/api/v1/goods/${req.id.toString()}`)
+export const deleteGoods = (req: DeleteGoodsReq) =>
+  api.delete(`jshop-goods/api/v1/goods/${req.id.toString()}`)

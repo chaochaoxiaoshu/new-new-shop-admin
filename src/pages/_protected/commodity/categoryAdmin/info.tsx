@@ -1,26 +1,44 @@
 import { type } from 'arktype'
 import { Plus } from 'lucide-react'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
-import { Button, Notification, Popconfirm, Switch } from '@arco-design/web-react'
-import { keepPreviousData, queryOptions, useMutation, useQuery } from '@tanstack/react-query'
+import { Button, Popconfirm, Switch } from '@arco-design/web-react'
+import {
+  keepPreviousData,
+  queryOptions,
+  useMutation,
+  useQuery
+} from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 
-import { type GetAdminSecondaryCategoriesRes, getAdminSecondaryCategories, updateAdminCategory } from '@/api'
+import {
+  type GetAdminSecondaryCategoriesRes,
+  deleteAdminCategory,
+  getAdminSecondaryCategories,
+  updateAdminCategory
+} from '@/api'
 import { MyTable } from '@/components/my-table'
 import { TableLayout } from '@/components/table-layout'
+import { getNotifs } from '@/helpers'
+import { useMyModal } from '@/hooks'
 import { defineTableColumns, queryClient } from '@/lib'
 import { useUserStore } from '@/stores'
 
-const AdminGoodsSecondaryCategoriesSearchSchema = type({
+import { EditForm } from '.'
+
+const LIST_KEY = 'admin-secondary-categories'
+
+const AdminSecondaryCategoriesSearchSchema = type({
   id: 'number',
   page_index: ['number', '=', 1],
   page_size: ['number', '=', 10]
 })
 
-function getAdminGoodsSecondaryCategoriesQueryOptions(search: typeof AdminGoodsSecondaryCategoriesSearchSchema.infer) {
+function getAdminSecondaryCategoriesQueryOptions(
+  search: typeof AdminSecondaryCategoriesSearchSchema.infer
+) {
   return queryOptions({
-    queryKey: ['admin-goods-secondary-categories', search],
+    queryKey: [LIST_KEY, search],
     queryFn: () =>
       getAdminSecondaryCategories({
         ...search,
@@ -30,13 +48,15 @@ function getAdminGoodsSecondaryCategoriesQueryOptions(search: typeof AdminGoodsS
   })
 }
 
-export const Route = createFileRoute('/_protected/commodity/categoryAdmin/info')({
-  validateSearch: AdminGoodsSecondaryCategoriesSearchSchema,
+export const Route = createFileRoute(
+  '/_protected/commodity/categoryAdmin/info'
+)({
+  validateSearch: AdminSecondaryCategoriesSearchSchema,
   component: AdminSecondaryCategoryView,
   loaderDeps: ({ search }) => ({ id: search.id }),
   loader: ({ deps }) =>
     queryClient.ensureQueryData(
-      getAdminGoodsSecondaryCategoriesQueryOptions({
+      getAdminSecondaryCategoriesQueryOptions({
         id: deps.id,
         page_index: 1,
         page_size: 10
@@ -47,43 +67,75 @@ export const Route = createFileRoute('/_protected/commodity/categoryAdmin/info')
 function AdminSecondaryCategoryView() {
   const search = Route.useSearch()
   const navigate = Route.useNavigate()
+  const [openModal, contextHolder] = useMyModal()
 
-  const { data, isFetching } = useQuery(getAdminGoodsSecondaryCategoriesQueryOptions(search))
+  const { data, isFetching } = useQuery(
+    getAdminSecondaryCategoriesQueryOptions(search)
+  )
 
   const { mutate: handleToggleVisibility } = useMutation({
-    mutationKey: ['update-goods-category'],
+    mutationKey: ['update-secondary-category'],
     mutationFn: (item: GetAdminSecondaryCategoriesRes) =>
       updateAdminCategory({
         ...item,
         status: item.status === 1 ? 2 : 1
       }),
-    onMutate: () => {
-      Notification.info({ id: 'update-goods-category', content: '正在操作...' })
-    },
-    onSuccess: async () => {
-      await queryClient.invalidateQueries(getAdminGoodsSecondaryCategoriesQueryOptions(search))
-      Notification.success({ id: 'update-goods-category', content: '操作成功' })
-    },
-    onError: (error) => {
-      Notification.error({ id: 'update-goods-category', content: `操作失败: ${error.message}` })
-    }
+    ...getNotifs({
+      key: 'update-secondary-category',
+      onSuccess: () => queryClient.invalidateQueries({ queryKey: [LIST_KEY] })
+    })
   })
 
   const handleViewGoods = (item: GetAdminSecondaryCategoriesRes) => {
     // [TODO]: 查看选择商品
   }
 
-  const handleAdd = () => {
-    // [TODO]: 新增二级分类商品
-  }
+  const handleAdd = useCallback(() => {
+    const modalIns = openModal({
+      title: '新增总部二级分类',
+      content: (
+        <EditForm
+          onSuccess={async () => {
+            await queryClient.invalidateQueries({ queryKey: [LIST_KEY] })
+            modalIns?.close()
+          }}
+          onCancel={() => modalIns?.close()}
+        />
+      ),
+      style: { width: 600 }
+    })
+  }, [openModal])
 
-  const handleEdit = (item: GetAdminSecondaryCategoriesRes) => {
-    // [TODO]: 编辑二级分类商品
-  }
+  const handleEdit = useCallback(
+    (item: GetAdminSecondaryCategoriesRes) => {
+      const modalIns = openModal({
+        title: '编辑总部二级分类',
+        content: (
+          <EditForm
+            initialData={item}
+            onSuccess={async () => {
+              await queryClient.invalidateQueries({ queryKey: [LIST_KEY] })
+              modalIns?.close()
+            }}
+            onCancel={() => modalIns?.close()}
+          />
+        ),
+        style: { width: 600 }
+      })
+    },
+    [openModal]
+  )
 
-  const handleDelete = (item: GetAdminSecondaryCategoriesRes) => {
-    // [TODO]: 删除二级分类商品
-  }
+  const { mutate: handleDelete } = useMutation({
+    mutationKey: ['delete-admin-secondary-category'],
+    mutationFn: async (item: GetAdminSecondaryCategoriesRes) => {
+      await deleteAdminCategory({ id: item.id! })
+    },
+    ...getNotifs({
+      key: 'delete-admin-secondary-category',
+      onSuccess: () => queryClient.invalidateQueries({ queryKey: [LIST_KEY] })
+    })
+  })
 
   const { columns } = useMemo(
     () =>
@@ -109,7 +161,12 @@ function AdminSecondaryCategoryView() {
         },
         {
           title: '是否显示',
-          render: (_, item) => <Switch checked={item.status === 1} onChange={() => handleToggleVisibility(item)} />,
+          render: (_, item) => (
+            <Switch
+              checked={item.status === 1}
+              onChange={() => handleToggleVisibility(item)}
+            />
+          ),
           width: 100,
           align: 'center'
         },
@@ -123,7 +180,11 @@ function AdminSecondaryCategoryView() {
               <Button type='text' onClick={() => handleEdit(item)}>
                 编辑
               </Button>
-              <Popconfirm content='确定要删除吗？' onOk={() => handleDelete(item)}>
+              <Popconfirm
+                title='提示'
+                content='确定要删除吗？'
+                onOk={() => handleDelete(item)}
+              >
                 <Button type='text'>删除</Button>
               </Popconfirm>
             </div>
@@ -133,14 +194,18 @@ function AdminSecondaryCategoryView() {
           width: 280
         }
       ]),
-    []
+    [handleDelete, handleEdit, handleToggleVisibility]
   )
 
   return (
     <TableLayout
       header={
         <TableLayout.Header>
-          <Button type='primary' icon={<Plus className='inline size-4' />} onClick={handleAdd}>
+          <Button
+            type='primary'
+            icon={<Plus className='inline size-4' />}
+            onClick={handleAdd}
+          >
             新增
           </Button>
         </TableLayout.Header>
@@ -166,6 +231,7 @@ function AdminSecondaryCategoryView() {
           }
         }}
       />
+      {contextHolder}
     </TableLayout>
   )
 }

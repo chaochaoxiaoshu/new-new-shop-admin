@@ -19,10 +19,13 @@ export type GetDepartmentsByTokenRes = Partial<{
  */
 export const getDepartmentsByToken = (req: GetDepartmentsByTokenReq) =>
   api
-    .get<ApiResponse<GetDepartmentsByTokenRes>>('jshop-user/api/v1/manage-info-by-token', {
-      headers: {
-        Authorization: `Bearer ${req.token}`
+    .get<ApiResponse<GetDepartmentsByTokenRes>>(
+      'jshop-user/api/v1/manage-info-by-token',
+      {
+        headers: {
+          Authorization: `Bearer ${req.token}`
+        }
       }
-    })
+    )
     .json()
     .then((res) => res.result)

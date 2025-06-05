@@ -19,8 +19,11 @@ export type WeComAuthorizeRes = Partial<{
  */
 export const wecomAuthorize = (req: WeComAuthorizeReq) =>
   unprotectedApi
-    .get<ApiResponse<WeComAuthorizeRes>>('jshop-user/api/v1/manage/wecom-authorize', {
-      searchParams: req
-    })
+    .get<ApiResponse<WeComAuthorizeRes>>(
+      'jshop-user/api/v1/manage/wecom-authorize',
+      {
+        searchParams: req
+      }
+    )
     .json()
     .then((res) => res.result)

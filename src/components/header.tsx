@@ -1,6 +1,12 @@
 import { ChevronDownIcon, UserIcon } from 'lucide-react'
 
-import { Avatar, Button, Dropdown, Menu, Notification } from '@arco-design/web-react'
+import {
+  Avatar,
+  Button,
+  Dropdown,
+  Menu,
+  Notification
+} from '@arco-design/web-react'
 import { useNavigate } from '@tanstack/react-router'
 
 import logo from '@/assets/logo.png'

@@ -2,8 +2,21 @@ import { type } from 'arktype'
 import { ChevronDown, Ellipsis, Plus, RotateCcw, Search } from 'lucide-react'
 import { useMemo, useState } from 'react'
 
-import { Button, Dropdown, Image, Input, Menu, Notification, Select, Switch } from '@arco-design/web-react'
-import { keepPreviousData, queryOptions, useMutation, useQuery } from '@tanstack/react-query'
+import {
+  Button,
+  Dropdown,
+  Image,
+  Input,
+  Menu,
+  Select,
+  Switch
+} from '@arco-design/web-react'
+import {
+  keepPreviousData,
+  queryOptions,
+  useMutation,
+  useQuery
+} from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 
 import {
@@ -17,8 +30,11 @@ import {
 } from '@/api'
 import { MyTable } from '@/components/my-table'
 import { TableLayout } from '@/components/table-layout'
+import { getNotifs } from '@/helpers'
 import { defineTableColumns, queryClient } from '@/lib'
 import { useUserStore } from '@/stores'
+
+const LIST_KEY = 'goods'
 
 const GoodsSearchSchema = type({
   'name?': 'string',
@@ -48,16 +64,23 @@ const brandsQueryOptions = queryOptions({
 
 const goodsPerCategoryCountsQueryOptions = queryOptions({
   queryKey: ['goods-per-category-counts'],
-  queryFn: () => getGoodsStatus({ department_id: useUserStore.getState().departmentId! })
+  queryFn: () =>
+    getGoodsStatus({ department_id: useUserStore.getState().departmentId! })
 })
 
 function getGoodsQueryOptions(search: typeof GoodsSearchSchema.infer) {
   return queryOptions({
-    queryKey: ['goods', search],
+    queryKey: [LIST_KEY, search],
     queryFn: () =>
       getGoods({
         ...search,
-        with_fields: ['goods_type_name', 'brand_name', 'products', 'images', 'goods_departype_name']
+        with_fields: [
+          'goods_type_name',
+          'brand_name',
+          'products',
+          'images',
+          'goods_departype_name'
+        ]
       }),
     placeholderData: keepPreviousData
   })
@@ -84,12 +107,16 @@ function GoodsView() {
   const navigate = Route.useNavigate()
 
   const departmentId = useUserStore((store) => store.departmentId)
-  const checkActionPermission = useUserStore((store) => store.checkActionPermisstion)
+  const checkActionPermission = useUserStore(
+    (store) => store.checkActionPermisstion
+  )
 
   /* ------------------------------ Search START ------------------------------ */
   const [tempSearch, setTempSearch] = useState(search)
 
-  const handleUpdateSearchParam = <K extends keyof typeof GoodsSearchSchema.infer>(
+  const handleUpdateSearchParam = <
+    K extends keyof typeof GoodsSearchSchema.infer
+  >(
     key: K,
     value: (typeof GoodsSearchSchema.infer)[K]
   ) => {
@@ -101,7 +128,10 @@ function GoodsView() {
   }
 
   const handleReset = () => {
-    const initial = { page_index: search.page_index, page_size: search.page_size }
+    const initial = {
+      page_index: search.page_index,
+      page_size: search.page_size
+    }
     navigate({ search: initial })
     setTempSearch(initial)
   }
@@ -109,30 +139,33 @@ function GoodsView() {
 
   const { data: departments } = useQuery(departmentsQueryOptions)
   const { data: brandsData } = useQuery(brandsQueryOptions)
-  const { data: goodsPerCategoryCounts } = useQuery(goodsPerCategoryCountsQueryOptions)
+  const { data: goodsPerCategoryCounts } = useQuery(
+    goodsPerCategoryCountsQueryOptions
+  )
 
   /* ------------------------------- 批量操作 START ------------------------------- */
-  const [batchListOrDelistCurrent, setBatchListOrDelistCurrent] = useState<1 | 2>(1)
+  const [batchListOrDelistCurrent, setBatchListOrDelistCurrent] = useState<
+    1 | 2
+  >(1)
 
-  const batchListOrDelistCurrentButtonLabel = batchListOrDelistCurrent === 1 ? '上架' : '下架'
+  const batchListOrDelistCurrentButtonLabel =
+    batchListOrDelistCurrent === 1 ? '上架' : '下架'
 
   const { mutateAsync: handleBatchListOrDelistCurrent } = useMutation({
     mutationKey: ['batch-list-or-delist-current'],
     mutationFn: (marketable: 1 | 2) => {
-      return Promise.all(selectedRowKeys.map((id) => updateGoodsMarketable({ id, marketable })))
-    },
-    onMutate: (marketable) => {
       setBatchListOrDelistCurrent(marketable)
-      Notification.info({ id: 'batch-list-or-delist-current', content: '正在操作...' })
+      return Promise.all(
+        selectedRowKeys.map((id) => updateGoodsMarketable({ id, marketable }))
+      )
     },
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['goods'] })
-      Notification.success({ id: 'batch-list-or-delist-current', content: '操作成功' })
-      setSelectedRowKeys([])
-    },
-    onError: (error) => {
-      Notification.error({ id: 'batch-list-or-delist-current', content: `操作失败: ${error.message}` })
-    }
+    ...getNotifs({
+      key: 'batch-list-or-delist-current',
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({ queryKey: [LIST_KEY] })
+        setSelectedRowKeys([])
+      }
+    })
   })
   /* -------------------------------- 批量操作 END -------------------------------- */
 
@@ -143,18 +176,10 @@ function GoodsView() {
   const { mutateAsync: handleUpdateGoodsMarketable } = useMutation({
     mutationKey: ['update-goods-marketable'],
     mutationFn: updateGoodsMarketable,
-    onMutate: () => {
-      Notification.info({ id: 'update-goods-marketable', content: '正在操作...' })
-    },
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ['goods']
-      })
-      Notification.success({ id: 'update-goods-marketable', content: '操作成功' })
-    },
-    onError: (error) => {
-      Notification.error({ id: 'update-goods-marketable', content: `操作失败: ${error.message}` })
-    }
+    ...getNotifs({
+      key: 'update-goods-marketable',
+      onSuccess: () => queryClient.invalidateQueries({ queryKey: [LIST_KEY] })
+    })
   })
 
   const handleAdd = () => {
@@ -172,18 +197,10 @@ function GoodsView() {
   const { mutateAsync: handleDeleteGoods } = useMutation({
     mutationKey: ['delete-goods'],
     mutationFn: deleteGoods,
-    onMutate: () => {
-      Notification.info({ id: 'delete-goods', content: '正在操作...' })
-    },
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ['goods']
-      })
-      Notification.success({ id: 'delete-goods', content: '操作成功' })
-    },
-    onError: (error) => {
-      Notification.error({ id: 'delete-goods', content: `操作失败: ${error.message}` })
-    }
+    ...getNotifs({
+      key: 'delete-goods',
+      onSuccess: () => queryClient.invalidateQueries({ queryKey: [LIST_KEY] })
+    })
   })
 
   const handleShare = (goodsId: number) => {
@@ -212,7 +229,12 @@ function GoodsView() {
               checked={item.marketable === 1}
               checkedText='上架'
               uncheckedText='下架'
-              onChange={(value) => handleUpdateGoodsMarketable({ id: item.goods_id!, marketable: value ? 1 : 2 })}
+              onChange={(value) =>
+                handleUpdateGoodsMarketable({
+                  id: item.goods_id!,
+                  marketable: value ? 1 : 2
+                })
+              }
             />
           ),
           width: 100,
@@ -221,7 +243,13 @@ function GoodsView() {
         {
           title: '缩略图',
           render: (_, item) => (
-            <Image key={item.goods_id} src={item.image_url} alt={item.name} width={40} height={40} />
+            <Image
+              key={item.goods_id}
+              src={item.image_url}
+              alt={item.name}
+              width={40}
+              height={40}
+            />
           ),
           width: 90,
           align: 'center'
@@ -324,28 +352,49 @@ function GoodsView() {
                 trigger='click'
                 droplist={
                   <Menu>
-                    {checkActionPermission('/commodity/merchandiseCon/edit') && (
-                      <Menu.Item key='edit' onClick={() => handleEdit(item.goods_id!)}>
+                    {checkActionPermission(
+                      '/commodity/merchandiseCon/edit'
+                    ) && (
+                      <Menu.Item
+                        key='edit'
+                        onClick={() => handleEdit(item.goods_id!)}
+                      >
                         编辑
                       </Menu.Item>
                     )}
-                    {checkActionPermission('/commodity/merchandiseCon/edit') && (
-                      <Menu.Item key='copy' onClick={() => handleCopy(item.goods_id!)}>
+                    {checkActionPermission(
+                      '/commodity/merchandiseCon/edit'
+                    ) && (
+                      <Menu.Item
+                        key='copy'
+                        onClick={() => handleCopy(item.goods_id!)}
+                      >
                         复制
                       </Menu.Item>
                     )}
                     {checkActionPermission('/commodity/merchandiseCon/del') && (
-                      <Menu.Item key='delete' onClick={() => handleDeleteGoods({ id: item.goods_id! })}>
+                      <Menu.Item
+                        key='delete'
+                        onClick={() =>
+                          handleDeleteGoods({ id: item.goods_id! })
+                        }
+                      >
                         删除
                       </Menu.Item>
                     )}
-                    <Menu.Item key='viewComments' onClick={() => handleViewComments(item.goods_id!)}>
+                    <Menu.Item
+                      key='viewComments'
+                      onClick={() => handleViewComments(item.goods_id!)}
+                    >
                       查看评价
                     </Menu.Item>
                   </Menu>
                 }
               >
-                <Button type='text' icon={<Ellipsis className='inline size-4' />} />
+                <Button
+                  type='text'
+                  icon={<Ellipsis className='inline size-4' />}
+                />
               </Dropdown>
             </div>
           ),
@@ -384,7 +433,9 @@ function GoodsView() {
                 placeholder='请选择电商事业部'
                 allowClear
                 style={{ width: '264px' }}
-                onChange={(value) => handleUpdateSearchParam('department_id', value)}
+                onChange={(value) =>
+                  handleUpdateSearchParam('department_id', value)
+                }
               >
                 {departments?.items.map((item) => (
                   <Select.Option key={item.id} value={item.id!}>
@@ -411,7 +462,9 @@ function GoodsView() {
               placeholder='请选择是否支持内购'
               allowClear
               style={{ width: '264px' }}
-              onChange={(value) => handleUpdateSearchParam('is_lnternal', value)}
+              onChange={(value) =>
+                handleUpdateSearchParam('is_lnternal', value)
+              }
             >
               <Select.Option value={1}>是</Select.Option>
               <Select.Option value={2}>否</Select.Option>
@@ -421,7 +474,9 @@ function GoodsView() {
               placeholder='请选择是否支持会员价'
               allowClear
               style={{ width: '264px' }}
-              onChange={(value) => handleUpdateSearchParam('is_member_price', value)}
+              onChange={(value) =>
+                handleUpdateSearchParam('is_member_price', value)
+              }
             >
               <Select.Option value={1}>是</Select.Option>
               <Select.Option value={2}>否</Select.Option>
@@ -441,15 +496,25 @@ function GoodsView() {
               placeholder='请选择是否隐藏链接'
               allowClear
               style={{ width: '264px' }}
-              onChange={(value) => handleUpdateSearchParam('is_hidelinks', value)}
+              onChange={(value) =>
+                handleUpdateSearchParam('is_hidelinks', value)
+              }
             >
               <Select.Option value={1}>是</Select.Option>
               <Select.Option value={2}>否</Select.Option>
             </Select>
-            <Button type='primary' icon={<Search className='inline size-4' />} onClick={handleSearch}>
+            <Button
+              type='primary'
+              icon={<Search className='inline size-4' />}
+              onClick={handleSearch}
+            >
               查询
             </Button>
-            <Button type='outline' icon={<RotateCcw className='inline size-4' />} onClick={handleReset}>
+            <Button
+              type='outline'
+              icon={<RotateCcw className='inline size-4' />}
+              onClick={handleReset}
+            >
               重置
             </Button>
           </TableLayout.Header>
@@ -464,7 +529,11 @@ function GoodsView() {
               triggerElement={
                 <div className='flex items-center px-4 cursor-pointer mr-auto'>
                   <span className='text-muted-foreground'>
-                    {{ '': '全部商品', 1: '上架商品', 2: '下架商品' }[search.marketable ?? '']}
+                    {
+                      { '': '全部商品', 1: '上架商品', 2: '下架商品' }[
+                        search.marketable ?? ''
+                      ]
+                    }
                   </span>
                   <span className='ml-1 text-accent'>
                     {goodsPerCategoryCounts
@@ -480,7 +549,10 @@ function GoodsView() {
               }
               onChange={(val) => {
                 setTempSearch((prev) => {
-                  const next = { ...prev, marketable: val !== '' ? val : undefined }
+                  const next = {
+                    ...prev,
+                    marketable: val !== '' ? val : undefined
+                  }
                   navigate({ search: next })
                   return next
                 })
@@ -489,19 +561,25 @@ function GoodsView() {
               <Select.Option value={''}>
                 <span>全部商品</span>
                 <span className='ml-1 text-accent'>
-                  {goodsPerCategoryCounts ? `(${goodsPerCategoryCounts?.total_goods})` : ''}
+                  {goodsPerCategoryCounts
+                    ? `(${goodsPerCategoryCounts?.total_goods})`
+                    : ''}
                 </span>
               </Select.Option>
               <Select.Option value={1}>
                 <span>上架商品</span>
                 <span className='ml-1 text-accent'>
-                  {goodsPerCategoryCounts ? `(${goodsPerCategoryCounts?.total_marketable})` : ''}
+                  {goodsPerCategoryCounts
+                    ? `(${goodsPerCategoryCounts?.total_marketable})`
+                    : ''}
                 </span>
               </Select.Option>
               <Select.Option value={2}>
                 <span>下架商品</span>
                 <span className='ml-1 text-accent'>
-                  {goodsPerCategoryCounts ? `(${goodsPerCategoryCounts?.total_unmarketable})` : ''}
+                  {goodsPerCategoryCounts
+                    ? `(${goodsPerCategoryCounts?.total_unmarketable})`
+                    : ''}
                 </span>
               </Select.Option>
             </Select>
@@ -519,19 +597,32 @@ function GoodsView() {
                   position='br'
                   droplist={
                     <Menu>
-                      <Menu.Item key='1' onClick={() => handleBatchListOrDelistCurrent(1)}>
+                      <Menu.Item
+                        key='1'
+                        onClick={() => handleBatchListOrDelistCurrent(1)}
+                      >
                         上架
                       </Menu.Item>
-                      <Menu.Item key='2' onClick={() => handleBatchListOrDelistCurrent(2)}>
+                      <Menu.Item
+                        key='2'
+                        onClick={() => handleBatchListOrDelistCurrent(2)}
+                      >
                         下架
                       </Menu.Item>
                     </Menu>
                   }
                 >
-                  <Button type='secondary' icon={<ChevronDown className='inline size-4' />} />
+                  <Button
+                    type='secondary'
+                    icon={<ChevronDown className='inline size-4' />}
+                  />
                 </Dropdown>
               </Button.Group>
-              <Button type='primary' onClick={handleAdd} icon={<Plus className='inline size-4' />}>
+              <Button
+                type='primary'
+                onClick={handleAdd}
+                icon={<Plus className='inline size-4' />}
+              >
                 新增
               </Button>
             </div>
@@ -548,7 +639,8 @@ function GoodsView() {
         rowSelection={{
           type: 'checkbox',
           selectedRowKeys,
-          onChange: (selectedRowKeys) => setSelectedRowKeys(selectedRowKeys as number[])
+          onChange: (selectedRowKeys) =>
+            setSelectedRowKeys(selectedRowKeys as number[])
         }}
         pagination={{
           current: data?.paginate.page_index,

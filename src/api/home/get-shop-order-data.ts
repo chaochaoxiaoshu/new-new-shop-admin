@@ -53,8 +53,11 @@ export type GetShopOrderDataRes = Partial<{
 
 export const getShopOrderData = (req: GetShopOrderDataReq) =>
   api
-    .get<ApiResponse<GetShopOrderDataRes>>('jshop-report/api/v1/shop-order-data', {
-      searchParams: req
-    })
+    .get<ApiResponse<GetShopOrderDataRes>>(
+      'jshop-report/api/v1/shop-order-data',
+      {
+        searchParams: req
+      }
+    )
     .json()
     .then((res) => res.result)

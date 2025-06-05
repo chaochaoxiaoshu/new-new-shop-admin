@@ -61,7 +61,11 @@ export type GetGoodsRes = Partial<{
 export const getGoods = async (req?: GetGoodsReq) => {
   const searchParams = req ? toSearchParams(req) : void 0
 
-  const res = await api.get<PaginatedResponse<GetGoodsRes>>('jshop-goods/api/v1/goods', { searchParams }).json()
+  const res = await api
+    .get<
+      PaginatedResponse<GetGoodsRes>
+    >('jshop-goods/api/v1/goods', { searchParams })
+    .json()
 
   return res.result
 }

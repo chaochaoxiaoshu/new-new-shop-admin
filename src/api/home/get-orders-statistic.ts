@@ -14,8 +14,11 @@ export type GetOrdersStatisticRes = Partial<{
 
 export const getOrdersStatistic = (req: GetOrdersStatisticReq) =>
   api
-    .get<PaginatedResponse<GetOrdersStatisticRes>>('jshop-order/api/v1/home-page/order-statistics', {
-      searchParams: req
-    })
+    .get<PaginatedResponse<GetOrdersStatisticRes>>(
+      'jshop-order/api/v1/home-page/order-statistics',
+      {
+        searchParams: req
+      }
+    )
     .json()
     .then((res) => res.result)

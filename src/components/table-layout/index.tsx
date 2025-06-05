@@ -36,5 +36,9 @@ interface TableLayoutHeaderProps {
 }
 
 TableLayout.Header = function TableLayoutHeader(props: TableLayoutHeaderProps) {
-  return <div className='table-layout-header flex-none flex flex-wrap gap-4 items-center'>{props.children}</div>
+  return (
+    <div className='table-layout-header flex-none flex flex-wrap gap-4 items-center'>
+      {props.children}
+    </div>
+  )
 }

@@ -33,7 +33,9 @@ export function getMenuListWithIcons(menuList: MenuItemData[]) {
   }))
 }
 
-export function processMenuList(items: (MenuItemData & { meta: { icon: LucideIcon } })[]) {
+export function processMenuList(
+  items: (MenuItemData & { meta: { icon: LucideIcon } })[]
+) {
   const processMenuItems = (
     items: (MenuItemData & { meta: { icon: LucideIcon } })[]
   ): (MenuItemData & { meta: { icon: LucideIcon } })[] => {
@@ -44,7 +46,9 @@ export function processMenuList(items: (MenuItemData & { meta: { icon: LucideIco
       if (newItem.children && newItem.children.length > 0) {
         newItem.path = `${newItem.depth}-${newItem.name}`
         // 递归处理子项
-        newItem.children = processMenuItems(newItem.children as (MenuItemData & { meta: { icon: LucideIcon } })[])
+        newItem.children = processMenuItems(
+          newItem.children as (MenuItemData & { meta: { icon: LucideIcon } })[]
+        )
       }
       return newItem
     })

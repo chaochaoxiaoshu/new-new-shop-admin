@@ -21,7 +21,19 @@ export function completeDateFormat(dateStr: string) {
 }
 
 export function numberToChinese(num: number) {
-  const chineseNumbers = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十']
+  const chineseNumbers = [
+    '零',
+    '一',
+    '二',
+    '三',
+    '四',
+    '五',
+    '六',
+    '七',
+    '八',
+    '九',
+    '十'
+  ]
   if (num <= 10) {
     return chineseNumbers[num]
   } else if (num < 20) {
@@ -47,7 +59,10 @@ export function toSearchParams(obj: Record<string, unknown>): URLSearchParams {
 }
 
 export function defineTableColumns<T>(columns: ColumnProps<T>[]) {
-  const totalWidth = columns.reduce((total, column) => total + ((column.width as number | undefined) || 0), 0)
+  const totalWidth = columns.reduce(
+    (total, column) => total + ((column.width as number | undefined) || 0),
+    0
+  )
 
   return { columns, totalWidth }
 }

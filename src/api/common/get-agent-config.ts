@@ -19,8 +19,11 @@ export type GetAgentConfigRes = Partial<{
  */
 export const getAgentConfig = (req: GetAgentConfigReq) =>
   api
-    .get<ApiResponse<GetAgentConfigRes>>('jshop-user/api/v1/manage/get-agent-config', {
-      searchParams: req
-    })
+    .get<ApiResponse<GetAgentConfigRes>>(
+      'jshop-user/api/v1/manage/get-agent-config',
+      {
+        searchParams: req
+      }
+    )
     .json()
     .then((res) => res.result)
