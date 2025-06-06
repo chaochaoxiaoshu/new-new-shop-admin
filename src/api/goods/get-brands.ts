@@ -1,9 +1,10 @@
-import { api } from '@/lib'
+import { api, cleanObject } from '@/lib'
 
-import type { PaginatedResponse } from '..'
+import type { PaginatedResponse } from '../types'
 
 export type GetBrandsReq = {
-  department_id: number
+  name?: string
+  department_id?: number
 }
 
 export type GetBrandsRes = Partial<{
@@ -22,7 +23,7 @@ export const getBrands = (req: GetBrandsReq) =>
     .get<Omit<PaginatedResponse<GetBrandsRes>, 'paginate'>>(
       'jshop-goods/api/v1/brands',
       {
-        searchParams: req
+        searchParams: cleanObject(req)
       }
     )
     .json()

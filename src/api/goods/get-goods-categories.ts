@@ -1,10 +1,10 @@
-import { api } from '@/lib'
+import { api, cleanObject } from '@/lib'
 
 import { PaginatedReq, PaginatedResponse } from '../types'
 
 export type GetGoodsCategoriesReq = {
   name?: string
-  department: number
+  department?: number
 } & PaginatedReq
 
 export type GetGoodsCategoriesRes = Partial<{
@@ -22,7 +22,7 @@ export const getGoodsCategories = (req: GetGoodsCategoriesReq) =>
   api
     .get<PaginatedResponse<GetGoodsCategoriesRes>>(
       'jshop-goods/api/v1/department-type-list',
-      { searchParams: req }
+      { searchParams: cleanObject(req) }
     )
     .json()
     .then((res) => res.result)

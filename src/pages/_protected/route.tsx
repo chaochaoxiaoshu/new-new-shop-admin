@@ -1,9 +1,10 @@
-import { useEffect } from 'react'
+import {
+  HeadContent,
+  Outlet,
+  createFileRoute,
+  redirect
+} from '@tanstack/react-router'
 
-import { Notification } from '@arco-design/web-react'
-import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
-
-import { getActionPermission } from '@/api'
 import { MyBreadcrumb } from '@/components/breadcrumb'
 import { Header } from '@/components/header'
 import { Sidebar } from '@/components/sidebar'
@@ -23,42 +24,29 @@ export const Route = createFileRoute('/_protected')({
 })
 
 function ProtectedView() {
-  const updateActionPermission = async () => {
-    try {
-      const res = await getActionPermission()
-      useUserStore.getState().setActionButtonList(res.items ?? [])
-    } catch (error) {
-      console.error(error)
-      Notification.error({
-        content: '获取按钮权限时发生错误'
-      })
-    }
-  }
-
-  useEffect(() => {
-    updateActionPermission()
-  }, [])
-
   return (
-    <div className='flex flex-col h-screen overflow-hidden'>
-      <div className='flex-none'>
-        <Header />
-      </div>
-      <div className='flex-auto flex max-h-[calc(100vh-60px)]'>
-        <div className='flex-none overflow-y-auto'>
-          <Sidebar />
+    <>
+      <HeadContent />
+      <div className='flex flex-col h-screen overflow-hidden'>
+        <div className='flex-none'>
+          <Header />
         </div>
-        <div className='flex-auto max-h-[calc(100vh-60px)] overflow-y-auto'>
-          <div className='flex flex-col p-4 min-h-full'>
-            <div className='flex-none h-6 mb-4'>
-              <MyBreadcrumb />
-            </div>
-            <div className='flex-auto flex flex-col h-full'>
-              <Outlet />
+        <div className='flex-auto flex max-h-[calc(100vh-60px)]'>
+          <div className='flex-none overflow-y-auto'>
+            <Sidebar />
+          </div>
+          <div className='flex-auto max-h-[calc(100vh-60px)] overflow-y-auto'>
+            <div className='flex flex-col p-4 min-h-full'>
+              <div className='flex-none h-6 mb-4'>
+                <MyBreadcrumb />
+              </div>
+              <div className='flex-auto flex flex-col h-full'>
+                <Outlet />
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }

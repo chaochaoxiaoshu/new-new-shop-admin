@@ -30,7 +30,7 @@ import {
 import { addAdminCategory } from '@/api/goods/add-admin-category'
 import { MyTable } from '@/components/my-table'
 import { TableLayout } from '@/components/table-layout'
-import { getNotifs } from '@/helpers'
+import { getHead, getNotifs } from '@/helpers'
 import { useMyModal } from '@/hooks'
 import { TableCellWidth, defineTableColumns, queryClient } from '@/lib'
 import { useUserStore } from '@/stores'
@@ -66,6 +66,7 @@ function getAdminCategoriesQueryOptions(
 }
 
 export const Route = createFileRoute('/_protected/commodity/categoryAdmin/')({
+  head: () => getHead('总部分类'),
   validateSearch: AdminCategoriesSearchSchema,
   component: AdminCategoryView,
   loader: () => {
@@ -341,6 +342,7 @@ export function EditForm(props: EditFormProps) {
     <Form
       form={form}
       initialValues={initialData}
+      disabled={isPending}
       layout='horizontal'
       labelAlign='left'
       onSubmit={handleSubmit}
@@ -363,14 +365,14 @@ export function EditForm(props: EditFormProps) {
         label='分类名称'
         rules={[{ required: true, message: '请输入分类名称' }]}
       >
-        <Input placeholder='请输入分类名称' />
+        <Input placeholder='请输入分类名称' maxLength={20} showWordLimit />
       </Form.Item>
       <Form.Item
         field='sort'
         label='排序'
         rules={[{ required: true, message: '请输入排序' }]}
       >
-        <InputNumber placeholder='请输入排序' />
+        <InputNumber placeholder='请输入排序' max={65535} />
       </Form.Item>
       <div className='flex justify-end items-center space-x-4 mt-6'>
         <Button onClick={onCancel}>取消</Button>

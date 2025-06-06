@@ -32,7 +32,7 @@ import {
 } from '@/api'
 import { MyTable } from '@/components/my-table'
 import { TableLayout } from '@/components/table-layout'
-import { getNotifs } from '@/helpers'
+import { getHead, getNotifs } from '@/helpers'
 import { useMyModal } from '@/hooks'
 import { TableCellWidth, defineTableColumns, queryClient } from '@/lib'
 import { useUserStore } from '@/stores'
@@ -55,35 +55,44 @@ const departmentsQueryOptions = queryOptions({
     })
 })
 
-const goodsCategoriesTreeQueryOptions = queryOptions({
-  queryKey: ['admin-categories-tree'],
-  queryFn: () =>
-    getGoodsCategoriesTree({
-      department: useUserStore.getState().departmentId!
-    }),
-  placeholderData: keepPreviousData
-})
+const getGoodsCategoriesTreeQueryOptions = (department?: number) => {
+  const signedDepartment = useUserStore.getState().departmentId!
+  return queryOptions({
+    queryKey: ['goods-categories-tree', department],
+    queryFn: () =>
+      getGoodsCategoriesTree({
+        department: signedDepartment === 0 ? department : signedDepartment
+      }),
+    placeholderData: keepPreviousData
+  })
+}
 
 function getGoodsCategoriesQueryOptions(
   search: typeof GoodsCategoriesSearchSchema.infer
 ) {
+  const signedDepartment = useUserStore.getState().departmentId!
   return queryOptions({
     queryKey: [LIST_KEY, search],
     queryFn: () =>
       getGoodsCategories({
         ...search,
-        department: useUserStore.getState().departmentId!
+        department:
+          signedDepartment === 0 ? search.department : signedDepartment
       }),
     placeholderData: keepPreviousData
   })
 }
 
 export const Route = createFileRoute('/_protected/commodity/category/')({
+  head: () => getHead('商品分类'),
   validateSearch: GoodsCategoriesSearchSchema,
   component: GoodsCategoryView,
-  loader: () => {
+  loaderDeps: ({ search }) => ({ department: search.department }),
+  loader: ({ deps }) => {
     queryClient.prefetchQuery(departmentsQueryOptions)
-    queryClient.prefetchQuery(goodsCategoriesTreeQueryOptions)
+    queryClient.prefetchQuery(
+      getGoodsCategoriesTreeQueryOptions(deps.department)
+    )
     return queryClient.ensureQueryData(
       getGoodsCategoriesQueryOptions({ page_index: 1, page_size: 10 })
     )
@@ -127,7 +136,7 @@ function GoodsCategoryView() {
 
   const { data: departments } = useQuery(departmentsQueryOptions)
   const { data: goodsCategoriesTree } = useQuery(
-    goodsCategoriesTreeQueryOptions
+    getGoodsCategoriesTreeQueryOptions(search.department)
   )
 
   const { data, isFetching } = useQuery(getGoodsCategoriesQueryOptions(search))
@@ -280,18 +289,20 @@ function GoodsCategoryView() {
             style={{ width: '264px' }}
             onChange={(value) => handleUpdateSearchParam('name', value)}
           />
-          <Select
-            value={tempSearch.department}
-            placeholder='请选择电商事业部'
-            style={{ width: '264px' }}
-            onChange={(value) => handleUpdateSearchParam('department', value)}
-          >
-            {departments?.items.map((item) => (
-              <Select.Option key={item.id} value={item.id!}>
-                {item.department_name}
-              </Select.Option>
-            ))}
-          </Select>
+          {departmentId === 0 && (
+            <Select
+              value={tempSearch.department}
+              placeholder='请选择电商事业部'
+              style={{ width: '264px' }}
+              onChange={(value) => handleUpdateSearchParam('department', value)}
+            >
+              {departments?.items.map((item) => (
+                <Select.Option key={item.id} value={item.id!}>
+                  {item.department_name}
+                </Select.Option>
+              ))}
+            </Select>
+          )}
           <Button
             type='primary'
             icon={<Search className='inline size-4' />}
@@ -359,11 +370,12 @@ interface EditFormProps {
 
 export function EditForm(props: EditFormProps) {
   const { initialData, onSuccess, onCancel, onError } = props
+  const search = Route.useSearch()
 
   const [form] = Form.useForm<FormData>()
 
   const { data: goodsCategoriesTreeData } = useQuery(
-    goodsCategoriesTreeQueryOptions
+    getGoodsCategoriesTreeQueryOptions(search.department)
   )
   /**
    * 补充顶级分类和缩进
@@ -412,6 +424,7 @@ export function EditForm(props: EditFormProps) {
     <Form
       form={form}
       initialValues={initialData}
+      disabled={isPending}
       layout='horizontal'
       labelAlign='left'
       onSubmit={handleSubmit}
@@ -434,14 +447,14 @@ export function EditForm(props: EditFormProps) {
         label='分类名称'
         rules={[{ required: true, message: '请输入分类名称' }]}
       >
-        <Input placeholder='请输入分类名称' />
+        <Input placeholder='请输入分类名称' maxLength={20} showWordLimit />
       </Form.Item>
       <Form.Item
         field='sort'
         label='排序'
         rules={[{ required: true, message: '请输入排序' }]}
       >
-        <InputNumber placeholder='请输入排序' />
+        <InputNumber placeholder='请输入排序' max={65535} />
       </Form.Item>
       <div className='flex justify-end items-center space-x-4 mt-6'>
         <Button onClick={onCancel}>取消</Button>

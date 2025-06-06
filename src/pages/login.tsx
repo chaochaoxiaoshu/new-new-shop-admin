@@ -14,19 +14,25 @@ import {
 } from '@arco-design/web-react'
 import type { RefInputType } from '@arco-design/web-react/es/Input'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import {
+  HeadContent,
+  createFileRoute,
+  useNavigate
+} from '@tanstack/react-router'
 
 import {
   type LoginReq,
   type SwitchAuthorzieReq,
+  getActionPermission,
   getAgentConfig,
   getDepartmentsByToken,
   getDepartmentsForAccount,
+  getPlatformInfo,
   login,
   switchAuthorzie,
   wecomAuthorize
 } from '@/api'
-import { checkWxApiReady } from '@/helpers'
+import { checkWxApiReady, getHead } from '@/helpers'
 import { useUserStore } from '@/stores'
 
 const searchSchema = type({
@@ -36,21 +42,21 @@ const searchSchema = type({
 })
 
 export const Route = createFileRoute('/login')({
+  head: () =>
+    getHead('登录', {
+      scripts: [
+        {
+          src: 'https://wwcdn.weixin.qq.com/node/wework/wwopen/js/wwLogin-1.2.7.js'
+        },
+        {
+          src: 'https://res.wx.qq.com/wwopen/js/jsapi/jweixin-1.0.0.js'
+        },
+        {
+          src: 'https://open.work.weixin.qq.com/wwopen/js/jwxwork-1.0.0.js'
+        }
+      ]
+    }),
   validateSearch: searchSchema,
-  head: () => ({
-    meta: [{ title: '登录 | 振东健康城' }],
-    script: [
-      {
-        src: 'https://wwcdn.weixin.qq.com/node/wework/wwopen/js/wwLogin-1.2.7.js'
-      },
-      {
-        src: 'https://res.wx.qq.com/wwopen/js/jsapi/jweixin-1.0.0.js'
-      },
-      {
-        src: 'https://open.work.weixin.qq.com/wwopen/js/jwxwork-1.0.0.js'
-      }
-    ]
-  }),
   component: AuthView
 })
 
@@ -225,6 +231,8 @@ function AuthView() {
       replace: true
     })
     Notification.success({ content: '登录成功' })
+    updateActionPermission()
+    updatePlatformInfo()
   }
 
   const { mutate: loginMutate, isPending: loginPending } = useMutation({
@@ -265,6 +273,30 @@ function AuthView() {
     })
   }
 
+  const updateActionPermission = async () => {
+    try {
+      const res = await getActionPermission()
+      useUserStore.getState().setActionButtonList(res.items ?? [])
+    } catch (error) {
+      console.error(error)
+      Notification.error({
+        content: '获取按钮权限时发生错误'
+      })
+    }
+  }
+
+  const updatePlatformInfo = async () => {
+    try {
+      const res = await getPlatformInfo({ type: 'platform' })
+      useUserStore.getState().setPlatformInfo(res)
+    } catch (error) {
+      console.error(error)
+      Notification.error({
+        content: '获取平台信息时发生错误'
+      })
+    }
+  }
+
   if (pageState === 'sso-placeholder') {
     return (
       <div className='flex flex-col justify-center items-center h-screen'>
@@ -289,58 +321,61 @@ function AuthView() {
   }
 
   return (
-    <div className='flex justify-center items-center h-screen bg-[url("https://qiniu.zdjt.com/shop/K168hi5uPMV8a5f689pwVh1D8mx06pycT0.jpeg")] bg-cover bg-no-repeat'>
-      <div className='flex flex-col w-[480px] bg-white/60 p-12 rounded-sm'>
-        <img
-          src='https://qiniu.zdjt.com/shop/D1w6t8Q68a5w6g19tV6z2Ns193Ra5ugo30.png'
-          alt='Logo'
-        />
-        <span className='text-center mt-8 text-base'>
-          振东集团 -为中国人设计，让中国人健康！
-        </span>
-        <div className='mt-8'>
-          <Form form={form} layout='vertical' onSubmit={handleSubmit}>
-            {pageState === null && (
-              <>
-                <Form.Item
-                  field='username'
-                  rules={[{ required: true, message: '请输入账号' }]}
-                >
-                  <Input placeholder='请输入账号' />
-                </Form.Item>
-                <Form.Item
-                  field='password'
-                  rules={[{ required: true, message: '请输入密码' }]}
-                >
-                  <Input
-                    ref={passwordInputRef}
-                    type='password'
-                    placeholder='请输入密码'
-                  />
-                </Form.Item>
-              </>
-            )}
-            {departmentInfo?.departments &&
-              departmentInfo.departments.length > 0 && (
-                <Form.Item field='department_id'>
-                  <Select
-                    options={departmentsOptions}
-                    placeholder='请选择事业部'
-                    allowClear
-                  />
-                </Form.Item>
+    <>
+      <HeadContent />
+      <div className='flex justify-center items-center h-screen bg-[url("https://qiniu.zdjt.com/shop/K168hi5uPMV8a5f689pwVh1D8mx06pycT0.jpeg")] bg-cover bg-no-repeat'>
+        <div className='flex flex-col w-[480px] bg-white/60 p-12 rounded-sm'>
+          <img
+            src='https://qiniu.zdjt.com/shop/D1w6t8Q68a5w6g19tV6z2Ns193Ra5ugo30.png'
+            alt='Logo'
+          />
+          <span className='text-center mt-8 text-base'>
+            振东集团 -为中国人设计，让中国人健康！
+          </span>
+          <div className='mt-8'>
+            <Form form={form} layout='vertical' onSubmit={handleSubmit}>
+              {pageState === null && (
+                <>
+                  <Form.Item
+                    field='username'
+                    rules={[{ required: true, message: '请输入账号' }]}
+                  >
+                    <Input placeholder='请输入账号' />
+                  </Form.Item>
+                  <Form.Item
+                    field='password'
+                    rules={[{ required: true, message: '请输入密码' }]}
+                  >
+                    <Input
+                      ref={passwordInputRef}
+                      type='password'
+                      placeholder='请输入密码'
+                    />
+                  </Form.Item>
+                </>
               )}
-            <Button
-              type='primary'
-              htmlType='submit'
-              loading={loginPending || ssoChooseDepartmentPending}
-              style={{ marginTop: 8 }}
-            >
-              登录
-            </Button>
-          </Form>
+              {departmentInfo?.departments &&
+                departmentInfo.departments.length > 0 && (
+                  <Form.Item field='department_id'>
+                    <Select
+                      options={departmentsOptions}
+                      placeholder='请选择事业部'
+                      allowClear
+                    />
+                  </Form.Item>
+                )}
+              <Button
+                type='primary'
+                htmlType='submit'
+                loading={loginPending || ssoChooseDepartmentPending}
+                style={{ marginTop: 8 }}
+              >
+                登录
+              </Button>
+            </Form>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }

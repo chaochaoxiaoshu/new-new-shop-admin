@@ -1,9 +1,9 @@
-import { api } from '@/lib'
+import { api, cleanObject } from '@/lib'
 
 import { PaginatedResponse } from '../types'
 
 export type GetGoodsCategoriesTreeReq = {
-  department: number
+  department?: number
 }
 
 export type GetGoodsCategoriesTreeRes = Partial<{
@@ -17,7 +17,7 @@ export const getGoodsCategoriesTree = (req: GetGoodsCategoriesTreeReq) =>
   api
     .get<PaginatedResponse<GetGoodsCategoriesTreeRes>>(
       'jshop-goods/api/v1/department-type-tree-list',
-      { searchParams: req }
+      { searchParams: cleanObject(req) }
     )
     .json()
     .then((res) => res.result)

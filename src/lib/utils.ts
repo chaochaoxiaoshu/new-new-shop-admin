@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from 'clsx'
+import dayjs from 'dayjs'
 import { twMerge } from 'tailwind-merge'
 
 import type { ColumnProps } from '@arco-design/web-react/es/Table'
@@ -45,6 +46,12 @@ export function numberToChinese(num: number) {
   }
 }
 
+export function cleanObject<T extends Record<string, unknown>>(obj: T) {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([, v]) => v !== null && v !== undefined)
+  ) as Partial<T>
+}
+
 export function toSearchParams(obj: Record<string, unknown>): URLSearchParams {
   const params = new URLSearchParams()
   for (const key in obj) {
@@ -65,4 +72,59 @@ export function defineTableColumns<T>(columns: ColumnProps<T>[]) {
   )
 
   return { columns, totalWidth }
+}
+
+export function formatDateTime(timestamp: number | null | undefined) {
+  if (!timestamp) return ''
+  return dayjs.unix(timestamp).format('YYYY-MM-DD HH:mm:ss')
+}
+
+export async function urlToFile(url: string, filename: string): Promise<File> {
+  const mimeType = getMimeTypeFromUrl(url)
+  const response = await fetch(url)
+  const blob = await response.blob()
+  return new File([blob], filename, { type: mimeType })
+}
+
+export function getMimeTypeFromUrl(url: string): string {
+  const extension = url
+    .split('?')[0] // 去掉查询参数
+    .split('#')[0] // 去掉 hash
+    .trim()
+    .toLowerCase()
+    .split('.')
+    .pop()
+
+  const mimeTypes: Record<string, string> = {
+    jpg: 'image/jpeg',
+    jpeg: 'image/jpeg',
+    png: 'image/png',
+    gif: 'image/gif',
+    webp: 'image/webp',
+    svg: 'image/svg+xml',
+    bmp: 'image/bmp',
+    ico: 'image/x-icon',
+
+    mp4: 'video/mp4',
+    webm: 'video/webm',
+    ogg: 'video/ogg',
+    mov: 'video/quicktime',
+
+    mp3: 'audio/mpeg',
+    wav: 'audio/wav',
+    m4a: 'audio/mp4',
+    flac: 'audio/flac',
+
+    pdf: 'application/pdf',
+    txt: 'text/plain',
+    html: 'text/html',
+    json: 'application/json',
+    zip: 'application/zip'
+  }
+
+  return (extension && mimeTypes[extension]) || 'application/octet-stream'
+}
+
+export function generateId() {
+  return Math.random().toString(36).slice(2, 10)
 }

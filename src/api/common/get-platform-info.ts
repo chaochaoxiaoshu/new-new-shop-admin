@@ -24,8 +24,11 @@ export type GetPlatformInfoRes = Partial<{
 
 export const getPlatformInfo = (req: GetPlatformInfoReq) =>
   api
-    .get<ApiResponse<GetPlatformInfoRes>>('platform-info', {
-      searchParams: req
-    })
+    .get<ApiResponse<GetPlatformInfoRes>>(
+      'jshop-website/api/v1/settings/manage',
+      {
+        searchParams: req
+      }
+    )
     .json()
     .then((res) => res.result)

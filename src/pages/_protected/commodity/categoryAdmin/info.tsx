@@ -19,7 +19,7 @@ import {
 } from '@/api'
 import { MyTable } from '@/components/my-table'
 import { TableLayout } from '@/components/table-layout'
-import { getNotifs } from '@/helpers'
+import { getHead, getNotifs } from '@/helpers'
 import { useMyModal } from '@/hooks'
 import { TableCellWidth, defineTableColumns, queryClient } from '@/lib'
 import { useUserStore } from '@/stores'
@@ -51,6 +51,7 @@ function getAdminSecondaryCategoriesQueryOptions(
 export const Route = createFileRoute(
   '/_protected/commodity/categoryAdmin/info'
 )({
+  head: () => getHead('总部分类/二级'),
   validateSearch: AdminSecondaryCategoriesSearchSchema,
   component: AdminSecondaryCategoryView,
   loaderDeps: ({ search }) => ({ id: search.id }),

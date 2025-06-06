@@ -43,6 +43,7 @@ import todo0 from '@/assets/home/todo_0.png'
 import todo1 from '@/assets/home/todo_1.png'
 import todo2 from '@/assets/home/todo_2.png'
 import todo3 from '@/assets/home/todo_3.png'
+import { getHead } from '@/helpers'
 import { completeDateFormat } from '@/lib'
 import { queryClient } from '@/lib'
 import { useUserStore } from '@/stores'
@@ -96,6 +97,7 @@ function getDataQueryOptions(
 }
 
 export const Route = createFileRoute('/_protected/')({
+  head: () => getHead('首页'),
   loader: () => {
     void queryClient.prefetchQuery(toboBoardQueryOptions)
     void queryClient.prefetchQuery(ordersStatisticQueryOptions)

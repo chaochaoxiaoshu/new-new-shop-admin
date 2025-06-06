@@ -30,7 +30,7 @@ import {
 } from '@/api'
 import { MyTable } from '@/components/my-table'
 import { TableLayout } from '@/components/table-layout'
-import { getNotifs } from '@/helpers'
+import { getHead, getNotifs } from '@/helpers'
 import { TableCellWidth, defineTableColumns, queryClient } from '@/lib'
 import { useUserStore } from '@/stores'
 
@@ -87,6 +87,7 @@ function getGoodsQueryOptions(search: typeof GoodsSearchSchema.infer) {
 }
 
 export const Route = createFileRoute('/_protected/commodity/merchandiseCon/')({
+  head: () => getHead('商品管理'),
   validateSearch: GoodsSearchSchema,
   component: GoodsView,
   loader: () => {

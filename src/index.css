@@ -56,14 +56,14 @@
 }
 
 /* 修复菜单栏 Item 布局（图标被 tailwind 重置为 display block，导致无法水平对齐布局） */
-.arco-menu-item {
+/* .arco-menu-item {
   display: flex !important;
   align-items: center !important;
 }
 .arco-menu-inline-header > :first-child {
   display: flex !important;
   align-items: center !important;
-}
+} */
 
 /* 覆盖菜单栏选中时的背景颜色 */
 .arco-menu-selected {

@@ -9,6 +9,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { GetGoodsRes, getGoods } from '@/api'
 import { MyTable } from '@/components/my-table'
 import { TableLayout } from '@/components/table-layout'
+import { getHead } from '@/helpers'
 import { TableCellWidth, defineTableColumns, queryClient } from '@/lib'
 import { useUserStore } from '@/stores'
 
@@ -39,6 +40,7 @@ function getAdminCategoriesGoodsQueryOptions(
 export const Route = createFileRoute(
   '/_protected/commodity/categoryAdmin/goods'
 )({
+  head: () => getHead('总部分类/商品'),
   validateSearch: AdminCategoriesGoodsSearchSchema,
   component: AdminCategoriesGoodsView,
   loaderDeps: ({ search }) => ({

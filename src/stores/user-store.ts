@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 
-import type { ActionPermissionItem } from '@/api'
+import type { ActionPermissionItem, GetPlatformInfoRes } from '@/api'
 
 type UserStoreState = {
   token: string | null
@@ -14,6 +14,7 @@ type UserStoreState = {
    * 当前是否已登录
    */
   isAuthenticated: () => boolean
+  platformInfo: GetPlatformInfoRes | null
 }
 
 type UserStoreActions = {
@@ -34,6 +35,7 @@ type UserStoreActions = {
    * 根据给定的 path 判断当前用户是否拥有某个 ActionButton 的权限
    */
   checkActionPermisstion: (path: string) => boolean
+  setPlatformInfo: (val: UserStoreState['platformInfo']) => void
 }
 
 export const useUserStore = create<UserStoreState & UserStoreActions>()(
@@ -49,6 +51,7 @@ export const useUserStore = create<UserStoreState & UserStoreActions>()(
         if (dayjs().unix() > get().expiredAt!) return false
         return true
       },
+      platformInfo: null,
       login: ({ token, expiredAt, departmentId, username }) =>
         set({ token, expiredAt, departmentId, username }),
       logout: () =>
@@ -61,7 +64,8 @@ export const useUserStore = create<UserStoreState & UserStoreActions>()(
       setActionButtonList: (val) => set({ actionButtonList: val }),
       checkActionPermisstion: (path) =>
         get().actionButtonList?.some((item) => item.front_path === path) ??
-        false
+        false,
+      setPlatformInfo: (val) => set({ platformInfo: val })
     }),
     {
       name: 'shop-admin-user-store',

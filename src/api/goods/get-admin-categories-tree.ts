@@ -3,7 +3,7 @@ import { api } from '@/lib'
 import { ApiResponse } from '../types'
 
 export type GetAdminCategoriesTreeReq = {
-  department: number
+  department?: number
 }
 
 export type GetAdminCategoriesTreeRes = Partial<{

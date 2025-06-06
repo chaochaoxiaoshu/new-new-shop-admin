@@ -19,7 +19,7 @@ import {
 } from '@/api'
 import { MyTable } from '@/components/my-table'
 import { TableLayout } from '@/components/table-layout'
-import { getNotifs } from '@/helpers'
+import { getHead, getNotifs } from '@/helpers'
 import { useMyModal } from '@/hooks'
 import { TableCellWidth, defineTableColumns, queryClient } from '@/lib'
 import { useUserStore } from '@/stores'
@@ -50,6 +50,7 @@ function getGoodsSecondaryCategoriesQueryOptions(
 }
 
 export const Route = createFileRoute('/_protected/commodity/category/info')({
+  head: () => getHead('商品二级/分类'),
   validateSearch: GoodsSecondaryCategoriesSearchSchema,
   component: RouteComponent,
   loaderDeps: ({ search }) => ({ id: search.id }),

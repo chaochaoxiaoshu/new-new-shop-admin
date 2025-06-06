@@ -25,7 +25,11 @@ function renderMenu(
           key={item.path}
           title={
             <>
-              {item.meta?.icon && <item.meta.icon className='size-5 mr-4' />}
+              {item.meta?.icon && (
+                <div className='relative inline-block size-3 mr-5 ml-1'>
+                  <item.meta.icon className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-5' />
+                </div>
+              )}
               {item.name}
             </>
           }
@@ -39,7 +43,11 @@ function renderMenu(
           key={item.path}
           onMouseEnter={() => handlePreloadRoute(item.path)}
         >
-          {item.meta?.icon && <item.meta.icon className='size-5 mr-4' />}
+          {item.meta?.icon && (
+            <div className='relative inline-block size-3 mr-5 ml-1'>
+              <item.meta.icon className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-5' />
+            </div>
+          )}
           {item.name}
         </Menu.Item>
       )
@@ -68,6 +76,7 @@ export const Sidebar = React.memo(() => {
           overflowY: 'auto'
         }}
         levelIndent={36}
+        hasCollapseButton
         onClickSubMenu={handleClickSubMenu}
         onClickMenuItem={handleClickMenuItem}
       >
