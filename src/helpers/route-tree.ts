@@ -33,12 +33,14 @@ export const routeTree: RouteTreeNode = {
           path: '/commodity/categoryAdmin',
           children: [
             {
-              name: '总部分类/二级',
-              path: '/commodity/categoryAdmin/info'
-            },
-            {
-              name: '总部分类查看所选商品',
-              path: '/commodity/categoryAdmin/goods'
+              name: '二级分类',
+              path: '/commodity/categoryAdmin/info',
+              children: [
+                {
+                  name: '查看所选商品',
+                  path: '/commodity/categoryAdmin/goods'
+                }
+              ]
             }
           ]
         },
@@ -47,7 +49,7 @@ export const routeTree: RouteTreeNode = {
           path: '/commodity/category',
           children: [
             {
-              name: '商品分类/二级',
+              name: '二级分类',
               path: '/commodity/category/info'
             }
           ]

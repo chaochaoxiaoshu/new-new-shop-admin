@@ -1,6 +1,6 @@
 import { type } from 'arktype'
-import { Plus } from 'lucide-react'
-import { useCallback, useMemo } from 'react'
+import { Plus, RotateCcw, Search } from 'lucide-react'
+import { useCallback, useMemo, useState } from 'react'
 
 import {
   Button,
@@ -21,13 +21,15 @@ import {
 import { createFileRoute } from '@tanstack/react-router'
 
 import {
-  type GetAdminCategoriesRes,
-  deleteAdminCategory,
-  getAdminCategories,
-  getAdminCategoriesTree,
-  updateAdminCategory
+  GetAdminCategoriesRes,
+  GetGoodsCategoriesRes,
+  addGoodsCategory,
+  deleteGoodsCategory,
+  getDepartments,
+  getGoodsCategories,
+  getGoodsCategoriesTree,
+  updateGoodsCategory
 } from '@/api'
-import { addAdminCategory } from '@/api/goods/add-admin-category'
 import { MyTable } from '@/components/my-table'
 import { TableLayout } from '@/components/table-layout'
 import { getNotifs } from '@/helpers'
@@ -35,29 +37,40 @@ import { useMyModal } from '@/hooks'
 import { TableCellWidth, defineTableColumns, queryClient } from '@/lib'
 import { useUserStore } from '@/stores'
 
-const LIST_KEY = 'admin-categories'
+const LIST_KEY = 'goods-categories'
 
-const AdminCategoriesSearchSchema = type({
+const GoodsCategoriesSearchSchema = type({
+  'name?': 'string',
+  'department?': 'number',
   page_index: ['number', '=', 1],
   page_size: ['number', '=', 10]
 })
 
-const adminCategoriesTreeQueryOptions = queryOptions({
+const departmentsQueryOptions = queryOptions({
+  queryKey: ['departments'],
+  queryFn: () =>
+    getDepartments({
+      pageIndex: 1,
+      pageSize: 9999
+    })
+})
+
+const goodsCategoriesTreeQueryOptions = queryOptions({
   queryKey: ['admin-categories-tree'],
   queryFn: () =>
-    getAdminCategoriesTree({
+    getGoodsCategoriesTree({
       department: useUserStore.getState().departmentId!
     }),
   placeholderData: keepPreviousData
 })
 
-function getAdminCategoriesQueryOptions(
-  search: typeof AdminCategoriesSearchSchema.infer
+function getGoodsCategoriesQueryOptions(
+  search: typeof GoodsCategoriesSearchSchema.infer
 ) {
   return queryOptions({
     queryKey: [LIST_KEY, search],
     queryFn: () =>
-      getAdminCategories({
+      getGoodsCategories({
         ...search,
         department: useUserStore.getState().departmentId!
       }),
@@ -65,37 +78,63 @@ function getAdminCategoriesQueryOptions(
   })
 }
 
-export const Route = createFileRoute('/_protected/commodity/categoryAdmin/')({
-  validateSearch: AdminCategoriesSearchSchema,
-  component: AdminCategoryView,
+export const Route = createFileRoute('/_protected/commodity/category/')({
+  validateSearch: GoodsCategoriesSearchSchema,
+  component: GoodsCategoryView,
   loader: () => {
-    queryClient.prefetchQuery(adminCategoriesTreeQueryOptions)
+    queryClient.prefetchQuery(departmentsQueryOptions)
+    queryClient.prefetchQuery(goodsCategoriesTreeQueryOptions)
     return queryClient.ensureQueryData(
-      getAdminCategoriesQueryOptions({
-        page_index: 1,
-        page_size: 10
-      })
+      getGoodsCategoriesQueryOptions({ page_index: 1, page_size: 10 })
     )
   }
 })
 
-function AdminCategoryView() {
+function GoodsCategoryView() {
   const search = Route.useSearch()
   const navigate = Route.useNavigate()
   const [openModal, contextHolder] = useMyModal()
+  const departmentId = useUserStore((store) => store.departmentId)
   const checkActionPermisstion = useUserStore(
     (store) => store.checkActionPermisstion
   )
 
-  const { data: adminCategoriesTree } = useQuery(
-    adminCategoriesTreeQueryOptions
+  /* ------------------------------ Search START ------------------------------ */
+  const [tempSearch, setTempSearch] = useState(search)
+
+  const handleUpdateSearchParam = <
+    K extends keyof typeof GoodsCategoriesSearchSchema.infer
+  >(
+    key: K,
+    value: (typeof GoodsCategoriesSearchSchema.infer)[K]
+  ) => {
+    setTempSearch((prev) => ({ ...prev, [key]: value }))
+  }
+
+  const handleSearch = () => {
+    navigate({ search: tempSearch })
+  }
+
+  const handleReset = () => {
+    const initial = {
+      page_index: search.page_index,
+      page_size: search.page_size
+    }
+    navigate({ search: initial })
+    setTempSearch(initial)
+  }
+  /* ------------------------------- Search END ------------------------------- */
+
+  const { data: departments } = useQuery(departmentsQueryOptions)
+  const { data: goodsCategoriesTree } = useQuery(
+    goodsCategoriesTreeQueryOptions
   )
 
-  const { data, isFetching } = useQuery(getAdminCategoriesQueryOptions(search))
+  const { data, isFetching } = useQuery(getGoodsCategoriesQueryOptions(search))
 
   const handleAdd = useCallback(() => {
     const modalIns = openModal({
-      title: '新增总部分类',
+      title: '新增商品分类',
       content: (
         <EditForm
           onSuccess={async () => {
@@ -112,9 +151,9 @@ function AdminCategoryView() {
   }, [openModal])
 
   const handleEdit = useCallback(
-    (item: GetAdminCategoriesRes) => {
+    (item: GetGoodsCategoriesRes) => {
       const modalIns = openModal({
-        title: '编辑总部分类',
+        title: '编辑商品分类',
         content: (
           <EditForm
             initialData={item}
@@ -134,32 +173,32 @@ function AdminCategoryView() {
   )
 
   const { mutate: handleToggleVisibility } = useMutation({
-    mutationKey: ['update-admin-category'],
-    mutationFn: (item: GetAdminCategoriesRes) =>
-      updateAdminCategory({
+    mutationKey: ['update-goods-category'],
+    mutationFn: (item: GetGoodsCategoriesRes) =>
+      updateGoodsCategory({
         ...item,
         status: item.status === 1 ? 2 : 1
       }),
     ...getNotifs({
-      key: 'update-admin-category',
+      key: 'update-goods-category',
       onSuccess: () => queryClient.invalidateQueries({ queryKey: [LIST_KEY] })
     })
   })
 
   const { mutate: handleDelete } = useMutation({
-    mutationKey: ['delete-admin-category'],
-    mutationFn: async (item: GetAdminCategoriesRes) => {
-      if (adminCategoriesTree?.items.some((i) => item.parent_id === i.id)) {
+    mutationKey: ['delete-goods-category'],
+    mutationFn: async (item: GetGoodsCategoriesRes) => {
+      if (goodsCategoriesTree?.items.some((i) => item.parent_id === i.id)) {
         Notification.error({
-          id: 'delete-admin-category',
-          content: '具有子分类的总部分类无法删除'
+          id: 'delete-goods-category',
+          content: '具有子分类的商品分类无法删除'
         })
         return
       }
-      await deleteAdminCategory({ id: item.id! })
+      await deleteGoodsCategory({ id: item.id! })
     },
     ...getNotifs({
-      key: 'delete-admin-category',
+      key: 'delete-goods-category',
       onSuccess: () => queryClient.invalidateQueries({ queryKey: [LIST_KEY] })
     })
   })
@@ -178,7 +217,7 @@ function AdminCategoryView() {
           title: '名称',
           render: (_, item) => (
             <Route.Link
-              to={'/commodity/categoryAdmin/info'}
+              to={'/commodity/category/info'}
               search={{ id: item.id! }}
             >
               <Button type='text'>{item.name}</Button>
@@ -207,12 +246,12 @@ function AdminCategoryView() {
           title: '操作',
           render: (_, item) => (
             <div className='flex justify-center items-center'>
-              {checkActionPermisstion('/commodity/categoryAdmin/edit') && (
+              {checkActionPermisstion('/commodity/category/edit') && (
                 <Button type='text' onClick={() => handleEdit(item)}>
                   编辑
                 </Button>
               )}
-              {checkActionPermisstion('/commodity/categoryAdmin/del') && (
+              {checkActionPermisstion('/commodity/category/del') && (
                 <Popconfirm
                   title='提示'
                   content='确定要删除吗？'
@@ -234,17 +273,50 @@ function AdminCategoryView() {
   return (
     <TableLayout
       header={
-        checkActionPermisstion('/commodity/categoryAdmin/add') && (
-          <TableLayout.Header>
-            <Button
-              type='primary'
-              icon={<Plus className='inline size-4' />}
-              onClick={handleAdd}
-            >
-              新增
-            </Button>
-          </TableLayout.Header>
-        )
+        <TableLayout.Header>
+          <Input
+            value={tempSearch.name}
+            placeholder='请输入分类名称'
+            style={{ width: '264px' }}
+            onChange={(value) => handleUpdateSearchParam('name', value)}
+          />
+          <Select
+            value={tempSearch.department}
+            placeholder='请选择电商事业部'
+            style={{ width: '264px' }}
+            onChange={(value) => handleUpdateSearchParam('department', value)}
+          >
+            {departments?.items.map((item) => (
+              <Select.Option key={item.id} value={item.id!}>
+                {item.department_name}
+              </Select.Option>
+            ))}
+          </Select>
+          <Button
+            type='primary'
+            icon={<Search className='inline size-4' />}
+            onClick={handleSearch}
+          >
+            查询
+          </Button>
+          <Button
+            type='outline'
+            icon={<RotateCcw className='inline size-4' />}
+            onClick={handleReset}
+          >
+            重置
+          </Button>
+          {departmentId !== 0 &&
+            checkActionPermisstion('/commodity/category/add') && (
+              <Button
+                type='primary'
+                icon={<Plus className='inline size-4' />}
+                onClick={handleAdd}
+              >
+                新增
+              </Button>
+            )}
+        </TableLayout.Header>
       }
     >
       <MyTable
@@ -290,17 +362,17 @@ export function EditForm(props: EditFormProps) {
 
   const [form] = Form.useForm<FormData>()
 
-  const { data: adminCategoriesTreeData } = useQuery(
-    adminCategoriesTreeQueryOptions
+  const { data: goodsCategoriesTreeData } = useQuery(
+    goodsCategoriesTreeQueryOptions
   )
   /**
    * 补充顶级分类和缩进
    */
-  const finalAdminCategoriesTree = useMemo(() => {
-    if (!adminCategoriesTreeData) return []
+  const finalGoodsCategoriesTree = useMemo(() => {
+    if (!goodsCategoriesTreeData) return []
     return [
       { id: 0, name: '顶级分类', parent_id: 0 },
-      ...adminCategoriesTreeData.items.map((item) => {
+      ...goodsCategoriesTreeData.items.map((item) => {
         if (item.parent_id === 0) {
           return { ...item, name: `|--${item.name}` }
         } else {
@@ -308,24 +380,23 @@ export function EditForm(props: EditFormProps) {
         }
       })
     ]
-  }, [adminCategoriesTreeData])
+  }, [goodsCategoriesTreeData])
 
   const notifs = getNotifs({
-    key: initialData ? 'update-admin-category' : 'add-admin-category',
+    key: initialData ? 'update-goods-category' : 'add-goods-category',
     onSuccess
   })
   const { mutate: handleSubmit, isPending } = useMutation({
-    mutationKey: [initialData ? 'update-admin-category' : 'add-admin-category'],
+    mutationKey: [initialData ? 'update-goods-category' : 'add-goods-category'],
     mutationFn: async (values: FormData) => {
       if (initialData) {
-        await updateAdminCategory({
+        await updateGoodsCategory({
           ...initialData,
           ...values
         })
       } else {
-        await addAdminCategory({
+        await addGoodsCategory({
           ...values,
-          status: 2,
           department: useUserStore.getState().departmentId!
         })
       }
@@ -351,7 +422,7 @@ export function EditForm(props: EditFormProps) {
         rules={[{ required: true, message: '请选择所属分类' }]}
       >
         <Select
-          options={finalAdminCategoriesTree.map((item) => ({
+          options={finalGoodsCategoriesTree.map((item) => ({
             value: item.id!,
             label: item.name!
           }))}

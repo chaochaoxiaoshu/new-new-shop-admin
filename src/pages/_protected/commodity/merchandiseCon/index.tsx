@@ -31,7 +31,7 @@ import {
 import { MyTable } from '@/components/my-table'
 import { TableLayout } from '@/components/table-layout'
 import { getNotifs } from '@/helpers'
-import { defineTableColumns, queryClient } from '@/lib'
+import { TableCellWidth, defineTableColumns, queryClient } from '@/lib'
 import { useUserStore } from '@/stores'
 
 const LIST_KEY = 'goods'
@@ -218,7 +218,7 @@ function GoodsView() {
           title: 'ID',
           dataIndex: 'goods_id',
           fixed: 'left',
-          width: 90,
+          width: TableCellWidth.id,
           align: 'center'
         },
         {
@@ -251,7 +251,7 @@ function GoodsView() {
               height={40}
             />
           ),
-          width: 90,
+          width: TableCellWidth.thumb,
           align: 'center'
         },
         {
@@ -268,37 +268,37 @@ function GoodsView() {
         {
           title: '库存',
           dataIndex: 'stock',
-          width: 100,
+          width: TableCellWidth.count,
           align: 'center'
         },
         {
           title: '排序',
           dataIndex: 'sort',
-          width: 100,
+          width: TableCellWidth.count,
           align: 'center'
         },
         {
           title: '购买次数',
           dataIndex: 'buy_count',
-          width: 100,
+          width: TableCellWidth.count,
           align: 'center'
         },
         {
           title: '销售价',
-          dataIndex: 'price',
-          width: 100,
+          render: (_, item) => `¥ ${item.price ?? '-'}`,
+          width: TableCellWidth.amountS,
           align: 'center'
         },
         {
           title: '成本价',
-          dataIndex: 'costprice',
-          width: 100,
+          render: (_, item) => `¥ ${item.costprice ?? '-'}`,
+          width: TableCellWidth.amountS,
           align: 'center'
         },
         {
           title: '市场价',
-          dataIndex: 'mktprice',
-          width: 100,
+          render: (_, item) => `¥ ${item.mktprice ?? '-'}`,
+          width: TableCellWidth.amountS,
           align: 'center'
         },
         {
@@ -323,8 +323,8 @@ function GoodsView() {
         },
         {
           title: '内购价',
-          dataIndex: 'internal_price',
-          width: 120,
+          render: (_, item) => `¥ ${item.internal_price ?? '-'}`,
+          width: TableCellWidth.amountS,
           align: 'center'
         },
         {

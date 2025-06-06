@@ -32,7 +32,7 @@ export function TableLayout(props: TableLayoutProps) {
 }
 
 interface TableLayoutHeaderProps {
-  children: React.ReactNode
+  children?: React.ReactNode
 }
 
 TableLayout.Header = function TableLayoutHeader(props: TableLayoutHeaderProps) {

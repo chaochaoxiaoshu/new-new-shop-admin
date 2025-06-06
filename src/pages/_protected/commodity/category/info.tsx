@@ -1,8 +1,8 @@
 import { type } from 'arktype'
-import { Plus } from 'lucide-react'
-import { useCallback, useMemo } from 'react'
+import { Plus, RotateCcw, Search } from 'lucide-react'
+import { useCallback, useMemo, useState } from 'react'
 
-import { Button, Popconfirm, Switch } from '@arco-design/web-react'
+import { Button, Input, Popconfirm, Switch } from '@arco-design/web-react'
 import {
   keepPreviousData,
   queryOptions,
@@ -12,10 +12,10 @@ import {
 import { createFileRoute } from '@tanstack/react-router'
 
 import {
-  type GetAdminSecondaryCategoriesRes,
-  deleteAdminCategory,
-  getAdminSecondaryCategories,
-  updateAdminCategory
+  GetGoodsSecondaryCategoriesRes,
+  deleteGoodsCategory,
+  getGoodsSecondaryCategories,
+  updateGoodsCategory
 } from '@/api'
 import { MyTable } from '@/components/my-table'
 import { TableLayout } from '@/components/table-layout'
@@ -26,21 +26,22 @@ import { useUserStore } from '@/stores'
 
 import { EditForm } from '.'
 
-const LIST_KEY = 'admin-secondary-categories'
+const LIST_KEY = 'goods-secondary-categories'
 
-const AdminSecondaryCategoriesSearchSchema = type({
+const GoodsSecondaryCategoriesSearchSchema = type({
   id: 'number',
+  'name?': 'string',
   page_index: ['number', '=', 1],
   page_size: ['number', '=', 10]
 })
 
-function getAdminSecondaryCategoriesQueryOptions(
-  search: typeof AdminSecondaryCategoriesSearchSchema.infer
+function getGoodsSecondaryCategoriesQueryOptions(
+  search: typeof GoodsSecondaryCategoriesSearchSchema.infer
 ) {
   return queryOptions({
     queryKey: [LIST_KEY, search],
     queryFn: () =>
-      getAdminSecondaryCategories({
+      getGoodsSecondaryCategories({
         ...search,
         department: useUserStore.getState().departmentId!
       }),
@@ -48,15 +49,13 @@ function getAdminSecondaryCategoriesQueryOptions(
   })
 }
 
-export const Route = createFileRoute(
-  '/_protected/commodity/categoryAdmin/info'
-)({
-  validateSearch: AdminSecondaryCategoriesSearchSchema,
-  component: AdminSecondaryCategoryView,
+export const Route = createFileRoute('/_protected/commodity/category/info')({
+  validateSearch: GoodsSecondaryCategoriesSearchSchema,
+  component: RouteComponent,
   loaderDeps: ({ search }) => ({ id: search.id }),
   loader: ({ deps }) =>
     queryClient.ensureQueryData(
-      getAdminSecondaryCategoriesQueryOptions({
+      getGoodsSecondaryCategoriesQueryOptions({
         id: deps.id,
         page_index: 1,
         page_size: 10
@@ -64,21 +63,49 @@ export const Route = createFileRoute(
     )
 })
 
-function AdminSecondaryCategoryView() {
+function RouteComponent() {
   const search = Route.useSearch()
   const navigate = Route.useNavigate()
   const [openModal, contextHolder] = useMyModal()
+  const departmentId = useUserStore((store) => store.departmentId)
   const checkActionPermisstion = useUserStore(
     (store) => store.checkActionPermisstion
   )
 
+  /* ------------------------------ Search START ------------------------------ */
+  const [tempSearch, setTempSearch] = useState(search)
+
+  const handleUpdateSearchParam = <
+    K extends keyof typeof GoodsSecondaryCategoriesSearchSchema.infer
+  >(
+    key: K,
+    value: (typeof GoodsSecondaryCategoriesSearchSchema.infer)[K]
+  ) => {
+    setTempSearch((prev) => ({ ...prev, [key]: value }))
+  }
+
+  const handleSearch = () => {
+    navigate({ search: tempSearch })
+  }
+
+  const handleReset = () => {
+    const initial = {
+      id: search.id,
+      page_index: search.page_index,
+      page_size: search.page_size
+    }
+    navigate({ search: initial })
+    setTempSearch(initial)
+  }
+  /* ------------------------------- Search END ------------------------------- */
+
   const { data, isFetching } = useQuery(
-    getAdminSecondaryCategoriesQueryOptions(search)
+    getGoodsSecondaryCategoriesQueryOptions(search)
   )
 
   const handleAdd = useCallback(() => {
     const modalIns = openModal({
-      title: '新增总部二级分类',
+      title: '新增商品二级分类',
       content: (
         <EditForm
           onSuccess={async () => {
@@ -93,9 +120,9 @@ function AdminSecondaryCategoryView() {
   }, [openModal])
 
   const handleEdit = useCallback(
-    (item: GetAdminSecondaryCategoriesRes) => {
+    (item: GetGoodsSecondaryCategoriesRes) => {
       const modalIns = openModal({
-        title: '编辑总部二级分类',
+        title: '编辑商品二级分类',
         content: (
           <EditForm
             initialData={item}
@@ -113,32 +140,32 @@ function AdminSecondaryCategoryView() {
   )
 
   const { mutate: handleToggleVisibility } = useMutation({
-    mutationKey: ['update-admin-secondary-category'],
-    mutationFn: (item: GetAdminSecondaryCategoriesRes) =>
-      updateAdminCategory({
+    mutationKey: ['update-goods-secondary-category'],
+    mutationFn: (item: GetGoodsSecondaryCategoriesRes) =>
+      updateGoodsCategory({
         ...item,
         status: item.status === 1 ? 2 : 1
       }),
     ...getNotifs({
-      key: 'update-admin-secondary-category',
+      key: 'update-goods-secondary-category',
       onSuccess: () => queryClient.invalidateQueries({ queryKey: [LIST_KEY] })
     })
   })
 
   const { mutate: handleDelete } = useMutation({
-    mutationKey: ['delete-admin-secondary-category'],
-    mutationFn: async (item: GetAdminSecondaryCategoriesRes) => {
-      await deleteAdminCategory({ id: item.id! })
+    mutationKey: ['delete-goods-secondary-category'],
+    mutationFn: async (item: GetGoodsSecondaryCategoriesRes) => {
+      await deleteGoodsCategory({ id: item.id! })
     },
     ...getNotifs({
-      key: 'delete-admin-secondary-category',
+      key: 'delete-goods-secondary-category',
       onSuccess: () => queryClient.invalidateQueries({ queryKey: [LIST_KEY] })
     })
   })
 
   const { columns } = useMemo(
     () =>
-      defineTableColumns<GetAdminSecondaryCategoriesRes>([
+      defineTableColumns<GetGoodsSecondaryCategoriesRes>([
         {
           title: 'ID',
           dataIndex: 'id',
@@ -173,22 +200,12 @@ function AdminSecondaryCategoryView() {
           title: '操作',
           render: (_, item) => (
             <div className='flex justify-center items-center'>
-              <Route.Link
-                to='/commodity/categoryAdmin/goods'
-                search={{ goods_cat_id: item.id! }}
-              >
-                <Button type='text'>查看选择商品</Button>
-              </Route.Link>
-              {checkActionPermisstion(
-                '/commodity/categoryAdmin/edit/second'
-              ) && (
+              {checkActionPermisstion('/commodity/category/edit/second') && (
                 <Button type='text' onClick={() => handleEdit(item)}>
                   编辑
                 </Button>
               )}
-              {checkActionPermisstion(
-                '/commodity/categoryAdmin/del/second'
-              ) && (
+              {checkActionPermisstion('/commodity/category/del/second') && (
                 <Popconfirm
                   title='提示'
                   content='确定要删除吗？'
@@ -201,7 +218,7 @@ function AdminSecondaryCategoryView() {
           ),
           fixed: 'right',
           align: 'center',
-          width: 280
+          width: 160
         }
       ]),
     [checkActionPermisstion, handleDelete, handleEdit, handleToggleVisibility]
@@ -210,17 +227,38 @@ function AdminSecondaryCategoryView() {
   return (
     <TableLayout
       header={
-        checkActionPermisstion('/commodity/categoryAdmin/add/second') && (
-          <TableLayout.Header>
-            <Button
-              type='primary'
-              icon={<Plus className='inline size-4' />}
-              onClick={handleAdd}
-            >
-              新增
-            </Button>
-          </TableLayout.Header>
-        )
+        <TableLayout.Header>
+          <Input
+            value={tempSearch.name}
+            placeholder='请输入分类名称'
+            style={{ width: '264px' }}
+            onChange={(value) => handleUpdateSearchParam('name', value)}
+          />
+          <Button
+            type='primary'
+            icon={<Search className='inline size-4' />}
+            onClick={handleSearch}
+          >
+            查询
+          </Button>
+          <Button
+            type='outline'
+            icon={<RotateCcw className='inline size-4' />}
+            onClick={handleReset}
+          >
+            重置
+          </Button>
+          {departmentId !== 0 &&
+            checkActionPermisstion('/commodity/category/add/second') && (
+              <Button
+                type='primary'
+                icon={<Plus className='inline size-4' />}
+                onClick={handleAdd}
+              >
+                新增
+              </Button>
+            )}
+        </TableLayout.Header>
       }
     >
       <MyTable
