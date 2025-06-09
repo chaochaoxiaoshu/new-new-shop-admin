@@ -95,7 +95,6 @@ function AdminCategoriesGoodsView() {
           <Image
             key={item.goods_id}
             src={item.image_url}
-            alt={item.name}
             width={40}
             height={40}
           />

@@ -77,7 +77,8 @@
 
 /* 覆盖位于 table-layout-header 下的 arco-input 和 arco-select 等组件的样式 */
 .table-layout-header .arco-input,
-.table-layout-header .arco-select .arco-select-view {
+.table-layout-header .arco-select .arco-select-view,
+.table-layout-header .arco-picker {
   @apply bg-white border-gray-200 rounded-[4px];
 }
 
