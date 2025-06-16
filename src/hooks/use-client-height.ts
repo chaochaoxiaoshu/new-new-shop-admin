@@ -33,7 +33,7 @@ export function useClientHeight<T extends HTMLElement>(
       resizeObserver.disconnect()
       mutationObserver.disconnect()
     }
-  }, [ref, updateHeight])
+  }, [ref])
 
   return { height }
 }

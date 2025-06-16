@@ -11,7 +11,8 @@ const router = createRouter({
   routeTree,
   basepath: '/newmanage',
   defaultPreload: 'intent',
-  defaultStaleTime: 30_000
+  defaultPreloadStaleTime: 0,
+  defaultStaleTime: Infinity
 })
 
 declare module '@tanstack/react-router' {

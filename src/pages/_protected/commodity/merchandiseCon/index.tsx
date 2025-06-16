@@ -1,11 +1,10 @@
 import { type } from 'arktype'
 import { ChevronDown, Ellipsis, Plus, RotateCcw, Search } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 
 import {
   Button,
   Dropdown,
-  Image,
   Input,
   Menu,
   Select,
@@ -28,6 +27,7 @@ import {
   getGoodsStatus,
   updateGoodsMarketable
 } from '@/api'
+import { MyImage } from '@/components/my-image'
 import { MyTable } from '@/components/my-table'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
@@ -106,6 +106,7 @@ export const Route = createFileRoute('/_protected/commodity/merchandiseCon/')({
 function GoodsView() {
   const search = Route.useSearch()
   const navigate = Route.useNavigate()
+  const Link = Route.Link
 
   const departmentId = useUserStore((store) => store.departmentId)
   const checkActionPermission = useUserStore(
@@ -184,15 +185,24 @@ function GoodsView() {
   })
 
   const handleAdd = () => {
-    // [TODO]: 新增商品
+    navigate({
+      to: '/commodity/merchandiseCon/detail',
+      search: { type: 'add' }
+    })
   }
 
   const handleEdit = (goodsId: number) => {
-    // [TODO]: 编辑商品
+    navigate({
+      to: '/commodity/merchandiseCon/detail',
+      search: { type: 'edit', goods_id: goodsId }
+    })
   }
 
   const handleCopy = (goodsId: number) => {
-    // [TODO]: 复制商品
+    navigate({
+      to: '/commodity/merchandiseCon/detail',
+      search: { type: 'copy', goods_id: goodsId }
+    })
   }
 
   const { mutateAsync: handleDeleteGoods } = useMutation({
@@ -212,199 +222,191 @@ function GoodsView() {
     // [TODO]: 查看评论
   }
 
-  const { columns, totalWidth } = useMemo(
-    () =>
-      defineTableColumns<GetGoodsRes>([
-        {
-          title: 'ID',
-          dataIndex: 'goods_id',
-          fixed: 'left',
-          width: TableCellWidth.id,
-          align: 'center'
-        },
-        {
-          title: '上下架',
-          render: (_, item) => (
-            <Switch
-              key={item.goods_id}
-              checked={item.marketable === 1}
-              checkedText='上架'
-              uncheckedText='下架'
-              onChange={(value) =>
-                handleUpdateGoodsMarketable({
-                  id: item.goods_id!,
-                  marketable: value ? 1 : 2
-                })
-              }
-            />
-          ),
-          width: 100,
-          align: 'center'
-        },
-        {
-          title: '缩略图',
-          render: (_, item) => (
-            <Image
-              key={item.goods_id}
-              src={item.image_url}
-              width={40}
-              height={40}
-            />
-          ),
-          width: TableCellWidth.thumb,
-          align: 'center'
-        },
-        {
-          title: '名称',
-          dataIndex: 'name',
-          ellipsis: true
-        },
-        {
-          title: '品牌',
-          dataIndex: 'brand_name',
-          width: 120,
-          align: 'center'
-        },
-        {
-          title: '库存',
-          dataIndex: 'stock',
-          width: TableCellWidth.count,
-          align: 'center'
-        },
-        {
-          title: '排序',
-          dataIndex: 'sort',
-          width: TableCellWidth.count,
-          align: 'center'
-        },
-        {
-          title: '购买次数',
-          dataIndex: 'buy_count',
-          width: TableCellWidth.count,
-          align: 'center'
-        },
-        {
-          title: '销售价',
-          render: (_, item) => `¥ ${item.price ?? '-'}`,
-          width: TableCellWidth.amountS,
-          align: 'center'
-        },
-        {
-          title: '成本价',
-          render: (_, item) => `¥ ${item.costprice ?? '-'}`,
-          width: TableCellWidth.amountS,
-          align: 'center'
-        },
-        {
-          title: '市场价',
-          render: (_, item) => `¥ ${item.mktprice ?? '-'}`,
-          width: TableCellWidth.amountS,
-          align: 'center'
-        },
-        {
-          title: '商品分类',
-          dataIndex: 'goods_departype_name',
-          width: 120,
-          align: 'center'
-        },
-        {
-          title: '类型',
-          dataIndex: 'goods_type_name',
-          width: 100,
-          align: 'center',
-          ellipsis: true,
-          tooltip: true
-        },
-        {
-          title: '是否支持内购',
-          render: (_, item) => (item.is_lnternal === 1 ? '是' : '否'),
-          width: 120,
-          align: 'center'
-        },
-        {
-          title: '内购价',
-          render: (_, item) => `¥ ${item.internal_price ?? '-'}`,
-          width: TableCellWidth.amountS,
-          align: 'center'
-        },
-        {
-          title: '是否支持会员价',
-          render: (_, item) => (item.is_member_price === 1 ? '是' : '否'),
-          width: 150,
-          align: 'center'
-        },
-        {
-          title: '是否同步万里牛',
-          render: (_, item) => (item.is_sync === 1 ? '是' : '否'),
-          width: 150,
-          align: 'center'
-        },
-        {
-          title: '操作',
-          render: (_, item) => (
-            <div className='flex justify-center items-center'>
-              {item.is_hidelinks === 1 && (
-                <Button type='text' onClick={() => handleShare(item.goods_id!)}>
-                  推广
-                </Button>
-              )}
-              <Dropdown
-                trigger='click'
-                droplist={
-                  <Menu>
-                    {checkActionPermission(
-                      '/commodity/merchandiseCon/edit'
-                    ) && (
-                      <Menu.Item
-                        key='edit'
-                        onClick={() => handleEdit(item.goods_id!)}
-                      >
-                        编辑
-                      </Menu.Item>
-                    )}
-                    {checkActionPermission(
-                      '/commodity/merchandiseCon/edit'
-                    ) && (
-                      <Menu.Item
-                        key='copy'
-                        onClick={() => handleCopy(item.goods_id!)}
-                      >
-                        复制
-                      </Menu.Item>
-                    )}
-                    {checkActionPermission('/commodity/merchandiseCon/del') && (
-                      <Menu.Item
-                        key='delete'
-                        onClick={() =>
-                          handleDeleteGoods({ id: item.goods_id! })
-                        }
-                      >
-                        删除
-                      </Menu.Item>
-                    )}
+  const { columns, totalWidth } = defineTableColumns<GetGoodsRes>([
+    {
+      title: 'ID',
+      dataIndex: 'goods_id',
+      fixed: 'left',
+      width: TableCellWidth.id,
+      align: 'center'
+    },
+    {
+      title: '上下架',
+      render: (_, item) => (
+        <Switch
+          key={item.goods_id}
+          checked={item.marketable === 1}
+          checkedText='上架'
+          uncheckedText='下架'
+          onChange={(value) =>
+            handleUpdateGoodsMarketable({
+              id: item.goods_id!,
+              marketable: value ? 1 : 2
+            })
+          }
+        />
+      ),
+      width: 100,
+      align: 'center'
+    },
+    {
+      title: '缩略图',
+      render: (_, item) => (
+        <MyImage
+          key={item.goods_id}
+          src={item.image_url}
+          width={40}
+          height={40}
+        />
+      ),
+      width: TableCellWidth.thumb,
+      align: 'center'
+    },
+    {
+      title: '名称',
+      dataIndex: 'name',
+      ellipsis: true
+    },
+    {
+      title: '品牌',
+      dataIndex: 'brand_name',
+      width: 120,
+      align: 'center'
+    },
+    {
+      title: '库存',
+      dataIndex: 'stock',
+      width: TableCellWidth.count,
+      align: 'center'
+    },
+    {
+      title: '排序',
+      dataIndex: 'sort',
+      width: TableCellWidth.count,
+      align: 'center'
+    },
+    {
+      title: '购买次数',
+      dataIndex: 'buy_count',
+      width: TableCellWidth.count,
+      align: 'center'
+    },
+    {
+      title: '销售价',
+      render: (_, item) => `¥ ${item.price ?? '-'}`,
+      width: TableCellWidth.amountS,
+      align: 'center'
+    },
+    {
+      title: '成本价',
+      render: (_, item) => `¥ ${item.costprice ?? '-'}`,
+      width: TableCellWidth.amountS,
+      align: 'center'
+    },
+    {
+      title: '市场价',
+      render: (_, item) => `¥ ${item.mktprice ?? '-'}`,
+      width: TableCellWidth.amountS,
+      align: 'center'
+    },
+    {
+      title: '商品分类',
+      dataIndex: 'goods_departype_name',
+      width: 120,
+      align: 'center'
+    },
+    {
+      title: '类型',
+      dataIndex: 'goods_type_name',
+      width: 100,
+      align: 'center',
+      ellipsis: true,
+      tooltip: true
+    },
+    {
+      title: '是否支持内购',
+      render: (_, item) => (item.is_lnternal === 1 ? '是' : '否'),
+      width: 120,
+      align: 'center'
+    },
+    {
+      title: '内购价',
+      render: (_, item) => `¥ ${item.internal_price ?? '-'}`,
+      width: TableCellWidth.amountS,
+      align: 'center'
+    },
+    {
+      title: '是否支持会员价',
+      render: (_, item) => (item.is_member_price === 1 ? '是' : '否'),
+      width: 150,
+      align: 'center'
+    },
+    {
+      title: '是否同步万里牛',
+      render: (_, item) => (item.is_sync === 1 ? '是' : '否'),
+      width: 150,
+      align: 'center'
+    },
+    {
+      title: '操作',
+      render: (_, item) => (
+        <div className='flex justify-center items-center'>
+          {item.is_hidelinks === 1 && (
+            <Button type='text' onClick={() => handleShare(item.goods_id!)}>
+              推广
+            </Button>
+          )}
+          <Dropdown
+            trigger='click'
+            droplist={
+              <Menu>
+                {checkActionPermission('/commodity/merchandiseCon/edit') && (
+                  <Link
+                    to='/commodity/merchandiseCon/detail'
+                    search={{ type: 'edit', goods_id: item.goods_id! }}
+                  >
+                    <Menu.Item key='edit'>编辑</Menu.Item>
+                  </Link>
+                )}
+                {checkActionPermission('/commodity/merchandiseCon/edit') && (
+                  <Link
+                    to='/commodity/merchandiseCon/detail'
+                    search={{ type: 'copy', goods_id: item.goods_id! }}
+                  >
                     <Menu.Item
-                      key='viewComments'
-                      onClick={() => handleViewComments(item.goods_id!)}
+                      key='copy'
+                      onClick={() => handleCopy(item.goods_id!)}
                     >
-                      查看评价
+                      复制
                     </Menu.Item>
-                  </Menu>
-                }
-              >
-                <Button
-                  type='text'
-                  icon={<Ellipsis className='inline size-4' />}
-                />
-              </Dropdown>
-            </div>
-          ),
-          fixed: 'right',
-          align: 'center',
-          width: 120
-        }
-      ]),
-    [checkActionPermission, handleDeleteGoods, handleUpdateGoodsMarketable]
-  )
+                  </Link>
+                )}
+                {checkActionPermission('/commodity/merchandiseCon/del') && (
+                  <Menu.Item
+                    key='delete'
+                    onClick={() => handleDeleteGoods({ id: item.goods_id! })}
+                  >
+                    删除
+                  </Menu.Item>
+                )}
+                <Menu.Item
+                  key='viewComments'
+                  onClick={() => handleViewComments(item.goods_id!)}
+                >
+                  查看评价
+                </Menu.Item>
+              </Menu>
+            }
+          >
+            <Button type='text' icon={<Ellipsis className='inline size-4' />} />
+          </Dropdown>
+        </div>
+      ),
+      fixed: 'right',
+      align: 'center',
+      width: 120
+    }
+  ])
 
   return (
     <TableLayout
@@ -618,13 +620,15 @@ function GoodsView() {
                   />
                 </Dropdown>
               </Button.Group>
-              <Button
-                type='primary'
-                onClick={handleAdd}
-                icon={<Plus className='inline size-4' />}
-              >
-                新增
-              </Button>
+              {departmentId !== 0 && (
+                <Button
+                  type='primary'
+                  onClick={handleAdd}
+                  icon={<Plus className='inline size-4' />}
+                >
+                  新增
+                </Button>
+              )}
             </div>
           </div>
         </div>

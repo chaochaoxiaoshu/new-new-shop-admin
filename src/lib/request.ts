@@ -30,7 +30,8 @@ export const api = unprotectedApi.extend(() => {
             throw new Error('Unauthorized')
           }
           const cloned = response.clone()
-          const data: { result: { errcode: number } } = await cloned.json()
+          const data: { result: { errcode: number; errmsg: string } } =
+            await cloned.json()
           if (data.result?.errcode === 401) {
             useUserStore.getState().logout()
             redirect({

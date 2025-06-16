@@ -1,6 +1,6 @@
 import { type } from 'arktype'
 import { Plus, RotateCcw, Search } from 'lucide-react'
-import { useCallback, useMemo, useState } from 'react'
+import { useState } from 'react'
 
 import { Button, Input, Popconfirm, Switch } from '@arco-design/web-react'
 import {
@@ -104,7 +104,7 @@ function RouteComponent() {
     getGoodsSecondaryCategoriesQueryOptions(search)
   )
 
-  const handleAdd = useCallback(() => {
+  const handleAdd = () => {
     const modalIns = openModal({
       title: '新增商品二级分类',
       content: (
@@ -118,27 +118,24 @@ function RouteComponent() {
       ),
       style: { width: 600 }
     })
-  }, [openModal])
+  }
 
-  const handleEdit = useCallback(
-    (item: GetGoodsSecondaryCategoriesRes) => {
-      const modalIns = openModal({
-        title: '编辑商品二级分类',
-        content: (
-          <EditForm
-            initialData={item}
-            onSuccess={async () => {
-              await queryClient.invalidateQueries({ queryKey: [LIST_KEY] })
-              modalIns?.close()
-            }}
-            onCancel={() => modalIns?.close()}
-          />
-        ),
-        style: { width: 600 }
-      })
-    },
-    [openModal]
-  )
+  const handleEdit = (item: GetGoodsSecondaryCategoriesRes) => {
+    const modalIns = openModal({
+      title: '编辑商品二级分类',
+      content: (
+        <EditForm
+          initialData={item}
+          onSuccess={async () => {
+            await queryClient.invalidateQueries({ queryKey: [LIST_KEY] })
+            modalIns?.close()
+          }}
+          onCancel={() => modalIns?.close()}
+        />
+      ),
+      style: { width: 600 }
+    })
+  }
 
   const { mutate: handleToggleVisibility } = useMutation({
     mutationKey: ['update-goods-secondary-category'],
@@ -164,66 +161,62 @@ function RouteComponent() {
     })
   })
 
-  const { columns } = useMemo(
-    () =>
-      defineTableColumns<GetGoodsSecondaryCategoriesRes>([
-        {
-          title: 'ID',
-          dataIndex: 'id',
-          fixed: 'left',
-          width: TableCellWidth.id,
-          align: 'center'
-        },
-        {
-          title: '名称',
-          dataIndex: 'name',
-          align: 'center',
-          ellipsis: true
-        },
-        {
-          title: '排序',
-          dataIndex: 'sort',
-          width: 90,
-          align: 'center'
-        },
-        {
-          title: '是否显示',
-          render: (_, item) => (
-            <Switch
-              checked={item.status === 1}
-              onChange={() => handleToggleVisibility(item)}
-            />
-          ),
-          width: 100,
-          align: 'center'
-        },
-        {
-          title: '操作',
-          render: (_, item) => (
-            <div className='flex justify-center items-center'>
-              {checkActionPermisstion('/commodity/category/edit/second') && (
-                <Button type='text' onClick={() => handleEdit(item)}>
-                  编辑
-                </Button>
-              )}
-              {checkActionPermisstion('/commodity/category/del/second') && (
-                <Popconfirm
-                  title='提示'
-                  content='确定要删除吗？'
-                  onOk={() => handleDelete(item)}
-                >
-                  <Button type='text'>删除</Button>
-                </Popconfirm>
-              )}
-            </div>
-          ),
-          fixed: 'right',
-          align: 'center',
-          width: 160
-        }
-      ]),
-    [checkActionPermisstion, handleDelete, handleEdit, handleToggleVisibility]
-  )
+  const { columns } = defineTableColumns<GetGoodsSecondaryCategoriesRes>([
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      fixed: 'left',
+      width: TableCellWidth.id,
+      align: 'center'
+    },
+    {
+      title: '名称',
+      dataIndex: 'name',
+      align: 'center',
+      ellipsis: true
+    },
+    {
+      title: '排序',
+      dataIndex: 'sort',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '是否显示',
+      render: (_, item) => (
+        <Switch
+          checked={item.status === 1}
+          onChange={() => handleToggleVisibility(item)}
+        />
+      ),
+      width: 100,
+      align: 'center'
+    },
+    {
+      title: '操作',
+      render: (_, item) => (
+        <div className='flex justify-center items-center'>
+          {checkActionPermisstion('/commodity/category/edit/second') && (
+            <Button type='text' onClick={() => handleEdit(item)}>
+              编辑
+            </Button>
+          )}
+          {checkActionPermisstion('/commodity/category/del/second') && (
+            <Popconfirm
+              title='提示'
+              content='确定要删除吗？'
+              onOk={() => handleDelete(item)}
+            >
+              <Button type='text'>删除</Button>
+            </Popconfirm>
+          )}
+        </div>
+      ),
+      fixed: 'right',
+      align: 'center',
+      width: 160
+    }
+  ])
 
   return (
     <TableLayout

@@ -128,7 +128,7 @@ function useMenuList() {
    */
   const menuList = useMemo(
     () => processMenuList(getMenuListWithIcons(menuData?.items || [])),
-    [menuData]
+    [menuData?.items]
   )
 
   /**

@@ -75,20 +75,61 @@
   width: 60px !important;
 }
 
-/* 覆盖位于 table-layout-header 下的 arco-input 和 arco-select 等组件的样式 */
-.table-layout-header .arco-input,
-.table-layout-header .arco-select .arco-select-view,
-.table-layout-header .arco-picker {
+/* 覆盖 arco-input 和 arco-select 等组件的样式 */
+.arco-input,
+.arco-textarea,
+.arco-input-inner-wrapper,
+.arco-select .arco-select-view,
+.arco-picker {
   @apply bg-white border-gray-200 rounded-[4px];
 }
 
-/* 覆盖位于 table-layout-header 下的 arco-input 和 arco-select 等组件 focus 时的样式 */
-.table-layout-header .arco-input:focus,
-.table-layout-header .arco-select .arco-select-view:focus {
+.arco-picker:hover {
+  @apply bg-transparent rounded-[4px];
+}
+
+.arco-input:hover,
+.arco-textarea:hover,
+.arco-input-inner-wrapper:hover,
+.arco-select .arco-select-view:hover {
+  @apply bg-transparent border-accent rounded-[4px];
+}
+
+.arco-input:focus,
+.arco-textarea:focus,
+.arco-input-inner-wrapper:focus,
+.arco-select .arco-select-view:focus,
+.arco-picker:focus {
   @apply border-[var(--accent)];
 }
 
 /* 修复 FormItemLabel 的布局 (tailwind preflight) */
 .arco-form-item-symbol {
   display: inline-block !important;
+}
+
+.arco-form-item-symbol {
+  position: absolute !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  left: 0px !important;
+}
+
+.arco-form-label-item-left {
+  padding-left: 16px !important;
+}
+
+/* 修复在 Table 中使用 FormItem 时的样式 */
+.arco-table-cell .arco-form-item {
+  position: relative;
+  margin-bottom: 0;
+}
+.arco-table-cell .arco-form-item > div:first-child {
+  width: 100%;
+  flex-basis: auto;
+}
+.arco-table-cell .arco-form-item .arco-form-message {
+  position: absolute;
+  top: 100%;
+  left: 0;
 }

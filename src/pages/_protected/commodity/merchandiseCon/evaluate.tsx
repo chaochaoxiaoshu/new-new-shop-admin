@@ -1,14 +1,13 @@
 import { type } from 'arktype'
 import dayjs from 'dayjs'
 import { RotateCcw, Search } from 'lucide-react'
-import { useCallback, useMemo, useState } from 'react'
+import { useState } from 'react'
 
 import {
   Button,
   DatePicker,
   Descriptions,
   Form,
-  Image,
   Input,
   Rate,
   Select,
@@ -31,6 +30,7 @@ import {
   replyComment,
   toggleCommentVisibility
 } from '@/api'
+import { MyImage } from '@/components/my-image'
 import { MyTable } from '@/components/my-table'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
@@ -146,118 +146,112 @@ function CommentsView() {
     })
   })
 
-  const handleReply = useCallback(
-    (id?: number) => {
-      if (!id) return
-      const modalIns = openModal({
-        title: '回复评价',
-        content: (
-          <ReplyForm
-            id={id}
-            onSuccess={async () => {
-              await queryClient.invalidateQueries({
-                queryKey: [LIST_KEY]
-              })
-              modalIns?.close()
-            }}
-            onCancel={() => modalIns?.close()}
-          />
-        ),
-        style: { width: 600 }
-      })
-    },
-    [openModal]
-  )
+  const handleReply = (id?: number) => {
+    if (!id) return
+    const modalIns = openModal({
+      title: '回复评价',
+      content: (
+        <ReplyForm
+          id={id}
+          onSuccess={async () => {
+            await queryClient.invalidateQueries({
+              queryKey: [LIST_KEY]
+            })
+            modalIns?.close()
+          }}
+          onCancel={() => modalIns?.close()}
+        />
+      ),
+      style: { width: 600 }
+    })
+  }
 
-  const { columns, totalWidth } = useMemo(() => {
-    return defineTableColumns<GetCommentsRes>([
-      {
-        title: 'ID',
-        dataIndex: 'id',
-        width: TableCellWidth.id,
-        fixed: 'left',
-        align: 'center'
-      },
-      {
-        title: '前台显示状态',
-        render: (_, item) => (
-          <Switch
-            key={item.goods_id}
-            checked={item.display === 1}
-            checkedText='显示'
-            uncheckedText='隐藏'
-            onChange={() => handleToggleVisibility(item.id)}
-          />
-        ),
-        width: 120,
-        align: 'center'
-      },
-      {
-        title: '用户',
-        dataIndex: 'user_tel',
-        width: 100,
-        ellipsis: true,
-        align: 'center'
-      },
-      {
-        title: '订单号',
-        dataIndex: 'order_id',
-        width: 220,
-        ellipsis: true,
-        align: 'center'
-      },
-      {
-        title: '评价商品',
-        dataIndex: 'name',
-        width: 320,
-        ellipsis: true
-      },
-      {
-        title: '评价星数',
-        dataIndex: 'score',
-        width: TableCellWidth.count,
-        align: 'center'
-      },
-      {
-        title: '评价内容',
-        dataIndex: 'content',
-        ellipsis: true
-      },
-      {
-        title: '评价图片',
-        render: (_, item) => (
-          <Image
-            key={item.goods_id}
-            src={item.images?.split(',')[0]}
-            width={40}
-            height={40}
-            style={{ objectFit: 'cover', overflow: 'hidden' }}
-          />
-        ),
-        width: TableCellWidth.thumb,
-        align: 'center'
-      },
-      {
-        title: '评价时间',
-        render: (_, item) => formatDateTime(item.ctime),
-        width: TableCellWidth.datetime,
-        align: 'center'
-      },
-      {
-        title: '操作',
-        render: (_, item) => (
-          <div className='flex justify-center items-center'>
-            <Button type='text' onClick={() => handleReply(item.id)}>
-              回复评价
-            </Button>
-          </div>
-        ),
-        width: 120,
-        fixed: 'right',
-        align: 'center'
-      }
-    ])
-  }, [handleReply, handleToggleVisibility])
+  const { columns, totalWidth } = defineTableColumns<GetCommentsRes>([
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      width: TableCellWidth.id,
+      fixed: 'left',
+      align: 'center'
+    },
+    {
+      title: '前台显示状态',
+      render: (_, item) => (
+        <Switch
+          key={item.goods_id}
+          checked={item.display === 1}
+          checkedText='显示'
+          uncheckedText='隐藏'
+          onChange={() => handleToggleVisibility(item.id)}
+        />
+      ),
+      width: 120,
+      align: 'center'
+    },
+    {
+      title: '用户',
+      dataIndex: 'user_tel',
+      width: 100,
+      ellipsis: true,
+      align: 'center'
+    },
+    {
+      title: '订单号',
+      dataIndex: 'order_id',
+      width: 220,
+      ellipsis: true,
+      align: 'center'
+    },
+    {
+      title: '评价商品',
+      dataIndex: 'name',
+      width: 320,
+      ellipsis: true
+    },
+    {
+      title: '评价星数',
+      dataIndex: 'score',
+      width: TableCellWidth.count,
+      align: 'center'
+    },
+    {
+      title: '评价内容',
+      dataIndex: 'content',
+      ellipsis: true
+    },
+    {
+      title: '评价图片',
+      render: (_, item) => (
+        <MyImage
+          key={item.goods_id}
+          src={item.images?.split(',')[0]}
+          width={40}
+          height={40}
+        />
+      ),
+      width: TableCellWidth.thumb,
+      align: 'center'
+    },
+    {
+      title: '评价时间',
+      render: (_, item) => formatDateTime(item.ctime),
+      width: TableCellWidth.datetime,
+      align: 'center'
+    },
+    {
+      title: '操作',
+      render: (_, item) => (
+        <div className='flex justify-center items-center'>
+          <Button type='text' onClick={() => handleReply(item.id)}>
+            回复评价
+          </Button>
+        </div>
+      ),
+      width: 120,
+      fixed: 'right',
+      align: 'center'
+    }
+  ])
 
   return (
     <TableLayout

@@ -1,11 +1,10 @@
 import { type } from 'arktype'
 import { Plus, RotateCcw, Search } from 'lucide-react'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import {
   Button,
   Form,
-  Image,
   Input,
   InputNumber,
   Popconfirm,
@@ -29,16 +28,17 @@ import {
   updateBrand
 } from '@/api'
 import { getBrandDetail } from '@/api/goods/get-brand-detail'
+import { MyImage } from '@/components/my-image'
 import { MyTable } from '@/components/my-table'
-import { MyUpload, MyUploadItem } from '@/components/my-upload'
+import { MyUpload, type MyUploadResource } from '@/components/my-upload'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
+import { createMyUploadResource } from '@/helpers/upload'
 import { useMyModal } from '@/hooks'
 import {
   TableCellWidth,
   defineTableColumns,
   formatDateTime,
-  generateId,
   queryClient
 } from '@/lib'
 import { useUserStore } from '@/stores'
@@ -128,7 +128,7 @@ function BrandView() {
 
   const { data, isFetching } = useQuery(getBrandsQueryOptions(search))
 
-  const handleAdd = useCallback(() => {
+  const handleAdd = () => {
     const modalIns = openModal({
       title: '新增商品品牌',
       content: (
@@ -144,29 +144,26 @@ function BrandView() {
       ),
       style: { width: 600 }
     })
-  }, [openModal])
+  }
 
-  const handleEdit = useCallback(
-    (item: GetBrandsRes) => {
-      const modalIns = openModal({
-        title: '编辑商品品牌',
-        content: (
-          <EditForm
-            id={item.brand_id}
-            onSuccess={async () => {
-              await queryClient.invalidateQueries({
-                queryKey: [LIST_KEY]
-              })
-              modalIns?.close()
-            }}
-            onCancel={() => modalIns?.close()}
-          />
-        ),
-        style: { width: 600 }
-      })
-    },
-    [openModal]
-  )
+  const handleEdit = (item: GetBrandsRes) => {
+    const modalIns = openModal({
+      title: '编辑商品品牌',
+      content: (
+        <EditForm
+          id={item.brand_id}
+          onSuccess={async () => {
+            await queryClient.invalidateQueries({
+              queryKey: [LIST_KEY]
+            })
+            modalIns?.close()
+          }}
+          onCancel={() => modalIns?.close()}
+        />
+      ),
+      style: { width: 600 }
+    })
+  }
 
   const { mutate: handleDelete } = useMutation({
     mutationKey: ['delete-brand'],
@@ -179,65 +176,58 @@ function BrandView() {
     })
   })
 
-  const { columns } = useMemo(() => {
-    return defineTableColumns<GetBrandsRes>([
-      {
-        title: 'ID',
-        dataIndex: 'brand_id',
-        fixed: 'left',
-        width: TableCellWidth.id,
-        align: 'center'
-      },
-      {
-        title: '品牌名',
-        dataIndex: 'name',
-        align: 'center',
-        ellipsis: true
-      },
-      {
-        title: 'Logo',
-        render: (_, item) => (
-          <Image
-            src={item.logo_url}
-            width={40}
-            height={40}
-            style={{ objectFit: 'cover', overflow: 'hidden' }}
-          />
-        ),
-        width: TableCellWidth.thumb,
-        align: 'center'
-      },
-      {
-        title: '更新时间',
-        render: (_, item) => formatDateTime(item.utime),
-        width: TableCellWidth.datetime,
-        align: 'center'
-      },
-      {
-        title: '操作',
-        render: (_, item) => (
-          <div className='flex justify-center items-center'>
-            {checkActionPermisstion('/commodity/brand/edit') && (
-              <Button type='text' onClick={() => handleEdit(item)}>
-                编辑
-              </Button>
-            )}
-            {checkActionPermisstion('/commodity/brand/del') && (
-              <Popconfirm
-                title='提示'
-                content='确定删除吗？'
-                onOk={() => handleDelete(item)}
-              >
-                <Button type='text'>删除</Button>
-              </Popconfirm>
-            )}
-          </div>
-        ),
-        width: 160,
-        align: 'center'
-      }
-    ])
-  }, [checkActionPermisstion, handleDelete, handleEdit])
+  const { columns } = defineTableColumns<GetBrandsRes>([
+    {
+      title: 'ID',
+      dataIndex: 'brand_id',
+      fixed: 'left',
+      width: TableCellWidth.id,
+      align: 'center'
+    },
+    {
+      title: '品牌名',
+      dataIndex: 'name',
+      align: 'center',
+      ellipsis: true
+    },
+    {
+      title: 'Logo',
+      render: (_, item) => (
+        <MyImage src={item.logo_url} width={40} height={40} />
+      ),
+      width: TableCellWidth.thumb,
+      align: 'center'
+    },
+    {
+      title: '更新时间',
+      render: (_, item) => formatDateTime(item.utime),
+      width: TableCellWidth.datetime,
+      align: 'center'
+    },
+    {
+      title: '操作',
+      render: (_, item) => (
+        <div className='flex justify-center items-center'>
+          {checkActionPermisstion('/commodity/brand/edit') && (
+            <Button type='text' onClick={() => handleEdit(item)}>
+              编辑
+            </Button>
+          )}
+          {checkActionPermisstion('/commodity/brand/del') && (
+            <Popconfirm
+              title='提示'
+              content='确定删除吗？'
+              onOk={() => handleDelete(item)}
+            >
+              <Button type='text'>删除</Button>
+            </Popconfirm>
+          )}
+        </div>
+      ),
+      width: 160,
+      align: 'center'
+    }
+  ])
 
   return (
     <TableLayout
@@ -305,7 +295,7 @@ function BrandView() {
 
 interface FormData {
   name?: string
-  logo?: MyUploadItem[]
+  logo?: MyUploadResource[]
   sort?: number
 }
 
@@ -330,16 +320,15 @@ function EditForm(props: EditFormProps) {
   useEffect(() => {
     if (initialData) {
       form.setFieldsValue({
-        name: initialData?.name,
+        name: initialData.name,
         logo: [
-          {
-            id: generateId(),
-            response_id: initialData?.logo,
-            url: initialData?.logo_url,
-            status: 'done'
-          }
+          createMyUploadResource({
+            id: initialData.logo,
+            type: 'image',
+            url: initialData.logo_url
+          })
         ],
-        sort: initialData?.sort
+        sort: initialData.sort
       })
     }
   }, [form, initialData])

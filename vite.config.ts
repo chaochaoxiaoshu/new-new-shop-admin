@@ -2,7 +2,7 @@ import path from 'path'
 import { defineConfig } from 'vite'
 
 import { TanStackRouterVite } from '@tanstack/router-plugin/vite'
-import react from '@vitejs/plugin-react-swc'
+import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -14,9 +14,14 @@ export default defineConfig({
     TanStackRouterVite({
       target: 'react',
       autoCodeSplitting: true,
-      routesDirectory: 'src/pages'
+      routesDirectory: 'src/pages',
+      routeFileIgnorePattern: '.*/_lib/.*|.*/_components/.*'
     }),
-    react()
+    react({
+      babel: {
+        plugins: [['babel-plugin-react-compiler', { target: '18' }]]
+      }
+    })
   ],
   resolve: {
     alias: {

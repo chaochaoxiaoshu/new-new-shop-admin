@@ -56,32 +56,6 @@ export function processMenuList(
   return processMenuItems(items)
 }
 
-// export function getMatchedItems(items: MenuItemData[], currentPath: string) {
-//   const findMenuPathByPath = (
-//     menuList: MenuItemData[],
-//     targetPath: string,
-//     parentPath: MenuItemData[] = []
-//   ): MenuItemData[] | null => {
-//     for (const item of menuList) {
-//       // 当前路径
-//       const currentPath = [...parentPath, item]
-//       // 找到匹配项
-//       if (item.path && targetPath.startsWith(item.path)) {
-//         return currentPath
-//       }
-//       // 递归查找子菜单
-//       if (item.children && item.children.length > 0) {
-//         const found = findMenuPathByPath(item.children, targetPath, currentPath)
-//         if (found) {
-//           return found
-//         }
-//       }
-//     }
-//     return null
-//   }
-//   return findMenuPathByPath(items, currentPath) ?? []
-// }
-
 export function getMatchedItems(items: MenuItemData[], currentPath: string) {
   // 保存所有匹配的路径及其菜单项
   const allMatches: { path: string; items: MenuItemData[] }[] = []

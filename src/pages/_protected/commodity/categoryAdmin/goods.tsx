@@ -1,12 +1,13 @@
 import { type } from 'arktype'
 import { RotateCcw, Search } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 
-import { Button, Image, Input } from '@arco-design/web-react'
+import { Button, Input } from '@arco-design/web-react'
 import { keepPreviousData, queryOptions, useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 
 import { GetGoodsRes, getGoods } from '@/api'
+import { MyImage } from '@/components/my-image'
 import { MyTable } from '@/components/my-table'
 import { TableLayout } from '@/components/table-layout'
 import { getHead } from '@/helpers'
@@ -80,53 +81,51 @@ function AdminCategoriesGoodsView() {
     getAdminCategoriesGoodsQueryOptions(search)
   )
 
-  const { columns } = useMemo(() => {
-    return defineTableColumns<GetGoodsRes>([
-      {
-        title: 'ID',
-        dataIndex: 'goods_id',
-        fixed: 'left',
-        width: TableCellWidth.id,
-        align: 'center'
-      },
-      {
-        title: '缩略图',
-        render: (_, item) => (
-          <Image
-            key={item.goods_id}
-            src={item.image_url}
-            width={40}
-            height={40}
-          />
-        ),
-        width: TableCellWidth.thumb,
-        align: 'center'
-      },
-      {
-        title: '名称',
-        dataIndex: 'name',
-        ellipsis: true
-      },
-      {
-        title: '销售价',
-        render: (_, item) => `¥ ${item.price ?? '-'}`,
-        width: TableCellWidth.amountS,
-        align: 'center'
-      },
-      {
-        title: '成本价',
-        render: (_, item) => `¥ ${item.costprice ?? '-'}`,
-        width: TableCellWidth.amountS,
-        align: 'center'
-      },
-      {
-        title: '市场价',
-        render: (_, item) => `¥ ${item.mktprice ?? '-'}`,
-        width: TableCellWidth.amountS,
-        align: 'center'
-      }
-    ])
-  }, [])
+  const { columns } = defineTableColumns<GetGoodsRes>([
+    {
+      title: 'ID',
+      dataIndex: 'goods_id',
+      fixed: 'left',
+      width: TableCellWidth.id,
+      align: 'center'
+    },
+    {
+      title: '缩略图',
+      render: (_, item) => (
+        <MyImage
+          key={item.goods_id}
+          src={item.image_url}
+          width={40}
+          height={40}
+        />
+      ),
+      width: TableCellWidth.thumb,
+      align: 'center'
+    },
+    {
+      title: '名称',
+      dataIndex: 'name',
+      ellipsis: true
+    },
+    {
+      title: '销售价',
+      render: (_, item) => `¥ ${item.price ?? '-'}`,
+      width: TableCellWidth.amountS,
+      align: 'center'
+    },
+    {
+      title: '成本价',
+      render: (_, item) => `¥ ${item.costprice ?? '-'}`,
+      width: TableCellWidth.amountS,
+      align: 'center'
+    },
+    {
+      title: '市场价',
+      render: (_, item) => `¥ ${item.mktprice ?? '-'}`,
+      width: TableCellWidth.amountS,
+      align: 'center'
+    }
+  ])
 
   return (
     <TableLayout

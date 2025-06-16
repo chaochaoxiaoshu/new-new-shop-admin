@@ -1,6 +1,6 @@
 import { type } from 'arktype'
 import dayjs from 'dayjs'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDebounce } from 'use-debounce'
 
 import {
@@ -86,14 +86,11 @@ function AuthView() {
     queryFn: () => getDepartmentsForAccount({ username, password }),
     enabled: !!debouncedUsername && !!debouncedPassword
   })
-  const departmentsOptions = useMemo(() => {
-    return (
-      departmentInfo?.departments?.map((d) => ({
-        label: d?.name ?? '',
-        value: d?.id ?? ''
-      })) ?? []
-    )
-  }, [departmentInfo])
+  const departmentsOptions =
+    departmentInfo?.departments?.map((d) => ({
+      label: d?.name ?? '',
+      value: d?.id ?? ''
+    })) ?? []
 
   /**
    * 单点登录状态

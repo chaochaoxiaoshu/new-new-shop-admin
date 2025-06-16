@@ -2,11 +2,12 @@ import { useRef } from 'react'
 
 import { useClientHeight } from '@/hooks'
 
+import { BaseLayout } from '../base-layout'
 import { TableSizeContext } from './context'
 
 interface TableLayoutProps {
   header?: React.ReactNode
-  children: React.ReactNode
+  children?: React.ReactNode
 }
 
 /**
@@ -20,13 +21,13 @@ export function TableLayout(props: TableLayoutProps) {
 
   return (
     <TableSizeContext.Provider value={{ height }}>
-      <div className='flex-auto flex flex-col px-4 py-6 min-w-[720px] h-full rounded-md bg-white'>
+      <BaseLayout>
         {header}
         {/* 使用一个绝对定位，防止 Table 撑起容器的高度，影响高度计算 */}
         <div className='relative flex-auto mt-6' ref={tableAreaRef}>
           <div className='absolute inset-0'>{children}</div>
         </div>
-      </div>
+      </BaseLayout>
     </TableSizeContext.Provider>
   )
 }

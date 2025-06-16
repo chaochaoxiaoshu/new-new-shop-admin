@@ -22,6 +22,7 @@ import { Route as ProtectedCommodityMerchandiseConEvaluateImport } from './pages
 import { Route as ProtectedCommodityCategoryAdminInfoImport } from './pages/_protected/commodity/categoryAdmin/info'
 import { Route as ProtectedCommodityCategoryAdminGoodsImport } from './pages/_protected/commodity/categoryAdmin/goods'
 import { Route as ProtectedCommodityCategoryInfoImport } from './pages/_protected/commodity/category/info'
+import { Route as ProtectedCommodityMerchandiseConDetailRouteImport } from './pages/_protected/commodity/merchandiseCon/detail/route'
 
 // Create/Update Routes
 
@@ -98,6 +99,13 @@ const ProtectedCommodityCategoryInfoRoute =
     getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
+const ProtectedCommodityMerchandiseConDetailRouteRoute =
+  ProtectedCommodityMerchandiseConDetailRouteImport.update({
+    id: '/commodity/merchandiseCon/detail',
+    path: '/commodity/merchandiseCon/detail',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -121,6 +129,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof ProtectedIndexImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/commodity/merchandiseCon/detail': {
+      id: '/_protected/commodity/merchandiseCon/detail'
+      path: '/commodity/merchandiseCon/detail'
+      fullPath: '/commodity/merchandiseCon/detail'
+      preLoaderRoute: typeof ProtectedCommodityMerchandiseConDetailRouteImport
       parentRoute: typeof ProtectedRouteImport
     }
     '/_protected/commodity/category/info': {
@@ -186,6 +201,7 @@ declare module '@tanstack/react-router' {
 
 interface ProtectedRouteRouteChildren {
   ProtectedIndexRoute: typeof ProtectedIndexRoute
+  ProtectedCommodityMerchandiseConDetailRouteRoute: typeof ProtectedCommodityMerchandiseConDetailRouteRoute
   ProtectedCommodityCategoryInfoRoute: typeof ProtectedCommodityCategoryInfoRoute
   ProtectedCommodityCategoryAdminGoodsRoute: typeof ProtectedCommodityCategoryAdminGoodsRoute
   ProtectedCommodityCategoryAdminInfoRoute: typeof ProtectedCommodityCategoryAdminInfoRoute
@@ -198,6 +214,8 @@ interface ProtectedRouteRouteChildren {
 
 const ProtectedRouteRouteChildren: ProtectedRouteRouteChildren = {
   ProtectedIndexRoute: ProtectedIndexRoute,
+  ProtectedCommodityMerchandiseConDetailRouteRoute:
+    ProtectedCommodityMerchandiseConDetailRouteRoute,
   ProtectedCommodityCategoryInfoRoute: ProtectedCommodityCategoryInfoRoute,
   ProtectedCommodityCategoryAdminGoodsRoute:
     ProtectedCommodityCategoryAdminGoodsRoute,
@@ -221,6 +239,7 @@ export interface FileRoutesByFullPath {
   '': typeof ProtectedRouteRouteWithChildren
   '/login': typeof LoginRoute
   '/': typeof ProtectedIndexRoute
+  '/commodity/merchandiseCon/detail': typeof ProtectedCommodityMerchandiseConDetailRouteRoute
   '/commodity/category/info': typeof ProtectedCommodityCategoryInfoRoute
   '/commodity/categoryAdmin/goods': typeof ProtectedCommodityCategoryAdminGoodsRoute
   '/commodity/categoryAdmin/info': typeof ProtectedCommodityCategoryAdminInfoRoute
@@ -234,6 +253,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/': typeof ProtectedIndexRoute
+  '/commodity/merchandiseCon/detail': typeof ProtectedCommodityMerchandiseConDetailRouteRoute
   '/commodity/category/info': typeof ProtectedCommodityCategoryInfoRoute
   '/commodity/categoryAdmin/goods': typeof ProtectedCommodityCategoryAdminGoodsRoute
   '/commodity/categoryAdmin/info': typeof ProtectedCommodityCategoryAdminInfoRoute
@@ -249,6 +269,7 @@ export interface FileRoutesById {
   '/_protected': typeof ProtectedRouteRouteWithChildren
   '/login': typeof LoginRoute
   '/_protected/': typeof ProtectedIndexRoute
+  '/_protected/commodity/merchandiseCon/detail': typeof ProtectedCommodityMerchandiseConDetailRouteRoute
   '/_protected/commodity/category/info': typeof ProtectedCommodityCategoryInfoRoute
   '/_protected/commodity/categoryAdmin/goods': typeof ProtectedCommodityCategoryAdminGoodsRoute
   '/_protected/commodity/categoryAdmin/info': typeof ProtectedCommodityCategoryAdminInfoRoute
@@ -265,6 +286,7 @@ export interface FileRouteTypes {
     | ''
     | '/login'
     | '/'
+    | '/commodity/merchandiseCon/detail'
     | '/commodity/category/info'
     | '/commodity/categoryAdmin/goods'
     | '/commodity/categoryAdmin/info'
@@ -277,6 +299,7 @@ export interface FileRouteTypes {
   to:
     | '/login'
     | '/'
+    | '/commodity/merchandiseCon/detail'
     | '/commodity/category/info'
     | '/commodity/categoryAdmin/goods'
     | '/commodity/categoryAdmin/info'
@@ -290,6 +313,7 @@ export interface FileRouteTypes {
     | '/_protected'
     | '/login'
     | '/_protected/'
+    | '/_protected/commodity/merchandiseCon/detail'
     | '/_protected/commodity/category/info'
     | '/_protected/commodity/categoryAdmin/goods'
     | '/_protected/commodity/categoryAdmin/info'
@@ -329,6 +353,7 @@ export const routeTree = rootRoute
       "filePath": "_protected/route.tsx",
       "children": [
         "/_protected/",
+        "/_protected/commodity/merchandiseCon/detail",
         "/_protected/commodity/category/info",
         "/_protected/commodity/categoryAdmin/goods",
         "/_protected/commodity/categoryAdmin/info",
@@ -344,6 +369,10 @@ export const routeTree = rootRoute
     },
     "/_protected/": {
       "filePath": "_protected/index.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/commodity/merchandiseCon/detail": {
+      "filePath": "_protected/commodity/merchandiseCon/detail/route.tsx",
       "parent": "/_protected"
     },
     "/_protected/commodity/category/info": {

@@ -1,6 +1,6 @@
 import { type } from 'arktype'
 import { Plus } from 'lucide-react'
-import { useCallback, useMemo } from 'react'
+import { useMemo } from 'react'
 
 import {
   Button,
@@ -94,7 +94,7 @@ function AdminCategoryView() {
 
   const { data, isFetching } = useQuery(getAdminCategoriesQueryOptions(search))
 
-  const handleAdd = useCallback(() => {
+  const handleAdd = () => {
     const modalIns = openModal({
       title: '新增总部分类',
       content: (
@@ -110,29 +110,26 @@ function AdminCategoryView() {
       ),
       style: { width: 600 }
     })
-  }, [openModal])
+  }
 
-  const handleEdit = useCallback(
-    (item: GetAdminCategoriesRes) => {
-      const modalIns = openModal({
-        title: '编辑总部分类',
-        content: (
-          <EditForm
-            initialData={item}
-            onSuccess={async () => {
-              await queryClient.invalidateQueries({
-                queryKey: [LIST_KEY]
-              })
-              modalIns?.close()
-            }}
-            onCancel={() => modalIns?.close()}
-          />
-        ),
-        style: { width: 600 }
-      })
-    },
-    [openModal]
-  )
+  const handleEdit = (item: GetAdminCategoriesRes) => {
+    const modalIns = openModal({
+      title: '编辑总部分类',
+      content: (
+        <EditForm
+          initialData={item}
+          onSuccess={async () => {
+            await queryClient.invalidateQueries({
+              queryKey: [LIST_KEY]
+            })
+            modalIns?.close()
+          }}
+          onCancel={() => modalIns?.close()}
+        />
+      ),
+      style: { width: 600 }
+    })
+  }
 
   const { mutate: handleToggleVisibility } = useMutation({
     mutationKey: ['update-admin-category'],
@@ -165,72 +162,68 @@ function AdminCategoryView() {
     })
   })
 
-  const { columns } = useMemo(
-    () =>
-      defineTableColumns<GetAdminCategoriesRes>([
-        {
-          title: 'ID',
-          dataIndex: 'id',
-          fixed: 'left',
-          width: TableCellWidth.id,
-          align: 'center'
-        },
-        {
-          title: '名称',
-          render: (_, item) => (
-            <Route.Link
-              to={'/commodity/categoryAdmin/info'}
-              search={{ id: item.id! }}
+  const { columns } = defineTableColumns<GetAdminCategoriesRes>([
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      fixed: 'left',
+      width: TableCellWidth.id,
+      align: 'center'
+    },
+    {
+      title: '名称',
+      render: (_, item) => (
+        <Route.Link
+          to={'/commodity/categoryAdmin/info'}
+          search={{ id: item.id! }}
+        >
+          <Button type='text'>{item.name}</Button>
+        </Route.Link>
+      ),
+      align: 'center'
+    },
+    {
+      title: '排序',
+      dataIndex: 'sort',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '是否显示',
+      render: (_, item) => (
+        <Switch
+          checked={item.status === 1}
+          onChange={() => handleToggleVisibility(item)}
+        />
+      ),
+      width: 100,
+      align: 'center'
+    },
+    {
+      title: '操作',
+      render: (_, item) => (
+        <div className='flex justify-center items-center'>
+          {checkActionPermisstion('/commodity/categoryAdmin/edit') && (
+            <Button type='text' onClick={() => handleEdit(item)}>
+              编辑
+            </Button>
+          )}
+          {checkActionPermisstion('/commodity/categoryAdmin/del') && (
+            <Popconfirm
+              title='提示'
+              content='确定要删除吗？'
+              onOk={() => handleDelete(item)}
             >
-              <Button type='text'>{item.name}</Button>
-            </Route.Link>
-          ),
-          align: 'center'
-        },
-        {
-          title: '排序',
-          dataIndex: 'sort',
-          width: 90,
-          align: 'center'
-        },
-        {
-          title: '是否显示',
-          render: (_, item) => (
-            <Switch
-              checked={item.status === 1}
-              onChange={() => handleToggleVisibility(item)}
-            />
-          ),
-          width: 100,
-          align: 'center'
-        },
-        {
-          title: '操作',
-          render: (_, item) => (
-            <div className='flex justify-center items-center'>
-              {checkActionPermisstion('/commodity/categoryAdmin/edit') && (
-                <Button type='text' onClick={() => handleEdit(item)}>
-                  编辑
-                </Button>
-              )}
-              {checkActionPermisstion('/commodity/categoryAdmin/del') && (
-                <Popconfirm
-                  title='提示'
-                  content='确定要删除吗？'
-                  onOk={() => handleDelete(item)}
-                >
-                  <Button type='text'>删除</Button>
-                </Popconfirm>
-              )}
-            </div>
-          ),
-          fixed: 'right',
-          align: 'center',
-          width: 160
-        }
-      ]),
-    [checkActionPermisstion, handleDelete, handleEdit, handleToggleVisibility]
-  )
+              <Button type='text'>删除</Button>
+            </Popconfirm>
+          )}
+        </div>
+      ),
+      fixed: 'right',
+      align: 'center',
+      width: 160
+    }
+  ])
 
   return (
     <TableLayout
