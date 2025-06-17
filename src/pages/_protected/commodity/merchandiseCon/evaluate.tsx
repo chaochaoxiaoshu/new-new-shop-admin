@@ -83,9 +83,7 @@ function getCommentsQueryOptions(search: typeof CommentsSearchSchema.infer) {
 export const Route = createFileRoute(
   '/_protected/commodity/merchandiseCon/evaluate'
 )({
-  head: () => getHead('商品评价'),
   validateSearch: CommentsSearchSchema,
-  component: CommentsView,
   loader: () => {
     queryClient.prefetchQuery(departmentsQueryOptions)
     return queryClient.ensureQueryData(
@@ -94,7 +92,9 @@ export const Route = createFileRoute(
         page_size: 10
       })
     )
-  }
+  },
+  component: CommentsView,
+  head: () => getHead('商品评价')
 })
 
 function CommentsView() {
@@ -274,7 +274,9 @@ function CommentsView() {
               value={tempSearch.department}
               placeholder='请选择电商事业部'
               style={{ width: '264px' }}
-              onChange={(value) => handleUpdateSearchParam('department', value)}
+              onChange={(value) =>
+                handleUpdateSearchParam('department', value as number)
+              }
             >
               {departments?.items.map((item) => (
                 <Select.Option key={item.id} value={item.id!}>
@@ -287,7 +289,9 @@ function CommentsView() {
             value={tempSearch.display}
             placeholder='请选择显示状态'
             style={{ width: '264px' }}
-            onChange={(value) => handleUpdateSearchParam('display', value)}
+            onChange={(value) =>
+              handleUpdateSearchParam('display', value as 1 | 2)
+            }
           >
             <Select.Option value={1}>显示</Select.Option>
             <Select.Option value={2}>隐藏</Select.Option>
@@ -303,8 +307,8 @@ function CommentsView() {
             }
             style={{ width: '264px' }}
             onChange={(value) => {
-              handleUpdateSearchParam('start_time', dayjs(value?.[0]).unix())
-              handleUpdateSearchParam('end_time', dayjs(value?.[1]).unix())
+              handleUpdateSearchParam('start_time', dayjs(value[0]).unix())
+              handleUpdateSearchParam('end_time', dayjs(value[1]).unix())
             }}
             onClear={() => {
               handleUpdateSearchParam('start_time', undefined)
@@ -370,7 +374,7 @@ function ReplyForm(props: ReplyFormProps) {
 
   const { data: comment, isPending: commentPending } = useQuery({
     queryKey: ['comment-detail', id],
-    queryFn: () => getCommentDetail({ id: id! })
+    queryFn: () => getCommentDetail({ id })
   })
 
   const [form] = Form.useForm<ReplyFormValues>()
@@ -378,7 +382,7 @@ function ReplyForm(props: ReplyFormProps) {
   const { mutate: handleSubmit, isPending: submitPending } = useMutation({
     mutationKey: ['reply-comment', id],
     mutationFn: (values: ReplyFormValues) => {
-      return replyComment({ id: id!, seller_content: values.seller_content })
+      return replyComment({ id, seller_content: values.seller_content })
     },
     ...getNotifs({ key: 'reply-comment', onSuccess }),
     onError

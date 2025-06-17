@@ -59,6 +59,7 @@ export function toSearchParams(obj: Record<string, unknown>): URLSearchParams {
     if (Array.isArray(value)) {
       value.forEach((v) => params.append(key, String(v)))
     } else if (value !== undefined && value !== null) {
+      // eslint-disable-next-line @typescript-eslint/no-base-to-string
       params.set(key, String(value))
     }
   }

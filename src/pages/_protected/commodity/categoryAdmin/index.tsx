@@ -66,9 +66,7 @@ function getAdminCategoriesQueryOptions(
 }
 
 export const Route = createFileRoute('/_protected/commodity/categoryAdmin/')({
-  head: () => getHead('总部分类'),
   validateSearch: AdminCategoriesSearchSchema,
-  component: AdminCategoryView,
   loader: () => {
     queryClient.prefetchQuery(adminCategoriesTreeQueryOptions)
     return queryClient.ensureQueryData(
@@ -77,7 +75,9 @@ export const Route = createFileRoute('/_protected/commodity/categoryAdmin/')({
         page_size: 10
       })
     )
-  }
+  },
+  component: AdminCategoryView,
+  head: () => getHead('总部分类')
 })
 
 function AdminCategoryView() {
@@ -348,7 +348,7 @@ export function EditForm(props: EditFormProps) {
         <Select
           options={finalAdminCategoriesTree.map((item) => ({
             value: item.id!,
-            label: item.name!
+            label: item.name
           }))}
           placeholder='全部'
         />

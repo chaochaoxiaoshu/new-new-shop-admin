@@ -76,9 +76,7 @@ function getBrandsQueryOptions(search: typeof BrandsSearchSchema.infer) {
 }
 
 export const Route = createFileRoute('/_protected/commodity/brand/')({
-  head: () => getHead('商品品牌'),
   validateSearch: BrandsSearchSchema,
-  component: BrandView,
   loader: () => {
     return queryClient.ensureQueryData(
       getBrandsQueryOptions({
@@ -86,7 +84,9 @@ export const Route = createFileRoute('/_protected/commodity/brand/')({
         page_size: 10
       })
     )
-  }
+  },
+  component: BrandView,
+  head: () => getHead('商品品牌')
 })
 
 function BrandView() {
@@ -245,7 +245,7 @@ function BrandView() {
               placeholder='请选择电商事业部'
               style={{ width: '264px' }}
               onChange={(value) =>
-                handleUpdateSearchParam('department_id', value)
+                handleUpdateSearchParam('department_id', value as number)
               }
             >
               {departments?.items.map((item) => (

@@ -50,10 +50,9 @@ function getAdminSecondaryCategoriesQueryOptions(
 export const Route = createFileRoute(
   '/_protected/commodity/categoryAdmin/info'
 )({
-  head: () => getHead('总部分类/二级'),
   validateSearch: AdminSecondaryCategoriesSearchSchema,
-  component: AdminSecondaryCategoryView,
   loaderDeps: ({ search }) => ({ id: search.id }),
+  component: AdminSecondaryCategoryView,
   loader: ({ deps }) =>
     queryClient.ensureQueryData(
       getAdminSecondaryCategoriesQueryOptions({
@@ -61,7 +60,8 @@ export const Route = createFileRoute(
         page_index: 1,
         page_size: 10
       })
-    )
+    ),
+  head: () => getHead('总部分类/二级')
 })
 
 function AdminSecondaryCategoryView() {

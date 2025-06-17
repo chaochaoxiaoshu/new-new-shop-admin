@@ -102,7 +102,7 @@ const shipTemplatesQueryOptions = queryOptions({
 
 /* ------------------------------- 路由定义 START ------------------------------- */
 export const Route = createFileRoute(
-  '/_protected/commodity/merchandiseCon/detail'
+  '/_protected/commodity/merchandiseCon/detail/'
 )({
   head: () => getHead('添加/编辑商品'),
   validateSearch: GoodsDetailSearchSchema,

@@ -84,10 +84,9 @@ function getGoodsCategoriesQueryOptions(
 }
 
 export const Route = createFileRoute('/_protected/commodity/category/')({
-  head: () => getHead('商品分类'),
   validateSearch: GoodsCategoriesSearchSchema,
-  component: GoodsCategoryView,
   loaderDeps: ({ search }) => ({ department: search.department }),
+  component: GoodsCategoryView,
   loader: ({ deps }) => {
     queryClient.prefetchQuery(departmentsQueryOptions)
     queryClient.prefetchQuery(
@@ -96,7 +95,8 @@ export const Route = createFileRoute('/_protected/commodity/category/')({
     return queryClient.ensureQueryData(
       getGoodsCategoriesQueryOptions({ page_index: 1, page_size: 10 })
     )
-  }
+  },
+  head: () => getHead('商品分类')
 })
 
 function GoodsCategoryView() {
@@ -284,7 +284,9 @@ function GoodsCategoryView() {
               value={tempSearch.department}
               placeholder='请选择电商事业部'
               style={{ width: '264px' }}
-              onChange={(value) => handleUpdateSearchParam('department', value)}
+              onChange={(value) =>
+                handleUpdateSearchParam('department', value as number)
+              }
             >
               {departments?.items.map((item) => (
                 <Select.Option key={item.id} value={item.id!}>
@@ -427,7 +429,7 @@ export function EditForm(props: EditFormProps) {
         <Select
           options={finalGoodsCategoriesTree.map((item) => ({
             value: item.id!,
-            label: item.name!
+            label: item.name
           }))}
           placeholder='全部'
         />

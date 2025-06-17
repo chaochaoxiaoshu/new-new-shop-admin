@@ -42,6 +42,7 @@ const searchSchema = type({
 })
 
 export const Route = createFileRoute('/login')({
+  validateSearch: searchSchema,
   head: () =>
     getHead('登录', {
       scripts: [
@@ -56,7 +57,6 @@ export const Route = createFileRoute('/login')({
         }
       ]
     }),
-  validateSearch: searchSchema,
   component: AuthView
 })
 
@@ -76,8 +76,8 @@ function AuthView() {
 
   const passwordInputRef = useRef<RefInputType>(null)
 
-  const username: string = Form.useWatch('username', form as FormInstance)
-  const password: string = Form.useWatch('password', form as FormInstance)
+  const username = Form.useWatch('username', form as FormInstance) as string
+  const password = Form.useWatch('password', form as FormInstance) as string
   const [debouncedUsername] = useDebounce(username, 500)
   const [debouncedPassword] = useDebounce(password, 500)
 
@@ -88,8 +88,8 @@ function AuthView() {
   })
   const departmentsOptions =
     departmentInfo?.departments?.map((d) => ({
-      label: d?.name ?? '',
-      value: d?.id ?? ''
+      label: d.name,
+      value: d.id
     })) ?? []
 
   /**
@@ -135,6 +135,7 @@ function AuthView() {
       return
     }
     const agentConfigRes = await getAgentConfig({ url: window.location.href })
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     window.wx.agentConfig({
       ...agentConfigRes,
       jsApiList: ['openDefaultBrowser'],
@@ -149,12 +150,14 @@ function AuthView() {
         authUrl.searchParams.append('state', '')
         authUrl.searchParams.append('connect_redirect', '1')
         authUrl.hash = 'wechat_redirect'
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         window.wx.invoke('openDefaultBrowser', {
           url: authUrl.toString()
         })
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       fail: (res: any) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         Notification.error({ content: res.errMsg })
       }
     })
@@ -179,7 +182,7 @@ function AuthView() {
         token: firstAuthRes.access_token
       })
       if (departmentsRes.is_super || departmentsRes.departments?.length === 1) {
-        void handleLoginSuccess({
+        handleLoginSuccess({
           ...firstAuthRes,
           department_id: departmentsRes.is_super
             ? firstAuthRes.department_id
@@ -199,7 +202,7 @@ function AuthView() {
    * 不论是正常提交表单登录，还是在 sso 流程中，
    * 都会调用此方法，保存当前登录信息，然后跳转到重定向页面
    */
-  const handleLoginSuccess = async (
+  const handleLoginSuccess = (
     data: Partial<{
       access_token: string
       token_type: string

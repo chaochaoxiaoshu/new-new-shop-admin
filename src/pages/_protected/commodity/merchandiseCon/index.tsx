@@ -87,9 +87,7 @@ function getGoodsQueryOptions(search: typeof GoodsSearchSchema.infer) {
 }
 
 export const Route = createFileRoute('/_protected/commodity/merchandiseCon/')({
-  head: () => getHead('商品管理'),
   validateSearch: GoodsSearchSchema,
-  component: GoodsView,
   loader: () => {
     queryClient.prefetchQuery(departmentsQueryOptions)
     queryClient.prefetchQuery(brandsQueryOptions)
@@ -100,7 +98,9 @@ export const Route = createFileRoute('/_protected/commodity/merchandiseCon/')({
         page_size: 10
       })
     )
-  }
+  },
+  component: GoodsView,
+  head: () => getHead('商品管理')
 })
 
 function GoodsView() {
@@ -188,20 +188,6 @@ function GoodsView() {
     navigate({
       to: '/commodity/merchandiseCon/detail',
       search: { type: 'add' }
-    })
-  }
-
-  const handleEdit = (goodsId: number) => {
-    navigate({
-      to: '/commodity/merchandiseCon/detail',
-      search: { type: 'edit', goods_id: goodsId }
-    })
-  }
-
-  const handleCopy = (goodsId: number) => {
-    navigate({
-      to: '/commodity/merchandiseCon/detail',
-      search: { type: 'copy', goods_id: goodsId }
     })
   }
 
@@ -373,12 +359,7 @@ function GoodsView() {
                     to='/commodity/merchandiseCon/detail'
                     search={{ type: 'copy', goods_id: item.goods_id! }}
                   >
-                    <Menu.Item
-                      key='copy'
-                      onClick={() => handleCopy(item.goods_id!)}
-                    >
-                      复制
-                    </Menu.Item>
+                    <Menu.Item key='copy'>复制</Menu.Item>
                   </Link>
                 )}
                 {checkActionPermission('/commodity/merchandiseCon/del') && (
@@ -424,7 +405,9 @@ function GoodsView() {
               placeholder='请选择上下架状态'
               allowClear
               style={{ width: '264px' }}
-              onChange={(value) => handleUpdateSearchParam('marketable', value)}
+              onChange={(value) =>
+                handleUpdateSearchParam('marketable', value as 1 | 2)
+              }
             >
               <Select.Option value={1}>上架</Select.Option>
               <Select.Option value={2}>下架</Select.Option>
@@ -436,7 +419,7 @@ function GoodsView() {
                 allowClear
                 style={{ width: '264px' }}
                 onChange={(value) =>
-                  handleUpdateSearchParam('department_id', value)
+                  handleUpdateSearchParam('department_id', value as number)
                 }
               >
                 {departments?.items.map((item) => (
@@ -451,7 +434,9 @@ function GoodsView() {
               placeholder='请选择商品品牌'
               allowClear
               style={{ width: '264px' }}
-              onChange={(value) => handleUpdateSearchParam('brand_id', value)}
+              onChange={(value) =>
+                handleUpdateSearchParam('brand_id', value as number)
+              }
             >
               {brandsData?.items.map((item) => (
                 <Select.Option key={item.brand_id} value={item.brand_id!}>
@@ -465,7 +450,7 @@ function GoodsView() {
               allowClear
               style={{ width: '264px' }}
               onChange={(value) =>
-                handleUpdateSearchParam('is_lnternal', value)
+                handleUpdateSearchParam('is_lnternal', value as 1 | 2)
               }
             >
               <Select.Option value={1}>是</Select.Option>
@@ -477,7 +462,7 @@ function GoodsView() {
               allowClear
               style={{ width: '264px' }}
               onChange={(value) =>
-                handleUpdateSearchParam('is_member_price', value)
+                handleUpdateSearchParam('is_member_price', value as 1 | 2)
               }
             >
               <Select.Option value={1}>是</Select.Option>
@@ -488,7 +473,9 @@ function GoodsView() {
               placeholder='请选择是否内购专区商品'
               allowClear
               style={{ width: '264px' }}
-              onChange={(value) => handleUpdateSearchParam('is_approve', value)}
+              onChange={(value) =>
+                handleUpdateSearchParam('is_approve', value as 1 | 2)
+              }
             >
               <Select.Option value={1}>是</Select.Option>
               <Select.Option value={2}>否</Select.Option>
@@ -499,7 +486,7 @@ function GoodsView() {
               allowClear
               style={{ width: '264px' }}
               onChange={(value) =>
-                handleUpdateSearchParam('is_hidelinks', value)
+                handleUpdateSearchParam('is_hidelinks', value as 1 | 2)
               }
             >
               <Select.Option value={1}>是</Select.Option>
@@ -540,9 +527,9 @@ function GoodsView() {
                   <span className='ml-1 text-accent'>
                     {goodsPerCategoryCounts
                       ? {
-                          '': `(${goodsPerCategoryCounts?.total_goods})`,
-                          1: `(${goodsPerCategoryCounts?.total_marketable})`,
-                          2: `(${goodsPerCategoryCounts?.total_unmarketable})`
+                          '': `(${goodsPerCategoryCounts.total_goods})`,
+                          1: `(${goodsPerCategoryCounts.total_marketable})`,
+                          2: `(${goodsPerCategoryCounts.total_unmarketable})`
                         }[search.marketable ?? '']
                       : ''}
                   </span>
@@ -553,7 +540,7 @@ function GoodsView() {
                 setTempSearch((prev) => {
                   const next = {
                     ...prev,
-                    marketable: val !== '' ? val : undefined
+                    marketable: val !== '' ? (val as 1 | 2) : undefined
                   }
                   navigate({ search: next })
                   return next
@@ -564,7 +551,7 @@ function GoodsView() {
                 <span>全部商品</span>
                 <span className='ml-1 text-accent'>
                   {goodsPerCategoryCounts
-                    ? `(${goodsPerCategoryCounts?.total_goods})`
+                    ? `(${goodsPerCategoryCounts.total_goods})`
                     : ''}
                 </span>
               </Select.Option>
@@ -572,7 +559,7 @@ function GoodsView() {
                 <span>上架商品</span>
                 <span className='ml-1 text-accent'>
                   {goodsPerCategoryCounts
-                    ? `(${goodsPerCategoryCounts?.total_marketable})`
+                    ? `(${goodsPerCategoryCounts.total_marketable})`
                     : ''}
                 </span>
               </Select.Option>
@@ -580,7 +567,7 @@ function GoodsView() {
                 <span>下架商品</span>
                 <span className='ml-1 text-accent'>
                   {goodsPerCategoryCounts
-                    ? `(${goodsPerCategoryCounts?.total_unmarketable})`
+                    ? `(${goodsPerCategoryCounts.total_unmarketable})`
                     : ''}
                 </span>
               </Select.Option>

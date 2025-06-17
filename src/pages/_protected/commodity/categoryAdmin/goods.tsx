@@ -41,12 +41,11 @@ function getAdminCategoriesGoodsQueryOptions(
 export const Route = createFileRoute(
   '/_protected/commodity/categoryAdmin/goods'
 )({
-  head: () => getHead('总部分类/商品'),
   validateSearch: AdminCategoriesGoodsSearchSchema,
-  component: AdminCategoriesGoodsView,
   loaderDeps: ({ search }) => ({
     goods_cat_id: search.goods_cat_id
   }),
+  component: AdminCategoriesGoodsView,
   loader: ({ deps }) =>
     queryClient.ensureQueryData(
       getAdminCategoriesGoodsQueryOptions({
@@ -54,7 +53,8 @@ export const Route = createFileRoute(
         page_index: 1,
         page_size: 10
       })
-    )
+    ),
+  head: () => getHead('总部分类/商品')
 })
 
 function AdminCategoriesGoodsView() {

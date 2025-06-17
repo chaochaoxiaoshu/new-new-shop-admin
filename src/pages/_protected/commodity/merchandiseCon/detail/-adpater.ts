@@ -24,13 +24,12 @@ export function f2b<ID extends number | undefined = undefined>(
   }
 ) {
   const finalImages = (() => {
-    const images =
-      formData.images?.map((item, index) => ({
-        image_id: item.id,
-        image_url: item.url,
-        is_main: item.payload?.is_main ?? 0,
-        sort: index + 1
-      })) ?? []
+    const images = formData.images.map((item, index) => ({
+      image_id: item.id,
+      image_url: item.url,
+      is_main: (item.payload?.is_main as 1 | 0 | undefined) ?? 0,
+      sort: index + 1
+    }))
 
     const mainCount = images.filter((item) => item.is_main === 1).length
     // 如果一张主图都没有设置，就把第一张设为主图
@@ -46,7 +45,7 @@ export function f2b<ID extends number | undefined = undefined>(
     // 补充事业部 id 用于表单提交
     department_id: extraData.departmentId,
     // 根据 name 取回对象
-    try_disease: formData.try_disease?.map(
+    try_disease: formData.try_disease.map(
       (item) =>
         extraData.goodsDisease?.find((disease) => disease.icd_name === item)?.id
     ),
@@ -58,18 +57,18 @@ export function f2b<ID extends number | undefined = undefined>(
     // 将 MyUploadResource 转为后端要的格式
     images: finalImages,
     // 将 MyUploadResource 转为后端要的格式
-    videos: formData.videos?.map((item, index) => ({
+    videos: formData.videos.map((item, index) => ({
       video_id: item.id,
       video_url: item.url,
       sort: index + 1
     })),
     // 补充排序字段
-    products: formData.products?.map((item, index) => ({
+    products: formData.products.map((item, index) => ({
       ...item,
       sort: index + 1
     })),
     // 将 MyUploadResource 转为后端要的格式
-    intro: formData.intro?.map((item) => item.url)?.join(','),
+    intro: formData.intro?.map((item) => item.url).join(','),
     edit_products: extraData.edit_products,
     del_products: extraData.del_products
   })
@@ -86,7 +85,7 @@ export function b2f(data: GetGoodsDetailRes): GoodsFormData {
     try_disease: data.try_disease?.map((item) => item.icd_name) ?? [],
     // 补充默认值
     medicine_tips:
-      data.medicine_tips && data.medicine_tips?.length > 0
+      data.medicine_tips && data.medicine_tips.length > 0
         ? data.medicine_tips
         : [
             { key: '主治功能', value: '' },
@@ -99,7 +98,7 @@ export function b2f(data: GetGoodsDetailRes): GoodsFormData {
     images:
       data.images
         ?.slice()
-        .sort((a, b) => (a.sort ?? 0) - (b.sort ?? 0))
+        .sort((a, b) => a.sort - b.sort)
         .map((item) =>
           createMyUploadResource({
             id: item.image_id,
@@ -114,7 +113,7 @@ export function b2f(data: GetGoodsDetailRes): GoodsFormData {
     videos:
       data.videos
         ?.slice()
-        .sort((a, b) => (a.sort ?? 0) - (b.sort ?? 0))
+        .sort((a, b) => a.sort - b.sort)
         .map((item) =>
           createMyUploadResource({
             id: item.video_id,
@@ -126,15 +125,15 @@ export function b2f(data: GetGoodsDetailRes): GoodsFormData {
     products:
       data.products
         ?.slice()
-        .sort((a, b) => (a.sort ?? 0) - (b.sort ?? 0))
+        .sort((a, b) => a.sort - b.sort)
         .map((item) => ({
           ...item,
           sort: null,
-          temp_id: item.id?.toString()
+          temp_id: item.id.toString()
         })) ?? [],
     // 详情图片对象转换为 MyUploadResource
     intro:
-      data.intro?.split(',')?.map((item) =>
+      data.intro?.split(',').map((item) =>
         createMyUploadResource({
           type: 'image',
           url: item

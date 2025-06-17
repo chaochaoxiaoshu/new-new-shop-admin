@@ -8,7 +8,7 @@ interface GetNotifsOptions {
   /**
    * 操作成功后的回调
    */
-  onSuccess?: () => Promise<unknown> | unknown
+  onSuccess?: () => Promise<unknown>
 }
 
 /**

@@ -97,7 +97,6 @@ function getDataQueryOptions(
 }
 
 export const Route = createFileRoute('/_protected/')({
-  head: () => getHead('首页'),
   loader: () => {
     void queryClient.prefetchQuery(toboBoardQueryOptions)
     void queryClient.prefetchQuery(ordersStatisticQueryOptions)
@@ -106,6 +105,7 @@ export const Route = createFileRoute('/_protected/')({
       getDataQueryOptions('day', dayjs(new Date()).format('YYYY-MM-DD'))
     )
   },
+  head: () => getHead('首页'),
   component: HomeView
 })
 
@@ -268,7 +268,7 @@ function StoreData() {
               <Select
                 value={precision}
                 size='mini'
-                onChange={(val) => setPrecision(val)}
+                onChange={(val) => setPrecision(val as Precision)}
               >
                 <Select.Option value='day'>按日搜索</Select.Option>
                 <Select.Option value='month'>按月搜索</Select.Option>
@@ -322,7 +322,7 @@ function StoreData() {
             qoq={data?.repurchase_rate_qoq}
             tip-text='（重复购买顾客人数/总顾客人数）×100%，其中重复购买次数>1时就累计'
           >
-            {data?.repurchase_rate ? `${data?.repurchase_rate}%` : '0%'}
+            {data?.repurchase_rate ? `${data.repurchase_rate}%` : '0%'}
           </StoreDataItem>
           <StoreDataItem
             label='支付订单数'
@@ -382,7 +382,7 @@ function StoreData() {
             tip-text='支付人数/访客数×100%'
             show-border
           >
-            {data?.conversion_rate ? `${data?.conversion_rate}%` : '0%'}
+            {data?.conversion_rate ? `${data.conversion_rate}%` : '0%'}
           </StoreDataItem>
           <StoreDataItem
             label='佣金发放'
@@ -614,7 +614,7 @@ function CustomerData() {
               <Select
                 value={precision}
                 size='mini'
-                onChange={(val) => setPrecision(val)}
+                onChange={(val) => setPrecision(val as Precision)}
               >
                 <Select.Option value='day'>按日搜索</Select.Option>
                 <Select.Option value='month'>按月搜索</Select.Option>

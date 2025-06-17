@@ -329,7 +329,7 @@ function SortableUploadItem(props: SortableUploadItemProps) {
       )}
 
       {/* 渲染自定义覆盖层 */}
-      {renderOverlay && renderOverlay(item)}
+      {renderOverlay?.(item)}
     </div>
   )
 }

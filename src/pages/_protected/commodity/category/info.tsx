@@ -50,10 +50,9 @@ function getGoodsSecondaryCategoriesQueryOptions(
 }
 
 export const Route = createFileRoute('/_protected/commodity/category/info')({
-  head: () => getHead('商品二级/分类'),
   validateSearch: GoodsSecondaryCategoriesSearchSchema,
-  component: RouteComponent,
   loaderDeps: ({ search }) => ({ id: search.id }),
+  component: RouteComponent,
   loader: ({ deps }) =>
     queryClient.ensureQueryData(
       getGoodsSecondaryCategoriesQueryOptions({
@@ -61,7 +60,8 @@ export const Route = createFileRoute('/_protected/commodity/category/info')({
         page_index: 1,
         page_size: 10
       })
-    )
+    ),
+  head: () => getHead('商品二级/分类')
 })
 
 function RouteComponent() {

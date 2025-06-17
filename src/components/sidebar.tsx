@@ -19,7 +19,7 @@ function renderMenu(
   handlePreloadRoute: (path: string) => void
 ) {
   return items.map((item) => {
-    if (item.children && item.children.length > 0) {
+    if (item.children.length > 0) {
       return (
         <Menu.SubMenu
           key={item.path}
@@ -143,7 +143,7 @@ function useMenuList() {
    * 当前选中的 keys(paths)（从菜单树自上而下）
    */
   const selectedKeys = useMemo(
-    () => matchedItems.map((item) => item.path) ?? [],
+    () => matchedItems.map((item) => item.path),
     [matchedItems]
   )
   /**
@@ -158,7 +158,7 @@ function useMenuList() {
     if (matchedItems.length === 0) return
 
     const newOpenKeys = matchedItems
-      .filter((item) => item.children && item.children.length > 0)
+      .filter((item) => item.children.length > 0)
       .map((item) => item.path)
 
     setOpenKeys(newOpenKeys)
