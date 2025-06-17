@@ -22,10 +22,11 @@ import { CSS } from '@dnd-kit/utilities'
 
 import { DndListenersContext } from './context'
 
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
 export function SortableTable<T extends Record<string, unknown>>(
   props: TableProps & { onSort?: (data: T[]) => void }
 ) {
-  const data = props.data as T[]
+  const data = props.data as T[] | undefined
   const rowKey = props.rowKey
 
   const sensors = useSensors(
@@ -36,17 +37,18 @@ export function SortableTable<T extends Record<string, unknown>>(
   )
 
   const handleDragEnd = (event: DragEndEvent) => {
-    if (!data || !rowKey) return
+    if (!rowKey) return
 
     const { active, over } = event
     if (active.id !== over?.id) {
-      const oldIndex = data.findIndex(
+      const oldIndex = data?.findIndex(
         (item) => item[rowKey as string] === active.id
       )
-      const newIndex = data.findIndex(
+      const newIndex = data?.findIndex(
         (item) => item[rowKey as string] === over?.id
       )
       if (oldIndex !== -1 && newIndex !== -1) {
+        if (!data || !oldIndex || !newIndex) return
         const newValue = arrayMove(data, oldIndex, newIndex)
         props.onSort?.(newValue)
       }

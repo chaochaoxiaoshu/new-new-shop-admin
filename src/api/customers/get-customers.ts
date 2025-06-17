@@ -33,11 +33,11 @@ export type GetCustomersRes = Partial<{
   tag_id: string
   avatar: string
   tag_name: string
-  tag_groups: null | unknown // 根据实际数据类型调整
+  tag_groups: null
 }>
 
 export const getCustomers = async (req: GetCustomersReq) => {
-  const searchParams = req ? toSearchParams(req) : void 0
+  const searchParams = toSearchParams(req)
 
   return await api
     .get<PaginatedResponse<GetCustomersRes>>('jshop-user/api/v1/users', {

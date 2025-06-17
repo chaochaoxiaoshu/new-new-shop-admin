@@ -84,6 +84,9 @@ importers:
       '@eslint/js':
         specifier: ^9.13.0
         version: 9.27.0
+      '@tanstack/eslint-plugin-query':
+        specifier: ^5.78.0
+        version: 5.78.0(eslint@9.27.0(jiti@1.21.7))(typescript@5.6.3)
       '@tanstack/eslint-plugin-router':
         specifier: ^1.120.17
         version: 1.120.17(eslint@9.27.0(jiti@1.21.7))(typescript@5.6.3)
@@ -863,6 +866,11 @@ packages:
     resolution: {integrity: sha512-Wq2zpapRYLfi4aKxf2Xff0tN+7slj2d4R87WEzqw7ZLsVvO5zwYCIuEGSZYiK41+GlwUo1HiR+GdkLEJnCKTCw==}
     cpu: [x64]
     os: [win32]
+
+  '@tanstack/eslint-plugin-query@5.78.0':
+    resolution: {integrity: sha512-hYkhWr3UP0CkAsn/phBVR98UQawbw8CmTSgWtdgEBUjI60/GBaEIkpgi/Bp/2I8eIDK4+vdY7ac6jZx+GR+hEQ==}
+    peerDependencies:
+      eslint: ^8.57.0 || ^9.0.0
 
   '@tanstack/eslint-plugin-router@1.120.17':
     resolution: {integrity: sha512-dYnfQ2on0i9JOonvuP6y6AH47Yhj3zQHxa5rCuLOrpKRUR3Mjpp+4AB70ltY1DKBVWtp1moyruJqueD8kzHD5g==}
@@ -2958,6 +2966,14 @@ snapshots:
 
   '@rollup/rollup-win32-x64-msvc@4.41.1':
     optional: true
+
+  '@tanstack/eslint-plugin-query@5.78.0(eslint@9.27.0(jiti@1.21.7))(typescript@5.6.3)':
+    dependencies:
+      '@typescript-eslint/utils': 8.33.0(eslint@9.27.0(jiti@1.21.7))(typescript@5.6.3)
+      eslint: 9.27.0(jiti@1.21.7)
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
 
   '@tanstack/eslint-plugin-router@1.120.17(eslint@9.27.0(jiti@1.21.7))(typescript@5.6.3)':
     dependencies:

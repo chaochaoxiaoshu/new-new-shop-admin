@@ -43,7 +43,7 @@ export function processMenuList(
       // 深拷贝当前项
       const newItem = { ...item }
       // 如果有子项，将 path 设置为 name
-      if (newItem.children && newItem.children.length > 0) {
+      if (newItem.children.length > 0) {
         newItem.path = `${newItem.depth}-${newItem.name}`
         // 递归处理子项
         newItem.children = processMenuItems(
@@ -75,7 +75,7 @@ export function getMatchedItems(items: MenuItemData[], currentPath: string) {
       }
 
       // 继续递归查找子菜单，不要提前返回
-      if (item.children && item.children.length > 0) {
+      if (item.children.length > 0) {
         findAllMenuPathsByPath(item.children, targetPath, currentPath)
       }
     }

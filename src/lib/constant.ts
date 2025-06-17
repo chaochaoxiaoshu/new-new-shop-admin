@@ -5,5 +5,6 @@ export const TableCellWidth = {
   amountS: 120,
   amountL: 180,
   datetime: 220,
-  dateRange: 380
+  dateRange: 380,
+  mobile: 128
 } as const

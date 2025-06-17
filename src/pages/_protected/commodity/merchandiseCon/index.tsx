@@ -14,6 +14,7 @@ import {
   keepPreviousData,
   queryOptions,
   useMutation,
+  useQueries,
   useQuery
 } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
@@ -139,11 +140,13 @@ function GoodsView() {
   }
   /* ------------------------------- Search END ------------------------------- */
 
-  const { data: departments } = useQuery(departmentsQueryOptions)
-  const { data: brandsData } = useQuery(brandsQueryOptions)
-  const { data: goodsPerCategoryCounts } = useQuery(
-    goodsPerCategoryCountsQueryOptions
-  )
+  const [departments, brandsData, goodsPerCategoryCounts] = useQueries({
+    queries: [
+      departmentsQueryOptions,
+      brandsQueryOptions,
+      goodsPerCategoryCountsQueryOptions
+    ]
+  })
 
   /* ------------------------------- 批量操作 START ------------------------------- */
   const [batchListOrDelistCurrent, setBatchListOrDelistCurrent] = useState<
@@ -422,7 +425,7 @@ function GoodsView() {
                   handleUpdateSearchParam('department_id', value as number)
                 }
               >
-                {departments?.items.map((item) => (
+                {departments.data?.items.map((item) => (
                   <Select.Option key={item.id} value={item.id!}>
                     {item.department_name}
                   </Select.Option>
@@ -438,7 +441,7 @@ function GoodsView() {
                 handleUpdateSearchParam('brand_id', value as number)
               }
             >
-              {brandsData?.items.map((item) => (
+              {brandsData.data?.items.map((item) => (
                 <Select.Option key={item.brand_id} value={item.brand_id!}>
                   {item.name}
                 </Select.Option>
@@ -525,11 +528,11 @@ function GoodsView() {
                     }
                   </span>
                   <span className='ml-1 text-accent'>
-                    {goodsPerCategoryCounts
+                    {goodsPerCategoryCounts.data
                       ? {
-                          '': `(${goodsPerCategoryCounts.total_goods})`,
-                          1: `(${goodsPerCategoryCounts.total_marketable})`,
-                          2: `(${goodsPerCategoryCounts.total_unmarketable})`
+                          '': `(${goodsPerCategoryCounts.data.total_goods})`,
+                          1: `(${goodsPerCategoryCounts.data.total_marketable})`,
+                          2: `(${goodsPerCategoryCounts.data.total_unmarketable})`
                         }[search.marketable ?? '']
                       : ''}
                   </span>
@@ -550,24 +553,24 @@ function GoodsView() {
               <Select.Option value={''}>
                 <span>全部商品</span>
                 <span className='ml-1 text-accent'>
-                  {goodsPerCategoryCounts
-                    ? `(${goodsPerCategoryCounts.total_goods})`
+                  {goodsPerCategoryCounts.data
+                    ? `(${goodsPerCategoryCounts.data.total_goods})`
                     : ''}
                 </span>
               </Select.Option>
               <Select.Option value={1}>
                 <span>上架商品</span>
                 <span className='ml-1 text-accent'>
-                  {goodsPerCategoryCounts
-                    ? `(${goodsPerCategoryCounts.total_marketable})`
+                  {goodsPerCategoryCounts.data
+                    ? `(${goodsPerCategoryCounts.data.total_marketable})`
                     : ''}
                 </span>
               </Select.Option>
               <Select.Option value={2}>
                 <span>下架商品</span>
                 <span className='ml-1 text-accent'>
-                  {goodsPerCategoryCounts
-                    ? `(${goodsPerCategoryCounts.total_unmarketable})`
+                  {goodsPerCategoryCounts.data
+                    ? `(${goodsPerCategoryCounts.data.total_unmarketable})`
                     : ''}
                 </span>
               </Select.Option>

@@ -64,7 +64,7 @@ const departmentsQueryOptions = queryOptions({
 function getBrandsQueryOptions(search: typeof BrandsSearchSchema.infer) {
   const signedDepartment = useUserStore.getState().departmentId!
   return queryOptions({
-    queryKey: [LIST_KEY, search],
+    queryKey: [LIST_KEY, search, signedDepartment],
     queryFn: () =>
       getBrands({
         ...search,

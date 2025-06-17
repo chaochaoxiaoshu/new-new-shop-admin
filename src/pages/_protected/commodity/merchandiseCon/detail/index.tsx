@@ -1,6 +1,6 @@
 import { type } from 'arktype'
 import { Edit, GripVertical, Plus, Trash2 } from 'lucide-react'
-import { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 
 import {
   Button,
@@ -14,7 +14,12 @@ import {
   Space,
   Switch
 } from '@arco-design/web-react'
-import { queryOptions, useMutation, useQuery } from '@tanstack/react-query'
+import {
+  queryOptions,
+  useMutation,
+  useQueries,
+  useQuery
+} from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 
 import {
@@ -104,10 +109,9 @@ const shipTemplatesQueryOptions = queryOptions({
 export const Route = createFileRoute(
   '/_protected/commodity/merchandiseCon/detail/'
 )({
-  head: () => getHead('添加/编辑商品'),
   validateSearch: GoodsDetailSearchSchema,
-  component: GoodsEditView,
   loaderDeps: ({ search }) => ({ ...search }),
+  component: GoodsEditView,
   loader: ({ deps }) => {
     queryClient.prefetchQuery(adminCategoriesTreeQueryOptions)
     queryClient.prefetchQuery(goodsCategoriesTreeQueryOptions)
@@ -123,7 +127,8 @@ export const Route = createFileRoute(
     return queryClient.ensureQueryData(
       getGoodsDetailQueryOptions(deps.goods_id)
     )
-  }
+  },
+  head: () => getHead('添加/编辑商品')
 })
 /* -------------------------------- 路由定义 END -------------------------------- */
 
@@ -194,36 +199,41 @@ function GoodsEditView() {
     form.setFieldsValue(initialValues)
   }, [form, initialValues])
 
-  const { data: adminCategoriesTreeData } = useQuery(
-    adminCategoriesTreeQueryOptions
-  )
-  const finalAdminCategoriesTree = useMemo(() => {
-    if (!adminCategoriesTreeData) return []
-    return adminCategoriesTreeData.items.map((item) => {
-      if (item.parent_id === 0) {
-        return { ...item, name: `|--${item.name}`, disabled: true }
-      } else {
-        return { ...item, name: `|--|--${item.name}`, disabled: false }
-      }
-    })
-  }, [adminCategoriesTreeData])
+  const { data: adminCategoriesTreeData } = useQuery({
+    ...adminCategoriesTreeQueryOptions,
+    select: (data) => {
+      return data.items.map((item) => {
+        if (item.parent_id === 0) {
+          return { ...item, name: `|--${item.name}`, disabled: true }
+        } else {
+          return { ...item, name: `|--|--${item.name}`, disabled: false }
+        }
+      })
+    }
+  })
 
-  const { data: goodsDepartypeData } = useQuery(goodsCategoriesTreeQueryOptions)
-  const finalGoodsDepartypeData = useMemo(() => {
-    if (!goodsDepartypeData) return []
-    return goodsDepartypeData.items.map((item) => {
-      if (item.parent_id === 0) {
-        return { ...item, name: `|--${item.name}`, disabled: true }
-      } else {
-        return { ...item, name: `|--|--${item.name}`, disabled: false }
-      }
-    })
-  }, [goodsDepartypeData])
+  const { data: goodsDepartypeData } = useQuery({
+    ...goodsCategoriesTreeQueryOptions,
+    select: (data) => {
+      return data.items.map((item) => {
+        if (item.parent_id === 0) {
+          return { ...item, name: `|--${item.name}`, disabled: true }
+        } else {
+          return { ...item, name: `|--|--${item.name}`, disabled: false }
+        }
+      })
+    }
+  })
 
-  const { data: brandsData } = useQuery(brandsQueryOptions)
-  const { data: goodsDiseaseData } = useQuery(goodsDiseaseQueryOptions)
-  const { data: goodsDrugstoresData } = useQuery(goodsDrugstoresQueryOptions)
-  const { data: shipTemplatesData } = useQuery(shipTemplatesQueryOptions)
+  const [brandsData, goodsDiseaseData, goodsDrugstoresData, shipTemplatesData] =
+    useQueries({
+      queries: [
+        brandsQueryOptions,
+        goodsDiseaseQueryOptions,
+        goodsDrugstoresQueryOptions,
+        shipTemplatesQueryOptions
+      ]
+    })
   /* -------------------------------- 数据请求 END -------------------------------- */
 
   /* ------------------------------- 表单数据 START ------------------------------- */
@@ -502,7 +512,7 @@ function GoodsEditView() {
         <Form.Item
           field={`products[${index}].image`}
           formatter={(value) => (value ? [value] : undefined)}
-          getValueFromEvent={(value) => value[0]}
+          getValueFromEvent={(value: string[]) => value[0]}
         >
           <MyUpload className='size-[64px] mx-auto' itemSize={64} />
         </Form.Item>
@@ -712,19 +722,19 @@ function GoodsEditView() {
       if (search.type === 'add' || search.type === 'copy') {
         const transformedValues = f2b(values, {
           departmentId: useUserStore.getState().departmentId!,
-          goodsDisease: goodsDiseaseData?.items ?? []
+          goodsDisease: goodsDiseaseData.data?.items ?? []
         })
         return addGoods(transformedValues)
       } else {
         const transformedValues = f2b(values, {
           id: goodsDetail?.id,
           departmentId: useUserStore.getState().departmentId!,
-          goodsDisease: goodsDiseaseData?.items ?? []
+          goodsDisease: goodsDiseaseData.data?.items ?? []
         })
         return editGoods(transformedValues)
       }
     },
-    onSuccess: async () => {
+    onSuccess: () => {
       Notification.success({ content: '保存成功' })
       queryClient.invalidateQueries({
         queryKey: ['goods-detail', search.goods_id]
@@ -765,7 +775,7 @@ function GoodsEditView() {
           rules={[{ required: true, message: '请选择总部分类' }]}
         >
           <Select placeholder='全部' allowClear>
-            {finalAdminCategoriesTree.map((item) => (
+            {adminCategoriesTreeData?.map((item) => (
               <Select.Option
                 key={item.id}
                 value={item.id!}
@@ -785,7 +795,7 @@ function GoodsEditView() {
         </Form.Item>
         <Form.Item field='goods_departype_id' label='商品分类'>
           <Select placeholder='全部' allowClear>
-            {finalGoodsDepartypeData.map((item) => (
+            {goodsDepartypeData?.map((item) => (
               <Select.Option
                 key={item.id}
                 value={item.id!}
@@ -798,7 +808,7 @@ function GoodsEditView() {
         </Form.Item>
         <Form.Item field='brand_id' label='商品品牌'>
           <Select placeholder='全部' allowClear>
-            {brandsData?.items.map((item) => (
+            {brandsData.data?.items.map((item) => (
               <Select.Option key={item.brand_id} value={item.brand_id!}>
                 {item.name}
               </Select.Option>
@@ -809,7 +819,7 @@ function GoodsEditView() {
           shouldUpdate={(prev, next) => prev.is_rx !== next.is_rx}
           noStyle
         >
-          {(values) => {
+          {(values: GoodsFormData) => {
             const formItems: React.ReactNode[] = []
             if (values.is_rx === IsRx.处方药) {
               formItems.push(
@@ -842,7 +852,7 @@ function GoodsEditView() {
                           ]}
                         >
                           <Select placeholder='全部' allowClear showSearch>
-                            {goodsDiseaseData?.items.map((item) => (
+                            {goodsDiseaseData.data?.items.map((item) => (
                               <Select.Option key={item.id} value={item.id!}>
                                 {item.icd_name}
                               </Select.Option>
@@ -881,7 +891,7 @@ function GoodsEditView() {
                   rules={[{ required: true, message: '请选择药店' }]}
                 >
                   <Select placeholder='全部' allowClear>
-                    {goodsDrugstoresData?.items.map((item) => (
+                    {goodsDrugstoresData.data?.items.map((item) => (
                       <Select.Option key={item.id} value={item.id!}>
                         {item.drugstore_name}
                       </Select.Option>
@@ -940,7 +950,7 @@ function GoodsEditView() {
           shouldUpdate={(prev, next) => prev.is_rx !== next.is_rx}
           style={{ marginBottom: 0 }}
         >
-          {(values) => {
+          {(values: GoodsFormData) => {
             if (values.is_rx === IsRx.非药品) {
               return (
                 <Form.List
@@ -1113,7 +1123,7 @@ function GoodsEditView() {
           }
           noStyle
         >
-          {(values) => {
+          {(values: GoodsFormData) => {
             if (
               values.delivery_type === DeliveryType.快递发货 ||
               values.delivery_type === DeliveryType['快递发货/到店自提']
@@ -1125,7 +1135,7 @@ function GoodsEditView() {
                   rules={[{ required: true, message: '请选择运费模板' }]}
                 >
                   <Select placeholder='请选择运费模板' allowClear>
-                    {shipTemplatesData?.items.map((item) => (
+                    {shipTemplatesData.data?.items.map((item) => (
                       <Select.Option key={item.id} value={item.id!}>
                         {item.name}
                       </Select.Option>
@@ -1256,7 +1266,7 @@ function GoodsEditView() {
           <Switch />
         </Form.Item>
         <Form.Item shouldUpdate noStyle>
-          {(fields) => {
+          {(fields: GoodsFormData) => {
             if (fields.is_purchase === 1) {
               return (
                 <Form.Item label='限购数量' required>

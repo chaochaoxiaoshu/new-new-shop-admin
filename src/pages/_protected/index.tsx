@@ -86,7 +86,7 @@ function getDataQueryOptions(
   } as const
 
   return queryOptions({
-    queryKey: ['store-data', precision, date, by],
+    queryKey: ['store-data', precision, date, by, precisionMap[precision]],
     queryFn: () =>
       getShopOrderData({
         type: precisionMap[precision],
@@ -98,10 +98,10 @@ function getDataQueryOptions(
 
 export const Route = createFileRoute('/_protected/')({
   loader: () => {
-    void queryClient.prefetchQuery(toboBoardQueryOptions)
-    void queryClient.prefetchQuery(ordersStatisticQueryOptions)
-    void queryClient.prefetchQuery(customersStatisticQueryOptions)
-    void queryClient.prefetchQuery(
+    queryClient.prefetchQuery(toboBoardQueryOptions)
+    queryClient.prefetchQuery(ordersStatisticQueryOptions)
+    queryClient.prefetchQuery(customersStatisticQueryOptions)
+    queryClient.prefetchQuery(
       getDataQueryOptions('day', dayjs(new Date()).format('YYYY-MM-DD'))
     )
   },

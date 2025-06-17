@@ -69,7 +69,7 @@ const departmentsQueryOptions = queryOptions({
 function getCommentsQueryOptions(search: typeof CommentsSearchSchema.infer) {
   const signedDepartment = useUserStore.getState().departmentId!
   return queryOptions({
-    queryKey: [LIST_KEY, search],
+    queryKey: [LIST_KEY, search, signedDepartment],
     queryFn: () =>
       getComments({
         ...search,

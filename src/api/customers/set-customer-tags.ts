@@ -6,4 +6,4 @@ export type SetCustomerTagsReq = {
 }
 
 export const setCustomerTags = (req: SetCustomerTagsReq) =>
-  api.post('jshop-user/api/v1/tags', { json: req })
+  api.post('jshop-user/api/v1/user-tag-set', { json: req })

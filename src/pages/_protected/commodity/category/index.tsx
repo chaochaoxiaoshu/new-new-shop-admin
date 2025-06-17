@@ -58,7 +58,7 @@ const departmentsQueryOptions = queryOptions({
 const getGoodsCategoriesTreeQueryOptions = (department?: number) => {
   const signedDepartment = useUserStore.getState().departmentId!
   return queryOptions({
-    queryKey: ['goods-categories-tree', department],
+    queryKey: ['goods-categories-tree', department, signedDepartment],
     queryFn: () =>
       getGoodsCategoriesTree({
         department: signedDepartment === 0 ? department : signedDepartment
@@ -72,7 +72,7 @@ function getGoodsCategoriesQueryOptions(
 ) {
   const signedDepartment = useUserStore.getState().departmentId!
   return queryOptions({
-    queryKey: [LIST_KEY, search],
+    queryKey: [LIST_KEY, search, signedDepartment],
     queryFn: () =>
       getGoodsCategories({
         ...search,

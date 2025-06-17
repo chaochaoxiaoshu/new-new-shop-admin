@@ -5,7 +5,7 @@ import { redirect } from '@tanstack/react-router'
 import { useUserStore } from '../stores/user-store'
 
 export const unprotectedApi = ky.create({
-  prefixUrl: import.meta.env.DEV ? '/api' : 'https://shop.shanshu.work'
+  prefixUrl: import.meta.env.DEV ? '/api' : window.location.origin
 })
 
 export const api = unprotectedApi.extend(() => {

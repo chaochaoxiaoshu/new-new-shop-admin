@@ -82,15 +82,21 @@ function AuthView() {
   const [debouncedPassword] = useDebounce(password, 500)
 
   const { data: departmentInfo } = useQuery({
-    queryKey: ['auth-departmentList', debouncedUsername, debouncedPassword],
+    queryKey: [
+      'auth-departmentList',
+      debouncedUsername,
+      debouncedPassword,
+      username,
+      password
+    ],
     queryFn: () => getDepartmentsForAccount({ username, password }),
+    select: (data) =>
+      data.departments?.map((d) => ({
+        label: d.name,
+        value: d.id
+      })) ?? [],
     enabled: !!debouncedUsername && !!debouncedPassword
   })
-  const departmentsOptions =
-    departmentInfo?.departments?.map((d) => ({
-      label: d.name,
-      value: d.id
-    })) ?? []
 
   /**
    * 单点登录状态
@@ -354,16 +360,15 @@ function AuthView() {
                   </Form.Item>
                 </>
               )}
-              {departmentInfo?.departments &&
-                departmentInfo.departments.length > 0 && (
-                  <Form.Item field='department_id'>
-                    <Select
-                      options={departmentsOptions}
-                      placeholder='请选择事业部'
-                      allowClear
-                    />
-                  </Form.Item>
-                )}
+              {departmentInfo && departmentInfo.length > 0 && (
+                <Form.Item field='department_id'>
+                  <Select
+                    options={departmentInfo}
+                    placeholder='请选择事业部'
+                    allowClear
+                  />
+                </Form.Item>
+              )}
               <Button
                 type='primary'
                 htmlType='submit'

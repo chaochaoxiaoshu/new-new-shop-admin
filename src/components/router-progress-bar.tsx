@@ -8,19 +8,20 @@ export function RouterProgressBar() {
   const ref = useRef<LoadingBarRef>(null)
 
   useEffect(() => {
-    const handleBeforeNavigate = () => {
-      ref.current?.staticStart()
-    }
-
-    const handleLoad = () => {
-      ref.current?.complete()
-    }
-
     const unsubscribeBeforeNavigate = router.subscribe(
       'onBeforeNavigate',
-      handleBeforeNavigate
+      ({ fromLocation, toLocation }) => {
+        if (fromLocation?.pathname === toLocation.pathname) return
+        ref.current?.staticStart()
+      }
     )
-    const unsubscribeLoad = router.subscribe('onLoad', handleLoad)
+    const unsubscribeLoad = router.subscribe(
+      'onLoad',
+      ({ fromLocation, toLocation }) => {
+        if (fromLocation?.pathname === toLocation.pathname) return
+        ref.current?.complete()
+      }
+    )
 
     return () => {
       unsubscribeBeforeNavigate()

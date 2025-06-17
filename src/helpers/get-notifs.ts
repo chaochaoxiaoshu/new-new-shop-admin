@@ -8,7 +8,8 @@ interface GetNotifsOptions {
   /**
    * 操作成功后的回调
    */
-  onSuccess?: () => Promise<unknown>
+  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+  onSuccess?: () => Promise<unknown> | unknown
 }
 
 /**
