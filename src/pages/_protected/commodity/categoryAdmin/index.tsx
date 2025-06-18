@@ -37,50 +37,40 @@ import { useUserStore } from '@/stores'
 
 const LIST_KEY = 'admin-categories'
 
-const AdminCategoriesSearchSchema = type({
-  page_index: ['number', '=', 1],
-  page_size: ['number', '=', 10]
-})
-
-const adminCategoriesTreeQueryOptions = queryOptions({
-  queryKey: ['admin-categories-tree'],
-  queryFn: () =>
-    getAdminCategoriesTree({
-      department: useUserStore.getState().departmentId!
-    }),
-  placeholderData: keepPreviousData
-})
-
-function getAdminCategoriesQueryOptions(
-  search: typeof AdminCategoriesSearchSchema.infer
-) {
-  return queryOptions({
-    queryKey: [LIST_KEY, search],
-    queryFn: () =>
-      getAdminCategories({
-        ...search,
-        department: useUserStore.getState().departmentId!
-      }),
-    placeholderData: keepPreviousData
-  })
-}
-
 export const Route = createFileRoute('/_protected/commodity/categoryAdmin/')({
-  validateSearch: AdminCategoriesSearchSchema,
-  loader: () => {
-    queryClient.prefetchQuery(adminCategoriesTreeQueryOptions)
-    return queryClient.ensureQueryData(
-      getAdminCategoriesQueryOptions({
-        page_index: 1,
-        page_size: 10
-      })
-    )
+  validateSearch: type({
+    page_index: ['number', '=', 1],
+    page_size: ['number', '=', 10]
+  }),
+  beforeLoad: ({ search }) => ({
+    adminCategoriesTreeQueryOptions: queryOptions({
+      queryKey: ['admin-categories-tree'],
+      queryFn: () =>
+        getAdminCategoriesTree({
+          department: useUserStore.getState().departmentId!
+        }),
+      placeholderData: keepPreviousData
+    }),
+    adminCategoriesQueryOptions: queryOptions({
+      queryKey: [LIST_KEY, search],
+      queryFn: () =>
+        getAdminCategories({
+          ...search,
+          department: useUserStore.getState().departmentId!
+        }),
+      placeholderData: keepPreviousData
+    })
+  }),
+  loader: async ({ context }) => {
+    queryClient.prefetchQuery(context.adminCategoriesTreeQueryOptions)
+    await queryClient.prefetchQuery(context.adminCategoriesQueryOptions)
   },
   component: AdminCategoryView,
   head: () => getHead('总部分类')
 })
 
 function AdminCategoryView() {
+  const context = Route.useRouteContext()
   const search = Route.useSearch()
   const navigate = Route.useNavigate()
   const [openModal, contextHolder] = useMyModal()
@@ -89,10 +79,10 @@ function AdminCategoryView() {
   )
 
   const { data: adminCategoriesTree } = useQuery(
-    adminCategoriesTreeQueryOptions
+    context.adminCategoriesTreeQueryOptions
   )
 
-  const { data, isFetching } = useQuery(getAdminCategoriesQueryOptions(search))
+  const { data, isFetching } = useQuery(context.adminCategoriesQueryOptions)
 
   const handleAdd = () => {
     const modalIns = openModal({
@@ -282,10 +272,12 @@ interface EditFormProps {
 export function EditForm(props: EditFormProps) {
   const { initialData, onSuccess, onCancel, onError } = props
 
+  const context = Route.useRouteContext()
+
   const [form] = Form.useForm<FormData>()
 
   const { data: adminCategoriesTreeData } = useQuery(
-    adminCategoriesTreeQueryOptions
+    context.adminCategoriesTreeQueryOptions
   )
   /**
    * 补充顶级分类和缩进

@@ -45,7 +45,7 @@ export function f2b<ID extends number | undefined = undefined>(
     // 补充事业部 id 用于表单提交
     department_id: extraData.departmentId,
     // 根据 name 取回对象
-    try_disease: formData.try_disease.map(
+    try_disease: formData.try_disease?.map(
       (item) =>
         extraData.goodsDisease?.find((disease) => disease.icd_name === item)?.id
     ),

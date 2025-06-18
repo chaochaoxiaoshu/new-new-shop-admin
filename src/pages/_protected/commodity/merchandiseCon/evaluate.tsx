@@ -45,59 +45,53 @@ import { useUserStore } from '@/stores'
 
 const LIST_KEY = 'comments'
 
-const CommentsSearchSchema = type({
-  'goods_id?': 'number',
-  'name?': 'string',
-  'order_id?': 'string',
-  'department?': 'number',
-  'display?': '1 | 2',
-  'start_time?': 'number',
-  'end_time?': 'number',
-  page_index: ['number', '=', 1],
-  page_size: ['number', '=', 10]
-})
-
-const departmentsQueryOptions = queryOptions({
-  queryKey: ['departments'],
-  queryFn: () =>
-    getDepartments({
-      pageIndex: 1,
-      pageSize: 9999
-    })
-})
-
-function getCommentsQueryOptions(search: typeof CommentsSearchSchema.infer) {
-  const signedDepartment = useUserStore.getState().departmentId!
-  return queryOptions({
-    queryKey: [LIST_KEY, search, signedDepartment],
-    queryFn: () =>
-      getComments({
-        ...search,
-        department:
-          signedDepartment === 0 ? search.department : signedDepartment
-      }),
-    placeholderData: keepPreviousData
-  })
-}
-
 export const Route = createFileRoute(
   '/_protected/commodity/merchandiseCon/evaluate'
 )({
-  validateSearch: CommentsSearchSchema,
-  loader: () => {
-    queryClient.prefetchQuery(departmentsQueryOptions)
-    return queryClient.ensureQueryData(
-      getCommentsQueryOptions({
-        page_index: 1,
-        page_size: 10
+  validateSearch: type({
+    'goods_id?': 'number',
+    'name?': 'string',
+    'order_id?': 'string',
+    'department?': 'number',
+    'display?': '1 | 2',
+    'start_time?': 'number',
+    'end_time?': 'number',
+    page_index: ['number', '=', 1],
+    page_size: ['number', '=', 10]
+  }),
+  beforeLoad: ({ search }) => ({
+    departmentsQueryOptions: queryOptions({
+      queryKey: ['departments'],
+      queryFn: () =>
+        getDepartments({
+          pageIndex: 1,
+          pageSize: 9999
+        })
+    }),
+    getCommentsQueryOptions: () => {
+      const signedDepartment = useUserStore.getState().departmentId!
+      return queryOptions({
+        queryKey: [LIST_KEY, search, signedDepartment],
+        queryFn: () =>
+          getComments({
+            ...search,
+            department:
+              signedDepartment === 0 ? search.department : signedDepartment
+          }),
+        placeholderData: keepPreviousData
       })
-    )
+    }
+  }),
+  loader: async ({ context }) => {
+    queryClient.prefetchQuery(context.departmentsQueryOptions)
+    await queryClient.prefetchQuery(context.getCommentsQueryOptions())
   },
   component: CommentsView,
   head: () => getHead('商品评价')
 })
 
 function CommentsView() {
+  const context = Route.useRouteContext()
   const search = Route.useSearch()
   const navigate = Route.useNavigate()
   const departmentId = useUserStore((store) => store.departmentId)
@@ -106,11 +100,9 @@ function CommentsView() {
   /* ------------------------------ Search START ------------------------------ */
   const [tempSearch, setTempSearch] = useState(search)
 
-  const handleUpdateSearchParam = <
-    K extends keyof typeof CommentsSearchSchema.infer
-  >(
+  const handleUpdateSearchParam = <K extends keyof typeof search>(
     key: K,
-    value: (typeof CommentsSearchSchema.infer)[K]
+    value: (typeof search)[K]
   ) => {
     setTempSearch((prev) => ({ ...prev, [key]: value }))
   }
@@ -129,9 +121,9 @@ function CommentsView() {
   }
   /* ------------------------------- Search END ------------------------------- */
 
-  const { data: departments } = useQuery(departmentsQueryOptions)
+  const { data: departments } = useQuery(context.departmentsQueryOptions)
 
-  const { data, isFetching } = useQuery(getCommentsQueryOptions(search))
+  const { data, isFetching } = useQuery(context.getCommentsQueryOptions())
 
   const { mutate: handleToggleVisibility } = useMutation({
     mutationKey: ['toggle-comment-visibility'],
@@ -141,7 +133,7 @@ function CommentsView() {
     ...getNotifs({
       key: 'toggle-comment-visibility',
       onSuccess: () => {
-        queryClient.invalidateQueries(getCommentsQueryOptions(search))
+        queryClient.invalidateQueries(context.getCommentsQueryOptions())
       }
     })
   })
@@ -154,9 +146,7 @@ function CommentsView() {
         <ReplyForm
           id={id}
           onSuccess={async () => {
-            await queryClient.invalidateQueries({
-              queryKey: [LIST_KEY]
-            })
+            await queryClient.invalidateQueries({ queryKey: [LIST_KEY] })
             modalIns?.close()
           }}
           onCancel={() => modalIns?.close()}

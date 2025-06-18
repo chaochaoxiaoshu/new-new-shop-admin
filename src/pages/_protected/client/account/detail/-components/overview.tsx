@@ -2,35 +2,27 @@ import { useState } from 'react'
 
 import { Divider, Select, Spin } from '@arco-design/web-react'
 import { useQuery } from '@tanstack/react-query'
-import { useSearch } from '@tanstack/react-router'
+import { useRouteContext } from '@tanstack/react-router'
 
-import {
-  getCustomerProfile,
-  getCustomerPromotion,
-  getCustomerProperty
-} from '@/api'
 import customerDetail0 from '@/assets/customer/customer_detail_0.png'
 import customerDetail1 from '@/assets/customer/customer_detail_1.png'
 import customerDetail2 from '@/assets/customer/customer_detail_2.png'
 import { formatDateTime } from '@/lib'
 
 export function Overview() {
-  const search = useSearch({ from: '/_protected/client/account/detail/' })
-
-  const { data: consumptionData, isPending: consumptionPending } = useQuery({
-    queryKey: ['customer-profile', search.id],
-    queryFn: () => getCustomerProfile({ user_id: search.id })
+  const context = useRouteContext({
+    from: '/_protected/client/account/detail/'
   })
 
-  const { data: accountData, isPending: accountPending } = useQuery({
-    queryKey: ['customer-property', search.id],
-    queryFn: () => getCustomerProperty({ user_id: search.id })
-  })
-
-  const { data: promotionData, isPending: promotionPending } = useQuery({
-    queryKey: ['customer-promotion', search.id],
-    queryFn: () => getCustomerPromotion({ user_id: search.id })
-  })
+  const { data: consumptionData, isPending: consumptionPending } = useQuery(
+    context.customerProfileQueryOptions
+  )
+  const { data: accountData, isPending: accountPending } = useQuery(
+    context.customerPropertyQueryOptions
+  )
+  const { data: promotionData, isPending: promotionPending } = useQuery(
+    context.customerPromotionQueryOptions
+  )
 
   const [promotionViewMode, setPromotionViewMode] = useState<
     'overview' | 'detail'

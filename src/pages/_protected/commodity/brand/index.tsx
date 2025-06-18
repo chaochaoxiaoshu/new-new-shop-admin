@@ -45,51 +45,45 @@ import { useUserStore } from '@/stores'
 
 const LIST_KEY = 'brands'
 
-const BrandsSearchSchema = type({
-  'name?': 'string',
-  'department_id?': 'number',
-  page_index: ['number', '=', 1],
-  page_size: ['number', '=', 10]
-})
-
-const departmentsQueryOptions = queryOptions({
-  queryKey: ['departments'],
-  queryFn: () =>
-    getDepartments({
-      pageIndex: 1,
-      pageSize: 9999
-    })
-})
-
-function getBrandsQueryOptions(search: typeof BrandsSearchSchema.infer) {
-  const signedDepartment = useUserStore.getState().departmentId!
-  return queryOptions({
-    queryKey: [LIST_KEY, search, signedDepartment],
-    queryFn: () =>
-      getBrands({
-        ...search,
-        department_id:
-          signedDepartment === 0 ? search.department_id : signedDepartment
-      }),
-    placeholderData: keepPreviousData
-  })
-}
-
 export const Route = createFileRoute('/_protected/commodity/brand/')({
-  validateSearch: BrandsSearchSchema,
-  loader: () => {
-    return queryClient.ensureQueryData(
-      getBrandsQueryOptions({
-        page_index: 1,
-        page_size: 10
+  validateSearch: type({
+    'name?': 'string',
+    'department_id?': 'number',
+    page_index: ['number', '=', 1],
+    page_size: ['number', '=', 10]
+  }),
+  beforeLoad: ({ search }) => ({
+    departmentsQueryOptions: queryOptions({
+      queryKey: ['departments'],
+      queryFn: () =>
+        getDepartments({
+          pageIndex: 1,
+          pageSize: 9999
+        })
+    }),
+    getBrandsQueryOptions: () => {
+      const signedDepartment = useUserStore.getState().departmentId!
+      return queryOptions({
+        queryKey: [LIST_KEY, search, signedDepartment],
+        queryFn: () =>
+          getBrands({
+            ...search,
+            department_id:
+              signedDepartment === 0 ? search.department_id : signedDepartment
+          }),
+        placeholderData: keepPreviousData
       })
-    )
+    }
+  }),
+  loader: async ({ context }) => {
+    await queryClient.prefetchQuery(context.getBrandsQueryOptions())
   },
   component: BrandView,
   head: () => getHead('商品品牌')
 })
 
 function BrandView() {
+  const context = Route.useRouteContext()
   const search = Route.useSearch()
   const navigate = Route.useNavigate()
   const departmentId = useUserStore((store) => store.departmentId)
@@ -101,11 +95,9 @@ function BrandView() {
   /* ------------------------------ Search START ------------------------------ */
   const [tempSearch, setTempSearch] = useState(search)
 
-  const handleUpdateSearchParam = <
-    K extends keyof typeof BrandsSearchSchema.infer
-  >(
+  const handleUpdateSearchParam = <K extends keyof typeof search>(
     key: K,
-    value: (typeof BrandsSearchSchema.infer)[K]
+    value: (typeof search)[K]
   ) => {
     setTempSearch((prev) => ({ ...prev, [key]: value }))
   }
@@ -124,9 +116,9 @@ function BrandView() {
   }
   /* ------------------------------- Search END ------------------------------- */
 
-  const { data: departments } = useQuery(departmentsQueryOptions)
+  const { data: departments } = useQuery(context.departmentsQueryOptions)
 
-  const { data, isFetching } = useQuery(getBrandsQueryOptions(search))
+  const { data, isFetching } = useQuery(context.getBrandsQueryOptions())
 
   const handleAdd = () => {
     const modalIns = openModal({

@@ -28,43 +28,35 @@ import { EditForm } from '.'
 
 const LIST_KEY = 'goods-secondary-categories'
 
-const GoodsSecondaryCategoriesSearchSchema = type({
-  id: 'number',
-  'name?': 'string',
-  page_index: ['number', '=', 1],
-  page_size: ['number', '=', 10]
-})
-
-function getGoodsSecondaryCategoriesQueryOptions(
-  search: typeof GoodsSecondaryCategoriesSearchSchema.infer
-) {
-  return queryOptions({
-    queryKey: [LIST_KEY, search],
-    queryFn: () =>
-      getGoodsSecondaryCategories({
-        ...search,
-        department: useUserStore.getState().departmentId!
-      }),
-    placeholderData: keepPreviousData
-  })
-}
-
 export const Route = createFileRoute('/_protected/commodity/category/info')({
-  validateSearch: GoodsSecondaryCategoriesSearchSchema,
-  loaderDeps: ({ search }) => ({ id: search.id }),
-  component: RouteComponent,
-  loader: ({ deps }) =>
-    queryClient.ensureQueryData(
-      getGoodsSecondaryCategoriesQueryOptions({
-        id: deps.id,
-        page_index: 1,
-        page_size: 10
-      })
-    ),
+  validateSearch: type({
+    id: 'number',
+    'name?': 'string',
+    page_index: ['number', '=', 1],
+    page_size: ['number', '=', 10]
+  }),
+  beforeLoad: ({ search }) => ({
+    goodsSecondaryCategoriesQueryOptions: queryOptions({
+      queryKey: [LIST_KEY, search],
+      queryFn: () =>
+        getGoodsSecondaryCategories({
+          ...search,
+          department: useUserStore.getState().departmentId!
+        }),
+      placeholderData: keepPreviousData
+    })
+  }),
+  loader: async ({ context }) => {
+    await queryClient.prefetchQuery(
+      context.goodsSecondaryCategoriesQueryOptions
+    )
+  },
+  component: GoodsSecondaryCategoriesView,
   head: () => getHead('商品二级/分类')
 })
 
-function RouteComponent() {
+function GoodsSecondaryCategoriesView() {
+  const context = Route.useRouteContext()
   const search = Route.useSearch()
   const navigate = Route.useNavigate()
   const [openModal, contextHolder] = useMyModal()
@@ -76,11 +68,9 @@ function RouteComponent() {
   /* ------------------------------ Search START ------------------------------ */
   const [tempSearch, setTempSearch] = useState(search)
 
-  const handleUpdateSearchParam = <
-    K extends keyof typeof GoodsSecondaryCategoriesSearchSchema.infer
-  >(
+  const handleUpdateSearchParam = <K extends keyof typeof search>(
     key: K,
-    value: (typeof GoodsSecondaryCategoriesSearchSchema.infer)[K]
+    value: (typeof search)[K]
   ) => {
     setTempSearch((prev) => ({ ...prev, [key]: value }))
   }
@@ -101,7 +91,7 @@ function RouteComponent() {
   /* ------------------------------- Search END ------------------------------- */
 
   const { data, isFetching } = useQuery(
-    getGoodsSecondaryCategoriesQueryOptions(search)
+    context.goodsSecondaryCategoriesQueryOptions
   )
 
   const handleAdd = () => {

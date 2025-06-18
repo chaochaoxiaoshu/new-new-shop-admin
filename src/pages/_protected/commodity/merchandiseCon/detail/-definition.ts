@@ -121,7 +121,7 @@ export type GoodsFormData = {
   /**
    * 适用疾病
    */
-  try_disease: string[]
+  try_disease?: string[]
   /**
    * 药店
    */

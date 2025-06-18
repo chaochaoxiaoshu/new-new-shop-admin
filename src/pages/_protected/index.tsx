@@ -50,59 +50,57 @@ import { useUserStore } from '@/stores'
 
 type Precision = 'year' | 'month' | 'day'
 
-const toboBoardQueryOptions = queryOptions({
-  queryKey: ['todo-board'],
-  queryFn: () =>
-    getTodoBoard({
-      department_id: useUserStore.getState().departmentId!
-    })
-})
-
-const ordersStatisticQueryOptions = queryOptions({
-  queryKey: ['orders-statistic'],
-  queryFn: () =>
-    getOrdersStatistic({
-      department: useUserStore.getState().departmentId!
-    })
-})
-
-const customersStatisticQueryOptions = queryOptions({
-  queryKey: ['customers-statistic'],
-  queryFn: () =>
-    getCustomersStatistic({
-      department: useUserStore.getState().departmentId!
-    })
-})
-
-function getDataQueryOptions(
-  precision: Precision,
-  date: string,
-  by?: 'store' | 'customer'
-) {
-  const precisionMap = {
-    day: 1,
-    month: 2,
-    year: 3
-  } as const
-
-  return queryOptions({
-    queryKey: ['store-data', precision, date, by, precisionMap[precision]],
-    queryFn: () =>
-      getShopOrderData({
-        type: precisionMap[precision],
-        date: completeDateFormat(date),
-        department_id: useUserStore.getState().departmentId!
-      })
-  })
-}
-
 export const Route = createFileRoute('/_protected/')({
-  loader: () => {
-    queryClient.prefetchQuery(toboBoardQueryOptions)
-    queryClient.prefetchQuery(ordersStatisticQueryOptions)
-    queryClient.prefetchQuery(customersStatisticQueryOptions)
+  beforeLoad: () => ({
+    toboBoardQueryOptions: queryOptions({
+      queryKey: ['todo-board'],
+      queryFn: () =>
+        getTodoBoard({
+          department_id: useUserStore.getState().departmentId!
+        })
+    }),
+    ordersStatisticQueryOptions: queryOptions({
+      queryKey: ['orders-statistic'],
+      queryFn: () =>
+        getOrdersStatistic({
+          department: useUserStore.getState().departmentId!
+        })
+    }),
+    customersStatisticQueryOptions: queryOptions({
+      queryKey: ['customers-statistic'],
+      queryFn: () =>
+        getCustomersStatistic({
+          department: useUserStore.getState().departmentId!
+        })
+    }),
+    getDataQueryOptions: (
+      precision: Precision,
+      date: string,
+      by?: 'store' | 'customer'
+    ) => {
+      const precisionMap = {
+        day: 1,
+        month: 2,
+        year: 3
+      } as const
+
+      return queryOptions({
+        queryKey: ['store-data', precision, date, by, precisionMap[precision]],
+        queryFn: () =>
+          getShopOrderData({
+            type: precisionMap[precision],
+            date: completeDateFormat(date),
+            department_id: useUserStore.getState().departmentId!
+          })
+      })
+    }
+  }),
+  loader: ({ context }) => {
+    queryClient.prefetchQuery(context.toboBoardQueryOptions)
+    queryClient.prefetchQuery(context.ordersStatisticQueryOptions)
+    queryClient.prefetchQuery(context.customersStatisticQueryOptions)
     queryClient.prefetchQuery(
-      getDataQueryOptions('day', dayjs(new Date()).format('YYYY-MM-DD'))
+      context.getDataQueryOptions('day', dayjs(new Date()).format('YYYY-MM-DD'))
     )
   },
   head: () => getHead('首页'),
@@ -134,7 +132,8 @@ function HomeView() {
 }
 
 function TodoBoard() {
-  const { data, isPending } = useQuery(toboBoardQueryOptions)
+  const context = Route.useRouteContext()
+  const { data, isPending } = useQuery(context.toboBoardQueryOptions)
 
   return (
     <Spin loading={isPending}>
@@ -247,6 +246,8 @@ function ShortcutsItem(props: ShortcutsItemProps) {
 }
 
 function StoreData() {
+  const context = Route.useRouteContext()
+
   const [precision, setPrecision] = useState<Precision>('day')
   const [date, setDate] = useState(dayjs(new Date()).format('YYYY-MM-DD'))
   /**
@@ -255,7 +256,7 @@ function StoreData() {
   const completedDate = completeDateFormat(date)
 
   const { data, isPending } = useQuery(
-    getDataQueryOptions(precision, date, 'store')
+    context.getDataQueryOptions(precision, date, 'store')
   )
 
   return (
@@ -469,6 +470,8 @@ function StoreDataItem(props: StoreDataItemProps) {
 }
 
 function StatisticCharts() {
+  const context = Route.useRouteContext()
+
   const containerRef = useRef<HTMLDivElement | null>(null)
   const containerSize = useSize(containerRef)
 
@@ -488,10 +491,10 @@ function StatisticCharts() {
   })()
 
   const { data: ordersStatistic, isPending: ordersStatisticPending } = useQuery(
-    ordersStatisticQueryOptions
+    context.ordersStatisticQueryOptions
   )
   const { data: customersStatistic, isPending: customersStatisticPending } =
-    useQuery(customersStatisticQueryOptions)
+    useQuery(context.customersStatisticQueryOptions)
 
   return (
     <div
@@ -593,6 +596,8 @@ function StatisticCharts() {
 }
 
 function CustomerData() {
+  const context = Route.useRouteContext()
+
   const [precision, setPrecision] = useState<Precision>('day')
   const [date, setDate] = useState(dayjs(new Date()).format('YYYY-MM-DD'))
   /**
@@ -601,7 +606,7 @@ function CustomerData() {
   const completedDate = completeDateFormat(date)
 
   const { data, isPending } = useQuery(
-    getDataQueryOptions(precision, date, 'customer')
+    context.getDataQueryOptions(precision, date, 'customer')
   )
 
   return (

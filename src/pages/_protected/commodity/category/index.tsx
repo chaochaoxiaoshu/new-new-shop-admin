@@ -39,67 +39,63 @@ import { useUserStore } from '@/stores'
 
 const LIST_KEY = 'goods-categories'
 
-const GoodsCategoriesSearchSchema = type({
-  'name?': 'string',
-  'department?': 'number',
-  page_index: ['number', '=', 1],
-  page_size: ['number', '=', 10]
-})
-
-const departmentsQueryOptions = queryOptions({
-  queryKey: ['departments'],
-  queryFn: () =>
-    getDepartments({
-      pageIndex: 1,
-      pageSize: 9999
-    })
-})
-
-const getGoodsCategoriesTreeQueryOptions = (department?: number) => {
-  const signedDepartment = useUserStore.getState().departmentId!
-  return queryOptions({
-    queryKey: ['goods-categories-tree', department, signedDepartment],
-    queryFn: () =>
-      getGoodsCategoriesTree({
-        department: signedDepartment === 0 ? department : signedDepartment
-      }),
-    placeholderData: keepPreviousData
-  })
-}
-
-function getGoodsCategoriesQueryOptions(
-  search: typeof GoodsCategoriesSearchSchema.infer
-) {
-  const signedDepartment = useUserStore.getState().departmentId!
-  return queryOptions({
-    queryKey: [LIST_KEY, search, signedDepartment],
-    queryFn: () =>
-      getGoodsCategories({
-        ...search,
-        department:
-          signedDepartment === 0 ? search.department : signedDepartment
-      }),
-    placeholderData: keepPreviousData
-  })
-}
-
 export const Route = createFileRoute('/_protected/commodity/category/')({
-  validateSearch: GoodsCategoriesSearchSchema,
-  loaderDeps: ({ search }) => ({ department: search.department }),
-  component: GoodsCategoryView,
-  loader: ({ deps }) => {
-    queryClient.prefetchQuery(departmentsQueryOptions)
-    queryClient.prefetchQuery(
-      getGoodsCategoriesTreeQueryOptions(deps.department)
-    )
-    return queryClient.ensureQueryData(
-      getGoodsCategoriesQueryOptions({ page_index: 1, page_size: 10 })
-    )
+  validateSearch: type({
+    'name?': 'string',
+    'department?': 'number',
+    page_index: ['number', '=', 1],
+    page_size: ['number', '=', 10]
+  }),
+  beforeLoad: ({ search }) => ({
+    departmentsQueryOptions: queryOptions({
+      queryKey: ['departments'],
+      queryFn: () =>
+        getDepartments({
+          pageIndex: 1,
+          pageSize: 9999
+        })
+    }),
+    getGoodsCategoriesTreeQueryOptions: () => {
+      const signedDepartment = useUserStore.getState().departmentId!
+      return queryOptions({
+        queryKey: [
+          'goods-categories-tree',
+          search.department,
+          signedDepartment
+        ],
+        queryFn: () =>
+          getGoodsCategoriesTree({
+            department:
+              signedDepartment === 0 ? search.department : signedDepartment
+          }),
+        placeholderData: keepPreviousData
+      })
+    },
+    getGoodsCategoriesQueryOptions: () => {
+      const signedDepartment = useUserStore.getState().departmentId!
+      return queryOptions({
+        queryKey: [LIST_KEY, search, signedDepartment],
+        queryFn: () =>
+          getGoodsCategories({
+            ...search,
+            department:
+              signedDepartment === 0 ? search.department : signedDepartment
+          }),
+        placeholderData: keepPreviousData
+      })
+    }
+  }),
+  loader: async ({ context }) => {
+    queryClient.prefetchQuery(context.departmentsQueryOptions)
+    queryClient.prefetchQuery(context.getGoodsCategoriesTreeQueryOptions())
+    await queryClient.prefetchQuery(context.getGoodsCategoriesQueryOptions())
   },
+  component: GoodsCategoryView,
   head: () => getHead('商品分类')
 })
 
 function GoodsCategoryView() {
+  const context = Route.useRouteContext()
   const search = Route.useSearch()
   const navigate = Route.useNavigate()
   const [openModal, contextHolder] = useMyModal()
@@ -111,11 +107,9 @@ function GoodsCategoryView() {
   /* ------------------------------ Search START ------------------------------ */
   const [tempSearch, setTempSearch] = useState(search)
 
-  const handleUpdateSearchParam = <
-    K extends keyof typeof GoodsCategoriesSearchSchema.infer
-  >(
+  const handleUpdateSearchParam = <K extends keyof typeof search>(
     key: K,
-    value: (typeof GoodsCategoriesSearchSchema.infer)[K]
+    value: (typeof search)[K]
   ) => {
     setTempSearch((prev) => ({ ...prev, [key]: value }))
   }
@@ -134,12 +128,14 @@ function GoodsCategoryView() {
   }
   /* ------------------------------- Search END ------------------------------- */
 
-  const { data: departments } = useQuery(departmentsQueryOptions)
+  const { data: departments } = useQuery(context.departmentsQueryOptions)
   const { data: goodsCategoriesTree } = useQuery(
-    getGoodsCategoriesTreeQueryOptions(search.department)
+    context.getGoodsCategoriesTreeQueryOptions()
   )
 
-  const { data, isFetching } = useQuery(getGoodsCategoriesQueryOptions(search))
+  const { data, isFetching } = useQuery(
+    context.getGoodsCategoriesQueryOptions()
+  )
 
   const handleAdd = () => {
     const modalIns = openModal({
@@ -362,12 +358,12 @@ interface EditFormProps {
 
 export function EditForm(props: EditFormProps) {
   const { initialData, onSuccess, onCancel, onError } = props
-  const search = Route.useSearch()
+  const context = Route.useRouteContext()
 
   const [form] = Form.useForm<FormData>()
 
   const { data: goodsCategoriesTreeData } = useQuery(
-    getGoodsCategoriesTreeQueryOptions(search.department)
+    context.getGoodsCategoriesTreeQueryOptions()
   )
   /**
    * 补充顶级分类和缩进

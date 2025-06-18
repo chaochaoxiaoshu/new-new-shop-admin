@@ -2,6 +2,9 @@ interface BaseLayoutProps {
   children?: React.ReactNode
 }
 
+/**
+ * 基础布局，一个白色的圆角卡片
+ */
 export function BaseLayout(props: BaseLayoutProps) {
   const { children } = props
 

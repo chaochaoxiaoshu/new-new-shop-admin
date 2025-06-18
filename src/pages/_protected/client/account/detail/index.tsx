@@ -1,6 +1,7 @@
 import { type } from 'arktype'
 
 import { Avatar, Button, Tabs } from '@arco-design/web-react'
+import { queryOptions, useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 
 import {
@@ -9,6 +10,7 @@ import {
   getCustomerPromotion,
   getCustomerProperty
 } from '@/api'
+import { BaseLayout } from '@/components/base-layout'
 import { MyTag } from '@/components/my-tag'
 import { getHead } from '@/helpers'
 import { formatDateTime, queryClient } from '@/lib'
@@ -16,41 +18,50 @@ import { useUserStore } from '@/stores'
 
 import { Overview } from './-components/overview'
 
-const CustomerDetailSearchSchema = type({
-  id: 'number'
-})
-
 export const Route = createFileRoute('/_protected/client/account/detail/')({
-  validateSearch: CustomerDetailSearchSchema,
-  component: CustomerDetailView,
+  validateSearch: type({
+    id: 'number'
+  }),
   loaderDeps: ({ search }) => ({ id: search.id }),
-  loader: ({ deps }) => {
-    queryClient.prefetchQuery({
-      queryKey: ['customer-profile', deps.id],
-      queryFn: () => getCustomerProfile({ user_id: deps.id })
-    })
-    queryClient.prefetchQuery({
-      queryKey: ['customer-property', deps.id],
-      queryFn: () => getCustomerProperty({ user_id: deps.id })
-    })
-    queryClient.prefetchQuery({
-      queryKey: ['customer-promotion', deps.id],
-      queryFn: () => getCustomerPromotion({ user_id: deps.id })
-    })
-    return queryClient.ensureQueryData({
-      queryKey: ['customer-info', deps.id],
-      queryFn: () =>
-        getCustomerInfo({
-          id: deps.id,
-          department: useUserStore.getState().departmentId!
-        })
-    })
+  beforeLoad: ({ search }) => {
+    return {
+      customerInfoQueryOptions: queryOptions({
+        queryKey: ['customer-info', search.id],
+        queryFn: () =>
+          getCustomerInfo({
+            id: search.id,
+            department: useUserStore.getState().departmentId!
+          })
+      }),
+      customerProfileQueryOptions: queryOptions({
+        queryKey: ['customer-profile', search.id],
+        queryFn: () => getCustomerProfile({ user_id: search.id })
+      }),
+      customerPropertyQueryOptions: queryOptions({
+        queryKey: ['customer-property', search.id],
+        queryFn: () => getCustomerProperty({ user_id: search.id })
+      }),
+      customerPromotionQueryOptions: queryOptions({
+        queryKey: ['customer-promotion', search.id],
+        queryFn: () => getCustomerPromotion({ user_id: search.id })
+      })
+    }
   },
-  head: () => getHead('客户详情')
+  loader: async ({ context }) => {
+    queryClient.prefetchQuery(context.customerProfileQueryOptions)
+    queryClient.prefetchQuery(context.customerPropertyQueryOptions)
+    queryClient.prefetchQuery(context.customerPromotionQueryOptions)
+    return queryClient.ensureQueryData(context.customerInfoQueryOptions)
+  },
+  head: () => getHead('客户详情'),
+  component: CustomerDetailView,
+  pendingComponent: BaseLayout
 })
 
 function CustomerDetailView() {
-  const data = Route.useLoaderData()
+  const context = Route.useRouteContext()
+  const { data } = useSuspenseQuery(context.customerInfoQueryOptions)
+
   return (
     <div className='min-w-[720px]'>
       <div className='rounded-md bg-white'>

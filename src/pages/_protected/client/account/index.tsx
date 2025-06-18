@@ -2,14 +2,7 @@ import { type } from 'arktype'
 import { CheckCircle2, Circle, Ellipsis, RotateCcw, Search } from 'lucide-react'
 import { useState } from 'react'
 
-import {
-  Button,
-  Checkbox,
-  Dropdown,
-  Image,
-  Input,
-  Menu
-} from '@arco-design/web-react'
+import { Button, Checkbox, Dropdown, Input, Menu } from '@arco-design/web-react'
 import {
   keepPreviousData,
   queryOptions,
@@ -25,6 +18,7 @@ import {
   getTagGroups,
   setCustomerTags
 } from '@/api'
+import { MyImage } from '@/components/my-image'
 import { MyTable } from '@/components/my-table'
 import { MyTag } from '@/components/my-tag'
 import { TableLayout } from '@/components/table-layout'
@@ -41,48 +35,40 @@ import { useUserStore } from '@/stores'
 
 const LIST_KEY = 'customers'
 
-const CustomersSearchSchema = type({
-  'mobile?': 'string',
-  'nickname?': 'string',
-  page_index: ['number', '=', 1],
-  page_size: ['number', '=', 10]
-})
-
-function getCustomersQueryOptions(search: typeof CustomersSearchSchema.infer) {
-  return queryOptions({
-    queryKey: [LIST_KEY, search],
-    queryFn: () =>
-      getCustomers({
-        ...search,
-        with_fields: ['all'],
-        department: useUserStore.getState().departmentId!
-      }),
-    placeholderData: keepPreviousData
-  })
-}
-
-const allTagsQueryOptions = queryOptions({
-  queryKey: ['tags'],
-  queryFn: () =>
-    getTagGroups({ department_id: useUserStore.getState().departmentId! })
-})
-
 export const Route = createFileRoute('/_protected/client/account/')({
-  validateSearch: CustomersSearchSchema,
-  loader: () => {
-    queryClient.prefetchQuery(allTagsQueryOptions)
-    return queryClient.ensureQueryData(
-      getCustomersQueryOptions({
-        page_index: 1,
-        page_size: 10
-      })
-    )
+  validateSearch: type({
+    'mobile?': 'string',
+    'nickname?': 'string',
+    page_index: ['number', '=', 1],
+    page_size: ['number', '=', 10]
+  }),
+  beforeLoad: ({ search }) => ({
+    customersQueryOptions: queryOptions({
+      queryKey: [LIST_KEY, search],
+      queryFn: () =>
+        getCustomers({
+          ...search,
+          with_fields: ['all'],
+          department: useUserStore.getState().departmentId!
+        }),
+      placeholderData: keepPreviousData
+    }),
+    allTagsQueryOptions: queryOptions({
+      queryKey: ['tags'],
+      queryFn: () =>
+        getTagGroups({ department_id: useUserStore.getState().departmentId! })
+    })
+  }),
+  loader: async ({ context }) => {
+    queryClient.prefetchQuery(context.allTagsQueryOptions)
+    await queryClient.prefetchQuery(context.customersQueryOptions)
   },
   component: CustomersView,
   head: () => getHead('客户列表')
 })
 
 function CustomersView() {
+  const context = Route.useRouteContext()
   const search = Route.useSearch()
   const navigate = Route.useNavigate()
   const Link = Route.Link
@@ -94,11 +80,9 @@ function CustomersView() {
   /* ------------------------------ Search START ------------------------------ */
   const [tempSearch, setTempSearch] = useState(search)
 
-  const handleUpdateSearchParam = <
-    K extends keyof typeof CustomersSearchSchema.infer
-  >(
+  const handleUpdateSearchParam = <K extends keyof typeof search>(
     key: K,
-    value: (typeof CustomersSearchSchema.infer)[K]
+    value: (typeof search)[K]
   ) => {
     setTempSearch((prev) => ({ ...prev, [key]: value }))
   }
@@ -117,9 +101,9 @@ function CustomersView() {
   }
   /* ------------------------------- Search END ------------------------------- */
 
-  const { data: allTags } = useQuery(allTagsQueryOptions)
+  const { data: allTags } = useQuery(context.allTagsQueryOptions)
 
-  const { data, isFetching } = useQuery(getCustomersQueryOptions(search))
+  const { data, isFetching } = useQuery(context.customersQueryOptions)
 
   const handleSetTags = (item: GetCustomersRes) => {
     const modalIns = openModal({
@@ -133,9 +117,9 @@ function CustomersView() {
             await queryClient.invalidateQueries({
               queryKey: [LIST_KEY]
             })
-            // await queryClient.invalidateQueries({
-            //   queryKey: ['customer-info', item.id]
-            // })
+            await queryClient.invalidateQueries({
+              queryKey: ['customer-info', item.id]
+            })
             modalIns?.close()
           }}
           onCancel={() => modalIns?.close()}
@@ -148,7 +132,7 @@ function CustomersView() {
     {
       title: '头像',
       render: (_, item) => (
-        <Image
+        <MyImage
           src={item.avatar}
           width={40}
           height={40}
@@ -383,7 +367,7 @@ function SetTagsForm(props: SetTagsFormProps) {
         value={selectedTags.map((tag) => tag.id)}
         onChange={(value) => handleSetTags(value)}
       >
-        <div className='flex flex-col space-y-2'>
+        <div className='flex flex-col space-y-2 max-h-[calc(100vh-200px)] overflow-y-auto'>
           {tagGroups.map((group) => (
             <div key={group.id} className='flex flex-col space-y-2'>
               <span className='text-sm text-muted-foreground'>

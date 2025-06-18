@@ -1,9 +1,10 @@
+import { Button } from '@arco-design/web-react'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { Outlet, createRootRoute } from '@tanstack/react-router'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { Link, Outlet, createRootRoute } from '@tanstack/react-router'
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 
 import { RouterProgressBar } from '@/components/router-progress-bar'
-// import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-
 import { queryClient } from '@/lib'
 
 export const Route = createRootRoute({
@@ -12,8 +13,18 @@ export const Route = createRootRoute({
       <RouterProgressBar />
       <QueryClientProvider client={queryClient}>
         <Outlet />
+        <TanStackRouterDevtools position='bottom-left' />
+        <ReactQueryDevtools />
       </QueryClientProvider>
-      {/* <TanStackRouterDevtools position='top-left' /> */}
     </>
+  ),
+  notFoundComponent: () => (
+    <div className='flex flex-col items-center justify-center h-screen'>
+      <div className='text-7xl font-bold'>404</div>
+      <div className='text-base mt-2'>页面不存在</div>
+      <Link to='/' className='mt-6'>
+        <Button type='primary'>返回首页</Button>
+      </Link>
+    </div>
   )
 })

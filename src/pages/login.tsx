@@ -32,7 +32,7 @@ import {
   switchAuthorzie,
   wecomAuthorize
 } from '@/api'
-import { checkWxApiReady, getHead } from '@/helpers'
+import { checkWxApiReady, getHead, getNotifs } from '@/helpers'
 import { useUserStore } from '@/stores'
 
 const searchSchema = type({
@@ -244,7 +244,8 @@ function AuthView() {
   const { mutate: loginMutate, isPending: loginPending } = useMutation({
     mutationKey: ['login'],
     mutationFn: (req: LoginReq) => login(req),
-    onSuccess: (data) => handleLoginSuccess(data)
+    onSuccess: (data) => handleLoginSuccess(data),
+    onError: getNotifs({ key: 'login' }).onError
   })
 
   const {

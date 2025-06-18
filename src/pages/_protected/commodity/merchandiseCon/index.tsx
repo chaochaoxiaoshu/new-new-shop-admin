@@ -14,7 +14,6 @@ import {
   keepPreviousData,
   queryOptions,
   useMutation,
-  useQueries,
   useQuery
 } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
@@ -37,74 +36,64 @@ import { useUserStore } from '@/stores'
 
 const LIST_KEY = 'goods'
 
-const GoodsSearchSchema = type({
-  'name?': 'string',
-  'marketable?': '1 | 2',
-  'department_id?': 'number',
-  'brand_id?': 'number',
-  'is_lnternal?': '1 | 2',
-  'is_member_price?': '1 | 2',
-  'is_approve?': '1 | 2',
-  'is_hidelinks?': '1 | 2',
-  page_index: ['number', '=', 1],
-  page_size: ['number', '=', 10]
-})
-
-const departmentsQueryOptions = queryOptions({
-  queryKey: ['departments'],
-  queryFn: () => getDepartments({ pageIndex: 1, pageSize: 9999 })
-})
-
-const brandsQueryOptions = queryOptions({
-  queryKey: ['brands'],
-  queryFn: () =>
-    getBrands({
-      department_id: useUserStore.getState().departmentId!
-    })
-})
-
-const goodsPerCategoryCountsQueryOptions = queryOptions({
-  queryKey: ['goods-per-category-counts'],
-  queryFn: () =>
-    getGoodsStatus({ department_id: useUserStore.getState().departmentId! })
-})
-
-function getGoodsQueryOptions(search: typeof GoodsSearchSchema.infer) {
-  return queryOptions({
-    queryKey: [LIST_KEY, search],
-    queryFn: () =>
-      getGoods({
-        ...search,
-        with_fields: [
-          'goods_type_name',
-          'brand_name',
-          'products',
-          'images',
-          'goods_departype_name'
-        ]
-      }),
-    placeholderData: keepPreviousData
-  })
-}
-
 export const Route = createFileRoute('/_protected/commodity/merchandiseCon/')({
-  validateSearch: GoodsSearchSchema,
-  loader: () => {
-    queryClient.prefetchQuery(departmentsQueryOptions)
-    queryClient.prefetchQuery(brandsQueryOptions)
-    queryClient.prefetchQuery(goodsPerCategoryCountsQueryOptions)
-    return queryClient.ensureQueryData(
-      getGoodsQueryOptions({
-        page_index: 1,
-        page_size: 10
-      })
-    )
+  validateSearch: type({
+    'name?': 'string',
+    'marketable?': '1 | 2',
+    'department_id?': 'number',
+    'brand_id?': 'number',
+    'is_lnternal?': '1 | 2',
+    'is_member_price?': '1 | 2',
+    'is_approve?': '1 | 2',
+    'is_hidelinks?': '1 | 2',
+    page_index: ['number', '=', 1],
+    page_size: ['number', '=', 10]
+  }),
+  beforeLoad: ({ search }) => ({
+    departmentsQueryOptions: queryOptions({
+      queryKey: ['departments'],
+      queryFn: () => getDepartments({ pageIndex: 1, pageSize: 9999 })
+    }),
+    brandsQueryOptions: queryOptions({
+      queryKey: ['brands'],
+      queryFn: () =>
+        getBrands({
+          department_id: useUserStore.getState().departmentId!
+        })
+    }),
+    goodsPerCategoryCountsQueryOptions: queryOptions({
+      queryKey: ['goods-per-category-counts'],
+      queryFn: () =>
+        getGoodsStatus({ department_id: useUserStore.getState().departmentId! })
+    }),
+    goodsQueryOptions: queryOptions({
+      queryKey: [LIST_KEY, search],
+      queryFn: () =>
+        getGoods({
+          ...search,
+          with_fields: [
+            'goods_type_name',
+            'brand_name',
+            'products',
+            'images',
+            'goods_departype_name'
+          ]
+        }),
+      placeholderData: keepPreviousData
+    })
+  }),
+  loader: async ({ context }) => {
+    queryClient.prefetchQuery(context.departmentsQueryOptions)
+    queryClient.prefetchQuery(context.brandsQueryOptions)
+    queryClient.prefetchQuery(context.goodsPerCategoryCountsQueryOptions)
+    await queryClient.prefetchQuery(context.goodsQueryOptions)
   },
   component: GoodsView,
   head: () => getHead('商品管理')
 })
 
 function GoodsView() {
+  const context = Route.useRouteContext()
   const search = Route.useSearch()
   const navigate = Route.useNavigate()
   const Link = Route.Link
@@ -117,11 +106,9 @@ function GoodsView() {
   /* ------------------------------ Search START ------------------------------ */
   const [tempSearch, setTempSearch] = useState(search)
 
-  const handleUpdateSearchParam = <
-    K extends keyof typeof GoodsSearchSchema.infer
-  >(
+  const handleUpdateSearchParam = <K extends keyof typeof search>(
     key: K,
-    value: (typeof GoodsSearchSchema.infer)[K]
+    value: (typeof search)[K]
   ) => {
     setTempSearch((prev) => ({ ...prev, [key]: value }))
   }
@@ -140,13 +127,11 @@ function GoodsView() {
   }
   /* ------------------------------- Search END ------------------------------- */
 
-  const [departments, brandsData, goodsPerCategoryCounts] = useQueries({
-    queries: [
-      departmentsQueryOptions,
-      brandsQueryOptions,
-      goodsPerCategoryCountsQueryOptions
-    ]
-  })
+  const { data: departments } = useQuery(context.departmentsQueryOptions)
+  const { data: brandsData } = useQuery(context.brandsQueryOptions)
+  const { data: goodsPerCategoryCounts } = useQuery(
+    context.goodsPerCategoryCountsQueryOptions
+  )
 
   /* ------------------------------- 批量操作 START ------------------------------- */
   const [batchListOrDelistCurrent, setBatchListOrDelistCurrent] = useState<
@@ -174,7 +159,7 @@ function GoodsView() {
   })
   /* -------------------------------- 批量操作 END -------------------------------- */
 
-  const { data, isFetching } = useQuery(getGoodsQueryOptions(search))
+  const { data, isFetching } = useQuery(context.goodsQueryOptions)
 
   const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([])
 
@@ -204,11 +189,7 @@ function GoodsView() {
   })
 
   const handleShare = (goodsId: number) => {
-    // [TODO]: 分享商品
-  }
-
-  const handleViewComments = (goodsId: number) => {
-    // [TODO]: 查看评论
+    // [TODO]: 推广商品
   }
 
   const { columns, totalWidth } = defineTableColumns<GetGoodsRes>([
@@ -373,12 +354,12 @@ function GoodsView() {
                     删除
                   </Menu.Item>
                 )}
-                <Menu.Item
-                  key='viewComments'
-                  onClick={() => handleViewComments(item.goods_id!)}
+                <Link
+                  to='/commodity/merchandiseCon/evaluate'
+                  search={{ goods_id: item.goods_id! }}
                 >
-                  查看评价
-                </Menu.Item>
+                  <Menu.Item key='viewComments'>查看评价</Menu.Item>
+                </Link>
               </Menu>
             }
           >
@@ -425,7 +406,7 @@ function GoodsView() {
                   handleUpdateSearchParam('department_id', value as number)
                 }
               >
-                {departments.data?.items.map((item) => (
+                {departments?.items.map((item) => (
                   <Select.Option key={item.id} value={item.id!}>
                     {item.department_name}
                   </Select.Option>
@@ -441,7 +422,7 @@ function GoodsView() {
                 handleUpdateSearchParam('brand_id', value as number)
               }
             >
-              {brandsData.data?.items.map((item) => (
+              {brandsData?.items.map((item) => (
                 <Select.Option key={item.brand_id} value={item.brand_id!}>
                   {item.name}
                 </Select.Option>
@@ -528,11 +509,11 @@ function GoodsView() {
                     }
                   </span>
                   <span className='ml-1 text-accent'>
-                    {goodsPerCategoryCounts.data
+                    {goodsPerCategoryCounts
                       ? {
-                          '': `(${goodsPerCategoryCounts.data.total_goods})`,
-                          1: `(${goodsPerCategoryCounts.data.total_marketable})`,
-                          2: `(${goodsPerCategoryCounts.data.total_unmarketable})`
+                          '': `(${goodsPerCategoryCounts.total_goods})`,
+                          1: `(${goodsPerCategoryCounts.total_marketable})`,
+                          2: `(${goodsPerCategoryCounts.total_unmarketable})`
                         }[search.marketable ?? '']
                       : ''}
                   </span>
@@ -553,24 +534,24 @@ function GoodsView() {
               <Select.Option value={''}>
                 <span>全部商品</span>
                 <span className='ml-1 text-accent'>
-                  {goodsPerCategoryCounts.data
-                    ? `(${goodsPerCategoryCounts.data.total_goods})`
+                  {goodsPerCategoryCounts
+                    ? `(${goodsPerCategoryCounts.total_goods})`
                     : ''}
                 </span>
               </Select.Option>
               <Select.Option value={1}>
                 <span>上架商品</span>
                 <span className='ml-1 text-accent'>
-                  {goodsPerCategoryCounts.data
-                    ? `(${goodsPerCategoryCounts.data.total_marketable})`
+                  {goodsPerCategoryCounts
+                    ? `(${goodsPerCategoryCounts.total_marketable})`
                     : ''}
                 </span>
               </Select.Option>
               <Select.Option value={2}>
                 <span>下架商品</span>
                 <span className='ml-1 text-accent'>
-                  {goodsPerCategoryCounts.data
-                    ? `(${goodsPerCategoryCounts.data.total_unmarketable})`
+                  {goodsPerCategoryCounts
+                    ? `(${goodsPerCategoryCounts.total_unmarketable})`
                     : ''}
                 </span>
               </Select.Option>

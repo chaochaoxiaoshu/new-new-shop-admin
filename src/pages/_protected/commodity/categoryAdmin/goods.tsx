@@ -16,48 +16,36 @@ import { useUserStore } from '@/stores'
 
 const LIST_KEY = 'admin-categories-goods'
 
-const AdminCategoriesGoodsSearchSchema = type({
-  goods_cat_id: 'number',
-  'name?': 'string',
-  page_index: ['number', '=', 1],
-  page_size: ['number', '=', 10]
-})
-
-function getAdminCategoriesGoodsQueryOptions(
-  search: typeof AdminCategoriesGoodsSearchSchema.infer
-) {
-  return queryOptions({
-    queryKey: [LIST_KEY, search],
-    queryFn: () =>
-      getGoods({
-        ...search,
-        department_id: useUserStore.getState().departmentId!,
-        marketable: 1
-      }),
-    placeholderData: keepPreviousData
-  })
-}
-
 export const Route = createFileRoute(
   '/_protected/commodity/categoryAdmin/goods'
 )({
-  validateSearch: AdminCategoriesGoodsSearchSchema,
-  loaderDeps: ({ search }) => ({
-    goods_cat_id: search.goods_cat_id
+  validateSearch: type({
+    goods_cat_id: 'number',
+    'name?': 'string',
+    page_index: ['number', '=', 1],
+    page_size: ['number', '=', 10]
   }),
+  beforeLoad: ({ search }) => ({
+    adminCategoriesGoodsQueryOptions: queryOptions({
+      queryKey: [LIST_KEY, search],
+      queryFn: () =>
+        getGoods({
+          ...search,
+          department_id: useUserStore.getState().departmentId!,
+          marketable: 1
+        }),
+      placeholderData: keepPreviousData
+    })
+  }),
+  loader: async ({ context }) => {
+    await queryClient.prefetchQuery(context.adminCategoriesGoodsQueryOptions)
+  },
   component: AdminCategoriesGoodsView,
-  loader: ({ deps }) =>
-    queryClient.ensureQueryData(
-      getAdminCategoriesGoodsQueryOptions({
-        goods_cat_id: deps.goods_cat_id,
-        page_index: 1,
-        page_size: 10
-      })
-    ),
   head: () => getHead('总部分类/商品')
 })
 
 function AdminCategoriesGoodsView() {
+  const context = Route.useRouteContext()
   const navigate = Route.useNavigate()
   const search = Route.useSearch()
 
@@ -78,7 +66,7 @@ function AdminCategoriesGoodsView() {
   }
 
   const { data, isFetching } = useQuery(
-    getAdminCategoriesGoodsQueryOptions(search)
+    context.adminCategoriesGoodsQueryOptions
   )
 
   const { columns } = defineTableColumns<GetGoodsRes>([

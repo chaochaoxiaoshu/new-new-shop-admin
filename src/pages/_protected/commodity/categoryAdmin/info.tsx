@@ -27,44 +27,33 @@ import { EditForm } from '.'
 
 const LIST_KEY = 'admin-secondary-categories'
 
-const AdminSecondaryCategoriesSearchSchema = type({
-  id: 'number',
-  page_index: ['number', '=', 1],
-  page_size: ['number', '=', 10]
-})
-
-function getAdminSecondaryCategoriesQueryOptions(
-  search: typeof AdminSecondaryCategoriesSearchSchema.infer
-) {
-  return queryOptions({
-    queryKey: [LIST_KEY, search],
-    queryFn: () =>
-      getAdminSecondaryCategories({
-        ...search,
-        department: useUserStore.getState().departmentId!
-      }),
-    placeholderData: keepPreviousData
-  })
-}
-
 export const Route = createFileRoute(
   '/_protected/commodity/categoryAdmin/info'
 )({
-  validateSearch: AdminSecondaryCategoriesSearchSchema,
-  loaderDeps: ({ search }) => ({ id: search.id }),
+  validateSearch: type({
+    id: 'number',
+    page_index: ['number', '=', 1],
+    page_size: ['number', '=', 10]
+  }),
+  beforeLoad: ({ search }) => ({
+    adminSecondaryCategoriesQueryOptions: queryOptions({
+      queryKey: [LIST_KEY, search],
+      queryFn: () =>
+        getAdminSecondaryCategories({
+          ...search,
+          department: useUserStore.getState().departmentId!
+        }),
+      placeholderData: keepPreviousData
+    })
+  }),
+  loader: ({ context }) =>
+    queryClient.ensureQueryData(context.adminSecondaryCategoriesQueryOptions),
   component: AdminSecondaryCategoryView,
-  loader: ({ deps }) =>
-    queryClient.ensureQueryData(
-      getAdminSecondaryCategoriesQueryOptions({
-        id: deps.id,
-        page_index: 1,
-        page_size: 10
-      })
-    ),
   head: () => getHead('总部分类/二级')
 })
 
 function AdminSecondaryCategoryView() {
+  const context = Route.useRouteContext()
   const search = Route.useSearch()
   const navigate = Route.useNavigate()
   const [openModal, contextHolder] = useMyModal()
@@ -73,7 +62,7 @@ function AdminSecondaryCategoryView() {
   )
 
   const { data, isFetching } = useQuery(
-    getAdminSecondaryCategoriesQueryOptions(search)
+    context.adminSecondaryCategoriesQueryOptions
   )
 
   const handleAdd = () => {

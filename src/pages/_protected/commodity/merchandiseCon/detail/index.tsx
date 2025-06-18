@@ -14,12 +14,7 @@ import {
   Space,
   Switch
 } from '@arco-design/web-react'
-import {
-  queryOptions,
-  useMutation,
-  useQueries,
-  useQuery
-} from '@tanstack/react-query'
+import { queryOptions, useMutation, useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 
 import {
@@ -39,7 +34,7 @@ import { SectionTitle } from '@/components/section-title'
 import { SortableTable } from '@/components/sortable-table'
 import { SortableTableDragHandle } from '@/components/sortable-table/drag-handle'
 import { WithAsterisk } from '@/components/with-asterisk'
-import { getHead } from '@/helpers'
+import { getHead, getNotifs } from '@/helpers'
 import { useMyModal } from '@/hooks'
 import { cn, defineTableColumns, generateId, queryClient } from '@/lib'
 import { useUserStore } from '@/stores'
@@ -48,89 +43,69 @@ import { b2f, f2b } from './-adpater'
 import { category, dosage } from './-constants'
 import { DeliveryType, GoodsFormData, IsRx, Product } from './-definition'
 
-const GoodsDetailSearchSchema = type({
-  'goods_id?': 'number',
-  type: '"add" | "edit" | "copy" | "view"'
-})
-
-/* ------------------------------- 请求定义 START ------------------------------- */
-function getGoodsDetailQueryOptions(goodsId?: number) {
-  return queryOptions({
-    queryKey: ['goods-detail', goodsId],
-    queryFn: () => getGoodsDetail({ id: goodsId }),
-    enabled: !!goodsId
-  })
-}
-
-const adminCategoriesTreeQueryOptions = queryOptions({
-  queryKey: ['admin-categories-tree'],
-  queryFn: () =>
-    getAdminCategoriesTree({
-      department: useUserStore.getState().departmentId!
-    })
-})
-
-const goodsCategoriesTreeQueryOptions = queryOptions({
-  queryKey: ['goods-categories-tree'],
-  queryFn: () =>
-    getGoodsCategoriesTree({
-      department: useUserStore.getState().departmentId!
-    })
-})
-
-const brandsQueryOptions = queryOptions({
-  queryKey: ['brands'],
-  queryFn: () =>
-    getBrands({ department_id: useUserStore.getState().departmentId! })
-})
-
-const goodsDiseaseQueryOptions = queryOptions({
-  queryKey: ['goods-disease'],
-  queryFn: () => getGoodsDisease()
-})
-
-const goodsDrugstoresQueryOptions = queryOptions({
-  queryKey: ['goods-drugstores'],
-  queryFn: () => getGoodsDrugstores()
-})
-
-const shipTemplatesQueryOptions = queryOptions({
-  queryKey: ['ship-templates'],
-  queryFn: () =>
-    getShipTemplates({
-      department: useUserStore.getState().departmentId!,
-      page_index: 1,
-      page_size: 100
-    })
-})
-/* -------------------------------- 请求定义 END -------------------------------- */
-
-/* ------------------------------- 路由定义 START ------------------------------- */
 export const Route = createFileRoute(
   '/_protected/commodity/merchandiseCon/detail/'
 )({
-  validateSearch: GoodsDetailSearchSchema,
-  loaderDeps: ({ search }) => ({ ...search }),
-  component: GoodsEditView,
-  loader: ({ deps }) => {
-    queryClient.prefetchQuery(adminCategoriesTreeQueryOptions)
-    queryClient.prefetchQuery(goodsCategoriesTreeQueryOptions)
-    queryClient.prefetchQuery(brandsQueryOptions)
-    queryClient.prefetchQuery(goodsDiseaseQueryOptions)
-    queryClient.prefetchQuery(goodsDrugstoresQueryOptions)
-    queryClient.prefetchQuery(shipTemplatesQueryOptions)
-
-    // 除了新增模式以外，其他模式都需要请求回显数据，
-    // 在此情况下，返回一个 Promise，等待回显数据请求完毕后，再跳转至该页面
-    // 避免因为数据未请求完毕，导致 UI 显示不完整
-    if (deps.type === 'add' || !deps.goods_id) return
-    return queryClient.ensureQueryData(
-      getGoodsDetailQueryOptions(deps.goods_id)
-    )
+  validateSearch: type({
+    'goods_id?': 'number',
+    type: '"add" | "edit" | "copy" | "view"'
+  }),
+  loaderDeps: ({ search }) => ({ goods_id: search.goods_id }),
+  beforeLoad: ({ search }) => ({
+    goodsDetailQueryOptions: queryOptions({
+      queryKey: ['goods-detail', search.goods_id],
+      queryFn: () => getGoodsDetail({ id: search.goods_id }),
+      enabled: !!search.goods_id
+    }),
+    adminCategoriesTreeQueryOptions: queryOptions({
+      queryKey: ['admin-categories-tree'],
+      queryFn: () =>
+        getAdminCategoriesTree({
+          department: useUserStore.getState().departmentId!
+        })
+    }),
+    goodsCategoriesTreeQueryOptions: queryOptions({
+      queryKey: ['goods-categories-tree'],
+      queryFn: () =>
+        getGoodsCategoriesTree({
+          department: useUserStore.getState().departmentId!
+        })
+    }),
+    brandsQueryOptions: queryOptions({
+      queryKey: ['brands'],
+      queryFn: () =>
+        getBrands({ department_id: useUserStore.getState().departmentId! })
+    }),
+    goodsDiseaseQueryOptions: queryOptions({
+      queryKey: ['goods-disease'],
+      queryFn: () => getGoodsDisease()
+    }),
+    goodsDrugstoresQueryOptions: queryOptions({
+      queryKey: ['goods-drugstores'],
+      queryFn: () => getGoodsDrugstores()
+    }),
+    shipTemplatesQueryOptions: queryOptions({
+      queryKey: ['ship-templates'],
+      queryFn: () =>
+        getShipTemplates({
+          department: useUserStore.getState().departmentId!,
+          page_index: 1,
+          page_size: 100
+        })
+    })
+  }),
+  loader: async ({ context }) => {
+    queryClient.prefetchQuery(context.adminCategoriesTreeQueryOptions)
+    queryClient.prefetchQuery(context.goodsCategoriesTreeQueryOptions)
+    queryClient.prefetchQuery(context.brandsQueryOptions)
+    queryClient.prefetchQuery(context.goodsDiseaseQueryOptions)
+    queryClient.prefetchQuery(context.goodsDrugstoresQueryOptions)
+    queryClient.prefetchQuery(context.shipTemplatesQueryOptions)
+    await queryClient.prefetchQuery(context.goodsDetailQueryOptions)
   },
+  component: GoodsEditView,
   head: () => getHead('添加/编辑商品')
 })
-/* -------------------------------- 路由定义 END -------------------------------- */
 
 /* ------------------------------- 表单初始值 START ------------------------------ */
 const initialFormData: GoodsFormData = {
@@ -186,21 +161,20 @@ const initialFormData: GoodsFormData = {
 
 function GoodsEditView() {
   const [form] = Form.useForm<GoodsFormData>()
+  const context = Route.useRouteContext()
   const search = Route.useSearch()
   const navigate = Route.useNavigate()
   const [openModal, contextHolder] = useMyModal()
 
   /* ------------------------------- 数据请求 START ------------------------------- */
-  const { data: goodsDetail } = useQuery(
-    getGoodsDetailQueryOptions(search.goods_id)
-  )
+  const { data: goodsDetail } = useQuery(context.goodsDetailQueryOptions)
   const initialValues = goodsDetail ? b2f(goodsDetail) : initialFormData
   useEffect(() => {
     form.setFieldsValue(initialValues)
   }, [form, initialValues])
 
   const { data: adminCategoriesTreeData } = useQuery({
-    ...adminCategoriesTreeQueryOptions,
+    ...context.adminCategoriesTreeQueryOptions,
     select: (data) => {
       return data.items.map((item) => {
         if (item.parent_id === 0) {
@@ -213,7 +187,7 @@ function GoodsEditView() {
   })
 
   const { data: goodsDepartypeData } = useQuery({
-    ...goodsCategoriesTreeQueryOptions,
+    ...context.goodsCategoriesTreeQueryOptions,
     select: (data) => {
       return data.items.map((item) => {
         if (item.parent_id === 0) {
@@ -225,15 +199,14 @@ function GoodsEditView() {
     }
   })
 
-  const [brandsData, goodsDiseaseData, goodsDrugstoresData, shipTemplatesData] =
-    useQueries({
-      queries: [
-        brandsQueryOptions,
-        goodsDiseaseQueryOptions,
-        goodsDrugstoresQueryOptions,
-        shipTemplatesQueryOptions
-      ]
-    })
+  const { data: brandsData } = useQuery(context.brandsQueryOptions)
+  const { data: goodsDiseaseData } = useQuery(context.goodsDiseaseQueryOptions)
+  const { data: goodsDrugstoresData } = useQuery(
+    context.goodsDrugstoresQueryOptions
+  )
+  const { data: shipTemplatesData } = useQuery(
+    context.shipTemplatesQueryOptions
+  )
   /* -------------------------------- 数据请求 END -------------------------------- */
 
   /* ------------------------------- 表单数据 START ------------------------------- */
@@ -722,27 +695,29 @@ function GoodsEditView() {
       if (search.type === 'add' || search.type === 'copy') {
         const transformedValues = f2b(values, {
           departmentId: useUserStore.getState().departmentId!,
-          goodsDisease: goodsDiseaseData.data?.items ?? []
+          goodsDisease: goodsDiseaseData?.items ?? []
         })
         return addGoods(transformedValues)
       } else {
         const transformedValues = f2b(values, {
           id: goodsDetail?.id,
           departmentId: useUserStore.getState().departmentId!,
-          goodsDisease: goodsDiseaseData.data?.items ?? []
+          goodsDisease: goodsDiseaseData?.items ?? []
         })
         return editGoods(transformedValues)
       }
     },
-    onSuccess: () => {
-      Notification.success({ content: '保存成功' })
-      queryClient.invalidateQueries({
-        queryKey: ['goods-detail', search.goods_id]
-      })
-      queryClient.invalidateQueries({ queryKey: ['goods'] })
-      navigate({ to: '/commodity/merchandiseCon', replace: true })
-    },
-    onError: (error) => console.error(error)
+    ...getNotifs({
+      key: 'goods-edit',
+      onSuccess: () => {
+        Notification.success({ content: '保存成功' })
+        queryClient.invalidateQueries({
+          queryKey: ['goods-detail', search.goods_id]
+        })
+        queryClient.invalidateQueries({ queryKey: ['goods'] })
+        navigate({ to: '/commodity/merchandiseCon', replace: true })
+      }
+    })
   })
 
   return (
@@ -808,7 +783,7 @@ function GoodsEditView() {
         </Form.Item>
         <Form.Item field='brand_id' label='商品品牌'>
           <Select placeholder='全部' allowClear>
-            {brandsData.data?.items.map((item) => (
+            {brandsData?.items.map((item) => (
               <Select.Option key={item.brand_id} value={item.brand_id!}>
                 {item.name}
               </Select.Option>
@@ -852,7 +827,7 @@ function GoodsEditView() {
                           ]}
                         >
                           <Select placeholder='全部' allowClear showSearch>
-                            {goodsDiseaseData.data?.items.map((item) => (
+                            {goodsDiseaseData?.items.map((item) => (
                               <Select.Option key={item.id} value={item.id!}>
                                 {item.icd_name}
                               </Select.Option>
@@ -891,7 +866,7 @@ function GoodsEditView() {
                   rules={[{ required: true, message: '请选择药店' }]}
                 >
                   <Select placeholder='全部' allowClear>
-                    {goodsDrugstoresData.data?.items.map((item) => (
+                    {goodsDrugstoresData?.items.map((item) => (
                       <Select.Option key={item.id} value={item.id!}>
                         {item.drugstore_name}
                       </Select.Option>
@@ -1135,7 +1110,7 @@ function GoodsEditView() {
                   rules={[{ required: true, message: '请选择运费模板' }]}
                 >
                   <Select placeholder='请选择运费模板' allowClear>
-                    {shipTemplatesData.data?.items.map((item) => (
+                    {shipTemplatesData?.items.map((item) => (
                       <Select.Option key={item.id} value={item.id!}>
                         {item.name}
                       </Select.Option>
