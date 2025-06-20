@@ -14,6 +14,8 @@ import { Route as rootRoute } from './pages/__root'
 import { Route as LoginImport } from './pages/login'
 import { Route as ProtectedRouteImport } from './pages/_protected/route'
 import { Route as ProtectedIndexImport } from './pages/_protected/index'
+import { Route as ProtectedOrderDispatchImport } from './pages/_protected/order/dispatch'
+import { Route as ProtectedOrderBillLadingImport } from './pages/_protected/order/billLading'
 import { Route as ProtectedCommodityMerchandiseConIndexImport } from './pages/_protected/commodity/merchandiseCon/index'
 import { Route as ProtectedCommodityCategoryAdminIndexImport } from './pages/_protected/commodity/categoryAdmin/index'
 import { Route as ProtectedCommodityCategoryIndexImport } from './pages/_protected/commodity/category/index'
@@ -42,6 +44,18 @@ const ProtectedRouteRoute = ProtectedRouteImport.update({
 const ProtectedIndexRoute = ProtectedIndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => ProtectedRouteRoute,
+} as any)
+
+const ProtectedOrderDispatchRoute = ProtectedOrderDispatchImport.update({
+  id: '/order/dispatch',
+  path: '/order/dispatch',
+  getParentRoute: () => ProtectedRouteRoute,
+} as any)
+
+const ProtectedOrderBillLadingRoute = ProtectedOrderBillLadingImport.update({
+  id: '/order/billLading',
+  path: '/order/billLading',
   getParentRoute: () => ProtectedRouteRoute,
 } as any)
 
@@ -147,6 +161,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedIndexImport
       parentRoute: typeof ProtectedRouteImport
     }
+    '/_protected/order/billLading': {
+      id: '/_protected/order/billLading'
+      path: '/order/billLading'
+      fullPath: '/order/billLading'
+      preLoaderRoute: typeof ProtectedOrderBillLadingImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/order/dispatch': {
+      id: '/_protected/order/dispatch'
+      path: '/order/dispatch'
+      fullPath: '/order/dispatch'
+      preLoaderRoute: typeof ProtectedOrderDispatchImport
+      parentRoute: typeof ProtectedRouteImport
+    }
     '/_protected/commodity/category/info': {
       id: '/_protected/commodity/category/info'
       path: '/commodity/category/info'
@@ -231,6 +259,8 @@ declare module '@tanstack/react-router' {
 
 interface ProtectedRouteRouteChildren {
   ProtectedIndexRoute: typeof ProtectedIndexRoute
+  ProtectedOrderBillLadingRoute: typeof ProtectedOrderBillLadingRoute
+  ProtectedOrderDispatchRoute: typeof ProtectedOrderDispatchRoute
   ProtectedCommodityCategoryInfoRoute: typeof ProtectedCommodityCategoryInfoRoute
   ProtectedCommodityCategoryAdminGoodsRoute: typeof ProtectedCommodityCategoryAdminGoodsRoute
   ProtectedCommodityCategoryAdminInfoRoute: typeof ProtectedCommodityCategoryAdminInfoRoute
@@ -246,6 +276,8 @@ interface ProtectedRouteRouteChildren {
 
 const ProtectedRouteRouteChildren: ProtectedRouteRouteChildren = {
   ProtectedIndexRoute: ProtectedIndexRoute,
+  ProtectedOrderBillLadingRoute: ProtectedOrderBillLadingRoute,
+  ProtectedOrderDispatchRoute: ProtectedOrderDispatchRoute,
   ProtectedCommodityCategoryInfoRoute: ProtectedCommodityCategoryInfoRoute,
   ProtectedCommodityCategoryAdminGoodsRoute:
     ProtectedCommodityCategoryAdminGoodsRoute,
@@ -274,6 +306,8 @@ export interface FileRoutesByFullPath {
   '': typeof ProtectedRouteRouteWithChildren
   '/login': typeof LoginRoute
   '/': typeof ProtectedIndexRoute
+  '/order/billLading': typeof ProtectedOrderBillLadingRoute
+  '/order/dispatch': typeof ProtectedOrderDispatchRoute
   '/commodity/category/info': typeof ProtectedCommodityCategoryInfoRoute
   '/commodity/categoryAdmin/goods': typeof ProtectedCommodityCategoryAdminGoodsRoute
   '/commodity/categoryAdmin/info': typeof ProtectedCommodityCategoryAdminInfoRoute
@@ -290,6 +324,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/': typeof ProtectedIndexRoute
+  '/order/billLading': typeof ProtectedOrderBillLadingRoute
+  '/order/dispatch': typeof ProtectedOrderDispatchRoute
   '/commodity/category/info': typeof ProtectedCommodityCategoryInfoRoute
   '/commodity/categoryAdmin/goods': typeof ProtectedCommodityCategoryAdminGoodsRoute
   '/commodity/categoryAdmin/info': typeof ProtectedCommodityCategoryAdminInfoRoute
@@ -308,6 +344,8 @@ export interface FileRoutesById {
   '/_protected': typeof ProtectedRouteRouteWithChildren
   '/login': typeof LoginRoute
   '/_protected/': typeof ProtectedIndexRoute
+  '/_protected/order/billLading': typeof ProtectedOrderBillLadingRoute
+  '/_protected/order/dispatch': typeof ProtectedOrderDispatchRoute
   '/_protected/commodity/category/info': typeof ProtectedCommodityCategoryInfoRoute
   '/_protected/commodity/categoryAdmin/goods': typeof ProtectedCommodityCategoryAdminGoodsRoute
   '/_protected/commodity/categoryAdmin/info': typeof ProtectedCommodityCategoryAdminInfoRoute
@@ -327,6 +365,8 @@ export interface FileRouteTypes {
     | ''
     | '/login'
     | '/'
+    | '/order/billLading'
+    | '/order/dispatch'
     | '/commodity/category/info'
     | '/commodity/categoryAdmin/goods'
     | '/commodity/categoryAdmin/info'
@@ -342,6 +382,8 @@ export interface FileRouteTypes {
   to:
     | '/login'
     | '/'
+    | '/order/billLading'
+    | '/order/dispatch'
     | '/commodity/category/info'
     | '/commodity/categoryAdmin/goods'
     | '/commodity/categoryAdmin/info'
@@ -358,6 +400,8 @@ export interface FileRouteTypes {
     | '/_protected'
     | '/login'
     | '/_protected/'
+    | '/_protected/order/billLading'
+    | '/_protected/order/dispatch'
     | '/_protected/commodity/category/info'
     | '/_protected/commodity/categoryAdmin/goods'
     | '/_protected/commodity/categoryAdmin/info'
@@ -400,6 +444,8 @@ export const routeTree = rootRoute
       "filePath": "_protected/route.tsx",
       "children": [
         "/_protected/",
+        "/_protected/order/billLading",
+        "/_protected/order/dispatch",
         "/_protected/commodity/category/info",
         "/_protected/commodity/categoryAdmin/goods",
         "/_protected/commodity/categoryAdmin/info",
@@ -418,6 +464,14 @@ export const routeTree = rootRoute
     },
     "/_protected/": {
       "filePath": "_protected/index.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/order/billLading": {
+      "filePath": "_protected/order/billLading.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/order/dispatch": {
+      "filePath": "_protected/order/dispatch.tsx",
       "parent": "/_protected"
     },
     "/_protected/commodity/category/info": {

@@ -74,7 +74,7 @@ function CustomersView() {
   const Link = Route.Link
   const [openModal, contextHolder] = useMyModal()
   const checkActionPermission = useUserStore(
-    (store) => store.checkActionPermisstion
+    (store) => store.checkActionPermission
   )
 
   /* ------------------------------ Search START ------------------------------ */

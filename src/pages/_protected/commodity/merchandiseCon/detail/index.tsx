@@ -1,6 +1,5 @@
 import { type } from 'arktype'
 import { Edit, GripVertical, Plus, Trash2 } from 'lucide-react'
-import { useEffect } from 'react'
 
 import {
   Button,
@@ -169,9 +168,6 @@ function GoodsEditView() {
   /* ------------------------------- 数据请求 START ------------------------------- */
   const { data: goodsDetail } = useQuery(context.goodsDetailQueryOptions)
   const initialValues = goodsDetail ? b2f(goodsDetail) : initialFormData
-  useEffect(() => {
-    form.setFieldsValue(initialValues)
-  }, [form, initialValues])
 
   const { data: adminCategoriesTreeData } = useQuery({
     ...context.adminCategoriesTreeQueryOptions,

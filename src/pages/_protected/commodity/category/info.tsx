@@ -61,8 +61,8 @@ function GoodsSecondaryCategoriesView() {
   const navigate = Route.useNavigate()
   const [openModal, contextHolder] = useMyModal()
   const departmentId = useUserStore((store) => store.departmentId)
-  const checkActionPermisstion = useUserStore(
-    (store) => store.checkActionPermisstion
+  const checkActionPermission = useUserStore(
+    (store) => store.checkActionPermission
   )
 
   /* ------------------------------ Search START ------------------------------ */
@@ -186,12 +186,12 @@ function GoodsSecondaryCategoriesView() {
       title: '操作',
       render: (_, item) => (
         <div className='flex justify-center items-center'>
-          {checkActionPermisstion('/commodity/category/edit/second') && (
+          {checkActionPermission('/commodity/category/edit/second') && (
             <Button type='text' onClick={() => handleEdit(item)}>
               编辑
             </Button>
           )}
-          {checkActionPermisstion('/commodity/category/del/second') && (
+          {checkActionPermission('/commodity/category/del/second') && (
             <Popconfirm
               title='提示'
               content='确定要删除吗？'
@@ -233,7 +233,7 @@ function GoodsSecondaryCategoriesView() {
             重置
           </Button>
           {departmentId !== 0 &&
-            checkActionPermisstion('/commodity/category/add/second') && (
+            checkActionPermission('/commodity/category/add/second') && (
               <Button
                 type='primary'
                 icon={<Plus className='inline size-4' />}

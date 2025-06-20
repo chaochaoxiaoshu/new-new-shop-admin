@@ -100,7 +100,7 @@ function GoodsView() {
 
   const departmentId = useUserStore((store) => store.departmentId)
   const checkActionPermission = useUserStore(
-    (store) => store.checkActionPermisstion
+    (store) => store.checkActionPermission
   )
 
   /* ------------------------------ Search START ------------------------------ */

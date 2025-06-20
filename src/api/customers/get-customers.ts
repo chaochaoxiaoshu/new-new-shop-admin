@@ -3,7 +3,7 @@ import { api, toSearchParams } from '@/lib'
 import { PaginatedReq, PaginatedResponse } from '../types'
 
 export type GetCustomersReq = {
-  with_fields: string[]
+  with_fields?: string[]
   department: number
   mobile?: string
   nickname?: string

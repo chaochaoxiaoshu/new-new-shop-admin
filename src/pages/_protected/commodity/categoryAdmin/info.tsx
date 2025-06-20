@@ -57,8 +57,8 @@ function AdminSecondaryCategoryView() {
   const search = Route.useSearch()
   const navigate = Route.useNavigate()
   const [openModal, contextHolder] = useMyModal()
-  const checkActionPermisstion = useUserStore(
-    (store) => store.checkActionPermisstion
+  const checkActionPermission = useUserStore(
+    (store) => store.checkActionPermission
   )
 
   const { data, isFetching } = useQuery(
@@ -163,12 +163,12 @@ function AdminSecondaryCategoryView() {
           >
             <Button type='text'>查看选择商品</Button>
           </Route.Link>
-          {checkActionPermisstion('/commodity/categoryAdmin/edit/second') && (
+          {checkActionPermission('/commodity/categoryAdmin/edit/second') && (
             <Button type='text' onClick={() => handleEdit(item)}>
               编辑
             </Button>
           )}
-          {checkActionPermisstion('/commodity/categoryAdmin/del/second') && (
+          {checkActionPermission('/commodity/categoryAdmin/del/second') && (
             <Popconfirm
               title='提示'
               content='确定要删除吗？'
@@ -188,7 +188,7 @@ function AdminSecondaryCategoryView() {
   return (
     <TableLayout
       header={
-        checkActionPermisstion('/commodity/categoryAdmin/add/second') && (
+        checkActionPermission('/commodity/categoryAdmin/add/second') && (
           <TableLayout.Header>
             <Button
               type='primary'

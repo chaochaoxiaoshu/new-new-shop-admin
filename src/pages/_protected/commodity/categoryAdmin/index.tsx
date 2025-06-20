@@ -74,8 +74,8 @@ function AdminCategoryView() {
   const search = Route.useSearch()
   const navigate = Route.useNavigate()
   const [openModal, contextHolder] = useMyModal()
-  const checkActionPermisstion = useUserStore(
-    (store) => store.checkActionPermisstion
+  const checkActionPermission = useUserStore(
+    (store) => store.checkActionPermission
   )
 
   const { data: adminCategoriesTree } = useQuery(
@@ -193,12 +193,12 @@ function AdminCategoryView() {
       title: '操作',
       render: (_, item) => (
         <div className='flex justify-center items-center'>
-          {checkActionPermisstion('/commodity/categoryAdmin/edit') && (
+          {checkActionPermission('/commodity/categoryAdmin/edit') && (
             <Button type='text' onClick={() => handleEdit(item)}>
               编辑
             </Button>
           )}
-          {checkActionPermisstion('/commodity/categoryAdmin/del') && (
+          {checkActionPermission('/commodity/categoryAdmin/del') && (
             <Popconfirm
               title='提示'
               content='确定要删除吗？'
@@ -218,7 +218,7 @@ function AdminCategoryView() {
   return (
     <TableLayout
       header={
-        checkActionPermisstion('/commodity/categoryAdmin/add') && (
+        checkActionPermission('/commodity/categoryAdmin/add') && (
           <TableLayout.Header>
             <Button
               type='primary'

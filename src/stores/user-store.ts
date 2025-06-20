@@ -34,7 +34,7 @@ type UserStoreActions = {
   /**
    * 根据给定的 path 判断当前用户是否拥有某个 ActionButton 的权限
    */
-  checkActionPermisstion: (path: string) => boolean
+  checkActionPermission: (path: string) => boolean
   setPlatformInfo: (val: UserStoreState['platformInfo']) => void
 }
 
@@ -62,7 +62,7 @@ export const useUserStore = create<UserStoreState & UserStoreActions>()(
           username: null
         }),
       setActionButtonList: (val) => set({ actionButtonList: val }),
-      checkActionPermisstion: (path) =>
+      checkActionPermission: (path) =>
         get().actionButtonList?.some((item) => item.front_path === path) ??
         false,
       setPlatformInfo: (val) => set({ platformInfo: val })

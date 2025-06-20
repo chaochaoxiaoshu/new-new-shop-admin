@@ -88,8 +88,8 @@ function BrandView() {
   const navigate = Route.useNavigate()
   const departmentId = useUserStore((store) => store.departmentId)
   const [openModal, contextHolder] = useMyModal()
-  const checkActionPermisstion = useUserStore(
-    (store) => store.checkActionPermisstion
+  const checkActionPermission = useUserStore(
+    (store) => store.checkActionPermission
   )
 
   /* ------------------------------ Search START ------------------------------ */
@@ -200,12 +200,12 @@ function BrandView() {
       title: '操作',
       render: (_, item) => (
         <div className='flex justify-center items-center'>
-          {checkActionPermisstion('/commodity/brand/edit') && (
+          {checkActionPermission('/commodity/brand/edit') && (
             <Button type='text' onClick={() => handleEdit(item)}>
               编辑
             </Button>
           )}
-          {checkActionPermisstion('/commodity/brand/del') && (
+          {checkActionPermission('/commodity/brand/del') && (
             <Popconfirm
               title='提示'
               content='确定删除吗？'
@@ -261,7 +261,7 @@ function BrandView() {
           >
             重置
           </Button>
-          {checkActionPermisstion('/commodity/brand/add') && (
+          {checkActionPermission('/commodity/brand/add') && (
             <Button
               type='primary'
               icon={<Plus className='inline size-4' />}

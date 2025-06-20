@@ -18,7 +18,8 @@ export function MyImage(props: ImageProps) {
         src={error ? imagePlaceholder : props.src}
         className={cn(
           'inline-block object-cover overflow-hidden',
-          error ? 'cursor-not-allowed' : 'cursor-zoom-in'
+          error ? 'cursor-not-allowed' : 'cursor-zoom-in',
+          props.className
         )}
         width={props.width}
         height={props.height}

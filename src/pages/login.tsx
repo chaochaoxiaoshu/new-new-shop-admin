@@ -198,7 +198,10 @@ function AuthView() {
       }
       setTempToken(firstAuthRes.access_token)
       setPageState('sso-in-browser-choose-department')
-      queryClient.setQueryData(['auth-departmentList'], departmentsRes)
+      queryClient.setQueryData(
+        ['auth-departmentList'],
+        departmentsRes.departments
+      )
     } catch {
       setPageState(null)
     }
