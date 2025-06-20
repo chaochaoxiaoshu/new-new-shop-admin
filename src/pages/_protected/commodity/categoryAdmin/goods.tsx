@@ -23,7 +23,7 @@ export const Route = createFileRoute(
     goods_cat_id: 'number',
     'name?': 'string',
     page_index: ['number', '=', 1],
-    page_size: ['number', '=', 10]
+    page_size: ['number', '=', 20]
   }),
   beforeLoad: ({ search }) => ({
     adminCategoriesGoodsQueryOptions: queryOptions({

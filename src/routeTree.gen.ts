@@ -14,6 +14,7 @@ import { Route as rootRoute } from './pages/__root'
 import { Route as LoginImport } from './pages/login'
 import { Route as ProtectedRouteImport } from './pages/_protected/route'
 import { Route as ProtectedIndexImport } from './pages/_protected/index'
+import { Route as ProtectedOrderReshipImport } from './pages/_protected/order/reship'
 import { Route as ProtectedOrderDispatchImport } from './pages/_protected/order/dispatch'
 import { Route as ProtectedOrderBillLadingImport } from './pages/_protected/order/billLading'
 import { Route as ProtectedCommodityMerchandiseConIndexImport } from './pages/_protected/commodity/merchandiseCon/index'
@@ -44,6 +45,12 @@ const ProtectedRouteRoute = ProtectedRouteImport.update({
 const ProtectedIndexRoute = ProtectedIndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => ProtectedRouteRoute,
+} as any)
+
+const ProtectedOrderReshipRoute = ProtectedOrderReshipImport.update({
+  id: '/order/reship',
+  path: '/order/reship',
   getParentRoute: () => ProtectedRouteRoute,
 } as any)
 
@@ -175,6 +182,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedOrderDispatchImport
       parentRoute: typeof ProtectedRouteImport
     }
+    '/_protected/order/reship': {
+      id: '/_protected/order/reship'
+      path: '/order/reship'
+      fullPath: '/order/reship'
+      preLoaderRoute: typeof ProtectedOrderReshipImport
+      parentRoute: typeof ProtectedRouteImport
+    }
     '/_protected/commodity/category/info': {
       id: '/_protected/commodity/category/info'
       path: '/commodity/category/info'
@@ -261,6 +275,7 @@ interface ProtectedRouteRouteChildren {
   ProtectedIndexRoute: typeof ProtectedIndexRoute
   ProtectedOrderBillLadingRoute: typeof ProtectedOrderBillLadingRoute
   ProtectedOrderDispatchRoute: typeof ProtectedOrderDispatchRoute
+  ProtectedOrderReshipRoute: typeof ProtectedOrderReshipRoute
   ProtectedCommodityCategoryInfoRoute: typeof ProtectedCommodityCategoryInfoRoute
   ProtectedCommodityCategoryAdminGoodsRoute: typeof ProtectedCommodityCategoryAdminGoodsRoute
   ProtectedCommodityCategoryAdminInfoRoute: typeof ProtectedCommodityCategoryAdminInfoRoute
@@ -278,6 +293,7 @@ const ProtectedRouteRouteChildren: ProtectedRouteRouteChildren = {
   ProtectedIndexRoute: ProtectedIndexRoute,
   ProtectedOrderBillLadingRoute: ProtectedOrderBillLadingRoute,
   ProtectedOrderDispatchRoute: ProtectedOrderDispatchRoute,
+  ProtectedOrderReshipRoute: ProtectedOrderReshipRoute,
   ProtectedCommodityCategoryInfoRoute: ProtectedCommodityCategoryInfoRoute,
   ProtectedCommodityCategoryAdminGoodsRoute:
     ProtectedCommodityCategoryAdminGoodsRoute,
@@ -308,6 +324,7 @@ export interface FileRoutesByFullPath {
   '/': typeof ProtectedIndexRoute
   '/order/billLading': typeof ProtectedOrderBillLadingRoute
   '/order/dispatch': typeof ProtectedOrderDispatchRoute
+  '/order/reship': typeof ProtectedOrderReshipRoute
   '/commodity/category/info': typeof ProtectedCommodityCategoryInfoRoute
   '/commodity/categoryAdmin/goods': typeof ProtectedCommodityCategoryAdminGoodsRoute
   '/commodity/categoryAdmin/info': typeof ProtectedCommodityCategoryAdminInfoRoute
@@ -326,6 +343,7 @@ export interface FileRoutesByTo {
   '/': typeof ProtectedIndexRoute
   '/order/billLading': typeof ProtectedOrderBillLadingRoute
   '/order/dispatch': typeof ProtectedOrderDispatchRoute
+  '/order/reship': typeof ProtectedOrderReshipRoute
   '/commodity/category/info': typeof ProtectedCommodityCategoryInfoRoute
   '/commodity/categoryAdmin/goods': typeof ProtectedCommodityCategoryAdminGoodsRoute
   '/commodity/categoryAdmin/info': typeof ProtectedCommodityCategoryAdminInfoRoute
@@ -346,6 +364,7 @@ export interface FileRoutesById {
   '/_protected/': typeof ProtectedIndexRoute
   '/_protected/order/billLading': typeof ProtectedOrderBillLadingRoute
   '/_protected/order/dispatch': typeof ProtectedOrderDispatchRoute
+  '/_protected/order/reship': typeof ProtectedOrderReshipRoute
   '/_protected/commodity/category/info': typeof ProtectedCommodityCategoryInfoRoute
   '/_protected/commodity/categoryAdmin/goods': typeof ProtectedCommodityCategoryAdminGoodsRoute
   '/_protected/commodity/categoryAdmin/info': typeof ProtectedCommodityCategoryAdminInfoRoute
@@ -367,6 +386,7 @@ export interface FileRouteTypes {
     | '/'
     | '/order/billLading'
     | '/order/dispatch'
+    | '/order/reship'
     | '/commodity/category/info'
     | '/commodity/categoryAdmin/goods'
     | '/commodity/categoryAdmin/info'
@@ -384,6 +404,7 @@ export interface FileRouteTypes {
     | '/'
     | '/order/billLading'
     | '/order/dispatch'
+    | '/order/reship'
     | '/commodity/category/info'
     | '/commodity/categoryAdmin/goods'
     | '/commodity/categoryAdmin/info'
@@ -402,6 +423,7 @@ export interface FileRouteTypes {
     | '/_protected/'
     | '/_protected/order/billLading'
     | '/_protected/order/dispatch'
+    | '/_protected/order/reship'
     | '/_protected/commodity/category/info'
     | '/_protected/commodity/categoryAdmin/goods'
     | '/_protected/commodity/categoryAdmin/info'
@@ -446,6 +468,7 @@ export const routeTree = rootRoute
         "/_protected/",
         "/_protected/order/billLading",
         "/_protected/order/dispatch",
+        "/_protected/order/reship",
         "/_protected/commodity/category/info",
         "/_protected/commodity/categoryAdmin/goods",
         "/_protected/commodity/categoryAdmin/info",
@@ -472,6 +495,10 @@ export const routeTree = rootRoute
     },
     "/_protected/order/dispatch": {
       "filePath": "_protected/order/dispatch.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/order/reship": {
+      "filePath": "_protected/order/reship.tsx",
       "parent": "/_protected"
     },
     "/_protected/commodity/category/info": {

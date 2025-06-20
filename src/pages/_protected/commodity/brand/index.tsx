@@ -50,7 +50,7 @@ export const Route = createFileRoute('/_protected/commodity/brand/')({
     'name?': 'string',
     'department_id?': 'number',
     page_index: ['number', '=', 1],
-    page_size: ['number', '=', 10]
+    page_size: ['number', '=', 20]
   }),
   beforeLoad: ({ search }) => ({
     departmentsQueryOptions: queryOptions({

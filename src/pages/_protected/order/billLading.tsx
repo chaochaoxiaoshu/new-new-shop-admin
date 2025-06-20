@@ -42,7 +42,7 @@ export const Route = createFileRoute('/_protected/order/billLading')({
     'store_id?': 'number',
     'status?': 'number',
     page_index: ['number', '=', 1],
-    page_size: ['number', '=', 10]
+    page_size: ['number', '=', 20]
   }),
   beforeLoad: ({ search }) => ({
     billLadingsQueryOptions: queryOptions({
@@ -229,7 +229,7 @@ function BillLadingView() {
       header={
         <TableLayout.Header>
           <Input
-            placeholder='请输入退货单号'
+            placeholder='请输入提货单号'
             value={tempSearch.id}
             style={{ width: '264px' }}
             onChange={(value) => handleUpdateSearchParam('id', value)}

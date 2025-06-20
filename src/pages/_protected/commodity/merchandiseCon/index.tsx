@@ -47,7 +47,7 @@ export const Route = createFileRoute('/_protected/commodity/merchandiseCon/')({
     'is_approve?': '1 | 2',
     'is_hidelinks?': '1 | 2',
     page_index: ['number', '=', 1],
-    page_size: ['number', '=', 10]
+    page_size: ['number', '=', 20]
   }),
   beforeLoad: ({ search }) => ({
     departmentsQueryOptions: queryOptions({

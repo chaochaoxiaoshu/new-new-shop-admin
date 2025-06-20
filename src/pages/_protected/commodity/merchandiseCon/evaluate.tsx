@@ -57,7 +57,7 @@ export const Route = createFileRoute(
     'start_time?': 'number',
     'end_time?': 'number',
     page_index: ['number', '=', 1],
-    page_size: ['number', '=', 10]
+    page_size: ['number', '=', 20]
   }),
   beforeLoad: ({ search }) => ({
     departmentsQueryOptions: queryOptions({

@@ -33,7 +33,7 @@ export const Route = createFileRoute('/_protected/commodity/category/info')({
     id: 'number',
     'name?': 'string',
     page_index: ['number', '=', 1],
-    page_size: ['number', '=', 10]
+    page_size: ['number', '=', 20]
   }),
   beforeLoad: ({ search }) => ({
     goodsSecondaryCategoriesQueryOptions: queryOptions({
