@@ -39,6 +39,7 @@ import { useMyModal } from '@/hooks'
 import { formatDateTime, queryClient } from '@/lib'
 import { useUserStore } from '@/stores'
 
+import { BehaviorRecord } from './-components/behavior-record'
 import { CouponDetail } from './-components/coupon-detail'
 import { Overview } from './-components/overview'
 import { TransactionDetail } from './-components/transaction-detail'
@@ -265,7 +266,9 @@ function CustomerDetailView() {
             </div>
           </Tabs.TabPane>
           <Tabs.TabPane key='behavior-record' title='行为记录'>
-            <div className='px-4 pb-6'></div>
+            <div className='px-4 pb-6'>
+              <BehaviorRecord />
+            </div>
           </Tabs.TabPane>
         </Tabs>
       </div>

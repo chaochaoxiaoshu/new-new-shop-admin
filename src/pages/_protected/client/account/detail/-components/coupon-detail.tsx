@@ -233,6 +233,12 @@ export function CouponDetail() {
               }))
             }
           }}
+          renderPagination={(paginationNode) => (
+            <div className='flex justify-between items-center mt-4'>
+              <span>共 {data?.paginate.total} 条</span>
+              {paginationNode}
+            </div>
+          )}
         />
       </div>
     </>
