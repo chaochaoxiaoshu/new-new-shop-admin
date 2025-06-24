@@ -235,7 +235,7 @@ function Browsing() {
       </div>
       <div className='mt-6'>
         <Table
-          rowKey='order_id'
+          rowKey='id'
           data={data?.items ?? []}
           loading={isPending}
           columns={columns}
@@ -322,7 +322,9 @@ function AddToCart() {
     },
     {
       title: '商品图片',
-      render: (_, item) => <MyImage src={item.goods_url} />,
+      render: (_, item) => (
+        <MyImage src={item.goods_url} width={40} height={40} />
+      ),
       width: TableCellWidth.thumb,
       align: 'center'
     },
@@ -408,7 +410,7 @@ function AddToCart() {
       </div>
       <div className='mt-6'>
         <Table
-          rowKey='after_sales_id'
+          rowKey='id'
           data={data?.items ?? []}
           loading={isPending}
           columns={columns}
@@ -496,7 +498,9 @@ function Favorites() {
     },
     {
       title: '商品图片',
-      render: (_, item) => <MyImage src={item.goods_url} />,
+      render: (_, item) => (
+        <MyImage src={item.goods_url} width={40} height={40} />
+      ),
       width: TableCellWidth.thumb,
       align: 'center'
     },
@@ -577,7 +581,7 @@ function Favorites() {
       </div>
       <div className='mt-6'>
         <Table
-          rowKey='order_id'
+          rowKey='id'
           data={data?.items ?? []}
           loading={isPending}
           columns={columns}
@@ -664,7 +668,9 @@ function Sharing() {
     },
     {
       title: '商品图片',
-      render: (_, item) => <MyImage src={item.goods_url} />,
+      render: (_, item) => (
+        <MyImage src={item.goods_url} width={40} height={40} />
+      ),
       width: TableCellWidth.thumb,
       align: 'center'
     },
@@ -729,7 +735,7 @@ function Sharing() {
       </div>
       <div className='mt-6'>
         <Table
-          rowKey='order_id'
+          rowKey='id'
           data={data?.items ?? []}
           loading={isPending}
           columns={columns}
