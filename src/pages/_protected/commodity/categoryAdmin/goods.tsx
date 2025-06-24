@@ -123,6 +123,8 @@ function AdminCategoriesGoodsView() {
             value={tempSearch.name}
             placeholder='请输入商品名称'
             style={{ width: '264px' }}
+            allowClear
+            suffix={<Search className='inline size-4' />}
             onChange={(value) =>
               setTempSearch((prev) => ({ ...prev, name: value }))
             }

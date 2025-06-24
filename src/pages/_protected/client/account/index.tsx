@@ -1,5 +1,13 @@
 import { type } from 'arktype'
-import { CheckCircle2, Circle, Ellipsis, RotateCcw, Search } from 'lucide-react'
+import {
+  CheckCircle2,
+  Circle,
+  Ellipsis,
+  RotateCcw,
+  Search,
+  Smartphone,
+  TextCursorInput
+} from 'lucide-react'
 import { useState } from 'react'
 
 import { Button, Checkbox, Dropdown, Input, Menu } from '@arco-design/web-react'
@@ -270,12 +278,16 @@ function CustomersView() {
             value={tempSearch.mobile}
             placeholder='请输入手机号'
             style={{ width: '264px' }}
+            allowClear
+            suffix={<Smartphone className='inline size-4' />}
             onChange={(val) => handleUpdateSearchParam('mobile', val)}
           />
           <Input
             value={tempSearch.nickname}
             placeholder='请输入昵称'
             style={{ width: '264px' }}
+            allowClear
+            suffix={<TextCursorInput className='inline size-4' />}
             onChange={(val) => handleUpdateSearchParam('nickname', val)}
           />
           <Button

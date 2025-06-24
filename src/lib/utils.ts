@@ -76,7 +76,7 @@ export function defineTableColumns<T>(columns: ColumnProps<T>[]) {
 }
 
 export function formatDateTime(timestamp: number | null | undefined) {
-  if (!timestamp) return ''
+  if (!timestamp) return '-'
   return dayjs.unix(timestamp).format('YYYY-MM-DD HH:mm:ss')
 }
 

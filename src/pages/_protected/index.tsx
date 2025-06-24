@@ -271,9 +271,9 @@ function StoreData() {
                 size='mini'
                 onChange={(val) => setPrecision(val as Precision)}
               >
-                <Select.Option value='day'>按日搜索</Select.Option>
-                <Select.Option value='month'>按月搜索</Select.Option>
-                <Select.Option value='year'>按年搜索</Select.Option>
+                <Select.Option value='day'>按日查询</Select.Option>
+                <Select.Option value='month'>按月查询</Select.Option>
+                <Select.Option value='year'>按年查询</Select.Option>
               </Select>
             </div>
             <div className='flex-3'>
@@ -621,9 +621,9 @@ function CustomerData() {
                 size='mini'
                 onChange={(val) => setPrecision(val as Precision)}
               >
-                <Select.Option value='day'>按日搜索</Select.Option>
-                <Select.Option value='month'>按月搜索</Select.Option>
-                <Select.Option value='year'>按年搜索</Select.Option>
+                <Select.Option value='day'>按日查询</Select.Option>
+                <Select.Option value='month'>按月查询</Select.Option>
+                <Select.Option value='year'>按年查询</Select.Option>
               </Select>
             </div>
             <div className='flex-3'>

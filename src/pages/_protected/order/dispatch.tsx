@@ -191,7 +191,7 @@ function DeliveryView() {
             icon={<Search className='inline size-4' />}
             onClick={handleSearch}
           >
-            搜索
+            查询
           </Button>
           <Button
             type='outline'

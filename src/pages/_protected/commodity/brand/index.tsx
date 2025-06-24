@@ -229,6 +229,8 @@ function BrandView() {
             value={tempSearch.name}
             placeholder='请输入品牌名称'
             style={{ width: '264px' }}
+            allowClear
+            suffix={<Search className='inline size-4' />}
             onChange={(value) => handleUpdateSearchParam('name', value)}
           />
           {departmentId === 0 && (
@@ -236,6 +238,7 @@ function BrandView() {
               value={tempSearch.department_id}
               placeholder='请选择电商事业部'
               style={{ width: '264px' }}
+              allowClear
               onChange={(value) =>
                 handleUpdateSearchParam('department_id', value as number)
               }
@@ -372,7 +375,12 @@ function EditForm(props: EditFormProps) {
           label='品牌名称'
           rules={[{ required: true, message: '请输入品牌名称' }]}
         >
-          <Input placeholder='请输入品牌名称' maxLength={20} showWordLimit />
+          <Input
+            placeholder='请输入品牌名称'
+            maxLength={20}
+            showWordLimit
+            allowClear
+          />
         </Form.Item>
         <Form.Item
           field='logo'

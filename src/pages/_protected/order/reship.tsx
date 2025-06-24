@@ -142,7 +142,7 @@ function ReshipView() {
       dataIndex: 'status',
       width: 160,
       align: 'center',
-      render: (_, item) => (item.status ? getStatusText(item.status) : '-'),
+      render: (_, item) => getStatusText(item.status),
       ellipsis: true
     },
     {
@@ -249,7 +249,7 @@ function ReshipView() {
             icon={<Search className='inline size-4' />}
             onClick={handleSearch}
           >
-            搜索
+            查询
           </Button>
           <Button
             type='outline'
@@ -287,7 +287,7 @@ function ReshipView() {
   )
 }
 
-function getStatusText(status: number) {
+function getStatusText(status?: number) {
   switch (status) {
     case 1:
       return '审核通过待发货'
@@ -323,7 +323,7 @@ function ReshipDetail({ reship_id }: { reship_id?: string }) {
       </Typography.Paragraph>
       <Typography.Paragraph>
         <Typography.Text>状态：</Typography.Text>
-        {data?.status ? getStatusText(data.status) : '-'}
+        {getStatusText(data?.status)}
       </Typography.Paragraph>
       <Typography.Paragraph>
         <Typography.Text>物流公司：</Typography.Text>

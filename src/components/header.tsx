@@ -10,6 +10,7 @@ import {
 import { useNavigate } from '@tanstack/react-router'
 
 import logo from '@/assets/logo.png'
+import { queryClient } from '@/lib'
 import { useUserStore } from '@/stores'
 
 export function Header() {
@@ -22,6 +23,7 @@ export function Header() {
       to: '/login',
       search: { redirect: '/' }
     })
+    queryClient.clear()
     Notification.success({ content: '退出成功' })
   }
 

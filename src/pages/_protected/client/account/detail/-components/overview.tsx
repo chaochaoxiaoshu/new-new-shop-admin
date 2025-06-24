@@ -1,18 +1,31 @@
 import { useState } from 'react'
 
-import { Divider, Select, Spin } from '@arco-design/web-react'
-import { useQuery } from '@tanstack/react-query'
-import { useRouteContext } from '@tanstack/react-router'
+import {
+  Button,
+  Divider,
+  Message,
+  Select,
+  Spin,
+  Table
+} from '@arco-design/web-react'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { useNavigate, useRouteContext, useSearch } from '@tanstack/react-router'
 
+import { GetCouponsRes, getCoupons, giveCoupon } from '@/api'
 import customerDetail0 from '@/assets/customer/customer_detail_0.png'
 import customerDetail1 from '@/assets/customer/customer_detail_1.png'
 import customerDetail2 from '@/assets/customer/customer_detail_2.png'
-import { formatDateTime } from '@/lib'
+import { getNotifs } from '@/helpers'
+import { useMyModal } from '@/hooks'
+import { defineTableColumns, formatDateTime } from '@/lib'
 
 export function Overview() {
   const context = useRouteContext({
     from: '/_protected/client/account/detail/'
   })
+  const search = useSearch({ from: '/_protected/client/account/detail/' })
+  const navigate = useNavigate()
+  const [openModal, contextHolder] = useMyModal()
 
   const { data: consumptionData, isPending: consumptionPending } = useQuery(
     context.customerProfileQueryOptions
@@ -23,6 +36,29 @@ export function Overview() {
   const { data: promotionData, isPending: promotionPending } = useQuery(
     context.customerPromotionQueryOptions
   )
+
+  const handleGiveCoupon = () => {
+    const modalIns = openModal({
+      title: '赠送优惠券',
+      content: (
+        <GiveCouponForm
+          onSuccess={() => {
+            // [TODO]: 刷新优惠券列表
+            modalIns?.close()
+          }}
+          onCancel={() => modalIns?.close()}
+        />
+      ),
+      style: { width: 900 }
+    })
+  }
+
+  const handleViewPrizeDetail = () => {
+    openModal({
+      title: '奖品详情',
+      content: <PrizeDetail />
+    })
+  }
 
   const [promotionViewMode, setPromotionViewMode] = useState<
     'overview' | 'detail'
@@ -57,7 +93,15 @@ export function Overview() {
           titleView={
             <div className='font-bold text-sm'>
               <span>累计消费</span>
-              <span className='ml-4 text-[rgb(var(--primary-6))] hover:text-[rgb(var(--primary-7))] transition-colors cursor-pointer'>
+              <span
+                className='ml-4 text-[rgb(var(--primary-6))] hover:text-[rgb(var(--primary-7))] transition-colors cursor-pointer'
+                onClick={() =>
+                  navigate({
+                    from: '/client/account/detail',
+                    search: { ...search, tab: 'transaction-detail' }
+                  })
+                }
+              >
                 订单明细
               </span>
             </div>
@@ -120,10 +164,21 @@ export function Overview() {
           titleView={
             <div className='font-semibold text-sm'>
               <span>优惠券</span>
-              <span className='ml-4 text-[rgb(var(--primary-6))] hover:text-[rgb(var(--primary-7))] transition-colors cursor-pointer'>
+              <span
+                className='ml-4 text-[rgb(var(--primary-6))] hover:text-[rgb(var(--primary-7))] transition-colors cursor-pointer'
+                onClick={handleGiveCoupon}
+              >
                 送券
               </span>
-              <span className='ml-4 text-[rgb(var(--primary-6))] hover:text-[rgb(var(--primary-7))] transition-colors cursor-pointer'>
+              <span
+                className='ml-4 text-[rgb(var(--primary-6))] hover:text-[rgb(var(--primary-7))] transition-colors cursor-pointer'
+                onClick={() =>
+                  navigate({
+                    from: '/client/account/detail',
+                    search: { ...search, tab: 'coupon-detail' }
+                  })
+                }
+              >
                 明细
               </span>
             </div>
@@ -155,7 +210,10 @@ export function Overview() {
           titleView={
             <div className='font-semibold text-sm'>
               <span>奖品</span>
-              <span className='ml-4 text-[rgb(var(--primary-6))] hover:text-[rgb(var(--primary-7))] transition-colors cursor-pointer'>
+              <span
+                className='ml-4 text-[rgb(var(--primary-6))] hover:text-[rgb(var(--primary-7))] transition-colors cursor-pointer'
+                onClick={handleViewPrizeDetail}
+              >
                 明细
               </span>
             </div>
@@ -389,6 +447,7 @@ export function Overview() {
             </OverviewRow>
           </>
         )}
+        {contextHolder}
       </Spin>
     </>
   )
@@ -431,4 +490,165 @@ function OverviewItem(props: OverviewItemProps) {
       </div>
     </div>
   )
+}
+
+interface GiveCouponFormProps {
+  onSuccess?: () => void
+  onCancel?: () => void
+}
+
+function GiveCouponForm(props: GiveCouponFormProps) {
+  const { onSuccess, onCancel } = props
+  const search = useSearch({ from: '/_protected/client/account/detail/' })
+
+  const [pagination, setPagination] = useState({
+    page_index: 1,
+    page_size: 20
+  })
+
+  const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([])
+
+  const { data: coupons, isPending: couponsPending } = useQuery({
+    queryKey: ['coupons', pagination],
+    queryFn: () =>
+      getCoupons({
+        operate: 3,
+        department: 1,
+        settings: 2,
+        ...pagination
+      })
+  })
+
+  const { columns } = defineTableColumns<GetCouponsRes>([
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      align: 'center',
+      ellipsis: true
+    },
+    {
+      title: '优惠券名称',
+      dataIndex: 'name',
+      align: 'center',
+      ellipsis: true
+    },
+    {
+      title: '类型',
+      dataIndex: 'type',
+      align: 'center',
+      ellipsis: true
+    },
+    {
+      title: '优惠内容',
+      dataIndex: 'contenttype',
+      align: 'center',
+      ellipsis: true
+    },
+    {
+      title: '活动时间',
+      render: (_, item) =>
+        `${formatDateTime(item.stime)} - ${formatDateTime(item.etime)}`,
+      align: 'center',
+      ellipsis: true
+    },
+    {
+      title: '状态',
+      dataIndex: 'operate',
+      align: 'center',
+      ellipsis: true
+    },
+    {
+      title: '剩余',
+      dataIndex: 'used',
+      align: 'center',
+      ellipsis: true
+    },
+    {
+      title: '数量',
+      dataIndex: 'total',
+      align: 'center',
+      ellipsis: true
+    }
+  ])
+
+  const { mutate: handleSubmit, isPending } = useMutation({
+    mutationKey: ['give-coupon'],
+    mutationFn: async () => {
+      if (selectedRowKeys.length === 0) {
+        Message.error('请选择优惠券')
+        return
+      }
+      await Promise.all(
+        selectedRowKeys.map((id) => giveCoupon({ user_id: search.id, id }))
+      )
+    },
+    ...getNotifs({
+      key: 'give-coupon',
+      onSuccess
+    })
+  })
+
+  return (
+    <div>
+      <Table
+        rowKey='id'
+        data={coupons?.items ?? []}
+        loading={couponsPending}
+        columns={columns}
+        borderCell
+        rowSelection={{
+          type: 'checkbox',
+          onChange: (selectedRowKeys) =>
+            setSelectedRowKeys(selectedRowKeys as number[])
+        }}
+        pagination={{
+          current: coupons?.paginate.page_index,
+          pageSize: coupons?.paginate.page_size,
+          total: coupons?.paginate.total,
+          onChange: (current, pageSize) => {
+            setPagination({ page_index: current, page_size: pageSize })
+          }
+        }}
+      />
+      <div className='flex justify-end items-center space-x-4 mt-6'>
+        <Button onClick={onCancel}>取消</Button>
+        <Button
+          loading={isPending}
+          type='primary'
+          onClick={() => handleSubmit()}
+        >
+          确定
+        </Button>
+      </div>
+    </div>
+  )
+}
+
+function PrizeDetail() {
+  // [TODO]: 请求奖品列表
+
+  const { columns } = defineTableColumns([
+    {
+      title: '奖品名称',
+      align: 'center',
+      dataIndex: ''
+    },
+    {
+      title: '奖品',
+      align: 'center',
+      dataIndex: ''
+    },
+    {
+      title: '参与活动',
+      align: 'center',
+      dataIndex: ''
+    },
+    {
+      title: '状态',
+      align: 'center',
+      dataIndex: ''
+    }
+  ])
+
+  return <Table columns={columns} borderCell />
 }

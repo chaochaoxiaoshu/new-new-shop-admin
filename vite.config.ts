@@ -31,7 +31,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://shop.zdjt.com',
+        target: 'https://shop.shanshu.work',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }

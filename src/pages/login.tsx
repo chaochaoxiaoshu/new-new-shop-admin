@@ -350,7 +350,7 @@ function AuthView() {
                     field='username'
                     rules={[{ required: true, message: '请输入账号' }]}
                   >
-                    <Input placeholder='请输入账号' />
+                    <Input placeholder='请输入账号' allowClear />
                   </Form.Item>
                   <Form.Item
                     field='password'
@@ -360,6 +360,7 @@ function AuthView() {
                       ref={passwordInputRef}
                       type='password'
                       placeholder='请输入密码'
+                      allowClear
                     />
                   </Form.Item>
                 </>

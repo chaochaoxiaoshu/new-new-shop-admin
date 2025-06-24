@@ -7,7 +7,7 @@
     --accent: #f86b52;
     --fg: #111827;
     --bg: white;
-    --muted-fg: #111827;
+    --muted-fg: #9ca3af;
     --muted: #f3f4f6;
     --card: white;
     --border: #e5e7eb;
@@ -81,18 +81,15 @@
 .arco-input-inner-wrapper,
 .arco-select .arco-select-view,
 .arco-picker {
-  @apply bg-white border-gray-200 rounded-[4px];
-}
-
-.arco-picker:hover {
-  @apply bg-transparent rounded-[4px];
+  @apply bg-white border-gray-200;
 }
 
 .arco-input:hover,
 .arco-textarea:hover,
+.arco-picker:hover,
 .arco-input-inner-wrapper:hover,
 .arco-select .arco-select-view:hover {
-  @apply bg-transparent border-accent rounded-[4px];
+  @apply bg-transparent border-accent;
 }
 
 .arco-input:focus,
@@ -132,4 +129,10 @@
   position: absolute;
   top: 100%;
   left: 0;
+}
+
+.arco-picker-suffix-icon,
+.arco-input-group-suffix,
+.arco-select-arrow-icon {
+  color: var(--muted-fg) !important;
 }

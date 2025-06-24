@@ -284,7 +284,7 @@ function BillLadingView() {
             icon={<Search className='inline size-4' />}
             onClick={handleSearch}
           >
-            搜索
+            查询
           </Button>
           <Button
             type='outline'
@@ -380,10 +380,10 @@ function EditBillLadingForm({
           </Select>
         </Form.Item>
         <Form.Item label='提货人名' field='name'>
-          <Input placeholder='请输入提货人名' />
+          <Input placeholder='请输入提货人名' allowClear />
         </Form.Item>
         <Form.Item label='提货电话' field='mobile'>
-          <Input placeholder='请输入提货电话' />
+          <Input placeholder='请输入提货电话' allowClear />
         </Form.Item>
         <Form.Item label='提货状态' field='status' disabled>
           <Select>

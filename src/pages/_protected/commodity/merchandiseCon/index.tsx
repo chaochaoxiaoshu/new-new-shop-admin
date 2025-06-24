@@ -71,6 +71,7 @@ export const Route = createFileRoute('/_protected/commodity/merchandiseCon/')({
       queryFn: () =>
         getGoods({
           ...search,
+          department_id: useUserStore.getState().departmentId!,
           with_fields: [
             'goods_type_name',
             'brand_name',
@@ -382,6 +383,8 @@ function GoodsView() {
               value={tempSearch.name}
               placeholder='请输入商品名称'
               style={{ width: '264px' }}
+              allowClear
+              suffix={<Search className='inline size-4' />}
               onChange={(value) => handleUpdateSearchParam('name', value)}
             />
             <Select
@@ -499,6 +502,7 @@ function GoodsView() {
               bordered={false}
               style={{ width: 'fit-content', padding: '16px' }}
               trigger='click'
+              allowClear
               triggerElement={
                 <div className='flex items-center px-4 cursor-pointer mr-auto'>
                   <span className='text-muted-foreground'>

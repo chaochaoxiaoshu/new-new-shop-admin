@@ -293,6 +293,7 @@ function GoodsEditView() {
           <Input.TextArea
             rows={5}
             placeholder='请输入规格名'
+            allowClear
             defaultValue={tempValue}
             onChange={(value) => (tempValue = value)}
           />
@@ -340,6 +341,7 @@ function GoodsEditView() {
             <Input
               placeholder='请输入'
               defaultValue={tempValue as string}
+              allowClear
               onChange={(value) => (tempValue = value)}
             />
           )}
@@ -449,6 +451,7 @@ function GoodsEditView() {
                 }
               />
             }
+            allowClear
           />
         </Form.Item>
       ),
@@ -637,7 +640,7 @@ function GoodsEditView() {
       title: '单位',
       render: (_, _item, index) => (
         <Form.Item field={`products[${index}].unit`}>
-          <Input placeholder='单位' />
+          <Input placeholder='单位' allowClear />
         </Form.Item>
       ),
       width: 120,
@@ -762,7 +765,12 @@ function GoodsEditView() {
           label='商品名称'
           rules={[{ required: true, message: '请输入商品名称' }]}
         >
-          <Input placeholder='请输入商品名称' maxLength={20} showWordLimit />
+          <Input
+            placeholder='请输入商品名称'
+            maxLength={20}
+            showWordLimit
+            allowClear
+          />
         </Form.Item>
         <Form.Item field='goods_departype_id' label='商品分类'>
           <Select placeholder='全部' allowClear>
@@ -901,7 +909,7 @@ function GoodsEditView() {
                                 <Input style={{ width: 110 }} readOnly />
                               </Form.Item>
                               <Form.Item field={`${item.field}.value`} noStyle>
-                                <Input placeholder='请输入参数值' />
+                                <Input placeholder='请输入参数值' allowClear />
                               </Form.Item>
                             </div>
                           ))}
@@ -949,6 +957,7 @@ function GoodsEditView() {
                               <Input
                                 style={{ width: 110 }}
                                 placeholder='请输入'
+                                allowClear
                               />
                             </Form.Item>
                             <Form.Item field={`${item.field}.value`} noStyle>
@@ -963,6 +972,7 @@ function GoodsEditView() {
                                     onClick={() => remove(index)}
                                   />
                                 }
+                                allowClear
                               />
                             </Form.Item>
                           </div>
@@ -1011,6 +1021,7 @@ function GoodsEditView() {
                                   (i) => i.key === fieldValues[index].key
                                 )}
                                 placeholder='请输入'
+                                allowClear
                               />
                             </Form.Item>
                             <Form.Item field={`${item.field}.value`} noStyle>
@@ -1054,6 +1065,7 @@ function GoodsEditView() {
                                       />
                                     )
                                   }
+                                  allowClear
                                 />
                               )}
                             </Form.Item>
@@ -1118,7 +1130,7 @@ function GoodsEditView() {
           }}
         </Form.Item>
         <Form.Item field='brief' label='商品简介'>
-          <Input.TextArea rows={3} placeholder='请输入商品简介' />
+          <Input.TextArea rows={3} placeholder='请输入商品简介' allowClear />
         </Form.Item>
         <Form.Item
           field='images'
@@ -1261,6 +1273,7 @@ function GoodsEditView() {
                       <Input
                         placeholder='请输入限购件数'
                         style={{ width: 140 }}
+                        allowClear
                       />
                     </Form.Item>
                     <span className='flex-none leading-[32px]'>件</span>

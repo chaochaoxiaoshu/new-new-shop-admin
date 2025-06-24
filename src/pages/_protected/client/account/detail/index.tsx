@@ -39,11 +39,18 @@ import { useMyModal } from '@/hooks'
 import { formatDateTime, queryClient } from '@/lib'
 import { useUserStore } from '@/stores'
 
+import { CouponDetail } from './-components/coupon-detail'
 import { Overview } from './-components/overview'
+import { TransactionDetail } from './-components/transaction-detail'
 
 export const Route = createFileRoute('/_protected/client/account/detail/')({
   validateSearch: type({
-    id: 'number'
+    id: 'number',
+    tab: [
+      '"overview" | "transaction-detail" | "coupon-detail" | "behavior-record"',
+      '=',
+      'overview'
+    ]
   }),
   loaderDeps: ({ search }) => ({ id: search.id }),
   beforeLoad: ({ search }) => {
@@ -83,6 +90,8 @@ export const Route = createFileRoute('/_protected/client/account/detail/')({
 
 function CustomerDetailView() {
   const context = Route.useRouteContext()
+  const search = Route.useSearch()
+  const navigate = Route.useNavigate()
   const [openModal, contextHolder] = useMyModal()
   const { data } = useSuspenseQuery(context.customerInfoQueryOptions)
 
@@ -125,8 +134,8 @@ function CustomerDetailView() {
   return (
     <div className='min-w-[720px]'>
       <div className='rounded-md bg-white'>
-        <Tabs>
-          <Tabs.TabPane title='客户信息'>
+        <Tabs activeTab='customer-info'>
+          <Tabs.TabPane key='customer-info' title='客户信息'>
             <div className='px-4 pb-6'>
               <div className='flex items-center space-x-4'>
                 <Avatar>
@@ -229,17 +238,31 @@ function CustomerDetailView() {
         </Tabs>
       </div>
       <div className='rounded-md bg-white mt-4'>
-        <Tabs>
+        <Tabs
+          activeTab={search.tab}
+          onChange={(key) => {
+            navigate({
+              search: {
+                ...search,
+                tab: key as typeof search.tab
+              }
+            })
+          }}
+        >
           <Tabs.TabPane key='overview' title='客户概览'>
             <div className='px-4 pb-6'>
               <Overview />
             </div>
           </Tabs.TabPane>
           <Tabs.TabPane key='transaction-detail' title='交易明细'>
-            <div className='px-4 pb-6'></div>
+            <div className='px-4 pb-6'>
+              <TransactionDetail />
+            </div>
           </Tabs.TabPane>
           <Tabs.TabPane key='coupon-detail' title='优惠券明细'>
-            <div className='px-4 pb-6'></div>
+            <div className='px-4 pb-6'>
+              <CouponDetail />
+            </div>
           </Tabs.TabPane>
           <Tabs.TabPane key='behavior-record' title='行为记录'>
             <div className='px-4 pb-6'></div>
@@ -394,6 +417,7 @@ function ChangeBindDistributorForm({
                 <Input
                   value={searchText}
                   placeholder='请输入分销员手机号'
+                  allowClear
                   suffix={<Search className='inline size-4' />}
                   onChange={(val) => setSearchText(val)}
                 />
