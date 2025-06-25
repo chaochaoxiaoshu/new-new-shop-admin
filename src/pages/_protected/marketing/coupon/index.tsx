@@ -116,7 +116,7 @@ function CouponsView() {
       title: '状态',
       render: (_, item) => {
         if (!item.operate) return '-'
-        const operateMap = {
+        const operateMap: Record<CouponStatus, string> = {
           0: '未开始',
           3: '进行中',
           4: '已结束',
@@ -130,31 +130,31 @@ function CouponsView() {
     {
       title: '已领取',
       dataIndex: 'received',
-      width: 100,
+      width: TableCellWidth.count,
       align: 'center'
     },
     {
       title: '剩余',
       dataIndex: 'total',
-      width: 100,
+      width: TableCellWidth.count,
       align: 'center'
     },
     {
       title: '已使用',
       dataIndex: 'used',
-      width: 100,
+      width: TableCellWidth.count,
       align: 'center'
     },
     {
       title: '用券成交总额',
       dataIndex: 'total_coupons',
-      width: 140,
+      width: TableCellWidth.amountS,
       align: 'center'
     },
     {
       title: '优惠总金额',
       dataIndex: 'total_amount',
-      width: 140,
+      width: TableCellWidth.amountS,
       align: 'center'
     },
     {
@@ -228,7 +228,7 @@ function CouponsView() {
         <TableLayout.Header>
           <Input
             value={tempSearch.name}
-            placeholder='请输入商品名称'
+            placeholder='请输入活动名称'
             style={{ width: '264px' }}
             suffix={<Search className='inline size-4' />}
             onChange={(value) => updateSearchField('name', value)}
