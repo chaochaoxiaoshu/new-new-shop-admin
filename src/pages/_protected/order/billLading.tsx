@@ -121,6 +121,7 @@ function BillLadingView() {
         <div key={item.id} className='flex flex-col space-y-3 my-2'>
           {item.order_items?.map((item) => (
             <GoodsInfo
+              key={item.id}
               imageUrl={item.image_url}
               name={item.name}
               price={item.price}
