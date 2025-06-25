@@ -26,6 +26,7 @@ import {
   getPayStatusText,
   getShipStatusText
 } from '@/helpers'
+import { paginationFields, useTempSearch } from '@/hooks'
 import { TableCellWidth, defineTableColumns, formatDateTime } from '@/lib'
 import { useUserStore } from '@/stores'
 
@@ -89,31 +90,11 @@ function Orders() {
     page_index: 1,
     page_size: 20
   })
-  const [tempSearchParams, setTempSearchParams] = useState<
-    Omit<SearchParams, 'page_index' | 'page_size'>
-  >({})
-
-  const handleUpdateSearchParam = (key: keyof SearchParams, value: unknown) => {
-    setTempSearchParams((prev) => ({
-      ...prev,
-      [key]: value
-    }))
-  }
-
-  const handleSearch = () => {
-    setSearchParams((prev) => ({
-      ...prev,
-      ...tempSearchParams
-    }))
-  }
-
-  const handleReset = () => {
-    setTempSearchParams({})
-    setSearchParams((prev) => ({
-      page_index: prev.page_index,
-      page_size: prev.page_size
-    }))
-  }
+  const { tempSearch, updateSearchField, commit, reset } = useTempSearch({
+    search: searchParams,
+    updateFn: setSearchParams,
+    selectDefaultFields: paginationFields
+  })
 
   const { data, isPending } = useQuery({
     queryKey: ['user-orders', searchParams, search.id],
@@ -234,63 +215,57 @@ function Orders() {
     <>
       <div className='flex-none flex flex-wrap gap-4 items-center'>
         <Input
-          value={tempSearchParams.order_ids}
+          value={tempSearch.order_ids}
           placeholder='请输入订单号'
           style={{ width: '264px' }}
           suffix={<FileText className='inline size-4' />}
-          onChange={(val) => handleUpdateSearchParam('order_ids', val)}
+          onChange={(val) => updateSearchField('order_ids', val)}
         />
         <DatePicker.RangePicker
           value={
-            tempSearchParams.start_time && tempSearchParams.end_time
+            tempSearch.start_time && tempSearch.end_time
               ? [
-                  dayjs.unix(tempSearchParams.start_time),
-                  dayjs.unix(tempSearchParams.end_time)
+                  dayjs.unix(tempSearch.start_time),
+                  dayjs.unix(tempSearch.end_time)
                 ]
               : undefined
           }
           style={{ width: '264px' }}
           onChange={(val) => {
             if (!(val as string[] | undefined)) {
-              setTempSearchParams((prev) => ({
-                ...prev,
-                start_time: undefined,
-                end_time: undefined
-              }))
+              updateSearchField('start_time', undefined)
+              updateSearchField('end_time', undefined)
             } else {
-              setTempSearchParams((prev) => ({
-                ...prev,
-                start_time: dayjs(val[0]).unix(),
-                end_time: dayjs(val[1]).unix()
-              }))
+              updateSearchField('start_time', dayjs(val[0]).unix())
+              updateSearchField('end_time', dayjs(val[1]).unix())
             }
           }}
         />
         <Input
-          value={tempSearchParams.ship_mobile}
+          value={tempSearch.ship_mobile}
           placeholder='请输入收货人手机号'
           style={{ width: '264px' }}
           suffix={<Smartphone className='inline size-4' />}
-          onChange={(val) => handleUpdateSearchParam('ship_mobile', val)}
+          onChange={(val) => updateSearchField('ship_mobile', val)}
         />
         <Input
-          value={tempSearchParams.goods_name}
+          value={tempSearch.goods_name}
           placeholder='请输入商品名称'
           style={{ width: '264px' }}
           suffix={<Search className='inline size-4' />}
-          onChange={(val) => handleUpdateSearchParam('goods_name', val)}
+          onChange={(val) => updateSearchField('goods_name', val)}
         />
         <Button
           type='primary'
           icon={<Search className='inline size-4' />}
-          onClick={handleSearch}
+          onClick={commit}
         >
           查询
         </Button>
         <Button
           type='outline'
           icon={<RotateCcw className='inline size-4' />}
-          onClick={handleReset}
+          onClick={reset}
         >
           重置
         </Button>
@@ -342,31 +317,11 @@ function AfterSales() {
     page_index: 1,
     page_size: 20
   })
-  const [tempSearchParams, setTempSearchParams] = useState<
-    Omit<SearchParams, 'page_index' | 'page_size'>
-  >({})
-
-  const handleUpdateSearchParam = (key: keyof SearchParams, value: unknown) => {
-    setTempSearchParams((prev) => ({
-      ...prev,
-      [key]: value
-    }))
-  }
-
-  const handleSearch = () => {
-    setSearchParams((prev) => ({
-      ...prev,
-      ...tempSearchParams
-    }))
-  }
-
-  const handleReset = () => {
-    setTempSearchParams({})
-    setSearchParams((prev) => ({
-      page_index: prev.page_index,
-      page_size: prev.page_size
-    }))
-  }
+  const { tempSearch, updateSearchField, commit, reset } = useTempSearch({
+    search: searchParams,
+    updateFn: setSearchParams,
+    selectDefaultFields: paginationFields
+  })
 
   const { data, isPending } = useQuery({
     queryKey: ['user-after-sales', searchParams, search.id],
@@ -440,34 +395,34 @@ function AfterSales() {
     <>
       <div className='flex-none flex flex-wrap gap-4 items-center'>
         <Input
-          value={tempSearchParams.after_sales_id}
+          value={tempSearch.after_sales_id}
           placeholder='请输入售后单号'
           style={{ width: '264px' }}
           suffix={<FileText className='inline size-4' />}
-          onChange={(val) => handleUpdateSearchParam('after_sales_id', val)}
+          onChange={(val) => updateSearchField('after_sales_id', val)}
         />
         <Input
-          value={tempSearchParams.order_id}
+          value={tempSearch.order_id}
           placeholder='请输入订单号'
           style={{ width: '264px' }}
           suffix={<FileText className='inline size-4' />}
-          onChange={(val) => handleUpdateSearchParam('order_id', val)}
+          onChange={(val) => updateSearchField('order_id', val)}
         />
         <Select
-          value={tempSearchParams.status}
+          value={tempSearch.status}
           placeholder='请选择状态'
           style={{ width: '264px' }}
-          onChange={(val) => handleUpdateSearchParam('status', val)}
+          onChange={(val) => updateSearchField('status', val as number)}
         >
           <Select.Option value={1}>未审核</Select.Option>
           <Select.Option value={2}>审核通过</Select.Option>
           <Select.Option value={3}>审核拒绝</Select.Option>
         </Select>
         <Select
-          value={tempSearchParams.type}
+          value={tempSearch.type}
           placeholder='请选择商品状态'
           style={{ width: '264px' }}
-          onChange={(val) => handleUpdateSearchParam('type', val)}
+          onChange={(val) => updateSearchField('type', val as number)}
         >
           <Select.Option value={1}>未发货</Select.Option>
           <Select.Option value={2}>已发货</Select.Option>
@@ -475,14 +430,14 @@ function AfterSales() {
         <Button
           type='primary'
           icon={<Search className='inline size-4' />}
-          onClick={handleSearch}
+          onClick={commit}
         >
           查询
         </Button>
         <Button
           type='outline'
           icon={<RotateCcw className='inline size-4' />}
-          onClick={handleReset}
+          onClick={reset}
         >
           重置
         </Button>

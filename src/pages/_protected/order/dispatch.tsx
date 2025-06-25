@@ -1,6 +1,5 @@
 import { type } from 'arktype'
 import { RotateCcw, Search } from 'lucide-react'
-import { useState } from 'react'
 
 import { Button, Input } from '@arco-design/web-react'
 import { keepPreviousData, queryOptions, useQuery } from '@tanstack/react-query'
@@ -10,6 +9,7 @@ import { GetDeliveriesRes, getDeliveries } from '@/api'
 import { MyTable } from '@/components/my-table'
 import { TableLayout } from '@/components/table-layout'
 import { getHead } from '@/helpers'
+import { paginationFields, useTempSearch } from '@/hooks'
 import {
   TableCellWidth,
   defineTableColumns,
@@ -55,29 +55,11 @@ function DeliveryView() {
     (store) => store.checkActionPermission
   )
 
-  /* ------------------------------ Search START ------------------------------ */
-  const [tempSearch, setTempSearch] = useState(search)
-
-  const handleUpdateSearchParam = <K extends keyof typeof search>(
-    key: K,
-    value: (typeof search)[K]
-  ) => {
-    setTempSearch((prev) => ({ ...prev, [key]: value }))
-  }
-
-  const handleSearch = () => {
-    navigate({ search: tempSearch })
-  }
-
-  const handleReset = () => {
-    const initial = {
-      page_index: search.page_index,
-      page_size: search.page_size
-    }
-    navigate({ search: initial })
-    setTempSearch(initial)
-  }
-  /* ------------------------------- Search END ------------------------------- */
+  const { tempSearch, updateSearchField, commit, reset } = useTempSearch({
+    search,
+    updateFn: (search) => navigate({ search }),
+    selectDefaultFields: paginationFields
+  })
 
   const { data, isFetching } = useQuery(context.deliveriesQueryOptions)
 
@@ -162,37 +144,37 @@ function DeliveryView() {
             placeholder='请输入发货单号'
             value={tempSearch.delivery_id}
             style={{ width: '264px' }}
-            onChange={(value) => handleUpdateSearchParam('delivery_id', value)}
+            onChange={(value) => updateSearchField('delivery_id', value)}
           />
           <Input
             placeholder='请输入订单号'
             value={tempSearch.order_id}
             style={{ width: '264px' }}
-            onChange={(value) => handleUpdateSearchParam('order_id', value)}
+            onChange={(value) => updateSearchField('order_id', value)}
           />
           <Input
             placeholder='请输入快递单号'
             value={tempSearch.logi_no}
             style={{ width: '264px' }}
-            onChange={(value) => handleUpdateSearchParam('logi_no', value)}
+            onChange={(value) => updateSearchField('logi_no', value)}
           />
           <Input
             placeholder='请输入电话号'
             value={tempSearch.ship_mobile}
             style={{ width: '264px' }}
-            onChange={(value) => handleUpdateSearchParam('ship_mobile', value)}
+            onChange={(value) => updateSearchField('ship_mobile', value)}
           />
           <Button
             type='primary'
             icon={<Search className='inline size-4' />}
-            onClick={handleSearch}
+            onClick={commit}
           >
             查询
           </Button>
           <Button
             type='outline'
             icon={<RotateCcw className='inline size-4' />}
-            onClick={handleReset}
+            onClick={reset}
           >
             重置
           </Button>

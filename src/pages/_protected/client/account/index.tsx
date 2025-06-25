@@ -31,7 +31,7 @@ import { MyTable } from '@/components/my-table'
 import { MyTag } from '@/components/my-tag'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
-import { useMyModal } from '@/hooks'
+import { paginationFields, useMyModal, useTempSearch } from '@/hooks'
 import {
   TableCellWidth,
   cn,
@@ -85,29 +85,11 @@ function CustomersView() {
     (store) => store.checkActionPermission
   )
 
-  /* ------------------------------ Search START ------------------------------ */
-  const [tempSearch, setTempSearch] = useState(search)
-
-  const handleUpdateSearchParam = <K extends keyof typeof search>(
-    key: K,
-    value: (typeof search)[K]
-  ) => {
-    setTempSearch((prev) => ({ ...prev, [key]: value }))
-  }
-
-  const handleSearch = () => {
-    navigate({ search: tempSearch })
-  }
-
-  const handleReset = () => {
-    const initial = {
-      page_index: search.page_index,
-      page_size: search.page_size
-    }
-    navigate({ search: initial })
-    setTempSearch(initial)
-  }
-  /* ------------------------------- Search END ------------------------------- */
+  const { tempSearch, updateSearchField, commit, reset } = useTempSearch({
+    search,
+    updateFn: (search) => navigate({ search }),
+    selectDefaultFields: paginationFields
+  })
 
   const { data: allTags } = useQuery(context.allTagsQueryOptions)
 
@@ -279,26 +261,26 @@ function CustomersView() {
             placeholder='请输入手机号'
             style={{ width: '264px' }}
             suffix={<Smartphone className='inline size-4' />}
-            onChange={(val) => handleUpdateSearchParam('mobile', val)}
+            onChange={(val) => updateSearchField('mobile', val)}
           />
           <Input
             value={tempSearch.nickname}
             placeholder='请输入昵称'
             style={{ width: '264px' }}
             suffix={<TextCursorInput className='inline size-4' />}
-            onChange={(val) => handleUpdateSearchParam('nickname', val)}
+            onChange={(val) => updateSearchField('nickname', val)}
           />
           <Button
             type='primary'
             icon={<Search className='inline size-4' />}
-            onClick={handleSearch}
+            onClick={commit}
           >
             查询
           </Button>
           <Button
             type='outline'
             icon={<RotateCcw className='inline size-4' />}
-            onClick={handleReset}
+            onClick={reset}
           >
             重置
           </Button>

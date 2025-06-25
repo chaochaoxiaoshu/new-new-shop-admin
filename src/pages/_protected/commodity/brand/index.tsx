@@ -1,6 +1,6 @@
 import { type } from 'arktype'
 import { Plus, RotateCcw, Search } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 import {
   Button,
@@ -34,7 +34,7 @@ import { MyUpload, type MyUploadResource } from '@/components/my-upload'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
 import { createMyUploadResource } from '@/helpers/upload'
-import { useMyModal } from '@/hooks'
+import { paginationFields, useMyModal, useTempSearch } from '@/hooks'
 import {
   TableCellWidth,
   defineTableColumns,
@@ -92,29 +92,11 @@ function BrandView() {
     (store) => store.checkActionPermission
   )
 
-  /* ------------------------------ Search START ------------------------------ */
-  const [tempSearch, setTempSearch] = useState(search)
-
-  const handleUpdateSearchParam = <K extends keyof typeof search>(
-    key: K,
-    value: (typeof search)[K]
-  ) => {
-    setTempSearch((prev) => ({ ...prev, [key]: value }))
-  }
-
-  const handleSearch = () => {
-    navigate({ search: tempSearch })
-  }
-
-  const handleReset = () => {
-    const initial = {
-      page_index: search.page_index,
-      page_size: search.page_size
-    }
-    navigate({ search: initial })
-    setTempSearch(initial)
-  }
-  /* ------------------------------- Search END ------------------------------- */
+  const { tempSearch, updateSearchField, commit, reset } = useTempSearch({
+    search,
+    updateFn: (search) => navigate({ search }),
+    selectDefaultFields: paginationFields
+  })
 
   const { data: departments } = useQuery(context.departmentsQueryOptions)
 
@@ -230,7 +212,7 @@ function BrandView() {
             placeholder='请输入品牌名称'
             style={{ width: '264px' }}
             suffix={<Search className='inline size-4' />}
-            onChange={(value) => handleUpdateSearchParam('name', value)}
+            onChange={(value) => updateSearchField('name', value)}
           />
           {departmentId === 0 && (
             <Select
@@ -238,7 +220,7 @@ function BrandView() {
               placeholder='请选择电商事业部'
               style={{ width: '264px' }}
               onChange={(value) =>
-                handleUpdateSearchParam('department_id', value as number)
+                updateSearchField('department_id', value as number)
               }
             >
               {departments?.items.map((item) => (
@@ -251,14 +233,14 @@ function BrandView() {
           <Button
             type='primary'
             icon={<Search className='inline size-4' />}
-            onClick={handleSearch}
+            onClick={commit}
           >
             查询
           </Button>
           <Button
             type='outline'
             icon={<RotateCcw className='inline size-4' />}
-            onClick={handleReset}
+            onClick={reset}
           >
             重置
           </Button>

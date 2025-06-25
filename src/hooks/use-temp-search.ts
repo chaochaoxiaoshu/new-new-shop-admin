@@ -22,6 +22,9 @@ export function useTempSearch<TSearch extends Record<string, unknown>>(
 
   const [tempSearch, setTempSearch] = useState(search)
 
+  /**
+   * 更新临时搜索字段
+   */
   const updateSearchField = (
     key: keyof TSearch,
     value: TSearch[keyof TSearch]
@@ -29,8 +32,14 @@ export function useTempSearch<TSearch extends Record<string, unknown>>(
     setTempSearch((prev) => ({ ...prev, [key]: value }))
   }
 
+  /**
+   * 将临时搜索字段提交到 URL 搜索参数
+   */
   const commit = () => updateFn(tempSearch)
 
+  /**
+   * 重置临时搜索字段
+   */
   const reset = () => {
     const defaultSearch = selectDefaultFields(tempSearch)
     setTempSearch(defaultSearch)
@@ -44,4 +53,16 @@ export function useTempSearch<TSearch extends Record<string, unknown>>(
     commit,
     reset
   }
+}
+
+/**
+ * 提取分页字段，适用于大部分用例，因此默认实现
+ */
+export function paginationFields<
+  TSearch extends { page_index: number; page_size: number }
+>(search: TSearch) {
+  return {
+    page_index: search.page_index,
+    page_size: search.page_size
+  } as TSearch
 }

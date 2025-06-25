@@ -1,6 +1,5 @@
 import { type } from 'arktype'
 import { Plus, RotateCcw, Search } from 'lucide-react'
-import { useState } from 'react'
 
 import { Button, Input, Popconfirm, Switch } from '@arco-design/web-react'
 import {
@@ -20,7 +19,7 @@ import {
 import { MyTable } from '@/components/my-table'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
-import { useMyModal } from '@/hooks'
+import { useMyModal, useTempSearch } from '@/hooks'
 import { TableCellWidth, defineTableColumns, queryClient } from '@/lib'
 import { useUserStore } from '@/stores'
 
@@ -65,30 +64,15 @@ function GoodsSecondaryCategoriesView() {
     (store) => store.checkActionPermission
   )
 
-  /* ------------------------------ Search START ------------------------------ */
-  const [tempSearch, setTempSearch] = useState(search)
-
-  const handleUpdateSearchParam = <K extends keyof typeof search>(
-    key: K,
-    value: (typeof search)[K]
-  ) => {
-    setTempSearch((prev) => ({ ...prev, [key]: value }))
-  }
-
-  const handleSearch = () => {
-    navigate({ search: tempSearch })
-  }
-
-  const handleReset = () => {
-    const initial = {
+  const { tempSearch, updateSearchField, commit, reset } = useTempSearch({
+    search,
+    updateFn: (search) => navigate({ search }),
+    selectDefaultFields: (search) => ({
       id: search.id,
       page_index: search.page_index,
       page_size: search.page_size
-    }
-    navigate({ search: initial })
-    setTempSearch(initial)
-  }
-  /* ------------------------------- Search END ------------------------------- */
+    })
+  })
 
   const { data, isFetching } = useQuery(
     context.goodsSecondaryCategoriesQueryOptions
@@ -217,19 +201,19 @@ function GoodsSecondaryCategoriesView() {
             placeholder='请输入分类名称'
             style={{ width: '264px' }}
             suffix={<Search className='inline size-4' />}
-            onChange={(value) => handleUpdateSearchParam('name', value)}
+            onChange={(value) => updateSearchField('name', value)}
           />
           <Button
             type='primary'
             icon={<Search className='inline size-4' />}
-            onClick={handleSearch}
+            onClick={commit}
           >
             查询
           </Button>
           <Button
             type='outline'
             icon={<RotateCcw className='inline size-4' />}
-            onClick={handleReset}
+            onClick={reset}
           >
             重置
           </Button>

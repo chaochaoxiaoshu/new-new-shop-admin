@@ -23,6 +23,7 @@ import { SortableTable } from '@/components/sortable-table'
 import { SortableTableDragHandle } from '@/components/sortable-table/drag-handle'
 import { TableLayout } from '@/components/table-layout'
 import { getHead } from '@/helpers'
+import { useTempSearch } from '@/hooks'
 import { TableCellWidth, defineTableColumns, formatDateTime } from '@/lib'
 import { useUserStore } from '@/stores'
 
@@ -192,30 +193,21 @@ function TagsView() {
     (store) => store.checkActionPermission
   )
 
-  const [tempSearch, setTempSearch] = useState(search)
-
-  useEffect(() => {
-    if (tempSearch.tagGroupId !== search.tagGroupId) {
-      setTempSearch({
-        ...tempSearch,
-        tagGroupId: search.tagGroupId
-      })
-    }
-  }, [search, tempSearch])
-
-  const handleSearch = () => {
-    navigate({ search: tempSearch })
-  }
-
-  const handleReset = () => {
-    const initial = {
+  const { tempSearch, updateSearchField, commit, reset } = useTempSearch({
+    search,
+    updateFn: (search) => navigate({ search }),
+    selectDefaultFields: (search) => ({
       tagGroupId: search.tagGroupId,
       page_index: search.page_index,
       page_size: search.page_size
+    })
+  })
+
+  useEffect(() => {
+    if (tempSearch.tagGroupId !== search.tagGroupId) {
+      updateSearchField('tagGroupId', search.tagGroupId)
     }
-    navigate({ search: initial })
-    setTempSearch(initial)
-  }
+  }, [search, tempSearch.tagGroupId, updateSearchField])
 
   const { data, isFetching } = useQuery({
     queryKey: ['tags', search],
@@ -338,16 +330,14 @@ function TagsView() {
             placeholder='请输入标签名称'
             style={{ width: 264 }}
             suffix={<Search className='inline size-4' />}
-            onChange={(e) => setTempSearch({ ...tempSearch, tag_name: e })}
-            onPressEnter={handleSearch}
+            onChange={(val) => updateSearchField('tag_name', val)}
+            onPressEnter={commit}
           />
           <Select
             value={tempSearch.type}
             placeholder='请选择标签类型'
             style={{ width: 264 }}
-            onChange={(val) =>
-              setTempSearch({ ...tempSearch, type: val as 1 | 2 })
-            }
+            onChange={(val) => updateSearchField('type', val as 1 | 2)}
           >
             <Select.Option value={1}>自定义标签</Select.Option>
             <Select.Option value={2}>智能标签</Select.Option>
@@ -355,14 +345,14 @@ function TagsView() {
           <Button
             type='primary'
             icon={<Search className='inline size-4' />}
-            onClick={handleSearch}
+            onClick={commit}
           >
             查询
           </Button>
           <Button
             type='outline'
             icon={<RotateCcw className='inline size-4' />}
-            onClick={handleReset}
+            onClick={reset}
           >
             重置
           </Button>

@@ -1,6 +1,5 @@
 import { type } from 'arktype'
 import { Ellipsis, RotateCcw, Search } from 'lucide-react'
-import { useState } from 'react'
 
 import {
   Button,
@@ -23,7 +22,7 @@ import {
 import { MyTable } from '@/components/my-table'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
-import { useMyModal } from '@/hooks'
+import { paginationFields, useMyModal, useTempSearch } from '@/hooks'
 import {
   TableCellWidth,
   defineTableColumns,
@@ -70,29 +69,11 @@ function ReshipView() {
   )
   const [openModal, contextHolder] = useMyModal()
 
-  /* ------------------------------ Search START ------------------------------ */
-  const [tempSearch, setTempSearch] = useState(search)
-
-  const handleUpdateSearchParam = (
-    key: keyof typeof search,
-    value: unknown
-  ) => {
-    setTempSearch((prev) => ({ ...prev, [key]: value }))
-  }
-
-  const handleSearch = () => {
-    navigate({ search: tempSearch })
-  }
-
-  const handleReset = () => {
-    const initial = {
-      page_index: search.page_index,
-      page_size: search.page_size
-    }
-    navigate({ search: initial })
-    setTempSearch(initial)
-  }
-  /* ------------------------------ Search END ------------------------------ */
+  const { tempSearch, updateSearchField, commit, reset } = useTempSearch({
+    search,
+    updateFn: (search) => navigate({ search }),
+    selectDefaultFields: paginationFields
+  })
 
   /* ------------------------------ Table START ------------------------------ */
   const { data, isFetching } = useQuery(context.reshipsQueryOptions)
@@ -215,25 +196,25 @@ function ReshipView() {
             placeholder='请输入退货单号'
             value={tempSearch.reship_id}
             style={{ width: '264px' }}
-            onChange={(value) => handleUpdateSearchParam('reship_id', value)}
+            onChange={(value) => updateSearchField('reship_id', value)}
           />
           <Input
             placeholder='请输入订单号'
             value={tempSearch.order_id}
             style={{ width: '264px' }}
-            onChange={(value) => handleUpdateSearchParam('order_id', value)}
+            onChange={(value) => updateSearchField('order_id', value)}
           />
           <Input
             placeholder='请输入快递单号'
             value={tempSearch.logi_no}
             style={{ width: '264px' }}
-            onChange={(value) => handleUpdateSearchParam('logi_no', value)}
+            onChange={(value) => updateSearchField('logi_no', value)}
           />
           <Select
             placeholder='请选择状态'
             value={tempSearch.status}
             style={{ width: '264px' }}
-            onChange={(value) => handleUpdateSearchParam('status', value)}
+            onChange={(value) => updateSearchField('status', value as number)}
           >
             <Select.Option value={1}>审核通过待发货</Select.Option>
             <Select.Option value={2}>已发退货</Select.Option>
@@ -243,14 +224,14 @@ function ReshipView() {
           <Button
             type='primary'
             icon={<Search className='inline size-4' />}
-            onClick={handleSearch}
+            onClick={commit}
           >
             查询
           </Button>
           <Button
             type='outline'
             icon={<RotateCcw className='inline size-4' />}
-            onClick={handleReset}
+            onClick={reset}
           >
             重置
           </Button>

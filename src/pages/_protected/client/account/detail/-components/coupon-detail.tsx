@@ -14,6 +14,7 @@ import { useSearch } from '@tanstack/react-router'
 
 import { GetUserCouponsRes, UserCouponIsUse, getUserCoupons } from '@/api'
 import { getUserCouponIsUseText } from '@/helpers/marketing'
+import { paginationFields, useTempSearch } from '@/hooks'
 import { TableCellWidth, defineTableColumns, formatDateTime } from '@/lib'
 
 export function CouponDetail() {
@@ -33,31 +34,12 @@ export function CouponDetail() {
     page_index: 1,
     page_size: 20
   })
-  const [tempSearchParams, setTempSearchParams] = useState<
-    Omit<SearchParams, 'page_index' | 'page_size'>
-  >({})
-
-  const handleUpdateSearchParam = (key: keyof SearchParams, value: unknown) => {
-    setTempSearchParams((prev) => ({
-      ...prev,
-      [key]: value
-    }))
-  }
-
-  const handleSearch = () => {
-    setSearchParams((prev) => ({
-      ...prev,
-      ...tempSearchParams
-    }))
-  }
-
-  const handleReset = () => {
-    setTempSearchParams({})
-    setSearchParams((prev) => ({
-      page_index: prev.page_index,
-      page_size: prev.page_size
-    }))
-  }
+  const { tempSearch, setTempSearch, updateSearchField, commit, reset } =
+    useTempSearch({
+      search: searchParams,
+      updateFn: setSearchParams,
+      selectDefaultFields: paginationFields
+    })
 
   const { data, isPending } = useQuery({
     queryKey: ['user-coupons', searchParams, search.id],
@@ -123,17 +105,17 @@ export function CouponDetail() {
     <>
       <div className='flex-none flex flex-wrap gap-4 items-center mt-6'>
         <Input
-          value={tempSearchParams.discount_name}
+          value={tempSearch.discount_name}
           placeholder='请输入优惠券名称'
           style={{ width: '264px' }}
           suffix={<Search className='inline size-4' />}
-          onChange={(val) => handleUpdateSearchParam('discount_name', val)}
+          onChange={(val) => updateSearchField('discount_name', val)}
         />
         <Select
-          value={tempSearchParams.is_use}
+          value={tempSearch.is_use}
           placeholder='请选择状态'
           style={{ width: '264px' }}
-          onChange={(val) => handleUpdateSearchParam('is_use', val)}
+          onChange={(val) => updateSearchField('is_use', val as number)}
         >
           <Select.Option value={UserCouponIsUse.未使用}>未使用</Select.Option>
           <Select.Option value={UserCouponIsUse.已使用}>已使用</Select.Option>
@@ -143,11 +125,10 @@ export function CouponDetail() {
         </Select>
         <DatePicker.RangePicker
           value={
-            tempSearchParams.collection_start_time &&
-            tempSearchParams.collection_end_time
+            tempSearch.collection_start_time && tempSearch.collection_end_time
               ? [
-                  dayjs.unix(tempSearchParams.collection_start_time),
-                  dayjs.unix(tempSearchParams.collection_end_time)
+                  dayjs.unix(tempSearch.collection_start_time),
+                  dayjs.unix(tempSearch.collection_end_time)
                 ]
               : undefined
           }
@@ -155,13 +136,13 @@ export function CouponDetail() {
           style={{ width: '264px' }}
           onChange={(val) => {
             if (!(val as string[] | undefined)) {
-              setTempSearchParams((prev) => ({
+              setTempSearch((prev) => ({
                 ...prev,
                 collection_start_time: undefined,
                 collection_end_time: undefined
               }))
             } else {
-              setTempSearchParams((prev) => ({
+              setTempSearch((prev) => ({
                 ...prev,
                 collection_start_time: dayjs(val[0]).unix(),
                 collection_end_time: dayjs(val[1]).unix()
@@ -171,10 +152,10 @@ export function CouponDetail() {
         />
         <DatePicker.RangePicker
           value={
-            tempSearchParams.use_start_time && tempSearchParams.use_end_time
+            tempSearch.use_start_time && tempSearch.use_end_time
               ? [
-                  dayjs.unix(tempSearchParams.use_start_time),
-                  dayjs.unix(tempSearchParams.use_end_time)
+                  dayjs.unix(tempSearch.use_start_time),
+                  dayjs.unix(tempSearch.use_end_time)
                 ]
               : undefined
           }
@@ -182,13 +163,13 @@ export function CouponDetail() {
           style={{ width: '264px' }}
           onChange={(val) => {
             if (!(val as string[] | undefined)) {
-              setTempSearchParams((prev) => ({
+              setTempSearch((prev) => ({
                 ...prev,
                 use_start_time: undefined,
                 use_end_time: undefined
               }))
             } else {
-              setTempSearchParams((prev) => ({
+              setTempSearch((prev) => ({
                 ...prev,
                 use_start_time: dayjs(val[0]).unix(),
                 use_end_time: dayjs(val[1]).unix()
@@ -199,14 +180,14 @@ export function CouponDetail() {
         <Button
           type='primary'
           icon={<Search className='inline size-4' />}
-          onClick={handleSearch}
+          onClick={commit}
         >
           查询
         </Button>
         <Button
           type='outline'
           icon={<RotateCcw className='inline size-4' />}
-          onClick={handleReset}
+          onClick={reset}
         >
           重置
         </Button>

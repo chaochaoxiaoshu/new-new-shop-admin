@@ -1,7 +1,6 @@
 import { type } from 'arktype'
 import dayjs from 'dayjs'
 import { FileText, RotateCcw, Search } from 'lucide-react'
-import { useState } from 'react'
 
 import {
   Button,
@@ -34,7 +33,7 @@ import { MyImage } from '@/components/my-image'
 import { MyTable } from '@/components/my-table'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
-import { useMyModal } from '@/hooks'
+import { paginationFields, useMyModal, useTempSearch } from '@/hooks'
 import {
   TableCellWidth,
   defineTableColumns,
@@ -97,29 +96,11 @@ function CommentsView() {
   const departmentId = useUserStore((store) => store.departmentId)
   const [openModal, contextHolder] = useMyModal()
 
-  /* ------------------------------ Search START ------------------------------ */
-  const [tempSearch, setTempSearch] = useState(search)
-
-  const handleUpdateSearchParam = <K extends keyof typeof search>(
-    key: K,
-    value: (typeof search)[K]
-  ) => {
-    setTempSearch((prev) => ({ ...prev, [key]: value }))
-  }
-
-  const handleSearch = () => {
-    navigate({ search: tempSearch })
-  }
-
-  const handleReset = () => {
-    const initial = {
-      page_index: search.page_index,
-      page_size: search.page_size
-    }
-    navigate({ search: initial })
-    setTempSearch(initial)
-  }
-  /* ------------------------------- Search END ------------------------------- */
+  const { tempSearch, updateSearchField, commit, reset } = useTempSearch({
+    search,
+    updateFn: (search) => navigate({ search }),
+    selectDefaultFields: paginationFields
+  })
 
   const { data: departments } = useQuery(context.departmentsQueryOptions)
 
@@ -252,14 +233,14 @@ function CommentsView() {
             placeholder='请输入商品名称'
             style={{ width: '264px' }}
             suffix={<Search className='inline size-4' />}
-            onChange={(value) => handleUpdateSearchParam('name', value)}
+            onChange={(value) => updateSearchField('name', value)}
           />
           <Input
             value={tempSearch.order_id}
             placeholder='请输入订单号'
             style={{ width: '264px' }}
             suffix={<FileText className='inline size-4' />}
-            onChange={(value) => handleUpdateSearchParam('order_id', value)}
+            onChange={(value) => updateSearchField('order_id', value)}
           />
           {departmentId === 0 && (
             <Select
@@ -267,7 +248,7 @@ function CommentsView() {
               placeholder='请选择电商事业部'
               style={{ width: '264px' }}
               onChange={(value) =>
-                handleUpdateSearchParam('department', value as number)
+                updateSearchField('department', value as number)
               }
             >
               {departments?.items.map((item) => (
@@ -281,9 +262,7 @@ function CommentsView() {
             value={tempSearch.display}
             placeholder='请选择显示状态'
             style={{ width: '264px' }}
-            onChange={(value) =>
-              handleUpdateSearchParam('display', value as 1 | 2)
-            }
+            onChange={(value) => updateSearchField('display', value as 1 | 2)}
           >
             <Select.Option value={1}>显示</Select.Option>
             <Select.Option value={2}>隐藏</Select.Option>
@@ -299,25 +278,25 @@ function CommentsView() {
             }
             style={{ width: '264px' }}
             onChange={(value) => {
-              handleUpdateSearchParam('start_time', dayjs(value[0]).unix())
-              handleUpdateSearchParam('end_time', dayjs(value[1]).unix())
+              updateSearchField('start_time', dayjs(value[0]).unix())
+              updateSearchField('end_time', dayjs(value[1]).unix())
             }}
             onClear={() => {
-              handleUpdateSearchParam('start_time', undefined)
-              handleUpdateSearchParam('end_time', undefined)
+              updateSearchField('start_time', undefined)
+              updateSearchField('end_time', undefined)
             }}
           />
           <Button
             type='primary'
             icon={<Search className='inline size-4' />}
-            onClick={handleSearch}
+            onClick={commit}
           >
             查询
           </Button>
           <Button
             type='outline'
             icon={<RotateCcw className='inline size-4' />}
-            onClick={handleReset}
+            onClick={reset}
           >
             重置
           </Button>

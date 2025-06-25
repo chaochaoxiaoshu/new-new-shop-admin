@@ -31,7 +31,7 @@ import { MyImage } from '@/components/my-image'
 import { MyTable } from '@/components/my-table'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
-import { useTempSearch } from '@/hooks'
+import { paginationFields, useTempSearch } from '@/hooks'
 import { TableCellWidth, defineTableColumns, queryClient } from '@/lib'
 import { useUserStore } from '@/stores'
 
@@ -109,10 +109,7 @@ function GoodsView() {
     useTempSearch({
       search,
       updateFn: (search) => navigate({ search }),
-      selectDefaultFields: (search) => ({
-        page_index: search.page_index,
-        page_size: search.page_size
-      })
+      selectDefaultFields: paginationFields
     })
 
   const { data: departments } = useQuery(context.departmentsQueryOptions)

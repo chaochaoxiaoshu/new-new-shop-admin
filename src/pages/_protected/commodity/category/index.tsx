@@ -33,7 +33,7 @@ import {
 import { MyTable } from '@/components/my-table'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
-import { useMyModal, useTempSearch } from '@/hooks'
+import { paginationFields, useMyModal, useTempSearch } from '@/hooks'
 import { TableCellWidth, defineTableColumns, queryClient } from '@/lib'
 import { useUserStore } from '@/stores'
 
@@ -107,10 +107,7 @@ function GoodsCategoryView() {
   const { tempSearch, updateSearchField, commit, reset } = useTempSearch({
     search,
     updateFn: (search) => navigate({ search }),
-    selectDefaultFields: (search) => ({
-      page_index: search.page_index,
-      page_size: search.page_size
-    })
+    selectDefaultFields: paginationFields
   })
 
   const { data: departments } = useQuery(context.departmentsQueryOptions)

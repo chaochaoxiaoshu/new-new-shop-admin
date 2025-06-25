@@ -22,6 +22,7 @@ import {
   getUserSharingRecords
 } from '@/api'
 import { MyImage } from '@/components/my-image'
+import { paginationFields, useTempSearch } from '@/hooks'
 import { TableCellWidth, defineTableColumns, formatDateTime } from '@/lib'
 
 export function BehaviorRecord() {
@@ -118,31 +119,12 @@ function Browsing() {
     page_index: 1,
     page_size: 20
   })
-  const [tempSearchParams, setTempSearchParams] = useState<
-    Omit<SearchParams, 'page_index' | 'page_size'>
-  >({})
-
-  const handleUpdateSearchParam = (key: keyof SearchParams, value: unknown) => {
-    setTempSearchParams((prev) => ({
-      ...prev,
-      [key]: value
-    }))
-  }
-
-  const handleSearch = () => {
-    setSearchParams((prev) => ({
-      ...prev,
-      ...tempSearchParams
-    }))
-  }
-
-  const handleReset = () => {
-    setTempSearchParams({})
-    setSearchParams((prev) => ({
-      page_index: prev.page_index,
-      page_size: prev.page_size
-    }))
-  }
+  const { tempSearch, setTempSearch, updateSearchField, commit, reset } =
+    useTempSearch({
+      search: searchParams,
+      updateFn: setSearchParams,
+      selectDefaultFields: paginationFields
+    })
 
   const { data, isPending } = useQuery({
     queryKey: ['user-browsing', searchParams, search.id],
@@ -185,31 +167,31 @@ function Browsing() {
     <>
       <div className='flex-none flex flex-wrap gap-4 items-center'>
         <Input
-          value={tempSearchParams.goods_name}
+          value={tempSearch.goods_name}
           placeholder='请输入商品名称'
           style={{ width: '264px' }}
           suffix={<Search className='inline size-4' />}
-          onChange={(val) => handleUpdateSearchParam('goods_name', val)}
+          onChange={(val) => updateSearchField('goods_name', val)}
         />
         <DatePicker.RangePicker
           value={
-            tempSearchParams.start_time && tempSearchParams.end_time
+            tempSearch.start_time && tempSearch.end_time
               ? [
-                  dayjs.unix(tempSearchParams.start_time),
-                  dayjs.unix(tempSearchParams.end_time)
+                  dayjs.unix(tempSearch.start_time),
+                  dayjs.unix(tempSearch.end_time)
                 ]
               : undefined
           }
           style={{ width: '264px' }}
           onChange={(val) => {
             if (!(val as string[] | undefined)) {
-              setTempSearchParams((prev) => ({
+              setTempSearch((prev) => ({
                 ...prev,
                 start_time: undefined,
                 end_time: undefined
               }))
             } else {
-              setTempSearchParams((prev) => ({
+              setTempSearch((prev) => ({
                 ...prev,
                 start_time: dayjs(val[0]).unix(),
                 end_time: dayjs(val[1]).unix()
@@ -220,14 +202,14 @@ function Browsing() {
         <Button
           type='primary'
           icon={<Search className='inline size-4' />}
-          onClick={handleSearch}
+          onClick={commit}
         >
           查询
         </Button>
         <Button
           type='outline'
           icon={<RotateCcw className='inline size-4' />}
-          onClick={handleReset}
+          onClick={reset}
         >
           重置
         </Button>
@@ -277,31 +259,12 @@ function AddToCart() {
     page_index: 1,
     page_size: 20
   })
-  const [tempSearchParams, setTempSearchParams] = useState<
-    Omit<SearchParams, 'page_index' | 'page_size'>
-  >({})
-
-  const handleUpdateSearchParam = (key: keyof SearchParams, value: unknown) => {
-    setTempSearchParams((prev) => ({
-      ...prev,
-      [key]: value
-    }))
-  }
-
-  const handleSearch = () => {
-    setSearchParams((prev) => ({
-      ...prev,
-      ...tempSearchParams
-    }))
-  }
-
-  const handleReset = () => {
-    setTempSearchParams({})
-    setSearchParams((prev) => ({
-      page_index: prev.page_index,
-      page_size: prev.page_size
-    }))
-  }
+  const { tempSearch, setTempSearch, updateSearchField, commit, reset } =
+    useTempSearch({
+      search: searchParams,
+      updateFn: setSearchParams,
+      selectDefaultFields: paginationFields
+    })
 
   const { data, isPending } = useQuery({
     queryKey: ['user-cart', searchParams, search.id],
@@ -357,33 +320,33 @@ function AddToCart() {
     <>
       <div className='flex-none flex flex-wrap gap-4 items-center'>
         <Select
-          value={tempSearchParams.formtype}
+          value={tempSearch.formtype}
           placeholder='请选择状态'
           style={{ width: '264px' }}
-          onChange={(val) => handleUpdateSearchParam('formtype', val)}
+          onChange={(val) => updateSearchField('formtype', val as number)}
         >
           <Select.Option value={1}>加入购物车</Select.Option>
           <Select.Option value={2}>移除购物车</Select.Option>
         </Select>
         <DatePicker.RangePicker
           value={
-            tempSearchParams.start_time && tempSearchParams.end_time
+            tempSearch.start_time && tempSearch.end_time
               ? [
-                  dayjs.unix(tempSearchParams.start_time),
-                  dayjs.unix(tempSearchParams.end_time)
+                  dayjs.unix(tempSearch.start_time),
+                  dayjs.unix(tempSearch.end_time)
                 ]
               : undefined
           }
           style={{ width: '264px' }}
           onChange={(val) => {
             if (!(val as string[] | undefined)) {
-              setTempSearchParams((prev) => ({
+              setTempSearch((prev) => ({
                 ...prev,
                 start_time: undefined,
                 end_time: undefined
               }))
             } else {
-              setTempSearchParams((prev) => ({
+              setTempSearch((prev) => ({
                 ...prev,
                 start_time: dayjs(val[0]).unix(),
                 end_time: dayjs(val[1]).unix()
@@ -394,14 +357,14 @@ function AddToCart() {
         <Button
           type='primary'
           icon={<Search className='inline size-4' />}
-          onClick={handleSearch}
+          onClick={commit}
         >
           查询
         </Button>
         <Button
           type='outline'
           icon={<RotateCcw className='inline size-4' />}
-          onClick={handleReset}
+          onClick={reset}
         >
           重置
         </Button>
@@ -452,31 +415,12 @@ function Favorites() {
     page_index: 1,
     page_size: 20
   })
-  const [tempSearchParams, setTempSearchParams] = useState<
-    Omit<SearchParams, 'page_index' | 'page_size'>
-  >({})
-
-  const handleUpdateSearchParam = (key: keyof SearchParams, value: unknown) => {
-    setTempSearchParams((prev) => ({
-      ...prev,
-      [key]: value
-    }))
-  }
-
-  const handleSearch = () => {
-    setSearchParams((prev) => ({
-      ...prev,
-      ...tempSearchParams
-    }))
-  }
-
-  const handleReset = () => {
-    setTempSearchParams({})
-    setSearchParams((prev) => ({
-      page_index: prev.page_index,
-      page_size: prev.page_size
-    }))
-  }
+  const { tempSearch, setTempSearch, updateSearchField, commit, reset } =
+    useTempSearch({
+      search: searchParams,
+      updateFn: setSearchParams,
+      selectDefaultFields: paginationFields
+    })
 
   const { data, isPending } = useQuery({
     queryKey: ['user-favorites', searchParams, search.id],
@@ -519,40 +463,40 @@ function Favorites() {
     <>
       <div className='flex-none flex flex-wrap gap-4 items-center'>
         <Input
-          value={tempSearchParams.goods_name}
+          value={tempSearch.goods_name}
           placeholder='请输入商品名称'
           style={{ width: '264px' }}
           suffix={<Search className='inline size-4' />}
-          onChange={(val) => handleUpdateSearchParam('goods_name', val)}
+          onChange={(val) => updateSearchField('goods_name', val)}
         />
         <Select
-          value={tempSearchParams.type}
+          value={tempSearch.type}
           placeholder='请选择状态'
           style={{ width: '264px' }}
-          onChange={(val) => handleUpdateSearchParam('type', val)}
+          onChange={(val) => updateSearchField('type', val as number)}
         >
           <Select.Option value={1}>加入</Select.Option>
           <Select.Option value={2}>移除</Select.Option>
         </Select>
         <DatePicker.RangePicker
           value={
-            tempSearchParams.start_time && tempSearchParams.end_time
+            tempSearch.start_time && tempSearch.end_time
               ? [
-                  dayjs.unix(tempSearchParams.start_time),
-                  dayjs.unix(tempSearchParams.end_time)
+                  dayjs.unix(tempSearch.start_time),
+                  dayjs.unix(tempSearch.end_time)
                 ]
               : undefined
           }
           style={{ width: '264px' }}
           onChange={(val) => {
             if (!(val as string[] | undefined)) {
-              setTempSearchParams((prev) => ({
+              setTempSearch((prev) => ({
                 ...prev,
                 start_time: undefined,
                 end_time: undefined
               }))
             } else {
-              setTempSearchParams((prev) => ({
+              setTempSearch((prev) => ({
                 ...prev,
                 start_time: dayjs(val[0]).unix(),
                 end_time: dayjs(val[1]).unix()
@@ -563,14 +507,14 @@ function Favorites() {
         <Button
           type='primary'
           icon={<Search className='inline size-4' />}
-          onClick={handleSearch}
+          onClick={commit}
         >
           查询
         </Button>
         <Button
           type='outline'
           icon={<RotateCcw className='inline size-4' />}
-          onClick={handleReset}
+          onClick={reset}
         >
           重置
         </Button>
@@ -620,31 +564,12 @@ function Sharing() {
     page_index: 1,
     page_size: 20
   })
-  const [tempSearchParams, setTempSearchParams] = useState<
-    Omit<SearchParams, 'page_index' | 'page_size'>
-  >({})
-
-  const handleUpdateSearchParam = (key: keyof SearchParams, value: unknown) => {
-    setTempSearchParams((prev) => ({
-      ...prev,
-      [key]: value
-    }))
-  }
-
-  const handleSearch = () => {
-    setSearchParams((prev) => ({
-      ...prev,
-      ...tempSearchParams
-    }))
-  }
-
-  const handleReset = () => {
-    setTempSearchParams({})
-    setSearchParams((prev) => ({
-      page_index: prev.page_index,
-      page_size: prev.page_size
-    }))
-  }
+  const { tempSearch, setTempSearch, updateSearchField, commit, reset } =
+    useTempSearch({
+      search: searchParams,
+      updateFn: setSearchParams,
+      selectDefaultFields: paginationFields
+    })
 
   const { data, isPending } = useQuery({
     queryKey: ['user-sharing', searchParams, search.id],
@@ -681,31 +606,31 @@ function Sharing() {
     <>
       <div className='flex-none flex flex-wrap gap-4 items-center'>
         <Input
-          value={tempSearchParams.goods_name}
+          value={tempSearch.goods_name}
           placeholder='请输入商品名称'
           style={{ width: '264px' }}
           suffix={<Search className='inline size-4' />}
-          onChange={(val) => handleUpdateSearchParam('goods_name', val)}
+          onChange={(val) => updateSearchField('goods_name', val)}
         />
         <DatePicker.RangePicker
           value={
-            tempSearchParams.start_time && tempSearchParams.end_time
+            tempSearch.start_time && tempSearch.end_time
               ? [
-                  dayjs.unix(tempSearchParams.start_time),
-                  dayjs.unix(tempSearchParams.end_time)
+                  dayjs.unix(tempSearch.start_time),
+                  dayjs.unix(tempSearch.end_time)
                 ]
               : undefined
           }
           style={{ width: '264px' }}
           onChange={(val) => {
             if (!(val as string[] | undefined)) {
-              setTempSearchParams((prev) => ({
+              setTempSearch((prev) => ({
                 ...prev,
                 start_time: undefined,
                 end_time: undefined
               }))
             } else {
-              setTempSearchParams((prev) => ({
+              setTempSearch((prev) => ({
                 ...prev,
                 start_time: dayjs(val[0]).unix(),
                 end_time: dayjs(val[1]).unix()
@@ -716,14 +641,14 @@ function Sharing() {
         <Button
           type='primary'
           icon={<Search className='inline size-4' />}
-          onClick={handleSearch}
+          onClick={commit}
         >
           查询
         </Button>
         <Button
           type='outline'
           icon={<RotateCcw className='inline size-4' />}
-          onClick={handleReset}
+          onClick={reset}
         >
           重置
         </Button>

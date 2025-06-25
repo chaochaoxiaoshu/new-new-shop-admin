@@ -1,6 +1,5 @@
 import { type } from 'arktype'
 import { RotateCcw, Search } from 'lucide-react'
-import { useState } from 'react'
 
 import { Button, Form, Input, Select } from '@arco-design/web-react'
 import {
@@ -22,7 +21,7 @@ import { GoodsInfo } from '@/components/goods-info'
 import { MyTable } from '@/components/my-table'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
-import { useMyModal } from '@/hooks'
+import { paginationFields, useMyModal, useTempSearch } from '@/hooks'
 import {
   TableCellWidth,
   defineTableColumns,
@@ -81,29 +80,11 @@ function BillLadingView() {
   )
   const [openModal, contextHolder] = useMyModal()
 
-  /* ------------------------------ Search START ------------------------------ */
-  const [tempSearch, setTempSearch] = useState(search)
-
-  const handleUpdateSearchParam = (
-    key: keyof typeof search,
-    value: unknown
-  ) => {
-    setTempSearch((prev) => ({ ...prev, [key]: value }))
-  }
-
-  const handleSearch = () => {
-    navigate({ search: tempSearch })
-  }
-
-  const handleReset = () => {
-    const initial = {
-      page_index: search.page_index,
-      page_size: search.page_size
-    }
-    navigate({ search: initial })
-    setTempSearch(initial)
-  }
-  /* ------------------------------- Search END ------------------------------- */
+  const { tempSearch, updateSearchField, commit, reset } = useTempSearch({
+    search,
+    updateFn: (search) => navigate({ search }),
+    selectDefaultFields: paginationFields
+  })
 
   /* ------------------------------ Table START ------------------------------ */
   const { data: storeList } = useQuery(context.storeListQueryOptions)
@@ -232,31 +213,31 @@ function BillLadingView() {
             placeholder='请输入提货单号'
             value={tempSearch.id}
             style={{ width: '264px' }}
-            onChange={(value) => handleUpdateSearchParam('id', value)}
+            onChange={(value) => updateSearchField('id', value)}
           />
           <Input
             placeholder='请输入商品名称'
             value={tempSearch.name}
             style={{ width: '264px' }}
-            onChange={(value) => handleUpdateSearchParam('name', value)}
+            onChange={(value) => updateSearchField('name', value)}
           />
           <Input
             placeholder='请输入订单号'
             value={tempSearch.order_id}
             style={{ width: '264px' }}
-            onChange={(value) => handleUpdateSearchParam('order_id', value)}
+            onChange={(value) => updateSearchField('order_id', value)}
           />
           <Input
             placeholder='请输入提货电话'
             value={tempSearch.ship_mobile}
             style={{ width: '264px' }}
-            onChange={(value) => handleUpdateSearchParam('ship_mobile', value)}
+            onChange={(value) => updateSearchField('ship_mobile', value)}
           />
           <Select
             placeholder='请选择门店'
             value={tempSearch.store_id}
             style={{ width: '264px' }}
-            onChange={(value) => handleUpdateSearchParam('store_id', value)}
+            onChange={(value) => updateSearchField('store_id', value as number)}
           >
             {storeList?.items.map((store) => (
               <Select.Option key={store.id} value={store.id!}>
@@ -268,7 +249,7 @@ function BillLadingView() {
             placeholder='请选择状态'
             value={tempSearch.status}
             style={{ width: '264px' }}
-            onChange={(value) => handleUpdateSearchParam('status', value)}
+            onChange={(value) => updateSearchField('status', value as number)}
           >
             <Select.Option value={1}>未提货</Select.Option>
             <Select.Option value={2}>已提货</Select.Option>
@@ -276,14 +257,14 @@ function BillLadingView() {
           <Button
             type='primary'
             icon={<Search className='inline size-4' />}
-            onClick={handleSearch}
+            onClick={commit}
           >
             查询
           </Button>
           <Button
             type='outline'
             icon={<RotateCcw className='inline size-4' />}
-            onClick={handleReset}
+            onClick={reset}
           >
             重置
           </Button>

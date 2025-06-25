@@ -14,9 +14,12 @@ import { Route as rootRoute } from './pages/__root'
 import { Route as LoginImport } from './pages/login'
 import { Route as ProtectedRouteImport } from './pages/_protected/route'
 import { Route as ProtectedIndexImport } from './pages/_protected/index'
+import { Route as ProtectedOrderIndexImport } from './pages/_protected/order/index'
 import { Route as ProtectedOrderReshipImport } from './pages/_protected/order/reship'
+import { Route as ProtectedOrderFreightImport } from './pages/_protected/order/freight'
 import { Route as ProtectedOrderDispatchImport } from './pages/_protected/order/dispatch'
 import { Route as ProtectedOrderBillLadingImport } from './pages/_protected/order/billLading'
+import { Route as ProtectedOrderAfterSaleImport } from './pages/_protected/order/afterSale'
 import { Route as ProtectedCommodityMerchandiseConIndexImport } from './pages/_protected/commodity/merchandiseCon/index'
 import { Route as ProtectedCommodityCategoryAdminIndexImport } from './pages/_protected/commodity/categoryAdmin/index'
 import { Route as ProtectedCommodityCategoryIndexImport } from './pages/_protected/commodity/category/index'
@@ -50,9 +53,21 @@ const ProtectedIndexRoute = ProtectedIndexImport.update({
   getParentRoute: () => ProtectedRouteRoute,
 } as any)
 
+const ProtectedOrderIndexRoute = ProtectedOrderIndexImport.update({
+  id: '/order/',
+  path: '/order/',
+  getParentRoute: () => ProtectedRouteRoute,
+} as any)
+
 const ProtectedOrderReshipRoute = ProtectedOrderReshipImport.update({
   id: '/order/reship',
   path: '/order/reship',
+  getParentRoute: () => ProtectedRouteRoute,
+} as any)
+
+const ProtectedOrderFreightRoute = ProtectedOrderFreightImport.update({
+  id: '/order/freight',
+  path: '/order/freight',
   getParentRoute: () => ProtectedRouteRoute,
 } as any)
 
@@ -65,6 +80,12 @@ const ProtectedOrderDispatchRoute = ProtectedOrderDispatchImport.update({
 const ProtectedOrderBillLadingRoute = ProtectedOrderBillLadingImport.update({
   id: '/order/billLading',
   path: '/order/billLading',
+  getParentRoute: () => ProtectedRouteRoute,
+} as any)
+
+const ProtectedOrderAfterSaleRoute = ProtectedOrderAfterSaleImport.update({
+  id: '/order/afterSale',
+  path: '/order/afterSale',
   getParentRoute: () => ProtectedRouteRoute,
 } as any)
 
@@ -184,6 +205,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedIndexImport
       parentRoute: typeof ProtectedRouteImport
     }
+    '/_protected/order/afterSale': {
+      id: '/_protected/order/afterSale'
+      path: '/order/afterSale'
+      fullPath: '/order/afterSale'
+      preLoaderRoute: typeof ProtectedOrderAfterSaleImport
+      parentRoute: typeof ProtectedRouteImport
+    }
     '/_protected/order/billLading': {
       id: '/_protected/order/billLading'
       path: '/order/billLading'
@@ -198,11 +226,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedOrderDispatchImport
       parentRoute: typeof ProtectedRouteImport
     }
+    '/_protected/order/freight': {
+      id: '/_protected/order/freight'
+      path: '/order/freight'
+      fullPath: '/order/freight'
+      preLoaderRoute: typeof ProtectedOrderFreightImport
+      parentRoute: typeof ProtectedRouteImport
+    }
     '/_protected/order/reship': {
       id: '/_protected/order/reship'
       path: '/order/reship'
       fullPath: '/order/reship'
       preLoaderRoute: typeof ProtectedOrderReshipImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/order/': {
+      id: '/_protected/order/'
+      path: '/order'
+      fullPath: '/order'
+      preLoaderRoute: typeof ProtectedOrderIndexImport
       parentRoute: typeof ProtectedRouteImport
     }
     '/_protected/client/clientTags/edit': {
@@ -303,9 +345,12 @@ declare module '@tanstack/react-router' {
 
 interface ProtectedRouteRouteChildren {
   ProtectedIndexRoute: typeof ProtectedIndexRoute
+  ProtectedOrderAfterSaleRoute: typeof ProtectedOrderAfterSaleRoute
   ProtectedOrderBillLadingRoute: typeof ProtectedOrderBillLadingRoute
   ProtectedOrderDispatchRoute: typeof ProtectedOrderDispatchRoute
+  ProtectedOrderFreightRoute: typeof ProtectedOrderFreightRoute
   ProtectedOrderReshipRoute: typeof ProtectedOrderReshipRoute
+  ProtectedOrderIndexRoute: typeof ProtectedOrderIndexRoute
   ProtectedClientClientTagsEditRoute: typeof ProtectedClientClientTagsEditRoute
   ProtectedCommodityCategoryInfoRoute: typeof ProtectedCommodityCategoryInfoRoute
   ProtectedCommodityCategoryAdminGoodsRoute: typeof ProtectedCommodityCategoryAdminGoodsRoute
@@ -323,9 +368,12 @@ interface ProtectedRouteRouteChildren {
 
 const ProtectedRouteRouteChildren: ProtectedRouteRouteChildren = {
   ProtectedIndexRoute: ProtectedIndexRoute,
+  ProtectedOrderAfterSaleRoute: ProtectedOrderAfterSaleRoute,
   ProtectedOrderBillLadingRoute: ProtectedOrderBillLadingRoute,
   ProtectedOrderDispatchRoute: ProtectedOrderDispatchRoute,
+  ProtectedOrderFreightRoute: ProtectedOrderFreightRoute,
   ProtectedOrderReshipRoute: ProtectedOrderReshipRoute,
+  ProtectedOrderIndexRoute: ProtectedOrderIndexRoute,
   ProtectedClientClientTagsEditRoute: ProtectedClientClientTagsEditRoute,
   ProtectedCommodityCategoryInfoRoute: ProtectedCommodityCategoryInfoRoute,
   ProtectedCommodityCategoryAdminGoodsRoute:
@@ -356,9 +404,12 @@ export interface FileRoutesByFullPath {
   '': typeof ProtectedRouteRouteWithChildren
   '/login': typeof LoginRoute
   '/': typeof ProtectedIndexRoute
+  '/order/afterSale': typeof ProtectedOrderAfterSaleRoute
   '/order/billLading': typeof ProtectedOrderBillLadingRoute
   '/order/dispatch': typeof ProtectedOrderDispatchRoute
+  '/order/freight': typeof ProtectedOrderFreightRoute
   '/order/reship': typeof ProtectedOrderReshipRoute
+  '/order': typeof ProtectedOrderIndexRoute
   '/client/clientTags/edit': typeof ProtectedClientClientTagsEditRoute
   '/commodity/category/info': typeof ProtectedCommodityCategoryInfoRoute
   '/commodity/categoryAdmin/goods': typeof ProtectedCommodityCategoryAdminGoodsRoute
@@ -377,9 +428,12 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/': typeof ProtectedIndexRoute
+  '/order/afterSale': typeof ProtectedOrderAfterSaleRoute
   '/order/billLading': typeof ProtectedOrderBillLadingRoute
   '/order/dispatch': typeof ProtectedOrderDispatchRoute
+  '/order/freight': typeof ProtectedOrderFreightRoute
   '/order/reship': typeof ProtectedOrderReshipRoute
+  '/order': typeof ProtectedOrderIndexRoute
   '/client/clientTags/edit': typeof ProtectedClientClientTagsEditRoute
   '/commodity/category/info': typeof ProtectedCommodityCategoryInfoRoute
   '/commodity/categoryAdmin/goods': typeof ProtectedCommodityCategoryAdminGoodsRoute
@@ -400,9 +454,12 @@ export interface FileRoutesById {
   '/_protected': typeof ProtectedRouteRouteWithChildren
   '/login': typeof LoginRoute
   '/_protected/': typeof ProtectedIndexRoute
+  '/_protected/order/afterSale': typeof ProtectedOrderAfterSaleRoute
   '/_protected/order/billLading': typeof ProtectedOrderBillLadingRoute
   '/_protected/order/dispatch': typeof ProtectedOrderDispatchRoute
+  '/_protected/order/freight': typeof ProtectedOrderFreightRoute
   '/_protected/order/reship': typeof ProtectedOrderReshipRoute
+  '/_protected/order/': typeof ProtectedOrderIndexRoute
   '/_protected/client/clientTags/edit': typeof ProtectedClientClientTagsEditRoute
   '/_protected/commodity/category/info': typeof ProtectedCommodityCategoryInfoRoute
   '/_protected/commodity/categoryAdmin/goods': typeof ProtectedCommodityCategoryAdminGoodsRoute
@@ -424,9 +481,12 @@ export interface FileRouteTypes {
     | ''
     | '/login'
     | '/'
+    | '/order/afterSale'
     | '/order/billLading'
     | '/order/dispatch'
+    | '/order/freight'
     | '/order/reship'
+    | '/order'
     | '/client/clientTags/edit'
     | '/commodity/category/info'
     | '/commodity/categoryAdmin/goods'
@@ -444,9 +504,12 @@ export interface FileRouteTypes {
   to:
     | '/login'
     | '/'
+    | '/order/afterSale'
     | '/order/billLading'
     | '/order/dispatch'
+    | '/order/freight'
     | '/order/reship'
+    | '/order'
     | '/client/clientTags/edit'
     | '/commodity/category/info'
     | '/commodity/categoryAdmin/goods'
@@ -465,9 +528,12 @@ export interface FileRouteTypes {
     | '/_protected'
     | '/login'
     | '/_protected/'
+    | '/_protected/order/afterSale'
     | '/_protected/order/billLading'
     | '/_protected/order/dispatch'
+    | '/_protected/order/freight'
     | '/_protected/order/reship'
+    | '/_protected/order/'
     | '/_protected/client/clientTags/edit'
     | '/_protected/commodity/category/info'
     | '/_protected/commodity/categoryAdmin/goods'
@@ -512,9 +578,12 @@ export const routeTree = rootRoute
       "filePath": "_protected/route.tsx",
       "children": [
         "/_protected/",
+        "/_protected/order/afterSale",
         "/_protected/order/billLading",
         "/_protected/order/dispatch",
+        "/_protected/order/freight",
         "/_protected/order/reship",
+        "/_protected/order/",
         "/_protected/client/clientTags/edit",
         "/_protected/commodity/category/info",
         "/_protected/commodity/categoryAdmin/goods",
@@ -537,6 +606,10 @@ export const routeTree = rootRoute
       "filePath": "_protected/index.tsx",
       "parent": "/_protected"
     },
+    "/_protected/order/afterSale": {
+      "filePath": "_protected/order/afterSale.tsx",
+      "parent": "/_protected"
+    },
     "/_protected/order/billLading": {
       "filePath": "_protected/order/billLading.tsx",
       "parent": "/_protected"
@@ -545,8 +618,16 @@ export const routeTree = rootRoute
       "filePath": "_protected/order/dispatch.tsx",
       "parent": "/_protected"
     },
+    "/_protected/order/freight": {
+      "filePath": "_protected/order/freight.tsx",
+      "parent": "/_protected"
+    },
     "/_protected/order/reship": {
       "filePath": "_protected/order/reship.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/order/": {
+      "filePath": "_protected/order/index.tsx",
       "parent": "/_protected"
     },
     "/_protected/client/clientTags/edit": {
