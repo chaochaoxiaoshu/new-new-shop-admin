@@ -19,6 +19,7 @@ import {
 } from '@/api'
 import { GoodsInfo } from '@/components/goods-info'
 import { MyTable } from '@/components/my-table'
+import { Show } from '@/components/show'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
 import { paginationFields, useMyModal, useTempSearch } from '@/hooks'
@@ -192,12 +193,12 @@ function BillLadingView() {
       width: 100,
       align: 'center',
       render: (_, item) => (
-        <div className='flex items-center justify-center space-x-2'>
-          {checkActionPermission('/order/billLading/detail') && (
+        <div className='actions'>
+          <Show when={checkActionPermission('/order/billLading/detail')}>
             <Button type='text' onClick={() => handleEdit(item)}>
               编辑
             </Button>
-          )}
+          </Show>
         </div>
       ),
       fixed: 'right'

@@ -29,6 +29,7 @@ import {
 } from '@/api'
 import { addAdminCategory } from '@/api/goods/add-admin-category'
 import { MyTable } from '@/components/my-table'
+import { Show } from '@/components/show'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
 import { useMyModal } from '@/hooks'
@@ -192,13 +193,13 @@ function AdminCategoryView() {
     {
       title: '操作',
       render: (_, item) => (
-        <div className='flex justify-center items-center'>
-          {checkActionPermission('/commodity/categoryAdmin/edit') && (
+        <div className='actions'>
+          <Show when={checkActionPermission('/commodity/categoryAdmin/edit')}>
             <Button type='text' onClick={() => handleEdit(item)}>
               编辑
             </Button>
-          )}
-          {checkActionPermission('/commodity/categoryAdmin/del') && (
+          </Show>
+          <Show when={checkActionPermission('/commodity/categoryAdmin/del')}>
             <Popconfirm
               title='提示'
               content='确定要删除吗？'
@@ -206,19 +207,19 @@ function AdminCategoryView() {
             >
               <Button type='text'>删除</Button>
             </Popconfirm>
-          )}
+          </Show>
         </div>
       ),
       fixed: 'right',
       align: 'center',
-      width: 160
+      width: 120
     }
   ])
 
   return (
     <TableLayout
       header={
-        checkActionPermission('/commodity/categoryAdmin/add') && (
+        <Show when={checkActionPermission('/commodity/categoryAdmin/add')}>
           <TableLayout.Header>
             <Button
               type='primary'
@@ -228,7 +229,7 @@ function AdminCategoryView() {
               新增
             </Button>
           </TableLayout.Header>
-        )
+        </Show>
       }
     >
       <MyTable

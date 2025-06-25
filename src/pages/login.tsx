@@ -32,6 +32,7 @@ import {
   switchAuthorzie,
   wecomAuthorize
 } from '@/api'
+import { Show } from '@/components/show'
 import { checkWxApiReady, getHead, getNotifs } from '@/helpers'
 import { useUserStore } from '@/stores'
 
@@ -344,31 +345,29 @@ function AuthView() {
           </span>
           <div className='mt-8'>
             <Form form={form} layout='vertical' onSubmit={handleSubmit}>
-              {pageState === null && (
-                <>
-                  <Form.Item
-                    field='username'
-                    rules={[{ required: true, message: '请输入账号' }]}
-                  >
-                    <Input placeholder='请输入账号' />
-                  </Form.Item>
-                  <Form.Item
-                    field='password'
-                    rules={[{ required: true, message: '请输入密码' }]}
-                  >
-                    <Input
-                      ref={passwordInputRef}
-                      type='password'
-                      placeholder='请输入密码'
-                    />
-                  </Form.Item>
-                </>
-              )}
-              {departmentInfo && departmentInfo.length > 0 && (
+              <Show when={pageState === null}>
+                <Form.Item
+                  field='username'
+                  rules={[{ required: true, message: '请输入账号' }]}
+                >
+                  <Input placeholder='请输入账号' />
+                </Form.Item>
+                <Form.Item
+                  field='password'
+                  rules={[{ required: true, message: '请输入密码' }]}
+                >
+                  <Input
+                    ref={passwordInputRef}
+                    type='password'
+                    placeholder='请输入密码'
+                  />
+                </Form.Item>
+              </Show>
+              <Show when={departmentInfo && departmentInfo.length > 0}>
                 <Form.Item field='department_id'>
                   <Select options={departmentInfo} placeholder='请选择事业部' />
                 </Form.Item>
-              )}
+              </Show>
               <Button
                 type='primary'
                 htmlType='submit'

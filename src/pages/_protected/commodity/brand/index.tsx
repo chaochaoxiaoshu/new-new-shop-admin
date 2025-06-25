@@ -31,6 +31,7 @@ import { getBrandDetail } from '@/api/goods/get-brand-detail'
 import { MyImage } from '@/components/my-image'
 import { MyTable } from '@/components/my-table'
 import { MyUpload, type MyUploadResource } from '@/components/my-upload'
+import { Show } from '@/components/show'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
 import { createMyUploadResource } from '@/helpers/upload'
@@ -181,13 +182,13 @@ function BrandView() {
     {
       title: '操作',
       render: (_, item) => (
-        <div className='flex justify-center items-center'>
-          {checkActionPermission('/commodity/brand/edit') && (
+        <div className='actions'>
+          <Show when={checkActionPermission('/commodity/brand/edit')}>
             <Button type='text' onClick={() => handleEdit(item)}>
               编辑
             </Button>
-          )}
-          {checkActionPermission('/commodity/brand/del') && (
+          </Show>
+          <Show when={checkActionPermission('/commodity/brand/del')}>
             <Popconfirm
               title='提示'
               content='确定删除吗？'
@@ -195,10 +196,10 @@ function BrandView() {
             >
               <Button type='text'>删除</Button>
             </Popconfirm>
-          )}
+          </Show>
         </div>
       ),
-      width: 160,
+      width: 120,
       align: 'center'
     }
   ])
@@ -214,7 +215,7 @@ function BrandView() {
             suffix={<Search className='inline size-4' />}
             onChange={(value) => updateSearchField('name', value)}
           />
-          {departmentId === 0 && (
+          <Show when={departmentId === 0}>
             <Select
               value={tempSearch.department_id}
               placeholder='请选择电商事业部'
@@ -229,7 +230,7 @@ function BrandView() {
                 </Select.Option>
               ))}
             </Select>
-          )}
+          </Show>
           <Button
             type='primary'
             icon={<Search className='inline size-4' />}
@@ -244,7 +245,7 @@ function BrandView() {
           >
             重置
           </Button>
-          {checkActionPermission('/commodity/brand/add') && (
+          <Show when={checkActionPermission('/commodity/brand/add')}>
             <Button
               type='primary'
               icon={<Plus className='inline size-4' />}
@@ -252,7 +253,7 @@ function BrandView() {
             >
               新增
             </Button>
-          )}
+          </Show>
         </TableLayout.Header>
       }
     >

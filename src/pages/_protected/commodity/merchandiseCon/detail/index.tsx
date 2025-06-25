@@ -30,6 +30,7 @@ import { getShipTemplates } from '@/api/orders/get-ship-templates'
 import { BaseLayout } from '@/components/base-layout'
 import { MyUpload, MyUploadResource } from '@/components/my-upload'
 import { SectionTitle } from '@/components/section-title'
+import { Show } from '@/components/show'
 import { SortableTable } from '@/components/sortable-table'
 import { SortableTableDragHandle } from '@/components/sortable-table/drag-handle'
 import { WithAsterisk } from '@/components/with-asterisk'
@@ -403,13 +404,11 @@ function GoodsEditView() {
       render: (_, item, index) => (
         <>
           {/* 放在这，不然受控表单不收集这些值 */}
-          {search.type !== 'add' && (
-            <>
-              <Form.Item field={`products[${index}].id`} noStyle>
-                <span style={{ display: 'none' }}>{item.id}</span>
-              </Form.Item>
-            </>
-          )}
+          <Show when={search.type !== 'add'}>
+            <Form.Item field={`products[${index}].id`} noStyle>
+              <span style={{ display: 'none' }}>{item.id}</span>
+            </Form.Item>
+          </Show>
           <Form.Item field={`products[${index}].sort`} noStyle>
             <span style={{ display: 'none' }}>{item.sort}</span>
           </Form.Item>
@@ -646,12 +645,7 @@ function GoodsEditView() {
     {
       title: '操作',
       render: (_, item) => (
-        <div
-          className={cn(
-            'flex justify-center items-center',
-            item.is_default === 1 && 'opacity-40'
-          )}
-        >
+        <div className={cn('actions', item.is_default === 1 && 'opacity-40')}>
           <Button
             disabled={item.is_default === 1}
             type='text'
@@ -1040,9 +1034,14 @@ function GoodsEditView() {
                                 <Input
                                   placeholder='请输入参数值'
                                   suffix={
-                                    !initialFormData.rx_parameters.some(
-                                      (i) => i.key === fieldValues[index].key
-                                    ) && (
+                                    <Show
+                                      when={
+                                        !initialFormData.rx_parameters.some(
+                                          (i) =>
+                                            i.key === fieldValues[index].key
+                                        )
+                                      }
+                                    >
                                       <Button
                                         type='text'
                                         shape='round'
@@ -1052,7 +1051,7 @@ function GoodsEditView() {
                                         }
                                         onClick={() => remove(index)}
                                       />
-                                    )
+                                    </Show>
                                   }
                                 />
                               )}

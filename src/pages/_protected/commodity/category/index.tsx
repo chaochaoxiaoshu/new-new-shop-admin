@@ -31,6 +31,7 @@ import {
   updateGoodsCategory
 } from '@/api'
 import { MyTable } from '@/components/my-table'
+import { Show } from '@/components/show'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
 import { paginationFields, useMyModal, useTempSearch } from '@/hooks'
@@ -224,13 +225,13 @@ function GoodsCategoryView() {
     {
       title: '操作',
       render: (_, item) => (
-        <div className='flex justify-center items-center'>
-          {checkActionPermission('/commodity/category/edit') && (
+        <div className='actions'>
+          <Show when={checkActionPermission('/commodity/category/edit')}>
             <Button type='text' onClick={() => handleEdit(item)}>
               编辑
             </Button>
-          )}
-          {checkActionPermission('/commodity/category/del') && (
+          </Show>
+          <Show when={checkActionPermission('/commodity/category/del')}>
             <Popconfirm
               title='提示'
               content='确定要删除吗？'
@@ -238,12 +239,12 @@ function GoodsCategoryView() {
             >
               <Button type='text'>删除</Button>
             </Popconfirm>
-          )}
+          </Show>
         </div>
       ),
       fixed: 'right',
       align: 'center',
-      width: 160
+      width: 120
     }
   ])
 
@@ -258,7 +259,7 @@ function GoodsCategoryView() {
             suffix={<Search className='inline size-4' />}
             onChange={(value) => updateSearchField('name', value)}
           />
-          {departmentId === 0 && (
+          <Show when={departmentId === 0}>
             <Select
               value={tempSearch.department}
               placeholder='请选择电商事业部'
@@ -273,7 +274,7 @@ function GoodsCategoryView() {
                 </Select.Option>
               ))}
             </Select>
-          )}
+          </Show>
           <Button
             type='primary'
             icon={<Search className='inline size-4' />}
@@ -288,16 +289,20 @@ function GoodsCategoryView() {
           >
             重置
           </Button>
-          {departmentId !== 0 &&
-            checkActionPermission('/commodity/category/add') && (
-              <Button
-                type='primary'
-                icon={<Plus className='inline size-4' />}
-                onClick={handleAdd}
-              >
-                新增
-              </Button>
-            )}
+          <Show
+            when={
+              departmentId !== 0 &&
+              checkActionPermission('/commodity/category/add')
+            }
+          >
+            <Button
+              type='primary'
+              icon={<Plus className='inline size-4' />}
+              onClick={handleAdd}
+            >
+              新增
+            </Button>
+          </Show>
         </TableLayout.Header>
       }
     >

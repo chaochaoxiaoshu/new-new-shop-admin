@@ -29,6 +29,7 @@ import {
 import { MyImage } from '@/components/my-image'
 import { MyTable } from '@/components/my-table'
 import { MyTag } from '@/components/my-tag'
+import { Show } from '@/components/show'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
 import { paginationFields, useMyModal, useTempSearch } from '@/hooks'
@@ -230,16 +231,16 @@ function CustomersView() {
           position='br'
           droplist={
             <Menu>
-              {checkActionPermission('/client/account/editTag') && (
+              <Show when={checkActionPermission('/client/account/editTag')}>
                 <Menu.Item key='tag' onClick={() => handleSetTags(item)}>
                   打标签
                 </Menu.Item>
-              )}
-              {checkActionPermission('/client/account/edit') && (
+              </Show>
+              <Show when={checkActionPermission('/client/account/edit')}>
                 <Link to='/client/account/detail' search={{ id: item.id! }}>
                   <Menu.Item key='edit'>查看</Menu.Item>
                 </Link>
-              )}
+              </Show>
             </Menu>
           }
         >

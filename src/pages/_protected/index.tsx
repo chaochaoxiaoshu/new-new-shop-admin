@@ -43,6 +43,7 @@ import todo0 from '@/assets/home/todo_0.png'
 import todo1 from '@/assets/home/todo_1.png'
 import todo2 from '@/assets/home/todo_2.png'
 import todo3 from '@/assets/home/todo_3.png'
+import { Show } from '@/components/show'
 import { getHead } from '@/helpers'
 import { completeDateFormat } from '@/lib'
 import { queryClient } from '@/lib'
@@ -199,7 +200,7 @@ function Shortcuts() {
         icon={BriefcaseBusiness}
         label='自提单'
       />
-      {departmentId === 0 && (
+      <Show when={departmentId === 0}>
         <>
           <ShortcutsItem
             destination='/client/account'
@@ -217,7 +218,7 @@ function Shortcuts() {
             label='平台设置'
           />
         </>
-      )}
+      </Show>
     </div>
   )
 }
@@ -277,7 +278,7 @@ function StoreData() {
               </Select>
             </div>
             <div className='flex-3'>
-              {precision === 'day' && (
+              <Show when={precision === 'day'}>
                 <DatePicker
                   value={completedDate}
                   size='mini'
@@ -285,8 +286,8 @@ function StoreData() {
                   allowClear={false}
                   onChange={(val) => setDate(val)}
                 />
-              )}
-              {precision === 'month' && (
+              </Show>
+              <Show when={precision === 'month'}>
                 <DatePicker.MonthPicker
                   value={completedDate}
                   size='mini'
@@ -294,8 +295,8 @@ function StoreData() {
                   allowClear={false}
                   onChange={(val) => setDate(val)}
                 />
-              )}
-              {precision === 'year' && (
+              </Show>
+              <Show when={precision === 'year'}>
                 <DatePicker.YearPicker
                   value={completedDate}
                   size='mini'
@@ -303,7 +304,7 @@ function StoreData() {
                   allowClear={false}
                   onChange={(val) => setDate(val)}
                 />
-              )}
+              </Show>
             </div>
           </div>
         </div>
@@ -312,7 +313,7 @@ function StoreData() {
             label='支付金额'
             yoy={data?.payed_amount_yoy}
             qoq={data?.payed_amount_qoq}
-            tip-text='支付成功的金额（含退款）'
+            tipText='支付成功的金额（含退款）'
             show-border
           >
             {data?.payed_amount ?? 0}
@@ -321,7 +322,7 @@ function StoreData() {
             label='复购率'
             yoy={data?.repurchase_rate_yoy}
             qoq={data?.repurchase_rate_qoq}
-            tip-text='（重复购买顾客人数/总顾客人数）×100%，其中重复购买次数>1时就累计'
+            tipText='（重复购买顾客人数/总顾客人数）×100%，其中重复购买次数>1时就累计'
           >
             {data?.repurchase_rate ? `${data.repurchase_rate}%` : '0%'}
           </StoreDataItem>
@@ -329,7 +330,7 @@ function StoreData() {
             label='支付订单数'
             yoy={data?.payed_order_num_yoy}
             qoq={data?.payed_order_num_qoq}
-            tip-text='支付成功的订单数'
+            tipText='支付成功的订单数'
             show-border
           >
             {data?.payed_order_num ?? 0}
@@ -338,7 +339,7 @@ function StoreData() {
             label='营业额'
             yoy={data?.sales_amount_yoy}
             qoq={data?.sales_amount_qoq}
-            tip-text='当日支付成功的金额 - 当日退款成功的金额'
+            tipText='当日支付成功的金额 - 当日退款成功的金额'
           >
             {data?.sales_amount ?? 0}
           </StoreDataItem>
@@ -346,7 +347,7 @@ function StoreData() {
             label='浏览量'
             yoy={data?.view_num_yoy}
             qoq={data?.view_num_qoq}
-            tip-text='访问本事业部下商品详情页'
+            tipText='访问本事业部下商品详情页'
             show-border
           >
             {data?.view_num ?? 0}
@@ -355,7 +356,7 @@ function StoreData() {
             label='访客数'
             yoy={data?.visitor_num_yoy}
             qoq={data?.visitor_num_qoq}
-            tip-text='访问本事业部下商品详情页'
+            tipText='访问本事业部下商品详情页'
           >
             {data?.visitor_num ?? 0}
           </StoreDataItem>
@@ -363,7 +364,7 @@ function StoreData() {
             label='客单价'
             yoy={data?.average_order_value_yoy}
             qoq={data?.average_order_value_qoq}
-            tip-text='支付金额/支付人数'
+            tipText='支付金额/支付人数'
             show-border
           >
             {data?.average_order_value ?? 0}
@@ -372,7 +373,7 @@ function StoreData() {
             label='支付人数'
             yoy={data?.payed_user_num_yoy}
             qoq={data?.payed_user_num_qoq}
-            tip-text='支付成功的客户数'
+            tipText='支付成功的客户数'
           >
             {data?.payed_user_num ?? 0}
           </StoreDataItem>
@@ -380,7 +381,7 @@ function StoreData() {
             label='支付转化率'
             yoy={data?.conversion_rate_yoy}
             qoq={data?.conversion_rate_qoq}
-            tip-text='支付人数/访客数×100%'
+            tipText='支付人数/访客数×100%'
             show-border
           >
             {data?.conversion_rate ? `${data.conversion_rate}%` : '0%'}
@@ -388,7 +389,7 @@ function StoreData() {
           <StoreDataItem
             label='佣金发放'
             hide-yoy-qoq
-            tip-text='佣金成功发放总额'
+            tipText='佣金成功发放总额'
           >
             {data?.distribution_total ?? 0}
           </StoreDataItem>
@@ -412,9 +413,9 @@ function StoreDataItem(props: StoreDataItemProps) {
   const { label, yoy, qoq, hideYoyQoq, tipText, showBorder, children } = props
   return (
     <div className='relative flex items-center min-h-14'>
-      {showBorder && (
+      <Show when={showBorder}>
         <div className='hidden xl:block absolute inset-y-3 right-0 w-[1px] bg-[var(--color-fill-3)]'></div>
-      )}
+      </Show>
       <div className='flex-auto flex flex-col'>
         <div className='text-base'>{children}</div>
         <div className='flex items-center text-xs text-[var(--color-text-2)]'>
@@ -427,7 +428,7 @@ function StoreDataItem(props: StoreDataItemProps) {
               />
             </Tooltip>
           </div>
-          {!hideYoyQoq && (
+          <Show when={!hideYoyQoq}>
             <>
               <div className='flex items-center ml-auto space-x-1 min-w-[100px]'>
                 <span>同比</span>
@@ -462,7 +463,7 @@ function StoreDataItem(props: StoreDataItemProps) {
                 )}
               </div>
             </>
-          )}
+          </Show>
         </div>
       </div>
     </div>

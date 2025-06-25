@@ -17,6 +17,7 @@ import {
   updateAdminCategory
 } from '@/api'
 import { MyTable } from '@/components/my-table'
+import { Show } from '@/components/show'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
 import { useMyModal } from '@/hooks'
@@ -156,19 +157,23 @@ function AdminSecondaryCategoryView() {
     {
       title: '操作',
       render: (_, item) => (
-        <div className='flex justify-center items-center'>
+        <div className='actions'>
           <Route.Link
             to='/commodity/categoryAdmin/goods'
             search={{ goods_cat_id: item.id! }}
           >
             <Button type='text'>查看选择商品</Button>
           </Route.Link>
-          {checkActionPermission('/commodity/categoryAdmin/edit/second') && (
+          <Show
+            when={checkActionPermission('/commodity/categoryAdmin/edit/second')}
+          >
             <Button type='text' onClick={() => handleEdit(item)}>
               编辑
             </Button>
-          )}
-          {checkActionPermission('/commodity/categoryAdmin/del/second') && (
+          </Show>
+          <Show
+            when={checkActionPermission('/commodity/categoryAdmin/del/second')}
+          >
             <Popconfirm
               title='提示'
               content='确定要删除吗？'
@@ -176,19 +181,21 @@ function AdminSecondaryCategoryView() {
             >
               <Button type='text'>删除</Button>
             </Popconfirm>
-          )}
+          </Show>
         </div>
       ),
       fixed: 'right',
       align: 'center',
-      width: 280
+      width: 240
     }
   ])
 
   return (
     <TableLayout
       header={
-        checkActionPermission('/commodity/categoryAdmin/add/second') && (
+        <Show
+          when={checkActionPermission('/commodity/categoryAdmin/add/second')}
+        >
           <TableLayout.Header>
             <Button
               type='primary'
@@ -198,7 +205,7 @@ function AdminSecondaryCategoryView() {
               新增
             </Button>
           </TableLayout.Header>
-        )
+        </Show>
       }
     >
       <MyTable

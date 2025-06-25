@@ -17,6 +17,7 @@ import {
   updateGoodsCategory
 } from '@/api'
 import { MyTable } from '@/components/my-table'
+import { Show } from '@/components/show'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
 import { useMyModal, useTempSearch } from '@/hooks'
@@ -169,13 +170,13 @@ function GoodsSecondaryCategoriesView() {
     {
       title: '操作',
       render: (_, item) => (
-        <div className='flex justify-center items-center'>
-          {checkActionPermission('/commodity/category/edit/second') && (
+        <div className='actions'>
+          <Show when={checkActionPermission('/commodity/category/edit/second')}>
             <Button type='text' onClick={() => handleEdit(item)}>
               编辑
             </Button>
-          )}
-          {checkActionPermission('/commodity/category/del/second') && (
+          </Show>
+          <Show when={checkActionPermission('/commodity/category/del/second')}>
             <Popconfirm
               title='提示'
               content='确定要删除吗？'
@@ -183,12 +184,12 @@ function GoodsSecondaryCategoriesView() {
             >
               <Button type='text'>删除</Button>
             </Popconfirm>
-          )}
+          </Show>
         </div>
       ),
       fixed: 'right',
       align: 'center',
-      width: 160
+      width: 120
     }
   ])
 
@@ -217,16 +218,20 @@ function GoodsSecondaryCategoriesView() {
           >
             重置
           </Button>
-          {departmentId !== 0 &&
-            checkActionPermission('/commodity/category/add/second') && (
-              <Button
-                type='primary'
-                icon={<Plus className='inline size-4' />}
-                onClick={handleAdd}
-              >
-                新增
-              </Button>
-            )}
+          <Show
+            when={
+              departmentId !== 0 &&
+              checkActionPermission('/commodity/category/add/second')
+            }
+          >
+            <Button
+              type='primary'
+              icon={<Plus className='inline size-4' />}
+              onClick={handleAdd}
+            >
+              新增
+            </Button>
+          </Show>
         </TableLayout.Header>
       }
     >

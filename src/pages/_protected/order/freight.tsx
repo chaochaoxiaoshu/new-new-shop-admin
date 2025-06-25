@@ -7,10 +7,13 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { GetShipTemplatesRes, getShipTemps } from '@/api'
 import { MyTable } from '@/components/my-table'
+import { Show } from '@/components/show'
 import { TableLayout } from '@/components/table-layout'
 import { getHead } from '@/helpers'
 import { TableCellWidth, defineTableColumns, queryClient } from '@/lib'
 import { useUserStore } from '@/stores'
+
+const LIST_KEY = 'ship-temps'
 
 export const Route = createFileRoute('/_protected/order/freight')({
   validateSearch: type({
@@ -19,7 +22,7 @@ export const Route = createFileRoute('/_protected/order/freight')({
   }),
   beforeLoad: ({ search }) => ({
     shipTempsQueryOptions: queryOptions({
-      queryKey: ['ship-temps', search],
+      queryKey: [LIST_KEY, search],
       queryFn: () =>
         getShipTemps({
           ...search,
@@ -39,7 +42,6 @@ function FreightView() {
   const context = Route.useRouteContext()
   const search = Route.useSearch()
   const navigate = Route.useNavigate()
-  const departmentId = useUserStore((store) => store.departmentId)
   const checkActionPermission = useUserStore(
     (store) => store.checkActionPermission
   )
@@ -73,12 +75,12 @@ function FreightView() {
           trigger='click'
           droplist={
             <Menu>
-              {checkActionPermission('/order/freight/edit') && (
+              <Show when={checkActionPermission('/order/freight/edit')}>
                 <Menu.Item key='edit'>编辑</Menu.Item>
-              )}
-              {checkActionPermission('/order/freight/del') && (
+              </Show>
+              <Show when={checkActionPermission('/order/freight/del')}>
                 <Menu.Item key='delete'>删除</Menu.Item>
-              )}
+              </Show>
             </Menu>
           }
         >
@@ -95,12 +97,11 @@ function FreightView() {
     <TableLayout
       header={
         <TableLayout.Header>
-          {checkActionPermission('/order/freight/add') &&
-            departmentId !== 0 && (
-              <Button type='primary' icon={<Plus className='inline size-4' />}>
-                新增
-              </Button>
-            )}
+          <Show when={checkActionPermission('/order/freight/add')}>
+            <Button type='primary' icon={<Plus className='inline size-4' />}>
+              新增
+            </Button>
+          </Show>
         </TableLayout.Header>
       }
     >

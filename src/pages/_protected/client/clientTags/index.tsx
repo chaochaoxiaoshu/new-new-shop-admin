@@ -19,6 +19,7 @@ import {
   getPaginatedTagGroups,
   getTags
 } from '@/api'
+import { Show } from '@/components/show'
 import { SortableTable } from '@/components/sortable-table'
 import { SortableTableDragHandle } from '@/components/sortable-table/drag-handle'
 import { TableLayout } from '@/components/table-layout'
@@ -135,13 +136,13 @@ function TagGroupsView() {
               }))
             }
           />
-          {checkActionPermission('/client/clientTags/add') && (
+          <Show when={checkActionPermission('/client/clientTags/add')}>
             <Button
               type='primary'
               className='flex-none'
               icon={<Plus className='inline size-4' />}
             />
-          )}
+          </Show>
         </TableLayout.Header>
       }
     >
@@ -281,22 +282,42 @@ function TagsView() {
     {
       title: '操作',
       render: (_, item) => (
-        <div className='flex justify-center items-center'>
+        <div className='actions'>
           <Dropdown
             trigger='click'
             droplist={
               <Menu>
-                {checkActionPermission('/client/clientTags/same/tag') &&
-                  item.type === 2 &&
-                  item.status !== 1 && <Menu.Item key='sync'>同步</Menu.Item>}
-                {checkActionPermission('/client/clientTags/edit/tag') &&
-                  item.status === 1 && <Menu.Item key='view'>查看</Menu.Item>}
-                {checkActionPermission('/client/clientTags/edit/tag') &&
-                  item.status !== 1 &&
-                  departmentId !== 0 && <Menu.Item key='edit'>编辑</Menu.Item>}
-                {checkActionPermission('/client/clientTags/del/tag') && (
+                <Show
+                  when={
+                    checkActionPermission('/client/clientTags/same/tag') &&
+                    item.type === 2 &&
+                    item.status !== 1
+                  }
+                >
+                  <Menu.Item key='sync'>同步</Menu.Item>
+                </Show>
+                <Show
+                  when={
+                    checkActionPermission('/client/clientTags/edit/tag') &&
+                    item.status === 1
+                  }
+                >
+                  <Menu.Item key='view'>查看</Menu.Item>
+                </Show>
+                <Show
+                  when={
+                    checkActionPermission('/client/clientTags/edit/tag') &&
+                    item.status !== 1 &&
+                    departmentId !== 0
+                  }
+                >
+                  <Menu.Item key='edit'>编辑</Menu.Item>
+                </Show>
+                <Show
+                  when={checkActionPermission('/client/clientTags/del/tag')}
+                >
                   <Menu.Item key='delete'>删除</Menu.Item>
-                )}
+                </Show>
               </Menu>
             }
           >

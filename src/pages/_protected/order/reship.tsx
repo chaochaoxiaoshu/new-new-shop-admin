@@ -20,6 +20,7 @@ import {
   getReships
 } from '@/api'
 import { MyTable } from '@/components/my-table'
+import { Show } from '@/components/show'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
 import { paginationFields, useMyModal, useTempSearch } from '@/hooks'
@@ -164,20 +165,24 @@ function ReshipView() {
           position='br'
           droplist={
             <Menu>
-              {checkActionPermission('/order/reship/detail') && (
+              <Show when={checkActionPermission('/order/reship/detail')}>
                 <Menu.Item key='detail' onClick={() => handleViewDetail(item)}>
                   明细
                 </Menu.Item>
-              )}
-              {checkActionPermission('/order/reship/finish') &&
-                item.status === 2 && (
-                  <Menu.Item
-                    key='confirm'
-                    onClick={() => confirmReshipMutate(item.reship_id)}
-                  >
-                    确认收货
-                  </Menu.Item>
-                )}
+              </Show>
+              <Show
+                when={
+                  checkActionPermission('/order/reship/finish') &&
+                  item.status === 2
+                }
+              >
+                <Menu.Item
+                  key='confirm'
+                  onClick={() => confirmReshipMutate(item.reship_id)}
+                >
+                  确认收货
+                </Menu.Item>
+              </Show>
             </Menu>
           }
         >

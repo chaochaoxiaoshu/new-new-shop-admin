@@ -31,6 +31,7 @@ import {
 } from '@/api'
 import { MyImage } from '@/components/my-image'
 import { MyTable } from '@/components/my-table'
+import { Show } from '@/components/show'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
 import { paginationFields, useMyModal, useTempSearch } from '@/hooks'
@@ -212,13 +213,13 @@ function CommentsView() {
     {
       title: '操作',
       render: (_, item) => (
-        <div className='flex justify-center items-center'>
+        <div className='actions'>
           <Button type='text' onClick={() => handleReply(item.id)}>
             回复评价
           </Button>
         </div>
       ),
-      width: 120,
+      width: 100,
       fixed: 'right',
       align: 'center'
     }
@@ -242,7 +243,7 @@ function CommentsView() {
             suffix={<FileText className='inline size-4' />}
             onChange={(value) => updateSearchField('order_id', value)}
           />
-          {departmentId === 0 && (
+          <Show when={departmentId === 0}>
             <Select
               value={tempSearch.department}
               placeholder='请选择电商事业部'
@@ -257,7 +258,7 @@ function CommentsView() {
                 </Select.Option>
               ))}
             </Select>
-          )}
+          </Show>
           <Select
             value={tempSearch.display}
             placeholder='请选择显示状态'

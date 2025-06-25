@@ -27,6 +27,7 @@ import { api, cn, generateId } from '@/lib'
 
 import { MyImage } from './my-image'
 import { MyVideoPreview } from './my-video-preview'
+import { Show } from './show'
 
 export type MyUploadResource = {
   id: string
@@ -217,7 +218,7 @@ export function MyUpload(props: MyUploadProps) {
             />
           ))}
         </SortableContext>
-        {isShowTrigger && (
+        <Show when={isShowTrigger}>
           <MyUploadTrigger
             multiple={multiple}
             limit={finalLimit}
@@ -227,7 +228,7 @@ export function MyUpload(props: MyUploadProps) {
             onSuccess={handleUpdate}
             onError={handleError}
           />
-        )}
+        </Show>
       </div>
       <DragOverlay>
         {activeItem && (
@@ -307,26 +308,26 @@ function SortableUploadItem(props: SortableUploadItemProps) {
       </button>
 
       {/* 拖拽句柄 */}
-      {multiple && (
+      <Show when={multiple}>
         <div
           className='absolute top-1 left-1 z-10 bg-black/20 backdrop-blur-lg rounded p-1 opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing'
           {...listeners}
         >
           <GripVertical className='w-3 h-3 text-white pointer-events-none' />
         </div>
-      )}
+      </Show>
 
       {/* 上传状态覆盖层 */}
-      {item.status === 'uploading' && (
+      <Show when={item.status === 'uploading'}>
         <div className='absolute inset-0 bg-white/70 flex items-center justify-center text-xs text-gray-400'>
           <Spin />
         </div>
-      )}
-      {item.status === 'error' && (
+      </Show>
+      <Show when={item.status === 'error'}>
         <div className='absolute inset-0 bg-red-100/80 flex items-center justify-center text-xs text-red-500'>
           <CircleAlert className='inline size-8' />
         </div>
-      )}
+      </Show>
 
       {/* 渲染自定义覆盖层 */}
       {renderOverlay?.(item)}

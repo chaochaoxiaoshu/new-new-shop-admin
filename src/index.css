@@ -151,3 +151,11 @@
 .clickable-row {
   cursor: pointer;
 }
+
+.actions {
+  @apply flex justify-center items-center;
+}
+
+.actions .arco-btn {
+  padding: 0 8px;
+}

@@ -7,6 +7,7 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { GetDeliveriesRes, getDeliveries } from '@/api'
 import { MyTable } from '@/components/my-table'
+import { Show } from '@/components/show'
 import { TableLayout } from '@/components/table-layout'
 import { getHead } from '@/helpers'
 import { paginationFields, useTempSearch } from '@/hooks'
@@ -118,12 +119,12 @@ function DeliveryView() {
       title: '操作',
       width: 100,
       render: (_, record) => (
-        <div className='flex items-center space-x-2'>
-          {checkActionPermission('/order/dispatch/detail') && (
+        <div className='actions'>
+          <Show when={checkActionPermission('/order/dispatch/detail')}>
             <Button type='text' onClick={() => handleViewDetail(record)}>
               明细
             </Button>
-          )}
+          </Show>
         </div>
       ),
       fixed: 'right',

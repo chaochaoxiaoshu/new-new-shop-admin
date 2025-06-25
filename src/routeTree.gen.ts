@@ -20,19 +20,62 @@ import { Route as ProtectedOrderFreightImport } from './pages/_protected/order/f
 import { Route as ProtectedOrderDispatchImport } from './pages/_protected/order/dispatch'
 import { Route as ProtectedOrderBillLadingImport } from './pages/_protected/order/billLading'
 import { Route as ProtectedOrderAfterSaleImport } from './pages/_protected/order/afterSale'
+import { Route as ProtectedMarketingValuepackIndexImport } from './pages/_protected/marketing/valuepack/index'
+import { Route as ProtectedMarketingTimelineIndexImport } from './pages/_protected/marketing/timeline/index'
+import { Route as ProtectedMarketingTeambuyIndexImport } from './pages/_protected/marketing/teambuy/index'
+import { Route as ProtectedMarketingSeckillingIndexImport } from './pages/_protected/marketing/seckilling/index'
+import { Route as ProtectedMarketingReductionIndexImport } from './pages/_protected/marketing/reduction/index'
+import { Route as ProtectedMarketingRaffleIndexImport } from './pages/_protected/marketing/raffle/index'
+import { Route as ProtectedMarketingPurchaseIndexImport } from './pages/_protected/marketing/purchase/index'
+import { Route as ProtectedMarketingPieceIndexImport } from './pages/_protected/marketing/piece/index'
+import { Route as ProtectedMarketingLiveIndexImport } from './pages/_protected/marketing/live/index'
+import { Route as ProtectedMarketingFulldiscountsIndexImport } from './pages/_protected/marketing/fulldiscounts/index'
+import { Route as ProtectedMarketingFullMpayNIndexImport } from './pages/_protected/marketing/fullMpayN/index'
+import { Route as ProtectedMarketingCouponIndexImport } from './pages/_protected/marketing/coupon/index'
 import { Route as ProtectedCommodityMerchandiseConIndexImport } from './pages/_protected/commodity/merchandiseCon/index'
 import { Route as ProtectedCommodityCategoryAdminIndexImport } from './pages/_protected/commodity/categoryAdmin/index'
 import { Route as ProtectedCommodityCategoryIndexImport } from './pages/_protected/commodity/category/index'
 import { Route as ProtectedCommodityBrandIndexImport } from './pages/_protected/commodity/brand/index'
 import { Route as ProtectedClientClientTagsIndexImport } from './pages/_protected/client/clientTags/index'
 import { Route as ProtectedClientAccountIndexImport } from './pages/_protected/client/account/index'
+import { Route as ProtectedMarketingValuepackEditImport } from './pages/_protected/marketing/valuepack/edit'
+import { Route as ProtectedMarketingValuepackDataImport } from './pages/_protected/marketing/valuepack/data'
+import { Route as ProtectedMarketingTimelineEditingImport } from './pages/_protected/marketing/timeline/editing'
+import { Route as ProtectedMarketingTeambuyEditImport } from './pages/_protected/marketing/teambuy/edit'
+import { Route as ProtectedMarketingTeambuyDataImport } from './pages/_protected/marketing/teambuy/data'
+import { Route as ProtectedMarketingSeckillingEditImport } from './pages/_protected/marketing/seckilling/edit'
+import { Route as ProtectedMarketingSeckillingDataImport } from './pages/_protected/marketing/seckilling/data'
+import { Route as ProtectedMarketingReductionEditImport } from './pages/_protected/marketing/reduction/edit'
+import { Route as ProtectedMarketingReductionDataImport } from './pages/_protected/marketing/reduction/data'
+import { Route as ProtectedMarketingRaffleEditImport } from './pages/_protected/marketing/raffle/edit'
+import { Route as ProtectedMarketingRaffleDataImport } from './pages/_protected/marketing/raffle/data'
+import { Route as ProtectedMarketingPurchaseEditImport } from './pages/_protected/marketing/purchase/edit'
+import { Route as ProtectedMarketingPieceEditImport } from './pages/_protected/marketing/piece/edit'
+import { Route as ProtectedMarketingPieceDataImport } from './pages/_protected/marketing/piece/data'
+import { Route as ProtectedMarketingLiveGoodsImport } from './pages/_protected/marketing/live/goods'
+import { Route as ProtectedMarketingLiveEditImport } from './pages/_protected/marketing/live/edit'
+import { Route as ProtectedMarketingLiveDataImport } from './pages/_protected/marketing/live/data'
+import { Route as ProtectedMarketingFulldiscountsEditImport } from './pages/_protected/marketing/fulldiscounts/edit'
+import { Route as ProtectedMarketingFulldiscountsDataImport } from './pages/_protected/marketing/fulldiscounts/data'
+import { Route as ProtectedMarketingFullMpayNEditImport } from './pages/_protected/marketing/fullMpayN/edit'
+import { Route as ProtectedMarketingFullMpayNDataImport } from './pages/_protected/marketing/fullMpayN/data'
+import { Route as ProtectedMarketingDrpUserIndexImport } from './pages/_protected/marketing/drp/userIndex'
+import { Route as ProtectedMarketingDrpRuleImport } from './pages/_protected/marketing/drp/rule'
+import { Route as ProtectedMarketingDrpDistrHistoryImport } from './pages/_protected/marketing/drp/distrHistory'
+import { Route as ProtectedMarketingDrpDataImport } from './pages/_protected/marketing/drp/data'
+import { Route as ProtectedMarketingDrpCustomerImport } from './pages/_protected/marketing/drp/customer'
+import { Route as ProtectedMarketingCouponTargetedDistributionImport } from './pages/_protected/marketing/coupon/targeted-distribution'
+import { Route as ProtectedMarketingCouponEditImport } from './pages/_protected/marketing/coupon/edit'
+import { Route as ProtectedMarketingCouponDataImport } from './pages/_protected/marketing/coupon/data'
 import { Route as ProtectedCommodityMerchandiseConEvaluateImport } from './pages/_protected/commodity/merchandiseCon/evaluate'
 import { Route as ProtectedCommodityCategoryAdminInfoImport } from './pages/_protected/commodity/categoryAdmin/info'
 import { Route as ProtectedCommodityCategoryAdminGoodsImport } from './pages/_protected/commodity/categoryAdmin/goods'
 import { Route as ProtectedCommodityCategoryInfoImport } from './pages/_protected/commodity/category/info'
 import { Route as ProtectedClientClientTagsEditImport } from './pages/_protected/client/clientTags/edit'
+import { Route as ProtectedMarketingDrpDistrListIndexImport } from './pages/_protected/marketing/drp/distrList/index'
 import { Route as ProtectedCommodityMerchandiseConDetailIndexImport } from './pages/_protected/commodity/merchandiseCon/detail/index'
 import { Route as ProtectedClientAccountDetailIndexImport } from './pages/_protected/client/account/detail/index'
+import { Route as ProtectedMarketingDrpDistrListGoodsListImport } from './pages/_protected/marketing/drp/distrList/goodsList'
 
 // Create/Update Routes
 
@@ -89,6 +132,90 @@ const ProtectedOrderAfterSaleRoute = ProtectedOrderAfterSaleImport.update({
   getParentRoute: () => ProtectedRouteRoute,
 } as any)
 
+const ProtectedMarketingValuepackIndexRoute =
+  ProtectedMarketingValuepackIndexImport.update({
+    id: '/marketing/valuepack/',
+    path: '/marketing/valuepack/',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingTimelineIndexRoute =
+  ProtectedMarketingTimelineIndexImport.update({
+    id: '/marketing/timeline/',
+    path: '/marketing/timeline/',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingTeambuyIndexRoute =
+  ProtectedMarketingTeambuyIndexImport.update({
+    id: '/marketing/teambuy/',
+    path: '/marketing/teambuy/',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingSeckillingIndexRoute =
+  ProtectedMarketingSeckillingIndexImport.update({
+    id: '/marketing/seckilling/',
+    path: '/marketing/seckilling/',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingReductionIndexRoute =
+  ProtectedMarketingReductionIndexImport.update({
+    id: '/marketing/reduction/',
+    path: '/marketing/reduction/',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingRaffleIndexRoute =
+  ProtectedMarketingRaffleIndexImport.update({
+    id: '/marketing/raffle/',
+    path: '/marketing/raffle/',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingPurchaseIndexRoute =
+  ProtectedMarketingPurchaseIndexImport.update({
+    id: '/marketing/purchase/',
+    path: '/marketing/purchase/',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingPieceIndexRoute =
+  ProtectedMarketingPieceIndexImport.update({
+    id: '/marketing/piece/',
+    path: '/marketing/piece/',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingLiveIndexRoute =
+  ProtectedMarketingLiveIndexImport.update({
+    id: '/marketing/live/',
+    path: '/marketing/live/',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingFulldiscountsIndexRoute =
+  ProtectedMarketingFulldiscountsIndexImport.update({
+    id: '/marketing/fulldiscounts/',
+    path: '/marketing/fulldiscounts/',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingFullMpayNIndexRoute =
+  ProtectedMarketingFullMpayNIndexImport.update({
+    id: '/marketing/fullMpayN/',
+    path: '/marketing/fullMpayN/',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingCouponIndexRoute =
+  ProtectedMarketingCouponIndexImport.update({
+    id: '/marketing/coupon/',
+    path: '/marketing/coupon/',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
 const ProtectedCommodityMerchandiseConIndexRoute =
   ProtectedCommodityMerchandiseConIndexImport.update({
     id: '/commodity/merchandiseCon/',
@@ -131,6 +258,209 @@ const ProtectedClientAccountIndexRoute =
     getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
+const ProtectedMarketingValuepackEditRoute =
+  ProtectedMarketingValuepackEditImport.update({
+    id: '/marketing/valuepack/edit',
+    path: '/marketing/valuepack/edit',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingValuepackDataRoute =
+  ProtectedMarketingValuepackDataImport.update({
+    id: '/marketing/valuepack/data',
+    path: '/marketing/valuepack/data',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingTimelineEditingRoute =
+  ProtectedMarketingTimelineEditingImport.update({
+    id: '/marketing/timeline/editing',
+    path: '/marketing/timeline/editing',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingTeambuyEditRoute =
+  ProtectedMarketingTeambuyEditImport.update({
+    id: '/marketing/teambuy/edit',
+    path: '/marketing/teambuy/edit',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingTeambuyDataRoute =
+  ProtectedMarketingTeambuyDataImport.update({
+    id: '/marketing/teambuy/data',
+    path: '/marketing/teambuy/data',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingSeckillingEditRoute =
+  ProtectedMarketingSeckillingEditImport.update({
+    id: '/marketing/seckilling/edit',
+    path: '/marketing/seckilling/edit',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingSeckillingDataRoute =
+  ProtectedMarketingSeckillingDataImport.update({
+    id: '/marketing/seckilling/data',
+    path: '/marketing/seckilling/data',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingReductionEditRoute =
+  ProtectedMarketingReductionEditImport.update({
+    id: '/marketing/reduction/edit',
+    path: '/marketing/reduction/edit',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingReductionDataRoute =
+  ProtectedMarketingReductionDataImport.update({
+    id: '/marketing/reduction/data',
+    path: '/marketing/reduction/data',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingRaffleEditRoute =
+  ProtectedMarketingRaffleEditImport.update({
+    id: '/marketing/raffle/edit',
+    path: '/marketing/raffle/edit',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingRaffleDataRoute =
+  ProtectedMarketingRaffleDataImport.update({
+    id: '/marketing/raffle/data',
+    path: '/marketing/raffle/data',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingPurchaseEditRoute =
+  ProtectedMarketingPurchaseEditImport.update({
+    id: '/marketing/purchase/edit',
+    path: '/marketing/purchase/edit',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingPieceEditRoute =
+  ProtectedMarketingPieceEditImport.update({
+    id: '/marketing/piece/edit',
+    path: '/marketing/piece/edit',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingPieceDataRoute =
+  ProtectedMarketingPieceDataImport.update({
+    id: '/marketing/piece/data',
+    path: '/marketing/piece/data',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingLiveGoodsRoute =
+  ProtectedMarketingLiveGoodsImport.update({
+    id: '/marketing/live/goods',
+    path: '/marketing/live/goods',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingLiveEditRoute = ProtectedMarketingLiveEditImport.update(
+  {
+    id: '/marketing/live/edit',
+    path: '/marketing/live/edit',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any,
+)
+
+const ProtectedMarketingLiveDataRoute = ProtectedMarketingLiveDataImport.update(
+  {
+    id: '/marketing/live/data',
+    path: '/marketing/live/data',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any,
+)
+
+const ProtectedMarketingFulldiscountsEditRoute =
+  ProtectedMarketingFulldiscountsEditImport.update({
+    id: '/marketing/fulldiscounts/edit',
+    path: '/marketing/fulldiscounts/edit',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingFulldiscountsDataRoute =
+  ProtectedMarketingFulldiscountsDataImport.update({
+    id: '/marketing/fulldiscounts/data',
+    path: '/marketing/fulldiscounts/data',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingFullMpayNEditRoute =
+  ProtectedMarketingFullMpayNEditImport.update({
+    id: '/marketing/fullMpayN/edit',
+    path: '/marketing/fullMpayN/edit',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingFullMpayNDataRoute =
+  ProtectedMarketingFullMpayNDataImport.update({
+    id: '/marketing/fullMpayN/data',
+    path: '/marketing/fullMpayN/data',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingDrpUserIndexRoute =
+  ProtectedMarketingDrpUserIndexImport.update({
+    id: '/marketing/drp/userIndex',
+    path: '/marketing/drp/userIndex',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingDrpRuleRoute = ProtectedMarketingDrpRuleImport.update({
+  id: '/marketing/drp/rule',
+  path: '/marketing/drp/rule',
+  getParentRoute: () => ProtectedRouteRoute,
+} as any)
+
+const ProtectedMarketingDrpDistrHistoryRoute =
+  ProtectedMarketingDrpDistrHistoryImport.update({
+    id: '/marketing/drp/distrHistory',
+    path: '/marketing/drp/distrHistory',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingDrpDataRoute = ProtectedMarketingDrpDataImport.update({
+  id: '/marketing/drp/data',
+  path: '/marketing/drp/data',
+  getParentRoute: () => ProtectedRouteRoute,
+} as any)
+
+const ProtectedMarketingDrpCustomerRoute =
+  ProtectedMarketingDrpCustomerImport.update({
+    id: '/marketing/drp/customer',
+    path: '/marketing/drp/customer',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingCouponTargetedDistributionRoute =
+  ProtectedMarketingCouponTargetedDistributionImport.update({
+    id: '/marketing/coupon/targeted-distribution',
+    path: '/marketing/coupon/targeted-distribution',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingCouponEditRoute =
+  ProtectedMarketingCouponEditImport.update({
+    id: '/marketing/coupon/edit',
+    path: '/marketing/coupon/edit',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingCouponDataRoute =
+  ProtectedMarketingCouponDataImport.update({
+    id: '/marketing/coupon/data',
+    path: '/marketing/coupon/data',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
 const ProtectedCommodityMerchandiseConEvaluateRoute =
   ProtectedCommodityMerchandiseConEvaluateImport.update({
     id: '/commodity/merchandiseCon/evaluate',
@@ -166,6 +496,13 @@ const ProtectedClientClientTagsEditRoute =
     getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
+const ProtectedMarketingDrpDistrListIndexRoute =
+  ProtectedMarketingDrpDistrListIndexImport.update({
+    id: '/marketing/drp/distrList/',
+    path: '/marketing/drp/distrList/',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
 const ProtectedCommodityMerchandiseConDetailIndexRoute =
   ProtectedCommodityMerchandiseConDetailIndexImport.update({
     id: '/commodity/merchandiseCon/detail/',
@@ -177,6 +514,13 @@ const ProtectedClientAccountDetailIndexRoute =
   ProtectedClientAccountDetailIndexImport.update({
     id: '/client/account/detail/',
     path: '/client/account/detail/',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingDrpDistrListGoodsListRoute =
+  ProtectedMarketingDrpDistrListGoodsListImport.update({
+    id: '/marketing/drp/distrList/goodsList',
+    path: '/marketing/drp/distrList/goodsList',
     getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
@@ -282,6 +626,209 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedCommodityMerchandiseConEvaluateImport
       parentRoute: typeof ProtectedRouteImport
     }
+    '/_protected/marketing/coupon/data': {
+      id: '/_protected/marketing/coupon/data'
+      path: '/marketing/coupon/data'
+      fullPath: '/marketing/coupon/data'
+      preLoaderRoute: typeof ProtectedMarketingCouponDataImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/coupon/edit': {
+      id: '/_protected/marketing/coupon/edit'
+      path: '/marketing/coupon/edit'
+      fullPath: '/marketing/coupon/edit'
+      preLoaderRoute: typeof ProtectedMarketingCouponEditImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/coupon/targeted-distribution': {
+      id: '/_protected/marketing/coupon/targeted-distribution'
+      path: '/marketing/coupon/targeted-distribution'
+      fullPath: '/marketing/coupon/targeted-distribution'
+      preLoaderRoute: typeof ProtectedMarketingCouponTargetedDistributionImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/drp/customer': {
+      id: '/_protected/marketing/drp/customer'
+      path: '/marketing/drp/customer'
+      fullPath: '/marketing/drp/customer'
+      preLoaderRoute: typeof ProtectedMarketingDrpCustomerImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/drp/data': {
+      id: '/_protected/marketing/drp/data'
+      path: '/marketing/drp/data'
+      fullPath: '/marketing/drp/data'
+      preLoaderRoute: typeof ProtectedMarketingDrpDataImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/drp/distrHistory': {
+      id: '/_protected/marketing/drp/distrHistory'
+      path: '/marketing/drp/distrHistory'
+      fullPath: '/marketing/drp/distrHistory'
+      preLoaderRoute: typeof ProtectedMarketingDrpDistrHistoryImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/drp/rule': {
+      id: '/_protected/marketing/drp/rule'
+      path: '/marketing/drp/rule'
+      fullPath: '/marketing/drp/rule'
+      preLoaderRoute: typeof ProtectedMarketingDrpRuleImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/drp/userIndex': {
+      id: '/_protected/marketing/drp/userIndex'
+      path: '/marketing/drp/userIndex'
+      fullPath: '/marketing/drp/userIndex'
+      preLoaderRoute: typeof ProtectedMarketingDrpUserIndexImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/fullMpayN/data': {
+      id: '/_protected/marketing/fullMpayN/data'
+      path: '/marketing/fullMpayN/data'
+      fullPath: '/marketing/fullMpayN/data'
+      preLoaderRoute: typeof ProtectedMarketingFullMpayNDataImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/fullMpayN/edit': {
+      id: '/_protected/marketing/fullMpayN/edit'
+      path: '/marketing/fullMpayN/edit'
+      fullPath: '/marketing/fullMpayN/edit'
+      preLoaderRoute: typeof ProtectedMarketingFullMpayNEditImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/fulldiscounts/data': {
+      id: '/_protected/marketing/fulldiscounts/data'
+      path: '/marketing/fulldiscounts/data'
+      fullPath: '/marketing/fulldiscounts/data'
+      preLoaderRoute: typeof ProtectedMarketingFulldiscountsDataImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/fulldiscounts/edit': {
+      id: '/_protected/marketing/fulldiscounts/edit'
+      path: '/marketing/fulldiscounts/edit'
+      fullPath: '/marketing/fulldiscounts/edit'
+      preLoaderRoute: typeof ProtectedMarketingFulldiscountsEditImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/live/data': {
+      id: '/_protected/marketing/live/data'
+      path: '/marketing/live/data'
+      fullPath: '/marketing/live/data'
+      preLoaderRoute: typeof ProtectedMarketingLiveDataImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/live/edit': {
+      id: '/_protected/marketing/live/edit'
+      path: '/marketing/live/edit'
+      fullPath: '/marketing/live/edit'
+      preLoaderRoute: typeof ProtectedMarketingLiveEditImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/live/goods': {
+      id: '/_protected/marketing/live/goods'
+      path: '/marketing/live/goods'
+      fullPath: '/marketing/live/goods'
+      preLoaderRoute: typeof ProtectedMarketingLiveGoodsImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/piece/data': {
+      id: '/_protected/marketing/piece/data'
+      path: '/marketing/piece/data'
+      fullPath: '/marketing/piece/data'
+      preLoaderRoute: typeof ProtectedMarketingPieceDataImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/piece/edit': {
+      id: '/_protected/marketing/piece/edit'
+      path: '/marketing/piece/edit'
+      fullPath: '/marketing/piece/edit'
+      preLoaderRoute: typeof ProtectedMarketingPieceEditImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/purchase/edit': {
+      id: '/_protected/marketing/purchase/edit'
+      path: '/marketing/purchase/edit'
+      fullPath: '/marketing/purchase/edit'
+      preLoaderRoute: typeof ProtectedMarketingPurchaseEditImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/raffle/data': {
+      id: '/_protected/marketing/raffle/data'
+      path: '/marketing/raffle/data'
+      fullPath: '/marketing/raffle/data'
+      preLoaderRoute: typeof ProtectedMarketingRaffleDataImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/raffle/edit': {
+      id: '/_protected/marketing/raffle/edit'
+      path: '/marketing/raffle/edit'
+      fullPath: '/marketing/raffle/edit'
+      preLoaderRoute: typeof ProtectedMarketingRaffleEditImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/reduction/data': {
+      id: '/_protected/marketing/reduction/data'
+      path: '/marketing/reduction/data'
+      fullPath: '/marketing/reduction/data'
+      preLoaderRoute: typeof ProtectedMarketingReductionDataImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/reduction/edit': {
+      id: '/_protected/marketing/reduction/edit'
+      path: '/marketing/reduction/edit'
+      fullPath: '/marketing/reduction/edit'
+      preLoaderRoute: typeof ProtectedMarketingReductionEditImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/seckilling/data': {
+      id: '/_protected/marketing/seckilling/data'
+      path: '/marketing/seckilling/data'
+      fullPath: '/marketing/seckilling/data'
+      preLoaderRoute: typeof ProtectedMarketingSeckillingDataImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/seckilling/edit': {
+      id: '/_protected/marketing/seckilling/edit'
+      path: '/marketing/seckilling/edit'
+      fullPath: '/marketing/seckilling/edit'
+      preLoaderRoute: typeof ProtectedMarketingSeckillingEditImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/teambuy/data': {
+      id: '/_protected/marketing/teambuy/data'
+      path: '/marketing/teambuy/data'
+      fullPath: '/marketing/teambuy/data'
+      preLoaderRoute: typeof ProtectedMarketingTeambuyDataImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/teambuy/edit': {
+      id: '/_protected/marketing/teambuy/edit'
+      path: '/marketing/teambuy/edit'
+      fullPath: '/marketing/teambuy/edit'
+      preLoaderRoute: typeof ProtectedMarketingTeambuyEditImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/timeline/editing': {
+      id: '/_protected/marketing/timeline/editing'
+      path: '/marketing/timeline/editing'
+      fullPath: '/marketing/timeline/editing'
+      preLoaderRoute: typeof ProtectedMarketingTimelineEditingImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/valuepack/data': {
+      id: '/_protected/marketing/valuepack/data'
+      path: '/marketing/valuepack/data'
+      fullPath: '/marketing/valuepack/data'
+      preLoaderRoute: typeof ProtectedMarketingValuepackDataImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/valuepack/edit': {
+      id: '/_protected/marketing/valuepack/edit'
+      path: '/marketing/valuepack/edit'
+      fullPath: '/marketing/valuepack/edit'
+      preLoaderRoute: typeof ProtectedMarketingValuepackEditImport
+      parentRoute: typeof ProtectedRouteImport
+    }
     '/_protected/client/account/': {
       id: '/_protected/client/account/'
       path: '/client/account'
@@ -324,6 +871,97 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedCommodityMerchandiseConIndexImport
       parentRoute: typeof ProtectedRouteImport
     }
+    '/_protected/marketing/coupon/': {
+      id: '/_protected/marketing/coupon/'
+      path: '/marketing/coupon'
+      fullPath: '/marketing/coupon'
+      preLoaderRoute: typeof ProtectedMarketingCouponIndexImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/fullMpayN/': {
+      id: '/_protected/marketing/fullMpayN/'
+      path: '/marketing/fullMpayN'
+      fullPath: '/marketing/fullMpayN'
+      preLoaderRoute: typeof ProtectedMarketingFullMpayNIndexImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/fulldiscounts/': {
+      id: '/_protected/marketing/fulldiscounts/'
+      path: '/marketing/fulldiscounts'
+      fullPath: '/marketing/fulldiscounts'
+      preLoaderRoute: typeof ProtectedMarketingFulldiscountsIndexImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/live/': {
+      id: '/_protected/marketing/live/'
+      path: '/marketing/live'
+      fullPath: '/marketing/live'
+      preLoaderRoute: typeof ProtectedMarketingLiveIndexImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/piece/': {
+      id: '/_protected/marketing/piece/'
+      path: '/marketing/piece'
+      fullPath: '/marketing/piece'
+      preLoaderRoute: typeof ProtectedMarketingPieceIndexImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/purchase/': {
+      id: '/_protected/marketing/purchase/'
+      path: '/marketing/purchase'
+      fullPath: '/marketing/purchase'
+      preLoaderRoute: typeof ProtectedMarketingPurchaseIndexImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/raffle/': {
+      id: '/_protected/marketing/raffle/'
+      path: '/marketing/raffle'
+      fullPath: '/marketing/raffle'
+      preLoaderRoute: typeof ProtectedMarketingRaffleIndexImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/reduction/': {
+      id: '/_protected/marketing/reduction/'
+      path: '/marketing/reduction'
+      fullPath: '/marketing/reduction'
+      preLoaderRoute: typeof ProtectedMarketingReductionIndexImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/seckilling/': {
+      id: '/_protected/marketing/seckilling/'
+      path: '/marketing/seckilling'
+      fullPath: '/marketing/seckilling'
+      preLoaderRoute: typeof ProtectedMarketingSeckillingIndexImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/teambuy/': {
+      id: '/_protected/marketing/teambuy/'
+      path: '/marketing/teambuy'
+      fullPath: '/marketing/teambuy'
+      preLoaderRoute: typeof ProtectedMarketingTeambuyIndexImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/timeline/': {
+      id: '/_protected/marketing/timeline/'
+      path: '/marketing/timeline'
+      fullPath: '/marketing/timeline'
+      preLoaderRoute: typeof ProtectedMarketingTimelineIndexImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/valuepack/': {
+      id: '/_protected/marketing/valuepack/'
+      path: '/marketing/valuepack'
+      fullPath: '/marketing/valuepack'
+      preLoaderRoute: typeof ProtectedMarketingValuepackIndexImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/drp/distrList/goodsList': {
+      id: '/_protected/marketing/drp/distrList/goodsList'
+      path: '/marketing/drp/distrList/goodsList'
+      fullPath: '/marketing/drp/distrList/goodsList'
+      preLoaderRoute: typeof ProtectedMarketingDrpDistrListGoodsListImport
+      parentRoute: typeof ProtectedRouteImport
+    }
     '/_protected/client/account/detail/': {
       id: '/_protected/client/account/detail/'
       path: '/client/account/detail'
@@ -336,6 +974,13 @@ declare module '@tanstack/react-router' {
       path: '/commodity/merchandiseCon/detail'
       fullPath: '/commodity/merchandiseCon/detail'
       preLoaderRoute: typeof ProtectedCommodityMerchandiseConDetailIndexImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/drp/distrList/': {
+      id: '/_protected/marketing/drp/distrList/'
+      path: '/marketing/drp/distrList'
+      fullPath: '/marketing/drp/distrList'
+      preLoaderRoute: typeof ProtectedMarketingDrpDistrListIndexImport
       parentRoute: typeof ProtectedRouteImport
     }
   }
@@ -356,14 +1001,57 @@ interface ProtectedRouteRouteChildren {
   ProtectedCommodityCategoryAdminGoodsRoute: typeof ProtectedCommodityCategoryAdminGoodsRoute
   ProtectedCommodityCategoryAdminInfoRoute: typeof ProtectedCommodityCategoryAdminInfoRoute
   ProtectedCommodityMerchandiseConEvaluateRoute: typeof ProtectedCommodityMerchandiseConEvaluateRoute
+  ProtectedMarketingCouponDataRoute: typeof ProtectedMarketingCouponDataRoute
+  ProtectedMarketingCouponEditRoute: typeof ProtectedMarketingCouponEditRoute
+  ProtectedMarketingCouponTargetedDistributionRoute: typeof ProtectedMarketingCouponTargetedDistributionRoute
+  ProtectedMarketingDrpCustomerRoute: typeof ProtectedMarketingDrpCustomerRoute
+  ProtectedMarketingDrpDataRoute: typeof ProtectedMarketingDrpDataRoute
+  ProtectedMarketingDrpDistrHistoryRoute: typeof ProtectedMarketingDrpDistrHistoryRoute
+  ProtectedMarketingDrpRuleRoute: typeof ProtectedMarketingDrpRuleRoute
+  ProtectedMarketingDrpUserIndexRoute: typeof ProtectedMarketingDrpUserIndexRoute
+  ProtectedMarketingFullMpayNDataRoute: typeof ProtectedMarketingFullMpayNDataRoute
+  ProtectedMarketingFullMpayNEditRoute: typeof ProtectedMarketingFullMpayNEditRoute
+  ProtectedMarketingFulldiscountsDataRoute: typeof ProtectedMarketingFulldiscountsDataRoute
+  ProtectedMarketingFulldiscountsEditRoute: typeof ProtectedMarketingFulldiscountsEditRoute
+  ProtectedMarketingLiveDataRoute: typeof ProtectedMarketingLiveDataRoute
+  ProtectedMarketingLiveEditRoute: typeof ProtectedMarketingLiveEditRoute
+  ProtectedMarketingLiveGoodsRoute: typeof ProtectedMarketingLiveGoodsRoute
+  ProtectedMarketingPieceDataRoute: typeof ProtectedMarketingPieceDataRoute
+  ProtectedMarketingPieceEditRoute: typeof ProtectedMarketingPieceEditRoute
+  ProtectedMarketingPurchaseEditRoute: typeof ProtectedMarketingPurchaseEditRoute
+  ProtectedMarketingRaffleDataRoute: typeof ProtectedMarketingRaffleDataRoute
+  ProtectedMarketingRaffleEditRoute: typeof ProtectedMarketingRaffleEditRoute
+  ProtectedMarketingReductionDataRoute: typeof ProtectedMarketingReductionDataRoute
+  ProtectedMarketingReductionEditRoute: typeof ProtectedMarketingReductionEditRoute
+  ProtectedMarketingSeckillingDataRoute: typeof ProtectedMarketingSeckillingDataRoute
+  ProtectedMarketingSeckillingEditRoute: typeof ProtectedMarketingSeckillingEditRoute
+  ProtectedMarketingTeambuyDataRoute: typeof ProtectedMarketingTeambuyDataRoute
+  ProtectedMarketingTeambuyEditRoute: typeof ProtectedMarketingTeambuyEditRoute
+  ProtectedMarketingTimelineEditingRoute: typeof ProtectedMarketingTimelineEditingRoute
+  ProtectedMarketingValuepackDataRoute: typeof ProtectedMarketingValuepackDataRoute
+  ProtectedMarketingValuepackEditRoute: typeof ProtectedMarketingValuepackEditRoute
   ProtectedClientAccountIndexRoute: typeof ProtectedClientAccountIndexRoute
   ProtectedClientClientTagsIndexRoute: typeof ProtectedClientClientTagsIndexRoute
   ProtectedCommodityBrandIndexRoute: typeof ProtectedCommodityBrandIndexRoute
   ProtectedCommodityCategoryIndexRoute: typeof ProtectedCommodityCategoryIndexRoute
   ProtectedCommodityCategoryAdminIndexRoute: typeof ProtectedCommodityCategoryAdminIndexRoute
   ProtectedCommodityMerchandiseConIndexRoute: typeof ProtectedCommodityMerchandiseConIndexRoute
+  ProtectedMarketingCouponIndexRoute: typeof ProtectedMarketingCouponIndexRoute
+  ProtectedMarketingFullMpayNIndexRoute: typeof ProtectedMarketingFullMpayNIndexRoute
+  ProtectedMarketingFulldiscountsIndexRoute: typeof ProtectedMarketingFulldiscountsIndexRoute
+  ProtectedMarketingLiveIndexRoute: typeof ProtectedMarketingLiveIndexRoute
+  ProtectedMarketingPieceIndexRoute: typeof ProtectedMarketingPieceIndexRoute
+  ProtectedMarketingPurchaseIndexRoute: typeof ProtectedMarketingPurchaseIndexRoute
+  ProtectedMarketingRaffleIndexRoute: typeof ProtectedMarketingRaffleIndexRoute
+  ProtectedMarketingReductionIndexRoute: typeof ProtectedMarketingReductionIndexRoute
+  ProtectedMarketingSeckillingIndexRoute: typeof ProtectedMarketingSeckillingIndexRoute
+  ProtectedMarketingTeambuyIndexRoute: typeof ProtectedMarketingTeambuyIndexRoute
+  ProtectedMarketingTimelineIndexRoute: typeof ProtectedMarketingTimelineIndexRoute
+  ProtectedMarketingValuepackIndexRoute: typeof ProtectedMarketingValuepackIndexRoute
+  ProtectedMarketingDrpDistrListGoodsListRoute: typeof ProtectedMarketingDrpDistrListGoodsListRoute
   ProtectedClientAccountDetailIndexRoute: typeof ProtectedClientAccountDetailIndexRoute
   ProtectedCommodityMerchandiseConDetailIndexRoute: typeof ProtectedCommodityMerchandiseConDetailIndexRoute
+  ProtectedMarketingDrpDistrListIndexRoute: typeof ProtectedMarketingDrpDistrListIndexRoute
 }
 
 const ProtectedRouteRouteChildren: ProtectedRouteRouteChildren = {
@@ -382,6 +1070,40 @@ const ProtectedRouteRouteChildren: ProtectedRouteRouteChildren = {
     ProtectedCommodityCategoryAdminInfoRoute,
   ProtectedCommodityMerchandiseConEvaluateRoute:
     ProtectedCommodityMerchandiseConEvaluateRoute,
+  ProtectedMarketingCouponDataRoute: ProtectedMarketingCouponDataRoute,
+  ProtectedMarketingCouponEditRoute: ProtectedMarketingCouponEditRoute,
+  ProtectedMarketingCouponTargetedDistributionRoute:
+    ProtectedMarketingCouponTargetedDistributionRoute,
+  ProtectedMarketingDrpCustomerRoute: ProtectedMarketingDrpCustomerRoute,
+  ProtectedMarketingDrpDataRoute: ProtectedMarketingDrpDataRoute,
+  ProtectedMarketingDrpDistrHistoryRoute:
+    ProtectedMarketingDrpDistrHistoryRoute,
+  ProtectedMarketingDrpRuleRoute: ProtectedMarketingDrpRuleRoute,
+  ProtectedMarketingDrpUserIndexRoute: ProtectedMarketingDrpUserIndexRoute,
+  ProtectedMarketingFullMpayNDataRoute: ProtectedMarketingFullMpayNDataRoute,
+  ProtectedMarketingFullMpayNEditRoute: ProtectedMarketingFullMpayNEditRoute,
+  ProtectedMarketingFulldiscountsDataRoute:
+    ProtectedMarketingFulldiscountsDataRoute,
+  ProtectedMarketingFulldiscountsEditRoute:
+    ProtectedMarketingFulldiscountsEditRoute,
+  ProtectedMarketingLiveDataRoute: ProtectedMarketingLiveDataRoute,
+  ProtectedMarketingLiveEditRoute: ProtectedMarketingLiveEditRoute,
+  ProtectedMarketingLiveGoodsRoute: ProtectedMarketingLiveGoodsRoute,
+  ProtectedMarketingPieceDataRoute: ProtectedMarketingPieceDataRoute,
+  ProtectedMarketingPieceEditRoute: ProtectedMarketingPieceEditRoute,
+  ProtectedMarketingPurchaseEditRoute: ProtectedMarketingPurchaseEditRoute,
+  ProtectedMarketingRaffleDataRoute: ProtectedMarketingRaffleDataRoute,
+  ProtectedMarketingRaffleEditRoute: ProtectedMarketingRaffleEditRoute,
+  ProtectedMarketingReductionDataRoute: ProtectedMarketingReductionDataRoute,
+  ProtectedMarketingReductionEditRoute: ProtectedMarketingReductionEditRoute,
+  ProtectedMarketingSeckillingDataRoute: ProtectedMarketingSeckillingDataRoute,
+  ProtectedMarketingSeckillingEditRoute: ProtectedMarketingSeckillingEditRoute,
+  ProtectedMarketingTeambuyDataRoute: ProtectedMarketingTeambuyDataRoute,
+  ProtectedMarketingTeambuyEditRoute: ProtectedMarketingTeambuyEditRoute,
+  ProtectedMarketingTimelineEditingRoute:
+    ProtectedMarketingTimelineEditingRoute,
+  ProtectedMarketingValuepackDataRoute: ProtectedMarketingValuepackDataRoute,
+  ProtectedMarketingValuepackEditRoute: ProtectedMarketingValuepackEditRoute,
   ProtectedClientAccountIndexRoute: ProtectedClientAccountIndexRoute,
   ProtectedClientClientTagsIndexRoute: ProtectedClientClientTagsIndexRoute,
   ProtectedCommodityBrandIndexRoute: ProtectedCommodityBrandIndexRoute,
@@ -390,10 +1112,28 @@ const ProtectedRouteRouteChildren: ProtectedRouteRouteChildren = {
     ProtectedCommodityCategoryAdminIndexRoute,
   ProtectedCommodityMerchandiseConIndexRoute:
     ProtectedCommodityMerchandiseConIndexRoute,
+  ProtectedMarketingCouponIndexRoute: ProtectedMarketingCouponIndexRoute,
+  ProtectedMarketingFullMpayNIndexRoute: ProtectedMarketingFullMpayNIndexRoute,
+  ProtectedMarketingFulldiscountsIndexRoute:
+    ProtectedMarketingFulldiscountsIndexRoute,
+  ProtectedMarketingLiveIndexRoute: ProtectedMarketingLiveIndexRoute,
+  ProtectedMarketingPieceIndexRoute: ProtectedMarketingPieceIndexRoute,
+  ProtectedMarketingPurchaseIndexRoute: ProtectedMarketingPurchaseIndexRoute,
+  ProtectedMarketingRaffleIndexRoute: ProtectedMarketingRaffleIndexRoute,
+  ProtectedMarketingReductionIndexRoute: ProtectedMarketingReductionIndexRoute,
+  ProtectedMarketingSeckillingIndexRoute:
+    ProtectedMarketingSeckillingIndexRoute,
+  ProtectedMarketingTeambuyIndexRoute: ProtectedMarketingTeambuyIndexRoute,
+  ProtectedMarketingTimelineIndexRoute: ProtectedMarketingTimelineIndexRoute,
+  ProtectedMarketingValuepackIndexRoute: ProtectedMarketingValuepackIndexRoute,
+  ProtectedMarketingDrpDistrListGoodsListRoute:
+    ProtectedMarketingDrpDistrListGoodsListRoute,
   ProtectedClientAccountDetailIndexRoute:
     ProtectedClientAccountDetailIndexRoute,
   ProtectedCommodityMerchandiseConDetailIndexRoute:
     ProtectedCommodityMerchandiseConDetailIndexRoute,
+  ProtectedMarketingDrpDistrListIndexRoute:
+    ProtectedMarketingDrpDistrListIndexRoute,
 }
 
 const ProtectedRouteRouteWithChildren = ProtectedRouteRoute._addFileChildren(
@@ -415,14 +1155,57 @@ export interface FileRoutesByFullPath {
   '/commodity/categoryAdmin/goods': typeof ProtectedCommodityCategoryAdminGoodsRoute
   '/commodity/categoryAdmin/info': typeof ProtectedCommodityCategoryAdminInfoRoute
   '/commodity/merchandiseCon/evaluate': typeof ProtectedCommodityMerchandiseConEvaluateRoute
+  '/marketing/coupon/data': typeof ProtectedMarketingCouponDataRoute
+  '/marketing/coupon/edit': typeof ProtectedMarketingCouponEditRoute
+  '/marketing/coupon/targeted-distribution': typeof ProtectedMarketingCouponTargetedDistributionRoute
+  '/marketing/drp/customer': typeof ProtectedMarketingDrpCustomerRoute
+  '/marketing/drp/data': typeof ProtectedMarketingDrpDataRoute
+  '/marketing/drp/distrHistory': typeof ProtectedMarketingDrpDistrHistoryRoute
+  '/marketing/drp/rule': typeof ProtectedMarketingDrpRuleRoute
+  '/marketing/drp/userIndex': typeof ProtectedMarketingDrpUserIndexRoute
+  '/marketing/fullMpayN/data': typeof ProtectedMarketingFullMpayNDataRoute
+  '/marketing/fullMpayN/edit': typeof ProtectedMarketingFullMpayNEditRoute
+  '/marketing/fulldiscounts/data': typeof ProtectedMarketingFulldiscountsDataRoute
+  '/marketing/fulldiscounts/edit': typeof ProtectedMarketingFulldiscountsEditRoute
+  '/marketing/live/data': typeof ProtectedMarketingLiveDataRoute
+  '/marketing/live/edit': typeof ProtectedMarketingLiveEditRoute
+  '/marketing/live/goods': typeof ProtectedMarketingLiveGoodsRoute
+  '/marketing/piece/data': typeof ProtectedMarketingPieceDataRoute
+  '/marketing/piece/edit': typeof ProtectedMarketingPieceEditRoute
+  '/marketing/purchase/edit': typeof ProtectedMarketingPurchaseEditRoute
+  '/marketing/raffle/data': typeof ProtectedMarketingRaffleDataRoute
+  '/marketing/raffle/edit': typeof ProtectedMarketingRaffleEditRoute
+  '/marketing/reduction/data': typeof ProtectedMarketingReductionDataRoute
+  '/marketing/reduction/edit': typeof ProtectedMarketingReductionEditRoute
+  '/marketing/seckilling/data': typeof ProtectedMarketingSeckillingDataRoute
+  '/marketing/seckilling/edit': typeof ProtectedMarketingSeckillingEditRoute
+  '/marketing/teambuy/data': typeof ProtectedMarketingTeambuyDataRoute
+  '/marketing/teambuy/edit': typeof ProtectedMarketingTeambuyEditRoute
+  '/marketing/timeline/editing': typeof ProtectedMarketingTimelineEditingRoute
+  '/marketing/valuepack/data': typeof ProtectedMarketingValuepackDataRoute
+  '/marketing/valuepack/edit': typeof ProtectedMarketingValuepackEditRoute
   '/client/account': typeof ProtectedClientAccountIndexRoute
   '/client/clientTags': typeof ProtectedClientClientTagsIndexRoute
   '/commodity/brand': typeof ProtectedCommodityBrandIndexRoute
   '/commodity/category': typeof ProtectedCommodityCategoryIndexRoute
   '/commodity/categoryAdmin': typeof ProtectedCommodityCategoryAdminIndexRoute
   '/commodity/merchandiseCon': typeof ProtectedCommodityMerchandiseConIndexRoute
+  '/marketing/coupon': typeof ProtectedMarketingCouponIndexRoute
+  '/marketing/fullMpayN': typeof ProtectedMarketingFullMpayNIndexRoute
+  '/marketing/fulldiscounts': typeof ProtectedMarketingFulldiscountsIndexRoute
+  '/marketing/live': typeof ProtectedMarketingLiveIndexRoute
+  '/marketing/piece': typeof ProtectedMarketingPieceIndexRoute
+  '/marketing/purchase': typeof ProtectedMarketingPurchaseIndexRoute
+  '/marketing/raffle': typeof ProtectedMarketingRaffleIndexRoute
+  '/marketing/reduction': typeof ProtectedMarketingReductionIndexRoute
+  '/marketing/seckilling': typeof ProtectedMarketingSeckillingIndexRoute
+  '/marketing/teambuy': typeof ProtectedMarketingTeambuyIndexRoute
+  '/marketing/timeline': typeof ProtectedMarketingTimelineIndexRoute
+  '/marketing/valuepack': typeof ProtectedMarketingValuepackIndexRoute
+  '/marketing/drp/distrList/goodsList': typeof ProtectedMarketingDrpDistrListGoodsListRoute
   '/client/account/detail': typeof ProtectedClientAccountDetailIndexRoute
   '/commodity/merchandiseCon/detail': typeof ProtectedCommodityMerchandiseConDetailIndexRoute
+  '/marketing/drp/distrList': typeof ProtectedMarketingDrpDistrListIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -439,14 +1222,57 @@ export interface FileRoutesByTo {
   '/commodity/categoryAdmin/goods': typeof ProtectedCommodityCategoryAdminGoodsRoute
   '/commodity/categoryAdmin/info': typeof ProtectedCommodityCategoryAdminInfoRoute
   '/commodity/merchandiseCon/evaluate': typeof ProtectedCommodityMerchandiseConEvaluateRoute
+  '/marketing/coupon/data': typeof ProtectedMarketingCouponDataRoute
+  '/marketing/coupon/edit': typeof ProtectedMarketingCouponEditRoute
+  '/marketing/coupon/targeted-distribution': typeof ProtectedMarketingCouponTargetedDistributionRoute
+  '/marketing/drp/customer': typeof ProtectedMarketingDrpCustomerRoute
+  '/marketing/drp/data': typeof ProtectedMarketingDrpDataRoute
+  '/marketing/drp/distrHistory': typeof ProtectedMarketingDrpDistrHistoryRoute
+  '/marketing/drp/rule': typeof ProtectedMarketingDrpRuleRoute
+  '/marketing/drp/userIndex': typeof ProtectedMarketingDrpUserIndexRoute
+  '/marketing/fullMpayN/data': typeof ProtectedMarketingFullMpayNDataRoute
+  '/marketing/fullMpayN/edit': typeof ProtectedMarketingFullMpayNEditRoute
+  '/marketing/fulldiscounts/data': typeof ProtectedMarketingFulldiscountsDataRoute
+  '/marketing/fulldiscounts/edit': typeof ProtectedMarketingFulldiscountsEditRoute
+  '/marketing/live/data': typeof ProtectedMarketingLiveDataRoute
+  '/marketing/live/edit': typeof ProtectedMarketingLiveEditRoute
+  '/marketing/live/goods': typeof ProtectedMarketingLiveGoodsRoute
+  '/marketing/piece/data': typeof ProtectedMarketingPieceDataRoute
+  '/marketing/piece/edit': typeof ProtectedMarketingPieceEditRoute
+  '/marketing/purchase/edit': typeof ProtectedMarketingPurchaseEditRoute
+  '/marketing/raffle/data': typeof ProtectedMarketingRaffleDataRoute
+  '/marketing/raffle/edit': typeof ProtectedMarketingRaffleEditRoute
+  '/marketing/reduction/data': typeof ProtectedMarketingReductionDataRoute
+  '/marketing/reduction/edit': typeof ProtectedMarketingReductionEditRoute
+  '/marketing/seckilling/data': typeof ProtectedMarketingSeckillingDataRoute
+  '/marketing/seckilling/edit': typeof ProtectedMarketingSeckillingEditRoute
+  '/marketing/teambuy/data': typeof ProtectedMarketingTeambuyDataRoute
+  '/marketing/teambuy/edit': typeof ProtectedMarketingTeambuyEditRoute
+  '/marketing/timeline/editing': typeof ProtectedMarketingTimelineEditingRoute
+  '/marketing/valuepack/data': typeof ProtectedMarketingValuepackDataRoute
+  '/marketing/valuepack/edit': typeof ProtectedMarketingValuepackEditRoute
   '/client/account': typeof ProtectedClientAccountIndexRoute
   '/client/clientTags': typeof ProtectedClientClientTagsIndexRoute
   '/commodity/brand': typeof ProtectedCommodityBrandIndexRoute
   '/commodity/category': typeof ProtectedCommodityCategoryIndexRoute
   '/commodity/categoryAdmin': typeof ProtectedCommodityCategoryAdminIndexRoute
   '/commodity/merchandiseCon': typeof ProtectedCommodityMerchandiseConIndexRoute
+  '/marketing/coupon': typeof ProtectedMarketingCouponIndexRoute
+  '/marketing/fullMpayN': typeof ProtectedMarketingFullMpayNIndexRoute
+  '/marketing/fulldiscounts': typeof ProtectedMarketingFulldiscountsIndexRoute
+  '/marketing/live': typeof ProtectedMarketingLiveIndexRoute
+  '/marketing/piece': typeof ProtectedMarketingPieceIndexRoute
+  '/marketing/purchase': typeof ProtectedMarketingPurchaseIndexRoute
+  '/marketing/raffle': typeof ProtectedMarketingRaffleIndexRoute
+  '/marketing/reduction': typeof ProtectedMarketingReductionIndexRoute
+  '/marketing/seckilling': typeof ProtectedMarketingSeckillingIndexRoute
+  '/marketing/teambuy': typeof ProtectedMarketingTeambuyIndexRoute
+  '/marketing/timeline': typeof ProtectedMarketingTimelineIndexRoute
+  '/marketing/valuepack': typeof ProtectedMarketingValuepackIndexRoute
+  '/marketing/drp/distrList/goodsList': typeof ProtectedMarketingDrpDistrListGoodsListRoute
   '/client/account/detail': typeof ProtectedClientAccountDetailIndexRoute
   '/commodity/merchandiseCon/detail': typeof ProtectedCommodityMerchandiseConDetailIndexRoute
+  '/marketing/drp/distrList': typeof ProtectedMarketingDrpDistrListIndexRoute
 }
 
 export interface FileRoutesById {
@@ -465,14 +1291,57 @@ export interface FileRoutesById {
   '/_protected/commodity/categoryAdmin/goods': typeof ProtectedCommodityCategoryAdminGoodsRoute
   '/_protected/commodity/categoryAdmin/info': typeof ProtectedCommodityCategoryAdminInfoRoute
   '/_protected/commodity/merchandiseCon/evaluate': typeof ProtectedCommodityMerchandiseConEvaluateRoute
+  '/_protected/marketing/coupon/data': typeof ProtectedMarketingCouponDataRoute
+  '/_protected/marketing/coupon/edit': typeof ProtectedMarketingCouponEditRoute
+  '/_protected/marketing/coupon/targeted-distribution': typeof ProtectedMarketingCouponTargetedDistributionRoute
+  '/_protected/marketing/drp/customer': typeof ProtectedMarketingDrpCustomerRoute
+  '/_protected/marketing/drp/data': typeof ProtectedMarketingDrpDataRoute
+  '/_protected/marketing/drp/distrHistory': typeof ProtectedMarketingDrpDistrHistoryRoute
+  '/_protected/marketing/drp/rule': typeof ProtectedMarketingDrpRuleRoute
+  '/_protected/marketing/drp/userIndex': typeof ProtectedMarketingDrpUserIndexRoute
+  '/_protected/marketing/fullMpayN/data': typeof ProtectedMarketingFullMpayNDataRoute
+  '/_protected/marketing/fullMpayN/edit': typeof ProtectedMarketingFullMpayNEditRoute
+  '/_protected/marketing/fulldiscounts/data': typeof ProtectedMarketingFulldiscountsDataRoute
+  '/_protected/marketing/fulldiscounts/edit': typeof ProtectedMarketingFulldiscountsEditRoute
+  '/_protected/marketing/live/data': typeof ProtectedMarketingLiveDataRoute
+  '/_protected/marketing/live/edit': typeof ProtectedMarketingLiveEditRoute
+  '/_protected/marketing/live/goods': typeof ProtectedMarketingLiveGoodsRoute
+  '/_protected/marketing/piece/data': typeof ProtectedMarketingPieceDataRoute
+  '/_protected/marketing/piece/edit': typeof ProtectedMarketingPieceEditRoute
+  '/_protected/marketing/purchase/edit': typeof ProtectedMarketingPurchaseEditRoute
+  '/_protected/marketing/raffle/data': typeof ProtectedMarketingRaffleDataRoute
+  '/_protected/marketing/raffle/edit': typeof ProtectedMarketingRaffleEditRoute
+  '/_protected/marketing/reduction/data': typeof ProtectedMarketingReductionDataRoute
+  '/_protected/marketing/reduction/edit': typeof ProtectedMarketingReductionEditRoute
+  '/_protected/marketing/seckilling/data': typeof ProtectedMarketingSeckillingDataRoute
+  '/_protected/marketing/seckilling/edit': typeof ProtectedMarketingSeckillingEditRoute
+  '/_protected/marketing/teambuy/data': typeof ProtectedMarketingTeambuyDataRoute
+  '/_protected/marketing/teambuy/edit': typeof ProtectedMarketingTeambuyEditRoute
+  '/_protected/marketing/timeline/editing': typeof ProtectedMarketingTimelineEditingRoute
+  '/_protected/marketing/valuepack/data': typeof ProtectedMarketingValuepackDataRoute
+  '/_protected/marketing/valuepack/edit': typeof ProtectedMarketingValuepackEditRoute
   '/_protected/client/account/': typeof ProtectedClientAccountIndexRoute
   '/_protected/client/clientTags/': typeof ProtectedClientClientTagsIndexRoute
   '/_protected/commodity/brand/': typeof ProtectedCommodityBrandIndexRoute
   '/_protected/commodity/category/': typeof ProtectedCommodityCategoryIndexRoute
   '/_protected/commodity/categoryAdmin/': typeof ProtectedCommodityCategoryAdminIndexRoute
   '/_protected/commodity/merchandiseCon/': typeof ProtectedCommodityMerchandiseConIndexRoute
+  '/_protected/marketing/coupon/': typeof ProtectedMarketingCouponIndexRoute
+  '/_protected/marketing/fullMpayN/': typeof ProtectedMarketingFullMpayNIndexRoute
+  '/_protected/marketing/fulldiscounts/': typeof ProtectedMarketingFulldiscountsIndexRoute
+  '/_protected/marketing/live/': typeof ProtectedMarketingLiveIndexRoute
+  '/_protected/marketing/piece/': typeof ProtectedMarketingPieceIndexRoute
+  '/_protected/marketing/purchase/': typeof ProtectedMarketingPurchaseIndexRoute
+  '/_protected/marketing/raffle/': typeof ProtectedMarketingRaffleIndexRoute
+  '/_protected/marketing/reduction/': typeof ProtectedMarketingReductionIndexRoute
+  '/_protected/marketing/seckilling/': typeof ProtectedMarketingSeckillingIndexRoute
+  '/_protected/marketing/teambuy/': typeof ProtectedMarketingTeambuyIndexRoute
+  '/_protected/marketing/timeline/': typeof ProtectedMarketingTimelineIndexRoute
+  '/_protected/marketing/valuepack/': typeof ProtectedMarketingValuepackIndexRoute
+  '/_protected/marketing/drp/distrList/goodsList': typeof ProtectedMarketingDrpDistrListGoodsListRoute
   '/_protected/client/account/detail/': typeof ProtectedClientAccountDetailIndexRoute
   '/_protected/commodity/merchandiseCon/detail/': typeof ProtectedCommodityMerchandiseConDetailIndexRoute
+  '/_protected/marketing/drp/distrList/': typeof ProtectedMarketingDrpDistrListIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -492,14 +1361,57 @@ export interface FileRouteTypes {
     | '/commodity/categoryAdmin/goods'
     | '/commodity/categoryAdmin/info'
     | '/commodity/merchandiseCon/evaluate'
+    | '/marketing/coupon/data'
+    | '/marketing/coupon/edit'
+    | '/marketing/coupon/targeted-distribution'
+    | '/marketing/drp/customer'
+    | '/marketing/drp/data'
+    | '/marketing/drp/distrHistory'
+    | '/marketing/drp/rule'
+    | '/marketing/drp/userIndex'
+    | '/marketing/fullMpayN/data'
+    | '/marketing/fullMpayN/edit'
+    | '/marketing/fulldiscounts/data'
+    | '/marketing/fulldiscounts/edit'
+    | '/marketing/live/data'
+    | '/marketing/live/edit'
+    | '/marketing/live/goods'
+    | '/marketing/piece/data'
+    | '/marketing/piece/edit'
+    | '/marketing/purchase/edit'
+    | '/marketing/raffle/data'
+    | '/marketing/raffle/edit'
+    | '/marketing/reduction/data'
+    | '/marketing/reduction/edit'
+    | '/marketing/seckilling/data'
+    | '/marketing/seckilling/edit'
+    | '/marketing/teambuy/data'
+    | '/marketing/teambuy/edit'
+    | '/marketing/timeline/editing'
+    | '/marketing/valuepack/data'
+    | '/marketing/valuepack/edit'
     | '/client/account'
     | '/client/clientTags'
     | '/commodity/brand'
     | '/commodity/category'
     | '/commodity/categoryAdmin'
     | '/commodity/merchandiseCon'
+    | '/marketing/coupon'
+    | '/marketing/fullMpayN'
+    | '/marketing/fulldiscounts'
+    | '/marketing/live'
+    | '/marketing/piece'
+    | '/marketing/purchase'
+    | '/marketing/raffle'
+    | '/marketing/reduction'
+    | '/marketing/seckilling'
+    | '/marketing/teambuy'
+    | '/marketing/timeline'
+    | '/marketing/valuepack'
+    | '/marketing/drp/distrList/goodsList'
     | '/client/account/detail'
     | '/commodity/merchandiseCon/detail'
+    | '/marketing/drp/distrList'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
@@ -515,14 +1427,57 @@ export interface FileRouteTypes {
     | '/commodity/categoryAdmin/goods'
     | '/commodity/categoryAdmin/info'
     | '/commodity/merchandiseCon/evaluate'
+    | '/marketing/coupon/data'
+    | '/marketing/coupon/edit'
+    | '/marketing/coupon/targeted-distribution'
+    | '/marketing/drp/customer'
+    | '/marketing/drp/data'
+    | '/marketing/drp/distrHistory'
+    | '/marketing/drp/rule'
+    | '/marketing/drp/userIndex'
+    | '/marketing/fullMpayN/data'
+    | '/marketing/fullMpayN/edit'
+    | '/marketing/fulldiscounts/data'
+    | '/marketing/fulldiscounts/edit'
+    | '/marketing/live/data'
+    | '/marketing/live/edit'
+    | '/marketing/live/goods'
+    | '/marketing/piece/data'
+    | '/marketing/piece/edit'
+    | '/marketing/purchase/edit'
+    | '/marketing/raffle/data'
+    | '/marketing/raffle/edit'
+    | '/marketing/reduction/data'
+    | '/marketing/reduction/edit'
+    | '/marketing/seckilling/data'
+    | '/marketing/seckilling/edit'
+    | '/marketing/teambuy/data'
+    | '/marketing/teambuy/edit'
+    | '/marketing/timeline/editing'
+    | '/marketing/valuepack/data'
+    | '/marketing/valuepack/edit'
     | '/client/account'
     | '/client/clientTags'
     | '/commodity/brand'
     | '/commodity/category'
     | '/commodity/categoryAdmin'
     | '/commodity/merchandiseCon'
+    | '/marketing/coupon'
+    | '/marketing/fullMpayN'
+    | '/marketing/fulldiscounts'
+    | '/marketing/live'
+    | '/marketing/piece'
+    | '/marketing/purchase'
+    | '/marketing/raffle'
+    | '/marketing/reduction'
+    | '/marketing/seckilling'
+    | '/marketing/teambuy'
+    | '/marketing/timeline'
+    | '/marketing/valuepack'
+    | '/marketing/drp/distrList/goodsList'
     | '/client/account/detail'
     | '/commodity/merchandiseCon/detail'
+    | '/marketing/drp/distrList'
   id:
     | '__root__'
     | '/_protected'
@@ -539,14 +1494,57 @@ export interface FileRouteTypes {
     | '/_protected/commodity/categoryAdmin/goods'
     | '/_protected/commodity/categoryAdmin/info'
     | '/_protected/commodity/merchandiseCon/evaluate'
+    | '/_protected/marketing/coupon/data'
+    | '/_protected/marketing/coupon/edit'
+    | '/_protected/marketing/coupon/targeted-distribution'
+    | '/_protected/marketing/drp/customer'
+    | '/_protected/marketing/drp/data'
+    | '/_protected/marketing/drp/distrHistory'
+    | '/_protected/marketing/drp/rule'
+    | '/_protected/marketing/drp/userIndex'
+    | '/_protected/marketing/fullMpayN/data'
+    | '/_protected/marketing/fullMpayN/edit'
+    | '/_protected/marketing/fulldiscounts/data'
+    | '/_protected/marketing/fulldiscounts/edit'
+    | '/_protected/marketing/live/data'
+    | '/_protected/marketing/live/edit'
+    | '/_protected/marketing/live/goods'
+    | '/_protected/marketing/piece/data'
+    | '/_protected/marketing/piece/edit'
+    | '/_protected/marketing/purchase/edit'
+    | '/_protected/marketing/raffle/data'
+    | '/_protected/marketing/raffle/edit'
+    | '/_protected/marketing/reduction/data'
+    | '/_protected/marketing/reduction/edit'
+    | '/_protected/marketing/seckilling/data'
+    | '/_protected/marketing/seckilling/edit'
+    | '/_protected/marketing/teambuy/data'
+    | '/_protected/marketing/teambuy/edit'
+    | '/_protected/marketing/timeline/editing'
+    | '/_protected/marketing/valuepack/data'
+    | '/_protected/marketing/valuepack/edit'
     | '/_protected/client/account/'
     | '/_protected/client/clientTags/'
     | '/_protected/commodity/brand/'
     | '/_protected/commodity/category/'
     | '/_protected/commodity/categoryAdmin/'
     | '/_protected/commodity/merchandiseCon/'
+    | '/_protected/marketing/coupon/'
+    | '/_protected/marketing/fullMpayN/'
+    | '/_protected/marketing/fulldiscounts/'
+    | '/_protected/marketing/live/'
+    | '/_protected/marketing/piece/'
+    | '/_protected/marketing/purchase/'
+    | '/_protected/marketing/raffle/'
+    | '/_protected/marketing/reduction/'
+    | '/_protected/marketing/seckilling/'
+    | '/_protected/marketing/teambuy/'
+    | '/_protected/marketing/timeline/'
+    | '/_protected/marketing/valuepack/'
+    | '/_protected/marketing/drp/distrList/goodsList'
     | '/_protected/client/account/detail/'
     | '/_protected/commodity/merchandiseCon/detail/'
+    | '/_protected/marketing/drp/distrList/'
   fileRoutesById: FileRoutesById
 }
 
@@ -589,14 +1587,57 @@ export const routeTree = rootRoute
         "/_protected/commodity/categoryAdmin/goods",
         "/_protected/commodity/categoryAdmin/info",
         "/_protected/commodity/merchandiseCon/evaluate",
+        "/_protected/marketing/coupon/data",
+        "/_protected/marketing/coupon/edit",
+        "/_protected/marketing/coupon/targeted-distribution",
+        "/_protected/marketing/drp/customer",
+        "/_protected/marketing/drp/data",
+        "/_protected/marketing/drp/distrHistory",
+        "/_protected/marketing/drp/rule",
+        "/_protected/marketing/drp/userIndex",
+        "/_protected/marketing/fullMpayN/data",
+        "/_protected/marketing/fullMpayN/edit",
+        "/_protected/marketing/fulldiscounts/data",
+        "/_protected/marketing/fulldiscounts/edit",
+        "/_protected/marketing/live/data",
+        "/_protected/marketing/live/edit",
+        "/_protected/marketing/live/goods",
+        "/_protected/marketing/piece/data",
+        "/_protected/marketing/piece/edit",
+        "/_protected/marketing/purchase/edit",
+        "/_protected/marketing/raffle/data",
+        "/_protected/marketing/raffle/edit",
+        "/_protected/marketing/reduction/data",
+        "/_protected/marketing/reduction/edit",
+        "/_protected/marketing/seckilling/data",
+        "/_protected/marketing/seckilling/edit",
+        "/_protected/marketing/teambuy/data",
+        "/_protected/marketing/teambuy/edit",
+        "/_protected/marketing/timeline/editing",
+        "/_protected/marketing/valuepack/data",
+        "/_protected/marketing/valuepack/edit",
         "/_protected/client/account/",
         "/_protected/client/clientTags/",
         "/_protected/commodity/brand/",
         "/_protected/commodity/category/",
         "/_protected/commodity/categoryAdmin/",
         "/_protected/commodity/merchandiseCon/",
+        "/_protected/marketing/coupon/",
+        "/_protected/marketing/fullMpayN/",
+        "/_protected/marketing/fulldiscounts/",
+        "/_protected/marketing/live/",
+        "/_protected/marketing/piece/",
+        "/_protected/marketing/purchase/",
+        "/_protected/marketing/raffle/",
+        "/_protected/marketing/reduction/",
+        "/_protected/marketing/seckilling/",
+        "/_protected/marketing/teambuy/",
+        "/_protected/marketing/timeline/",
+        "/_protected/marketing/valuepack/",
+        "/_protected/marketing/drp/distrList/goodsList",
         "/_protected/client/account/detail/",
-        "/_protected/commodity/merchandiseCon/detail/"
+        "/_protected/commodity/merchandiseCon/detail/",
+        "/_protected/marketing/drp/distrList/"
       ]
     },
     "/login": {
@@ -650,6 +1691,122 @@ export const routeTree = rootRoute
       "filePath": "_protected/commodity/merchandiseCon/evaluate.tsx",
       "parent": "/_protected"
     },
+    "/_protected/marketing/coupon/data": {
+      "filePath": "_protected/marketing/coupon/data.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/coupon/edit": {
+      "filePath": "_protected/marketing/coupon/edit.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/coupon/targeted-distribution": {
+      "filePath": "_protected/marketing/coupon/targeted-distribution.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/drp/customer": {
+      "filePath": "_protected/marketing/drp/customer.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/drp/data": {
+      "filePath": "_protected/marketing/drp/data.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/drp/distrHistory": {
+      "filePath": "_protected/marketing/drp/distrHistory.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/drp/rule": {
+      "filePath": "_protected/marketing/drp/rule.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/drp/userIndex": {
+      "filePath": "_protected/marketing/drp/userIndex.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/fullMpayN/data": {
+      "filePath": "_protected/marketing/fullMpayN/data.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/fullMpayN/edit": {
+      "filePath": "_protected/marketing/fullMpayN/edit.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/fulldiscounts/data": {
+      "filePath": "_protected/marketing/fulldiscounts/data.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/fulldiscounts/edit": {
+      "filePath": "_protected/marketing/fulldiscounts/edit.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/live/data": {
+      "filePath": "_protected/marketing/live/data.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/live/edit": {
+      "filePath": "_protected/marketing/live/edit.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/live/goods": {
+      "filePath": "_protected/marketing/live/goods.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/piece/data": {
+      "filePath": "_protected/marketing/piece/data.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/piece/edit": {
+      "filePath": "_protected/marketing/piece/edit.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/purchase/edit": {
+      "filePath": "_protected/marketing/purchase/edit.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/raffle/data": {
+      "filePath": "_protected/marketing/raffle/data.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/raffle/edit": {
+      "filePath": "_protected/marketing/raffle/edit.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/reduction/data": {
+      "filePath": "_protected/marketing/reduction/data.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/reduction/edit": {
+      "filePath": "_protected/marketing/reduction/edit.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/seckilling/data": {
+      "filePath": "_protected/marketing/seckilling/data.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/seckilling/edit": {
+      "filePath": "_protected/marketing/seckilling/edit.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/teambuy/data": {
+      "filePath": "_protected/marketing/teambuy/data.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/teambuy/edit": {
+      "filePath": "_protected/marketing/teambuy/edit.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/timeline/editing": {
+      "filePath": "_protected/marketing/timeline/editing.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/valuepack/data": {
+      "filePath": "_protected/marketing/valuepack/data.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/valuepack/edit": {
+      "filePath": "_protected/marketing/valuepack/edit.tsx",
+      "parent": "/_protected"
+    },
     "/_protected/client/account/": {
       "filePath": "_protected/client/account/index.tsx",
       "parent": "/_protected"
@@ -674,12 +1831,68 @@ export const routeTree = rootRoute
       "filePath": "_protected/commodity/merchandiseCon/index.tsx",
       "parent": "/_protected"
     },
+    "/_protected/marketing/coupon/": {
+      "filePath": "_protected/marketing/coupon/index.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/fullMpayN/": {
+      "filePath": "_protected/marketing/fullMpayN/index.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/fulldiscounts/": {
+      "filePath": "_protected/marketing/fulldiscounts/index.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/live/": {
+      "filePath": "_protected/marketing/live/index.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/piece/": {
+      "filePath": "_protected/marketing/piece/index.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/purchase/": {
+      "filePath": "_protected/marketing/purchase/index.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/raffle/": {
+      "filePath": "_protected/marketing/raffle/index.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/reduction/": {
+      "filePath": "_protected/marketing/reduction/index.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/seckilling/": {
+      "filePath": "_protected/marketing/seckilling/index.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/teambuy/": {
+      "filePath": "_protected/marketing/teambuy/index.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/timeline/": {
+      "filePath": "_protected/marketing/timeline/index.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/valuepack/": {
+      "filePath": "_protected/marketing/valuepack/index.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/drp/distrList/goodsList": {
+      "filePath": "_protected/marketing/drp/distrList/goodsList.tsx",
+      "parent": "/_protected"
+    },
     "/_protected/client/account/detail/": {
       "filePath": "_protected/client/account/detail/index.tsx",
       "parent": "/_protected"
     },
     "/_protected/commodity/merchandiseCon/detail/": {
       "filePath": "_protected/commodity/merchandiseCon/detail/index.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/marketing/drp/distrList/": {
+      "filePath": "_protected/marketing/drp/distrList/index.tsx",
       "parent": "/_protected"
     }
   }

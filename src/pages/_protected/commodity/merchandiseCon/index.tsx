@@ -29,6 +29,7 @@ import {
 } from '@/api'
 import { MyImage } from '@/components/my-image'
 import { MyTable } from '@/components/my-table'
+import { Show } from '@/components/show'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
 import { paginationFields, useTempSearch } from '@/hooks'
@@ -305,40 +306,46 @@ function GoodsView() {
     {
       title: '操作',
       render: (_, item) => (
-        <div className='flex justify-center items-center'>
-          {item.is_hidelinks === 1 && (
+        <div className='actions'>
+          <Show when={item.is_hidelinks === 1}>
             <Button type='text' onClick={() => handleShare(item.goods_id!)}>
               推广
             </Button>
-          )}
+          </Show>
           <Dropdown
             trigger='click'
             droplist={
               <Menu>
-                {checkActionPermission('/commodity/merchandiseCon/edit') && (
+                <Show
+                  when={checkActionPermission('/commodity/merchandiseCon/edit')}
+                >
                   <Link
                     to='/commodity/merchandiseCon/detail'
                     search={{ type: 'edit', goods_id: item.goods_id! }}
                   >
                     <Menu.Item key='edit'>编辑</Menu.Item>
                   </Link>
-                )}
-                {checkActionPermission('/commodity/merchandiseCon/edit') && (
+                </Show>
+                <Show
+                  when={checkActionPermission('/commodity/merchandiseCon/edit')}
+                >
                   <Link
                     to='/commodity/merchandiseCon/detail'
                     search={{ type: 'copy', goods_id: item.goods_id! }}
                   >
                     <Menu.Item key='copy'>复制</Menu.Item>
                   </Link>
-                )}
-                {checkActionPermission('/commodity/merchandiseCon/del') && (
+                </Show>
+                <Show
+                  when={checkActionPermission('/commodity/merchandiseCon/del')}
+                >
                   <Menu.Item
                     key='delete'
                     onClick={() => handleDeleteGoods({ id: item.goods_id! })}
                   >
                     删除
                   </Menu.Item>
-                )}
+                </Show>
                 <Link
                   to='/commodity/merchandiseCon/evaluate'
                   search={{ goods_id: item.goods_id! }}
@@ -381,7 +388,7 @@ function GoodsView() {
               <Select.Option value={1}>上架</Select.Option>
               <Select.Option value={2}>下架</Select.Option>
             </Select>
-            {departmentId === 0 && (
+            <Show when={departmentId === 0}>
               <Select
                 value={tempSearch.department_id}
                 placeholder='请选择电商事业部'
@@ -396,7 +403,7 @@ function GoodsView() {
                   </Select.Option>
                 ))}
               </Select>
-            )}
+            </Show>
             <Select
               value={tempSearch.brand_id}
               placeholder='请选择商品品牌'
@@ -570,7 +577,7 @@ function GoodsView() {
                   />
                 </Dropdown>
               </Button.Group>
-              {departmentId !== 0 && (
+              <Show when={departmentId !== 0}>
                 <Button
                   type='primary'
                   onClick={handleAdd}
@@ -578,7 +585,7 @@ function GoodsView() {
                 >
                   新增
                 </Button>
-              )}
+              </Show>
             </div>
           </div>
         </div>

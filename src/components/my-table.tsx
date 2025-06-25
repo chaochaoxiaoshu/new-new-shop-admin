@@ -1,7 +1,8 @@
 import { useMemo } from 'react'
 
-import { Table, TableProps } from '@arco-design/web-react'
+import { PaginationProps, Table, TableProps } from '@arco-design/web-react'
 
+import { Show } from './show'
 import { useTableSizeContext } from './table-layout/context'
 
 /**
@@ -29,9 +30,9 @@ export function MyTable(props: TableProps) {
       pagination={pagination}
       renderPagination={(paginationNode) => (
         <div className='flex justify-between items-center mt-4'>
-          {typeof props.pagination === 'object' && (
-            <span>共 {props.pagination.total} 条</span>
-          )}
+          <Show when={typeof props.pagination === 'object'}>
+            <span>共 {(props.pagination as PaginationProps).total} 条</span>
+          </Show>
           {paginationNode}
         </div>
       )}
