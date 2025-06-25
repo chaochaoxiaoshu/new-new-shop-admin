@@ -89,7 +89,7 @@
 .arco-picker:hover,
 .arco-input-inner-wrapper:hover,
 .arco-select .arco-select-view:hover {
-  @apply bg-transparent border-accent;
+  @apply bg-white border-accent;
 }
 
 .arco-input:focus,
@@ -97,7 +97,7 @@
 .arco-input-inner-wrapper:focus,
 .arco-select .arco-select-view:focus,
 .arco-picker:focus {
-  @apply border-[var(--accent)];
+  @apply border-accent;
 }
 
 /* 修复 FormItemLabel 的布局 (tailwind preflight) */

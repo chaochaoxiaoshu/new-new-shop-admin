@@ -24,7 +24,7 @@ const LIST_KEY = 'free-gifts'
 export const Route = createFileRoute('/_protected/marketing/fulldiscounts/')({
   validateSearch: type({
     'name?': 'string',
-    'operate?': '"no_start" | "in_progress" | "completed"',
+    'state?': '"no_start" | "in_progress" | "completed"',
     page_index: ['number', '=', 1],
     page_size: ['number', '=', 20]
   }),
@@ -216,10 +216,10 @@ function FreeGiftsView() {
             onChange={(value) => updateSearchField('name', value)}
           />
           <Select
-            value={tempSearch.operate}
+            value={tempSearch.state}
             placeholder='请选择状态'
             style={{ width: '264px' }}
-            onChange={(value) => updateSearchField('operate', value as string)}
+            onChange={(value) => updateSearchField('state', value as string)}
           >
             <Select.Option value={FreeGiftsStatus.未开始}>未开始</Select.Option>
             <Select.Option value={FreeGiftsStatus.进行中}>进行中</Select.Option>

@@ -1,10 +1,8 @@
 import { type } from 'arktype'
-import dayjs from 'dayjs'
 import { FileText, RotateCcw, Search } from 'lucide-react'
 
 import {
   Button,
-  DatePicker,
   Descriptions,
   Form,
   Input,
@@ -29,6 +27,7 @@ import {
   replyComment,
   toggleCommentVisibility
 } from '@/api'
+import { MyDatePicker } from '@/components/my-date-picker'
 import { MyImage } from '@/components/my-image'
 import { MyTable } from '@/components/my-table'
 import { Show } from '@/components/show'
@@ -268,19 +267,12 @@ function CommentsView() {
             <Select.Option value={1}>显示</Select.Option>
             <Select.Option value={2}>隐藏</Select.Option>
           </Select>
-          <DatePicker.RangePicker
-            value={
-              tempSearch.start_time && tempSearch.end_time
-                ? [
-                    dayjs.unix(tempSearch.start_time),
-                    dayjs.unix(tempSearch.end_time)
-                  ]
-                : undefined
-            }
+          <MyDatePicker.RangePicker
+            value={[tempSearch.start_time, tempSearch.end_time]}
             style={{ width: '264px' }}
             onChange={(value) => {
-              updateSearchField('start_time', dayjs(value[0]).unix())
-              updateSearchField('end_time', dayjs(value[1]).unix())
+              updateSearchField('start_time', value?.[0])
+              updateSearchField('end_time', value?.[1])
             }}
             onClear={() => {
               updateSearchField('start_time', undefined)

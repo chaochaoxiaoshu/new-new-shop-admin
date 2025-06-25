@@ -1,19 +1,12 @@
 import { type } from 'arktype'
-import dayjs from 'dayjs'
 import { Ellipsis, Plus, RotateCcw, Search } from 'lucide-react'
 
-import {
-  Button,
-  DatePicker,
-  Dropdown,
-  Input,
-  Menu,
-  Select
-} from '@arco-design/web-react'
+import { Button, Dropdown, Input, Menu, Select } from '@arco-design/web-react'
 import { keepPreviousData, queryOptions, useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 
 import { GetLuckyDrawsRes, LuckyDrawStatus, getLuckyDraws } from '@/api'
+import { MyDatePicker } from '@/components/my-date-picker'
 import { MyTable } from '@/components/my-table'
 import { Show } from '@/components/show'
 import { TableLayout } from '@/components/table-layout'
@@ -98,15 +91,13 @@ function LuckyDrawsView() {
     },
     {
       title: '抽奖人数',
-      dataIndex: 'use_num',
-      slotName: 'use_num',
+      render: (_, item) => item.use_num,
       width: TableCellWidth.count,
       align: 'center'
     },
     {
       title: '中奖人数',
-      dataIndex: 'use_num',
-      slotName: 'use_nums',
+      render: (_, item) => item.use_num,
       width: TableCellWidth.count,
       align: 'center'
     },
@@ -214,27 +205,15 @@ function LuckyDrawsView() {
             <Select.Option value={LuckyDrawStatus.进行中}>进行中</Select.Option>
             <Select.Option value={LuckyDrawStatus.已结束}>已结束</Select.Option>
           </Select>
-          <DatePicker.RangePicker
-            value={
-              tempSearch.stime && tempSearch.etime
-                ? [dayjs.unix(tempSearch.stime), dayjs.unix(tempSearch.etime)]
-                : undefined
-            }
+          <MyDatePicker.RangePicker
+            value={[tempSearch.stime, tempSearch.etime]}
             style={{ width: '264px' }}
             onChange={(val) => {
-              if (!(val as string[] | undefined)) {
-                setTempSearch((prev) => ({
-                  ...prev,
-                  stime: undefined,
-                  etime: undefined
-                }))
-              } else {
-                setTempSearch((prev) => ({
-                  ...prev,
-                  stime: dayjs(val[0]).unix(),
-                  etime: dayjs(val[1]).unix()
-                }))
-              }
+              setTempSearch((prev) => ({
+                ...prev,
+                stime: val?.[0],
+                etime: val?.[1]
+              }))
             }}
           />
           <Button

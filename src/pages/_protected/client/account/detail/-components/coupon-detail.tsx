@@ -1,18 +1,12 @@
-import dayjs from 'dayjs'
 import { RotateCcw, Search } from 'lucide-react'
 import { useState } from 'react'
 
-import {
-  Button,
-  DatePicker,
-  Input,
-  Select,
-  Table
-} from '@arco-design/web-react'
-import { useQuery } from '@tanstack/react-query'
+import { Button, Input, Select, Table } from '@arco-design/web-react'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useSearch } from '@tanstack/react-router'
 
 import { GetUserCouponsRes, UserCouponIsUse, getUserCoupons } from '@/api'
+import { MyDatePicker } from '@/components/my-date-picker'
 import { getUserCouponIsUseText } from '@/helpers/marketing'
 import { paginationFields, useTempSearch } from '@/hooks'
 import { TableCellWidth, defineTableColumns, formatDateTime } from '@/lib'
@@ -41,13 +35,14 @@ export function CouponDetail() {
       selectDefaultFields: paginationFields
     })
 
-  const { data, isPending } = useQuery({
+  const { data, isFetching } = useQuery({
     queryKey: ['user-coupons', searchParams, search.id],
     queryFn: () =>
       getUserCoupons({
         ...searchParams,
         user_id: search.id
-      })
+      }),
+    placeholderData: keepPreviousData
   })
 
   const { columns, totalWidth } = defineTableColumns<GetUserCouponsRes>([
@@ -123,58 +118,31 @@ export function CouponDetail() {
             停止使用
           </Select.Option>
         </Select>
-        <DatePicker.RangePicker
-          value={
-            tempSearch.collection_start_time && tempSearch.collection_end_time
-              ? [
-                  dayjs.unix(tempSearch.collection_start_time),
-                  dayjs.unix(tempSearch.collection_end_time)
-                ]
-              : undefined
-          }
+        <MyDatePicker.RangePicker
+          value={[
+            tempSearch.collection_start_time,
+            tempSearch.collection_end_time
+          ]}
           placeholder={['领取开始时间', '领取结束时间']}
           style={{ width: '264px' }}
           onChange={(val) => {
-            if (!(val as string[] | undefined)) {
-              setTempSearch((prev) => ({
-                ...prev,
-                collection_start_time: undefined,
-                collection_end_time: undefined
-              }))
-            } else {
-              setTempSearch((prev) => ({
-                ...prev,
-                collection_start_time: dayjs(val[0]).unix(),
-                collection_end_time: dayjs(val[1]).unix()
-              }))
-            }
+            setTempSearch((prev) => ({
+              ...prev,
+              collection_start_time: val?.[0],
+              collection_end_time: val?.[1]
+            }))
           }}
         />
-        <DatePicker.RangePicker
-          value={
-            tempSearch.use_start_time && tempSearch.use_end_time
-              ? [
-                  dayjs.unix(tempSearch.use_start_time),
-                  dayjs.unix(tempSearch.use_end_time)
-                ]
-              : undefined
-          }
+        <MyDatePicker.RangePicker
+          value={[tempSearch.use_start_time, tempSearch.use_end_time]}
           placeholder={['使用开始时间', '使用结束时间']}
           style={{ width: '264px' }}
           onChange={(val) => {
-            if (!(val as string[] | undefined)) {
-              setTempSearch((prev) => ({
-                ...prev,
-                use_start_time: undefined,
-                use_end_time: undefined
-              }))
-            } else {
-              setTempSearch((prev) => ({
-                ...prev,
-                use_start_time: dayjs(val[0]).unix(),
-                use_end_time: dayjs(val[1]).unix()
-              }))
-            }
+            setTempSearch((prev) => ({
+              ...prev,
+              use_start_time: val?.[0],
+              use_end_time: val?.[1]
+            }))
           }}
         />
         <Button
@@ -196,7 +164,7 @@ export function CouponDetail() {
         <Table
           rowKey='id'
           data={data?.items ?? []}
-          loading={isPending}
+          loading={isFetching}
           columns={columns}
           borderCell
           scroll={{ x: totalWidth + 240 }}

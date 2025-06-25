@@ -1,15 +1,7 @@
 import { type } from 'arktype'
-import dayjs from 'dayjs'
 import { Ellipsis, Plus, RotateCcw, Search } from 'lucide-react'
 
-import {
-  Button,
-  DatePicker,
-  Dropdown,
-  Input,
-  Menu,
-  Select
-} from '@arco-design/web-react'
+import { Button, Dropdown, Input, Menu, Select } from '@arco-design/web-react'
 import { keepPreviousData, queryOptions, useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 
@@ -18,6 +10,7 @@ import {
   MultiDiscountStatus,
   getMultiDiscounts
 } from '@/api'
+import { MyDatePicker } from '@/components/my-date-picker'
 import { MyTable } from '@/components/my-table'
 import { Show } from '@/components/show'
 import { TableLayout } from '@/components/table-layout'
@@ -36,7 +29,7 @@ const LIST_KEY = 'multi-discounts'
 export const Route = createFileRoute('/_protected/marketing/piece/')({
   validateSearch: type({
     'name?': 'string',
-    'operate?': '1 | 2 | 3 | 5',
+    'operate?': '0 | 1 | 2 | 3 | 5',
     'stime?': 'number',
     'etime?': 'number',
     page_index: ['number', '=', 1],
@@ -238,27 +231,15 @@ function MultiDiscountsView() {
               暂停中
             </Select.Option>
           </Select>
-          <DatePicker.RangePicker
-            value={
-              tempSearch.stime && tempSearch.etime
-                ? [dayjs.unix(tempSearch.stime), dayjs.unix(tempSearch.etime)]
-                : undefined
-            }
+          <MyDatePicker.RangePicker
+            value={[tempSearch.stime, tempSearch.etime]}
             style={{ width: '264px' }}
             onChange={(val) => {
-              if (!(val as string[] | undefined)) {
-                setTempSearch((prev) => ({
-                  ...prev,
-                  stime: undefined,
-                  etime: undefined
-                }))
-              } else {
-                setTempSearch((prev) => ({
-                  ...prev,
-                  stime: dayjs(val[0]).unix(),
-                  etime: dayjs(val[1]).unix()
-                }))
-              }
+              setTempSearch((prev) => ({
+                ...prev,
+                stime: val?.[0],
+                etime: val?.[1]
+              }))
             }}
           />
           <Button

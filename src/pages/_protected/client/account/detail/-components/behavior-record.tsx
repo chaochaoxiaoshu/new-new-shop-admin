@@ -1,14 +1,7 @@
-import dayjs from 'dayjs'
 import { RotateCcw, Search } from 'lucide-react'
 import { useState } from 'react'
 
-import {
-  Button,
-  DatePicker,
-  Input,
-  Select,
-  Table
-} from '@arco-design/web-react'
+import { Button, Input, Select, Table } from '@arco-design/web-react'
 import { useQuery } from '@tanstack/react-query'
 import { useSearch } from '@tanstack/react-router'
 
@@ -21,6 +14,7 @@ import {
   getUserFavorites,
   getUserSharingRecords
 } from '@/api'
+import { MyDatePicker } from '@/components/my-date-picker'
 import { MyImage } from '@/components/my-image'
 import { paginationFields, useTempSearch } from '@/hooks'
 import { TableCellWidth, defineTableColumns, formatDateTime } from '@/lib'
@@ -173,30 +167,15 @@ function Browsing() {
           suffix={<Search className='inline size-4' />}
           onChange={(val) => updateSearchField('goods_name', val)}
         />
-        <DatePicker.RangePicker
-          value={
-            tempSearch.start_time && tempSearch.end_time
-              ? [
-                  dayjs.unix(tempSearch.start_time),
-                  dayjs.unix(tempSearch.end_time)
-                ]
-              : undefined
-          }
+        <MyDatePicker.RangePicker
+          value={[tempSearch.start_time, tempSearch.end_time]}
           style={{ width: '264px' }}
           onChange={(val) => {
-            if (!(val as string[] | undefined)) {
-              setTempSearch((prev) => ({
-                ...prev,
-                start_time: undefined,
-                end_time: undefined
-              }))
-            } else {
-              setTempSearch((prev) => ({
-                ...prev,
-                start_time: dayjs(val[0]).unix(),
-                end_time: dayjs(val[1]).unix()
-              }))
-            }
+            setTempSearch((prev) => ({
+              ...prev,
+              start_time: val?.[0],
+              end_time: val?.[1]
+            }))
           }}
         />
         <Button
@@ -328,30 +307,15 @@ function AddToCart() {
           <Select.Option value={1}>加入购物车</Select.Option>
           <Select.Option value={2}>移除购物车</Select.Option>
         </Select>
-        <DatePicker.RangePicker
-          value={
-            tempSearch.start_time && tempSearch.end_time
-              ? [
-                  dayjs.unix(tempSearch.start_time),
-                  dayjs.unix(tempSearch.end_time)
-                ]
-              : undefined
-          }
+        <MyDatePicker.RangePicker
+          value={[tempSearch.start_time, tempSearch.end_time]}
           style={{ width: '264px' }}
           onChange={(val) => {
-            if (!(val as string[] | undefined)) {
-              setTempSearch((prev) => ({
-                ...prev,
-                start_time: undefined,
-                end_time: undefined
-              }))
-            } else {
-              setTempSearch((prev) => ({
-                ...prev,
-                start_time: dayjs(val[0]).unix(),
-                end_time: dayjs(val[1]).unix()
-              }))
-            }
+            setTempSearch((prev) => ({
+              ...prev,
+              start_time: val?.[0],
+              end_time: val?.[1]
+            }))
           }}
         />
         <Button
@@ -478,30 +442,15 @@ function Favorites() {
           <Select.Option value={1}>加入</Select.Option>
           <Select.Option value={2}>移除</Select.Option>
         </Select>
-        <DatePicker.RangePicker
-          value={
-            tempSearch.start_time && tempSearch.end_time
-              ? [
-                  dayjs.unix(tempSearch.start_time),
-                  dayjs.unix(tempSearch.end_time)
-                ]
-              : undefined
-          }
+        <MyDatePicker.RangePicker
+          value={[tempSearch.start_time, tempSearch.end_time]}
           style={{ width: '264px' }}
           onChange={(val) => {
-            if (!(val as string[] | undefined)) {
-              setTempSearch((prev) => ({
-                ...prev,
-                start_time: undefined,
-                end_time: undefined
-              }))
-            } else {
-              setTempSearch((prev) => ({
-                ...prev,
-                start_time: dayjs(val[0]).unix(),
-                end_time: dayjs(val[1]).unix()
-              }))
-            }
+            setTempSearch((prev) => ({
+              ...prev,
+              start_time: val?.[0],
+              end_time: val?.[1]
+            }))
           }}
         />
         <Button
@@ -612,30 +561,15 @@ function Sharing() {
           suffix={<Search className='inline size-4' />}
           onChange={(val) => updateSearchField('goods_name', val)}
         />
-        <DatePicker.RangePicker
-          value={
-            tempSearch.start_time && tempSearch.end_time
-              ? [
-                  dayjs.unix(tempSearch.start_time),
-                  dayjs.unix(tempSearch.end_time)
-                ]
-              : undefined
-          }
+        <MyDatePicker.RangePicker
+          value={[tempSearch.start_time, tempSearch.end_time]}
           style={{ width: '264px' }}
           onChange={(val) => {
-            if (!(val as string[] | undefined)) {
-              setTempSearch((prev) => ({
-                ...prev,
-                start_time: undefined,
-                end_time: undefined
-              }))
-            } else {
-              setTempSearch((prev) => ({
-                ...prev,
-                start_time: dayjs(val[0]).unix(),
-                end_time: dayjs(val[1]).unix()
-              }))
-            }
+            setTempSearch((prev) => ({
+              ...prev,
+              start_time: val?.[0],
+              end_time: val?.[1]
+            }))
           }}
         />
         <Button

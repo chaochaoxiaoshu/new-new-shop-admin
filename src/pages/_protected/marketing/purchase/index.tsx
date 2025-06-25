@@ -28,7 +28,7 @@ const LIST_KEY = 'addon-purchase'
 export const Route = createFileRoute('/_protected/marketing/purchase/')({
   validateSearch: type({
     'name?': 'string',
-    'operate?': '5 | 3 | 4 | 2',
+    'status?': '0 | 1 | 2 | 3 | 4',
     page_index: ['number', '=', 1],
     page_size: ['number', '=', 20]
   }),
@@ -208,10 +208,10 @@ function AddonPurchaseView() {
             onChange={(value) => updateSearchField('name', value)}
           />
           <Select
-            value={tempSearch.operate}
+            value={tempSearch.status}
             placeholder='请选择状态'
             style={{ width: '264px' }}
-            onChange={(value) => updateSearchField('operate', value as number)}
+            onChange={(value) => updateSearchField('status', value as number)}
           >
             <Select.Option value={0}>全部</Select.Option>
             <Select.Option value={AddonPurchaseStatus.未开始}>

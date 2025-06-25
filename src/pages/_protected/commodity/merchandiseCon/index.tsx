@@ -487,7 +487,7 @@ function GoodsView() {
               trigger='click'
               triggerElement={
                 <div className='flex items-center px-4 cursor-pointer mr-auto'>
-                  <span className='text-muted-foreground'>
+                  <span className='text-foreground'>
                     {
                       { '': '全部商品', 1: '上架商品', 2: '下架商品' }[
                         search.marketable ?? ''

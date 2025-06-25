@@ -83,14 +83,12 @@ function AuthView() {
   const [debouncedPassword] = useDebounce(password, 500)
 
   const { data: departmentInfo } = useQuery({
-    queryKey: [
-      'auth-departmentList',
-      debouncedUsername,
-      debouncedPassword,
-      username,
-      password
-    ],
-    queryFn: () => getDepartmentsForAccount({ username, password }),
+    queryKey: ['auth-departmentList', debouncedUsername, debouncedPassword],
+    queryFn: () =>
+      getDepartmentsForAccount({
+        username: debouncedUsername,
+        password: debouncedPassword
+      }),
     select: (data) =>
       data.departments?.map((d) => ({
         label: d.name,
@@ -199,9 +197,9 @@ function AuthView() {
       }
       setTempToken(firstAuthRes.access_token)
       setPageState('sso-in-browser-choose-department')
-      queryClient.setQueryData(
-        ['auth-departmentList'],
-        departmentsRes.departments
+      queryClient.setQueriesData(
+        { queryKey: ['auth-departmentList'] },
+        departmentsRes
       )
     } catch {
       setPageState(null)

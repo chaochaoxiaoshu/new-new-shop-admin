@@ -1,19 +1,12 @@
 import { type } from 'arktype'
-import dayjs from 'dayjs'
 import { Ellipsis, Plus, RotateCcw, Search } from 'lucide-react'
 
-import {
-  Button,
-  DatePicker,
-  Dropdown,
-  Input,
-  Menu,
-  Select
-} from '@arco-design/web-react'
+import { Button, Dropdown, Input, Menu, Select } from '@arco-design/web-react'
 import { keepPreviousData, queryOptions, useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 
 import { GetGroupBuysRes, GroupBuyStatus, getGroupBuys } from '@/api'
+import { MyDatePicker } from '@/components/my-date-picker'
 import { MyTable } from '@/components/my-table'
 import { Show } from '@/components/show'
 import { TableLayout } from '@/components/table-layout'
@@ -219,30 +212,15 @@ function GroupBuyView() {
             <Select.Option value={2}>进行中</Select.Option>
             <Select.Option value={3}>已结束</Select.Option>
           </Select>
-          <DatePicker.RangePicker
-            value={
-              tempSearch.start_time && tempSearch.end_time
-                ? [
-                    dayjs.unix(tempSearch.start_time),
-                    dayjs.unix(tempSearch.end_time)
-                  ]
-                : undefined
-            }
+          <MyDatePicker.RangePicker
+            value={[tempSearch.start_time, tempSearch.end_time]}
             style={{ width: '264px' }}
             onChange={(val) => {
-              if (!(val as string[] | undefined)) {
-                setTempSearch((prev) => ({
-                  ...prev,
-                  start_time: undefined,
-                  end_time: undefined
-                }))
-              } else {
-                setTempSearch((prev) => ({
-                  ...prev,
-                  start_time: dayjs(val[0]).unix(),
-                  end_time: dayjs(val[1]).unix()
-                }))
-              }
+              setTempSearch((prev) => ({
+                ...prev,
+                start_time: val?.[0],
+                end_time: val?.[1]
+              }))
             }}
           />
           <Button

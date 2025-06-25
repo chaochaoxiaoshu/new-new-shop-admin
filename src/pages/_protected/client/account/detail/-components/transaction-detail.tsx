@@ -1,14 +1,7 @@
-import dayjs from 'dayjs'
 import { FileText, RotateCcw, Search, Smartphone } from 'lucide-react'
 import { useState } from 'react'
 
-import {
-  Button,
-  DatePicker,
-  Input,
-  Select,
-  Table
-} from '@arco-design/web-react'
+import { Button, Input, Select, Table } from '@arco-design/web-react'
 import { useQuery } from '@tanstack/react-query'
 import { useSearch } from '@tanstack/react-router'
 
@@ -20,6 +13,7 @@ import {
   getAfterSales
 } from '@/api/orders/get-after-sales'
 import { GoodsInfo } from '@/components/goods-info'
+import { MyDatePicker } from '@/components/my-date-picker'
 import {
   getAfterSalesStatusText,
   getAfterSalesTypeText,
@@ -221,24 +215,12 @@ function Orders() {
           suffix={<FileText className='inline size-4' />}
           onChange={(val) => updateSearchField('order_ids', val)}
         />
-        <DatePicker.RangePicker
-          value={
-            tempSearch.start_time && tempSearch.end_time
-              ? [
-                  dayjs.unix(tempSearch.start_time),
-                  dayjs.unix(tempSearch.end_time)
-                ]
-              : undefined
-          }
+        <MyDatePicker.RangePicker
+          value={[tempSearch.start_time, tempSearch.end_time]}
           style={{ width: '264px' }}
           onChange={(val) => {
-            if (!(val as string[] | undefined)) {
-              updateSearchField('start_time', undefined)
-              updateSearchField('end_time', undefined)
-            } else {
-              updateSearchField('start_time', dayjs(val[0]).unix())
-              updateSearchField('end_time', dayjs(val[1]).unix())
-            }
+            updateSearchField('start_time', val?.[0])
+            updateSearchField('end_time', val?.[1])
           }}
         />
         <Input
