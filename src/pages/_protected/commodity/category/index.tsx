@@ -1,6 +1,6 @@
 import { type } from 'arktype'
 import { Plus, RotateCcw, Search } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 
 import {
   Button,
@@ -33,7 +33,7 @@ import {
 import { MyTable } from '@/components/my-table'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
-import { useMyModal } from '@/hooks'
+import { useMyModal, useTempSearch } from '@/hooks'
 import { TableCellWidth, defineTableColumns, queryClient } from '@/lib'
 import { useUserStore } from '@/stores'
 
@@ -104,29 +104,14 @@ function GoodsCategoryView() {
     (store) => store.checkActionPermission
   )
 
-  /* ------------------------------ Search START ------------------------------ */
-  const [tempSearch, setTempSearch] = useState(search)
-
-  const handleUpdateSearchParam = <K extends keyof typeof search>(
-    key: K,
-    value: (typeof search)[K]
-  ) => {
-    setTempSearch((prev) => ({ ...prev, [key]: value }))
-  }
-
-  const handleSearch = () => {
-    navigate({ search: tempSearch })
-  }
-
-  const handleReset = () => {
-    const initial = {
+  const { tempSearch, updateSearchField, commit, reset } = useTempSearch({
+    search,
+    updateFn: (search) => navigate({ search }),
+    selectDefaultFields: (search) => ({
       page_index: search.page_index,
       page_size: search.page_size
-    }
-    navigate({ search: initial })
-    setTempSearch(initial)
-  }
-  /* ------------------------------- Search END ------------------------------- */
+    })
+  })
 
   const { data: departments } = useQuery(context.departmentsQueryOptions)
   const { data: goodsCategoriesTree } = useQuery(
@@ -273,18 +258,16 @@ function GoodsCategoryView() {
             value={tempSearch.name}
             placeholder='请输入分类名称'
             style={{ width: '264px' }}
-            allowClear
             suffix={<Search className='inline size-4' />}
-            onChange={(value) => handleUpdateSearchParam('name', value)}
+            onChange={(value) => updateSearchField('name', value)}
           />
           {departmentId === 0 && (
             <Select
               value={tempSearch.department}
               placeholder='请选择电商事业部'
               style={{ width: '264px' }}
-              allowClear
               onChange={(value) =>
-                handleUpdateSearchParam('department', value as number)
+                updateSearchField('department', value as number)
               }
             >
               {departments?.items.map((item) => (
@@ -297,14 +280,14 @@ function GoodsCategoryView() {
           <Button
             type='primary'
             icon={<Search className='inline size-4' />}
-            onClick={handleSearch}
+            onClick={commit}
           >
             查询
           </Button>
           <Button
             type='outline'
             icon={<RotateCcw className='inline size-4' />}
-            onClick={handleReset}
+            onClick={reset}
           >
             重置
           </Button>
@@ -438,12 +421,7 @@ export function EditForm(props: EditFormProps) {
         label='分类名称'
         rules={[{ required: true, message: '请输入分类名称' }]}
       >
-        <Input
-          placeholder='请输入分类名称'
-          maxLength={20}
-          showWordLimit
-          allowClear
-        />
+        <Input placeholder='请输入分类名称' maxLength={20} showWordLimit />
       </Form.Item>
       <Form.Item
         field='sort'

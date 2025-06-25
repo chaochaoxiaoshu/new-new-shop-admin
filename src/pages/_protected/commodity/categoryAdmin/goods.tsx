@@ -1,6 +1,5 @@
 import { type } from 'arktype'
 import { RotateCcw, Search } from 'lucide-react'
-import { useState } from 'react'
 
 import { Button, Input } from '@arco-design/web-react'
 import { keepPreviousData, queryOptions, useQuery } from '@tanstack/react-query'
@@ -11,6 +10,7 @@ import { MyImage } from '@/components/my-image'
 import { MyTable } from '@/components/my-table'
 import { TableLayout } from '@/components/table-layout'
 import { getHead } from '@/helpers'
+import { useTempSearch } from '@/hooks'
 import { TableCellWidth, defineTableColumns, queryClient } from '@/lib'
 import { useUserStore } from '@/stores'
 
@@ -46,24 +46,18 @@ export const Route = createFileRoute(
 
 function AdminCategoriesGoodsView() {
   const context = Route.useRouteContext()
-  const navigate = Route.useNavigate()
   const search = Route.useSearch()
+  const navigate = Route.useNavigate()
 
-  const [tempSearch, setTempSearch] = useState(search)
-
-  const handleSearch = () => {
-    navigate({ search: tempSearch })
-  }
-
-  const handleReset = () => {
-    const initial = {
+  const { tempSearch, setTempSearch, commit, reset } = useTempSearch({
+    search,
+    updateFn: (search) => navigate({ search }),
+    selectDefaultFields: (search) => ({
       goods_cat_id: search.goods_cat_id,
       page_index: search.page_index,
       page_size: search.page_size
-    }
-    navigate({ search: initial })
-    setTempSearch(initial)
-  }
+    })
+  })
 
   const { data, isFetching } = useQuery(
     context.adminCategoriesGoodsQueryOptions
@@ -123,7 +117,6 @@ function AdminCategoriesGoodsView() {
             value={tempSearch.name}
             placeholder='请输入商品名称'
             style={{ width: '264px' }}
-            allowClear
             suffix={<Search className='inline size-4' />}
             onChange={(value) =>
               setTempSearch((prev) => ({ ...prev, name: value }))
@@ -132,14 +125,14 @@ function AdminCategoriesGoodsView() {
           <Button
             type='primary'
             icon={<Search className='inline size-4' />}
-            onClick={handleSearch}
+            onClick={commit}
           >
             查询
           </Button>
           <Button
             type='outline'
             icon={<RotateCcw className='inline size-4' />}
-            onClick={handleReset}
+            onClick={reset}
           >
             重置
           </Button>

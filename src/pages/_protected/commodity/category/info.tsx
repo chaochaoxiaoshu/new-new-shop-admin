@@ -216,7 +216,6 @@ function GoodsSecondaryCategoriesView() {
             value={tempSearch.name}
             placeholder='请输入分类名称'
             style={{ width: '264px' }}
-            allowClear
             suffix={<Search className='inline size-4' />}
             onChange={(value) => handleUpdateSearchParam('name', value)}
           />

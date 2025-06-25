@@ -188,7 +188,6 @@ function Browsing() {
           value={tempSearchParams.goods_name}
           placeholder='请输入商品名称'
           style={{ width: '264px' }}
-          allowClear
           suffix={<Search className='inline size-4' />}
           onChange={(val) => handleUpdateSearchParam('goods_name', val)}
         />
@@ -361,7 +360,6 @@ function AddToCart() {
           value={tempSearchParams.formtype}
           placeholder='请选择状态'
           style={{ width: '264px' }}
-          allowClear
           onChange={(val) => handleUpdateSearchParam('formtype', val)}
         >
           <Select.Option value={1}>加入购物车</Select.Option>
@@ -524,7 +522,6 @@ function Favorites() {
           value={tempSearchParams.goods_name}
           placeholder='请输入商品名称'
           style={{ width: '264px' }}
-          allowClear
           suffix={<Search className='inline size-4' />}
           onChange={(val) => handleUpdateSearchParam('goods_name', val)}
         />
@@ -532,7 +529,6 @@ function Favorites() {
           value={tempSearchParams.type}
           placeholder='请选择状态'
           style={{ width: '264px' }}
-          allowClear
           onChange={(val) => handleUpdateSearchParam('type', val)}
         >
           <Select.Option value={1}>加入</Select.Option>
@@ -688,7 +684,6 @@ function Sharing() {
           value={tempSearchParams.goods_name}
           placeholder='请输入商品名称'
           style={{ width: '264px' }}
-          allowClear
           suffix={<Search className='inline size-4' />}
           onChange={(val) => handleUpdateSearchParam('goods_name', val)}
         />

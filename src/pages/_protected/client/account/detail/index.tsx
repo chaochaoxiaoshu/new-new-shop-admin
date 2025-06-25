@@ -420,7 +420,6 @@ function ChangeBindDistributorForm({
                 <Input
                   value={searchText}
                   placeholder='请输入分销员手机号'
-                  allowClear
                   suffix={<Search className='inline size-4' />}
                   onChange={(val) => setSearchText(val)}
                 />

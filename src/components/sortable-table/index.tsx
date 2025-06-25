@@ -14,19 +14,18 @@ import {
 import {
   SortableContext,
   arrayMove,
-  rectSortingStrategy,
   sortableKeyboardCoordinates,
-  useSortable
+  useSortable,
+  verticalListSortingStrategy
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 
 import { DndListenersContext } from './context'
 
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
 export function SortableTable<T extends Record<string, unknown>>(
-  props: TableProps & { onSort?: (data: T[]) => void }
+  props: TableProps<T> & { onSort?: (data: T[]) => void }
 ) {
-  const data = props.data as T[] | undefined
+  const data = props.data
   const rowKey = props.rowKey
 
   const sensors = useSensors(
@@ -63,14 +62,16 @@ export function SortableTable<T extends Record<string, unknown>>(
     >
       <SortableContext
         items={data?.map((item) => item[rowKey as string] as string) ?? []}
-        strategy={rectSortingStrategy}
+        strategy={verticalListSortingStrategy}
       >
         <Table
           {...props}
           components={{
+            ...props.components,
             body: {
-              row: (props: Omit<SortableRowProps<T>, 'rowKey'>) =>
-                SortableRow({ ...props, rowKey: rowKey as string })
+              row: (props: Omit<SortableRowProps<T>, 'rowKey'>) => (
+                <SortableRow {...props} rowKey={rowKey as string} />
+              )
             }
           }}
         />
@@ -90,7 +91,7 @@ interface SortableRowProps<T extends Record<string, unknown>> {
 function SortableRow<T extends Record<string, unknown>>(
   props: SortableRowProps<T>
 ) {
-  const { children, className, record, rowKey } = props
+  const { children, className, record, rowKey, ...rest } = props
 
   const {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -116,6 +117,7 @@ function SortableRow<T extends Record<string, unknown>>(
         ref={setNodeRef}
         className={className}
         {...restAttributes}
+        {...rest}
         style={style}
       >
         {children}

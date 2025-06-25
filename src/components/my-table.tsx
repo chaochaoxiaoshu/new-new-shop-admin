@@ -25,7 +25,6 @@ export function MyTable(props: TableProps) {
   return (
     <Table
       {...props}
-      borderCell
       scroll={{ x: props.scroll?.x, y: height ? height - 84 : 1 }}
       pagination={pagination}
       renderPagination={(paginationNode) => (

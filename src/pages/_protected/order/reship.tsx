@@ -216,28 +216,24 @@ function ReshipView() {
             value={tempSearch.reship_id}
             style={{ width: '264px' }}
             onChange={(value) => handleUpdateSearchParam('reship_id', value)}
-            allowClear
           />
           <Input
             placeholder='请输入订单号'
             value={tempSearch.order_id}
             style={{ width: '264px' }}
             onChange={(value) => handleUpdateSearchParam('order_id', value)}
-            allowClear
           />
           <Input
             placeholder='请输入快递单号'
             value={tempSearch.logi_no}
             style={{ width: '264px' }}
             onChange={(value) => handleUpdateSearchParam('logi_no', value)}
-            allowClear
           />
           <Select
             placeholder='请选择状态'
             value={tempSearch.status}
             style={{ width: '264px' }}
             onChange={(value) => handleUpdateSearchParam('status', value)}
-            allowClear
           >
             <Select.Option value={1}>审核通过待发货</Select.Option>
             <Select.Option value={2}>已发退货</Select.Option>

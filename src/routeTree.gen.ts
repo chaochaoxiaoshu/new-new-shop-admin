@@ -21,11 +21,13 @@ import { Route as ProtectedCommodityMerchandiseConIndexImport } from './pages/_p
 import { Route as ProtectedCommodityCategoryAdminIndexImport } from './pages/_protected/commodity/categoryAdmin/index'
 import { Route as ProtectedCommodityCategoryIndexImport } from './pages/_protected/commodity/category/index'
 import { Route as ProtectedCommodityBrandIndexImport } from './pages/_protected/commodity/brand/index'
+import { Route as ProtectedClientClientTagsIndexImport } from './pages/_protected/client/clientTags/index'
 import { Route as ProtectedClientAccountIndexImport } from './pages/_protected/client/account/index'
 import { Route as ProtectedCommodityMerchandiseConEvaluateImport } from './pages/_protected/commodity/merchandiseCon/evaluate'
 import { Route as ProtectedCommodityCategoryAdminInfoImport } from './pages/_protected/commodity/categoryAdmin/info'
 import { Route as ProtectedCommodityCategoryAdminGoodsImport } from './pages/_protected/commodity/categoryAdmin/goods'
 import { Route as ProtectedCommodityCategoryInfoImport } from './pages/_protected/commodity/category/info'
+import { Route as ProtectedClientClientTagsEditImport } from './pages/_protected/client/clientTags/edit'
 import { Route as ProtectedCommodityMerchandiseConDetailIndexImport } from './pages/_protected/commodity/merchandiseCon/detail/index'
 import { Route as ProtectedClientAccountDetailIndexImport } from './pages/_protected/client/account/detail/index'
 
@@ -94,6 +96,13 @@ const ProtectedCommodityBrandIndexRoute =
     getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
+const ProtectedClientClientTagsIndexRoute =
+  ProtectedClientClientTagsIndexImport.update({
+    id: '/client/clientTags/',
+    path: '/client/clientTags/',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
 const ProtectedClientAccountIndexRoute =
   ProtectedClientAccountIndexImport.update({
     id: '/client/account/',
@@ -126,6 +135,13 @@ const ProtectedCommodityCategoryInfoRoute =
   ProtectedCommodityCategoryInfoImport.update({
     id: '/commodity/category/info',
     path: '/commodity/category/info',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedClientClientTagsEditRoute =
+  ProtectedClientClientTagsEditImport.update({
+    id: '/client/clientTags/edit',
+    path: '/client/clientTags/edit',
     getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
@@ -189,6 +205,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedOrderReshipImport
       parentRoute: typeof ProtectedRouteImport
     }
+    '/_protected/client/clientTags/edit': {
+      id: '/_protected/client/clientTags/edit'
+      path: '/client/clientTags/edit'
+      fullPath: '/client/clientTags/edit'
+      preLoaderRoute: typeof ProtectedClientClientTagsEditImport
+      parentRoute: typeof ProtectedRouteImport
+    }
     '/_protected/commodity/category/info': {
       id: '/_protected/commodity/category/info'
       path: '/commodity/category/info'
@@ -222,6 +245,13 @@ declare module '@tanstack/react-router' {
       path: '/client/account'
       fullPath: '/client/account'
       preLoaderRoute: typeof ProtectedClientAccountIndexImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/client/clientTags/': {
+      id: '/_protected/client/clientTags/'
+      path: '/client/clientTags'
+      fullPath: '/client/clientTags'
+      preLoaderRoute: typeof ProtectedClientClientTagsIndexImport
       parentRoute: typeof ProtectedRouteImport
     }
     '/_protected/commodity/brand/': {
@@ -276,11 +306,13 @@ interface ProtectedRouteRouteChildren {
   ProtectedOrderBillLadingRoute: typeof ProtectedOrderBillLadingRoute
   ProtectedOrderDispatchRoute: typeof ProtectedOrderDispatchRoute
   ProtectedOrderReshipRoute: typeof ProtectedOrderReshipRoute
+  ProtectedClientClientTagsEditRoute: typeof ProtectedClientClientTagsEditRoute
   ProtectedCommodityCategoryInfoRoute: typeof ProtectedCommodityCategoryInfoRoute
   ProtectedCommodityCategoryAdminGoodsRoute: typeof ProtectedCommodityCategoryAdminGoodsRoute
   ProtectedCommodityCategoryAdminInfoRoute: typeof ProtectedCommodityCategoryAdminInfoRoute
   ProtectedCommodityMerchandiseConEvaluateRoute: typeof ProtectedCommodityMerchandiseConEvaluateRoute
   ProtectedClientAccountIndexRoute: typeof ProtectedClientAccountIndexRoute
+  ProtectedClientClientTagsIndexRoute: typeof ProtectedClientClientTagsIndexRoute
   ProtectedCommodityBrandIndexRoute: typeof ProtectedCommodityBrandIndexRoute
   ProtectedCommodityCategoryIndexRoute: typeof ProtectedCommodityCategoryIndexRoute
   ProtectedCommodityCategoryAdminIndexRoute: typeof ProtectedCommodityCategoryAdminIndexRoute
@@ -294,6 +326,7 @@ const ProtectedRouteRouteChildren: ProtectedRouteRouteChildren = {
   ProtectedOrderBillLadingRoute: ProtectedOrderBillLadingRoute,
   ProtectedOrderDispatchRoute: ProtectedOrderDispatchRoute,
   ProtectedOrderReshipRoute: ProtectedOrderReshipRoute,
+  ProtectedClientClientTagsEditRoute: ProtectedClientClientTagsEditRoute,
   ProtectedCommodityCategoryInfoRoute: ProtectedCommodityCategoryInfoRoute,
   ProtectedCommodityCategoryAdminGoodsRoute:
     ProtectedCommodityCategoryAdminGoodsRoute,
@@ -302,6 +335,7 @@ const ProtectedRouteRouteChildren: ProtectedRouteRouteChildren = {
   ProtectedCommodityMerchandiseConEvaluateRoute:
     ProtectedCommodityMerchandiseConEvaluateRoute,
   ProtectedClientAccountIndexRoute: ProtectedClientAccountIndexRoute,
+  ProtectedClientClientTagsIndexRoute: ProtectedClientClientTagsIndexRoute,
   ProtectedCommodityBrandIndexRoute: ProtectedCommodityBrandIndexRoute,
   ProtectedCommodityCategoryIndexRoute: ProtectedCommodityCategoryIndexRoute,
   ProtectedCommodityCategoryAdminIndexRoute:
@@ -325,11 +359,13 @@ export interface FileRoutesByFullPath {
   '/order/billLading': typeof ProtectedOrderBillLadingRoute
   '/order/dispatch': typeof ProtectedOrderDispatchRoute
   '/order/reship': typeof ProtectedOrderReshipRoute
+  '/client/clientTags/edit': typeof ProtectedClientClientTagsEditRoute
   '/commodity/category/info': typeof ProtectedCommodityCategoryInfoRoute
   '/commodity/categoryAdmin/goods': typeof ProtectedCommodityCategoryAdminGoodsRoute
   '/commodity/categoryAdmin/info': typeof ProtectedCommodityCategoryAdminInfoRoute
   '/commodity/merchandiseCon/evaluate': typeof ProtectedCommodityMerchandiseConEvaluateRoute
   '/client/account': typeof ProtectedClientAccountIndexRoute
+  '/client/clientTags': typeof ProtectedClientClientTagsIndexRoute
   '/commodity/brand': typeof ProtectedCommodityBrandIndexRoute
   '/commodity/category': typeof ProtectedCommodityCategoryIndexRoute
   '/commodity/categoryAdmin': typeof ProtectedCommodityCategoryAdminIndexRoute
@@ -344,11 +380,13 @@ export interface FileRoutesByTo {
   '/order/billLading': typeof ProtectedOrderBillLadingRoute
   '/order/dispatch': typeof ProtectedOrderDispatchRoute
   '/order/reship': typeof ProtectedOrderReshipRoute
+  '/client/clientTags/edit': typeof ProtectedClientClientTagsEditRoute
   '/commodity/category/info': typeof ProtectedCommodityCategoryInfoRoute
   '/commodity/categoryAdmin/goods': typeof ProtectedCommodityCategoryAdminGoodsRoute
   '/commodity/categoryAdmin/info': typeof ProtectedCommodityCategoryAdminInfoRoute
   '/commodity/merchandiseCon/evaluate': typeof ProtectedCommodityMerchandiseConEvaluateRoute
   '/client/account': typeof ProtectedClientAccountIndexRoute
+  '/client/clientTags': typeof ProtectedClientClientTagsIndexRoute
   '/commodity/brand': typeof ProtectedCommodityBrandIndexRoute
   '/commodity/category': typeof ProtectedCommodityCategoryIndexRoute
   '/commodity/categoryAdmin': typeof ProtectedCommodityCategoryAdminIndexRoute
@@ -365,11 +403,13 @@ export interface FileRoutesById {
   '/_protected/order/billLading': typeof ProtectedOrderBillLadingRoute
   '/_protected/order/dispatch': typeof ProtectedOrderDispatchRoute
   '/_protected/order/reship': typeof ProtectedOrderReshipRoute
+  '/_protected/client/clientTags/edit': typeof ProtectedClientClientTagsEditRoute
   '/_protected/commodity/category/info': typeof ProtectedCommodityCategoryInfoRoute
   '/_protected/commodity/categoryAdmin/goods': typeof ProtectedCommodityCategoryAdminGoodsRoute
   '/_protected/commodity/categoryAdmin/info': typeof ProtectedCommodityCategoryAdminInfoRoute
   '/_protected/commodity/merchandiseCon/evaluate': typeof ProtectedCommodityMerchandiseConEvaluateRoute
   '/_protected/client/account/': typeof ProtectedClientAccountIndexRoute
+  '/_protected/client/clientTags/': typeof ProtectedClientClientTagsIndexRoute
   '/_protected/commodity/brand/': typeof ProtectedCommodityBrandIndexRoute
   '/_protected/commodity/category/': typeof ProtectedCommodityCategoryIndexRoute
   '/_protected/commodity/categoryAdmin/': typeof ProtectedCommodityCategoryAdminIndexRoute
@@ -387,11 +427,13 @@ export interface FileRouteTypes {
     | '/order/billLading'
     | '/order/dispatch'
     | '/order/reship'
+    | '/client/clientTags/edit'
     | '/commodity/category/info'
     | '/commodity/categoryAdmin/goods'
     | '/commodity/categoryAdmin/info'
     | '/commodity/merchandiseCon/evaluate'
     | '/client/account'
+    | '/client/clientTags'
     | '/commodity/brand'
     | '/commodity/category'
     | '/commodity/categoryAdmin'
@@ -405,11 +447,13 @@ export interface FileRouteTypes {
     | '/order/billLading'
     | '/order/dispatch'
     | '/order/reship'
+    | '/client/clientTags/edit'
     | '/commodity/category/info'
     | '/commodity/categoryAdmin/goods'
     | '/commodity/categoryAdmin/info'
     | '/commodity/merchandiseCon/evaluate'
     | '/client/account'
+    | '/client/clientTags'
     | '/commodity/brand'
     | '/commodity/category'
     | '/commodity/categoryAdmin'
@@ -424,11 +468,13 @@ export interface FileRouteTypes {
     | '/_protected/order/billLading'
     | '/_protected/order/dispatch'
     | '/_protected/order/reship'
+    | '/_protected/client/clientTags/edit'
     | '/_protected/commodity/category/info'
     | '/_protected/commodity/categoryAdmin/goods'
     | '/_protected/commodity/categoryAdmin/info'
     | '/_protected/commodity/merchandiseCon/evaluate'
     | '/_protected/client/account/'
+    | '/_protected/client/clientTags/'
     | '/_protected/commodity/brand/'
     | '/_protected/commodity/category/'
     | '/_protected/commodity/categoryAdmin/'
@@ -469,11 +515,13 @@ export const routeTree = rootRoute
         "/_protected/order/billLading",
         "/_protected/order/dispatch",
         "/_protected/order/reship",
+        "/_protected/client/clientTags/edit",
         "/_protected/commodity/category/info",
         "/_protected/commodity/categoryAdmin/goods",
         "/_protected/commodity/categoryAdmin/info",
         "/_protected/commodity/merchandiseCon/evaluate",
         "/_protected/client/account/",
+        "/_protected/client/clientTags/",
         "/_protected/commodity/brand/",
         "/_protected/commodity/category/",
         "/_protected/commodity/categoryAdmin/",
@@ -501,6 +549,10 @@ export const routeTree = rootRoute
       "filePath": "_protected/order/reship.tsx",
       "parent": "/_protected"
     },
+    "/_protected/client/clientTags/edit": {
+      "filePath": "_protected/client/clientTags/edit.tsx",
+      "parent": "/_protected"
+    },
     "/_protected/commodity/category/info": {
       "filePath": "_protected/commodity/category/info.tsx",
       "parent": "/_protected"
@@ -519,6 +571,10 @@ export const routeTree = rootRoute
     },
     "/_protected/client/account/": {
       "filePath": "_protected/client/account/index.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/client/clientTags/": {
+      "filePath": "_protected/client/clientTags/index.tsx",
       "parent": "/_protected"
     },
     "/_protected/commodity/brand/": {

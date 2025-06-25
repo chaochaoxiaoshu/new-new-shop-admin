@@ -278,7 +278,6 @@ function CustomersView() {
             value={tempSearch.mobile}
             placeholder='请输入手机号'
             style={{ width: '264px' }}
-            allowClear
             suffix={<Smartphone className='inline size-4' />}
             onChange={(val) => handleUpdateSearchParam('mobile', val)}
           />
@@ -286,7 +285,6 @@ function CustomersView() {
             value={tempSearch.nickname}
             placeholder='请输入昵称'
             style={{ width: '264px' }}
-            allowClear
             suffix={<TextCursorInput className='inline size-4' />}
             onChange={(val) => handleUpdateSearchParam('nickname', val)}
           />

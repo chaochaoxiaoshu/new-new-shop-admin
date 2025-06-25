@@ -31,6 +31,7 @@ import { MyImage } from '@/components/my-image'
 import { MyTable } from '@/components/my-table'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
+import { useTempSearch } from '@/hooks'
 import { TableCellWidth, defineTableColumns, queryClient } from '@/lib'
 import { useUserStore } from '@/stores'
 
@@ -104,29 +105,15 @@ function GoodsView() {
     (store) => store.checkActionPermission
   )
 
-  /* ------------------------------ Search START ------------------------------ */
-  const [tempSearch, setTempSearch] = useState(search)
-
-  const handleUpdateSearchParam = <K extends keyof typeof search>(
-    key: K,
-    value: (typeof search)[K]
-  ) => {
-    setTempSearch((prev) => ({ ...prev, [key]: value }))
-  }
-
-  const handleSearch = () => {
-    navigate({ search: tempSearch })
-  }
-
-  const handleReset = () => {
-    const initial = {
-      page_index: search.page_index,
-      page_size: search.page_size
-    }
-    navigate({ search: initial })
-    setTempSearch(initial)
-  }
-  /* ------------------------------- Search END ------------------------------- */
+  const { tempSearch, setTempSearch, updateSearchField, commit, reset } =
+    useTempSearch({
+      search,
+      updateFn: (search) => navigate({ search }),
+      selectDefaultFields: (search) => ({
+        page_index: search.page_index,
+        page_size: search.page_size
+      })
+    })
 
   const { data: departments } = useQuery(context.departmentsQueryOptions)
   const { data: brandsData } = useQuery(context.brandsQueryOptions)
@@ -383,17 +370,15 @@ function GoodsView() {
               value={tempSearch.name}
               placeholder='请输入商品名称'
               style={{ width: '264px' }}
-              allowClear
               suffix={<Search className='inline size-4' />}
-              onChange={(value) => handleUpdateSearchParam('name', value)}
+              onChange={(value) => updateSearchField('name', value)}
             />
             <Select
               value={tempSearch.marketable}
               placeholder='请选择上下架状态'
-              allowClear
               style={{ width: '264px' }}
               onChange={(value) =>
-                handleUpdateSearchParam('marketable', value as 1 | 2)
+                updateSearchField('marketable', value as 1 | 2)
               }
             >
               <Select.Option value={1}>上架</Select.Option>
@@ -403,10 +388,9 @@ function GoodsView() {
               <Select
                 value={tempSearch.department_id}
                 placeholder='请选择电商事业部'
-                allowClear
                 style={{ width: '264px' }}
                 onChange={(value) =>
-                  handleUpdateSearchParam('department_id', value as number)
+                  updateSearchField('department_id', value as number)
                 }
               >
                 {departments?.items.map((item) => (
@@ -419,10 +403,9 @@ function GoodsView() {
             <Select
               value={tempSearch.brand_id}
               placeholder='请选择商品品牌'
-              allowClear
               style={{ width: '264px' }}
               onChange={(value) =>
-                handleUpdateSearchParam('brand_id', value as number)
+                updateSearchField('brand_id', value as number)
               }
             >
               {brandsData?.items.map((item) => (
@@ -434,10 +417,9 @@ function GoodsView() {
             <Select
               value={tempSearch.is_lnternal}
               placeholder='请选择是否支持内购'
-              allowClear
               style={{ width: '264px' }}
               onChange={(value) =>
-                handleUpdateSearchParam('is_lnternal', value as 1 | 2)
+                updateSearchField('is_lnternal', value as 1 | 2)
               }
             >
               <Select.Option value={1}>是</Select.Option>
@@ -446,10 +428,9 @@ function GoodsView() {
             <Select
               value={tempSearch.is_member_price}
               placeholder='请选择是否支持会员价'
-              allowClear
               style={{ width: '264px' }}
               onChange={(value) =>
-                handleUpdateSearchParam('is_member_price', value as 1 | 2)
+                updateSearchField('is_member_price', value as 1 | 2)
               }
             >
               <Select.Option value={1}>是</Select.Option>
@@ -458,10 +439,9 @@ function GoodsView() {
             <Select
               value={tempSearch.is_approve}
               placeholder='请选择是否内购专区商品'
-              allowClear
               style={{ width: '264px' }}
               onChange={(value) =>
-                handleUpdateSearchParam('is_approve', value as 1 | 2)
+                updateSearchField('is_approve', value as 1 | 2)
               }
             >
               <Select.Option value={1}>是</Select.Option>
@@ -470,10 +450,9 @@ function GoodsView() {
             <Select
               value={tempSearch.is_hidelinks}
               placeholder='请选择是否隐藏链接'
-              allowClear
               style={{ width: '264px' }}
               onChange={(value) =>
-                handleUpdateSearchParam('is_hidelinks', value as 1 | 2)
+                updateSearchField('is_hidelinks', value as 1 | 2)
               }
             >
               <Select.Option value={1}>是</Select.Option>
@@ -482,14 +461,14 @@ function GoodsView() {
             <Button
               type='primary'
               icon={<Search className='inline size-4' />}
-              onClick={handleSearch}
+              onClick={commit}
             >
               查询
             </Button>
             <Button
               type='outline'
               icon={<RotateCcw className='inline size-4' />}
-              onClick={handleReset}
+              onClick={reset}
             >
               重置
             </Button>
@@ -502,7 +481,6 @@ function GoodsView() {
               bordered={false}
               style={{ width: 'fit-content', padding: '16px' }}
               trigger='click'
-              allowClear
               triggerElement={
                 <div className='flex items-center px-4 cursor-pointer mr-auto'>
                   <span className='text-muted-foreground'>

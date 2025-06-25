@@ -233,35 +233,30 @@ function BillLadingView() {
             value={tempSearch.id}
             style={{ width: '264px' }}
             onChange={(value) => handleUpdateSearchParam('id', value)}
-            allowClear
           />
           <Input
             placeholder='请输入商品名称'
             value={tempSearch.name}
             style={{ width: '264px' }}
             onChange={(value) => handleUpdateSearchParam('name', value)}
-            allowClear
           />
           <Input
             placeholder='请输入订单号'
             value={tempSearch.order_id}
             style={{ width: '264px' }}
             onChange={(value) => handleUpdateSearchParam('order_id', value)}
-            allowClear
           />
           <Input
             placeholder='请输入提货电话'
             value={tempSearch.ship_mobile}
             style={{ width: '264px' }}
             onChange={(value) => handleUpdateSearchParam('ship_mobile', value)}
-            allowClear
           />
           <Select
             placeholder='请选择门店'
             value={tempSearch.store_id}
             style={{ width: '264px' }}
             onChange={(value) => handleUpdateSearchParam('store_id', value)}
-            allowClear
           >
             {storeList?.items.map((store) => (
               <Select.Option key={store.id} value={store.id!}>
@@ -274,7 +269,6 @@ function BillLadingView() {
             value={tempSearch.status}
             style={{ width: '264px' }}
             onChange={(value) => handleUpdateSearchParam('status', value)}
-            allowClear
           >
             <Select.Option value={1}>未提货</Select.Option>
             <Select.Option value={2}>已提货</Select.Option>
@@ -380,10 +374,10 @@ function EditBillLadingForm({
           </Select>
         </Form.Item>
         <Form.Item label='提货人名' field='name'>
-          <Input placeholder='请输入提货人名' allowClear />
+          <Input placeholder='请输入提货人名' />
         </Form.Item>
         <Form.Item label='提货电话' field='mobile'>
-          <Input placeholder='请输入提货电话' allowClear />
+          <Input placeholder='请输入提货电话' />
         </Form.Item>
         <Form.Item label='提货状态' field='status' disabled>
           <Select>

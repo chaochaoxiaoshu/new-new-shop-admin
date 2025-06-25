@@ -1,4 +1,4 @@
-import { Button } from '@arco-design/web-react'
+import { Button, ConfigProvider } from '@arco-design/web-react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Link, Outlet, createRootRoute } from '@tanstack/react-router'
@@ -12,7 +12,22 @@ export const Route = createRootRoute({
     <>
       <RouterProgressBar />
       <QueryClientProvider client={queryClient}>
-        <Outlet />
+        <ConfigProvider
+          componentConfig={{
+            Input: {
+              allowClear: true
+            },
+            Select: {
+              allowClear: true
+            },
+            Table: {
+              borderCell: true
+            }
+          }}
+          tablePagination={{ hideOnSinglePage: true }}
+        >
+          <Outlet />
+        </ConfigProvider>
         <TanStackRouterDevtools position='bottom-left' />
         <ReactQueryDevtools />
       </QueryClientProvider>

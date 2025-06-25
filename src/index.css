@@ -136,3 +136,18 @@
 .arco-select-arrow-icon {
   color: var(--muted-fg) !important;
 }
+
+.arco-resizebox-trigger-vertical {
+  align-self: stretch !important;
+  height: auto !important;
+}
+
+.table-active-row .arco-table-td {
+  background-color: rgb(var(--primary-2));
+  color: rgb(var(--primary-6));
+  font-weight: 500;
+}
+
+.clickable-row {
+  cursor: pointer;
+}

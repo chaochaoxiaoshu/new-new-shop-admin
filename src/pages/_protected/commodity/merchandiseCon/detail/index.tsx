@@ -293,7 +293,6 @@ function GoodsEditView() {
           <Input.TextArea
             rows={5}
             placeholder='请输入规格名'
-            allowClear
             defaultValue={tempValue}
             onChange={(value) => (tempValue = value)}
           />
@@ -341,7 +340,6 @@ function GoodsEditView() {
             <Input
               placeholder='请输入'
               defaultValue={tempValue as string}
-              allowClear
               onChange={(value) => (tempValue = value)}
             />
           )}
@@ -451,7 +449,6 @@ function GoodsEditView() {
                 }
               />
             }
-            allowClear
           />
         </Form.Item>
       ),
@@ -585,7 +582,7 @@ function GoodsEditView() {
       title: '是否支持内购',
       render: (_, _item, index) => (
         <Form.Item field={`products[${index}].is_lnternal`}>
-          <Select disabled={isRx === IsRx.处方药} placeholder='内购' allowClear>
+          <Select disabled={isRx === IsRx.处方药} placeholder='内购'>
             <Select.Option value={1}>是</Select.Option>
             <Select.Option value={2}>否</Select.Option>
           </Select>
@@ -614,7 +611,7 @@ function GoodsEditView() {
       title: '是否支持会员价',
       render: (_, _item, index) => (
         <Form.Item field={`products[${index}].is_member_price`}>
-          <Select placeholder='会员价' allowClear>
+          <Select placeholder='会员价'>
             <Select.Option value={1}>是</Select.Option>
             <Select.Option value={2}>否</Select.Option>
           </Select>
@@ -640,7 +637,7 @@ function GoodsEditView() {
       title: '单位',
       render: (_, _item, index) => (
         <Form.Item field={`products[${index}].unit`}>
-          <Input placeholder='单位' allowClear />
+          <Input placeholder='单位' />
         </Form.Item>
       ),
       width: 120,
@@ -737,7 +734,7 @@ function GoodsEditView() {
           label='商品属性'
           rules={[{ required: true, message: '请选择商品属性' }]}
         >
-          <Select placeholder='请选择商品属性' allowClear>
+          <Select placeholder='请选择商品属性'>
             <Select.Option value={IsRx.非药品}>非药品</Select.Option>
             <Select.Option value={IsRx.处方药}>处方药</Select.Option>
             <Select.Option value={IsRx.非处方药}>非处方药</Select.Option>
@@ -748,7 +745,7 @@ function GoodsEditView() {
           label='总部分类'
           rules={[{ required: true, message: '请选择总部分类' }]}
         >
-          <Select placeholder='全部' allowClear>
+          <Select placeholder='全部'>
             {adminCategoriesTreeData?.map((item) => (
               <Select.Option
                 key={item.id}
@@ -765,15 +762,10 @@ function GoodsEditView() {
           label='商品名称'
           rules={[{ required: true, message: '请输入商品名称' }]}
         >
-          <Input
-            placeholder='请输入商品名称'
-            maxLength={20}
-            showWordLimit
-            allowClear
-          />
+          <Input placeholder='请输入商品名称' maxLength={20} showWordLimit />
         </Form.Item>
         <Form.Item field='goods_departype_id' label='商品分类'>
-          <Select placeholder='全部' allowClear>
+          <Select placeholder='全部'>
             {goodsDepartypeData?.map((item) => (
               <Select.Option
                 key={item.id}
@@ -786,7 +778,7 @@ function GoodsEditView() {
           </Select>
         </Form.Item>
         <Form.Item field='brand_id' label='商品品牌'>
-          <Select placeholder='全部' allowClear>
+          <Select placeholder='全部'>
             {brandsData?.items.map((item) => (
               <Select.Option key={item.brand_id} value={item.brand_id!}>
                 {item.name}
@@ -830,7 +822,7 @@ function GoodsEditView() {
                             { required: true, message: '请输入适用疾病' }
                           ]}
                         >
-                          <Select placeholder='全部' allowClear showSearch>
+                          <Select placeholder='全部' showSearch>
                             {goodsDiseaseData?.items.map((item) => (
                               <Select.Option key={item.id} value={item.id!}>
                                 {item.icd_name}
@@ -869,7 +861,7 @@ function GoodsEditView() {
                   label='药店'
                   rules={[{ required: true, message: '请选择药店' }]}
                 >
-                  <Select placeholder='全部' allowClear>
+                  <Select placeholder='全部'>
                     {goodsDrugstoresData?.items.map((item) => (
                       <Select.Option key={item.id} value={item.id!}>
                         {item.drugstore_name}
@@ -909,7 +901,7 @@ function GoodsEditView() {
                                 <Input style={{ width: 110 }} readOnly />
                               </Form.Item>
                               <Form.Item field={`${item.field}.value`} noStyle>
-                                <Input placeholder='请输入参数值' allowClear />
+                                <Input placeholder='请输入参数值' />
                               </Form.Item>
                             </div>
                           ))}
@@ -957,7 +949,6 @@ function GoodsEditView() {
                               <Input
                                 style={{ width: 110 }}
                                 placeholder='请输入'
-                                allowClear
                               />
                             </Form.Item>
                             <Form.Item field={`${item.field}.value`} noStyle>
@@ -972,7 +963,6 @@ function GoodsEditView() {
                                     onClick={() => remove(index)}
                                   />
                                 }
-                                allowClear
                               />
                             </Form.Item>
                           </div>
@@ -1021,12 +1011,11 @@ function GoodsEditView() {
                                   (i) => i.key === fieldValues[index].key
                                 )}
                                 placeholder='请输入'
-                                allowClear
                               />
                             </Form.Item>
                             <Form.Item field={`${item.field}.value`} noStyle>
                               {fieldValues[index].key === '类别' ? (
-                                <Select placeholder='请选择类别' allowClear>
+                                <Select placeholder='请选择类别'>
                                   {category.map((item) => (
                                     <Select.Option
                                       key={item.value}
@@ -1037,7 +1026,7 @@ function GoodsEditView() {
                                   ))}
                                 </Select>
                               ) : fieldValues[index].key === '剂型' ? (
-                                <Select placeholder='请选择剂型' allowClear>
+                                <Select placeholder='请选择剂型'>
                                   {dosage.map((item) => (
                                     <Select.Option
                                       key={item.value}
@@ -1065,7 +1054,6 @@ function GoodsEditView() {
                                       />
                                     )
                                   }
-                                  allowClear
                                 />
                               )}
                             </Form.Item>
@@ -1117,7 +1105,7 @@ function GoodsEditView() {
                   label='运费模板'
                   rules={[{ required: true, message: '请选择运费模板' }]}
                 >
-                  <Select placeholder='请选择运费模板' allowClear>
+                  <Select placeholder='请选择运费模板'>
                     {shipTemplatesData?.items.map((item) => (
                       <Select.Option key={item.id} value={item.id!}>
                         {item.name}
@@ -1130,7 +1118,7 @@ function GoodsEditView() {
           }}
         </Form.Item>
         <Form.Item field='brief' label='商品简介'>
-          <Input.TextArea rows={3} placeholder='请输入商品简介' allowClear />
+          <Input.TextArea rows={3} placeholder='请输入商品简介' />
         </Form.Item>
         <Form.Item
           field='images'
@@ -1273,7 +1261,6 @@ function GoodsEditView() {
                       <Input
                         placeholder='请输入限购件数'
                         style={{ width: 140 }}
-                        allowClear
                       />
                     </Form.Item>
                     <span className='flex-none leading-[32px]'>件</span>

@@ -350,7 +350,7 @@ function AuthView() {
                     field='username'
                     rules={[{ required: true, message: '请输入账号' }]}
                   >
-                    <Input placeholder='请输入账号' allowClear />
+                    <Input placeholder='请输入账号' />
                   </Form.Item>
                   <Form.Item
                     field='password'
@@ -360,18 +360,13 @@ function AuthView() {
                       ref={passwordInputRef}
                       type='password'
                       placeholder='请输入密码'
-                      allowClear
                     />
                   </Form.Item>
                 </>
               )}
               {departmentInfo && departmentInfo.length > 0 && (
                 <Form.Item field='department_id'>
-                  <Select
-                    options={departmentInfo}
-                    placeholder='请选择事业部'
-                    allowClear
-                  />
+                  <Select options={departmentInfo} placeholder='请选择事业部' />
                 </Form.Item>
               )}
               <Button

@@ -237,7 +237,6 @@ function Orders() {
           value={tempSearchParams.order_ids}
           placeholder='请输入订单号'
           style={{ width: '264px' }}
-          allowClear
           suffix={<FileText className='inline size-4' />}
           onChange={(val) => handleUpdateSearchParam('order_ids', val)}
         />
@@ -271,7 +270,6 @@ function Orders() {
           value={tempSearchParams.ship_mobile}
           placeholder='请输入收货人手机号'
           style={{ width: '264px' }}
-          allowClear
           suffix={<Smartphone className='inline size-4' />}
           onChange={(val) => handleUpdateSearchParam('ship_mobile', val)}
         />
@@ -279,7 +277,6 @@ function Orders() {
           value={tempSearchParams.goods_name}
           placeholder='请输入商品名称'
           style={{ width: '264px' }}
-          allowClear
           suffix={<Search className='inline size-4' />}
           onChange={(val) => handleUpdateSearchParam('goods_name', val)}
         />
@@ -446,7 +443,6 @@ function AfterSales() {
           value={tempSearchParams.after_sales_id}
           placeholder='请输入售后单号'
           style={{ width: '264px' }}
-          allowClear
           suffix={<FileText className='inline size-4' />}
           onChange={(val) => handleUpdateSearchParam('after_sales_id', val)}
         />
@@ -454,7 +450,6 @@ function AfterSales() {
           value={tempSearchParams.order_id}
           placeholder='请输入订单号'
           style={{ width: '264px' }}
-          allowClear
           suffix={<FileText className='inline size-4' />}
           onChange={(val) => handleUpdateSearchParam('order_id', val)}
         />
@@ -462,7 +457,6 @@ function AfterSales() {
           value={tempSearchParams.status}
           placeholder='请选择状态'
           style={{ width: '264px' }}
-          allowClear
           onChange={(val) => handleUpdateSearchParam('status', val)}
         >
           <Select.Option value={1}>未审核</Select.Option>
@@ -473,7 +467,6 @@ function AfterSales() {
           value={tempSearchParams.type}
           placeholder='请选择商品状态'
           style={{ width: '264px' }}
-          allowClear
           onChange={(val) => handleUpdateSearchParam('type', val)}
         >
           <Select.Option value={1}>未发货</Select.Option>

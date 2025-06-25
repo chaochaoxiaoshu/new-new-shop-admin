@@ -251,7 +251,6 @@ function CommentsView() {
             value={tempSearch.name}
             placeholder='请输入商品名称'
             style={{ width: '264px' }}
-            allowClear
             suffix={<Search className='inline size-4' />}
             onChange={(value) => handleUpdateSearchParam('name', value)}
           />
@@ -259,7 +258,6 @@ function CommentsView() {
             value={tempSearch.order_id}
             placeholder='请输入订单号'
             style={{ width: '264px' }}
-            allowClear
             suffix={<FileText className='inline size-4' />}
             onChange={(value) => handleUpdateSearchParam('order_id', value)}
           />
@@ -268,7 +266,6 @@ function CommentsView() {
               value={tempSearch.department}
               placeholder='请选择电商事业部'
               style={{ width: '264px' }}
-              allowClear
               onChange={(value) =>
                 handleUpdateSearchParam('department', value as number)
               }
@@ -284,7 +281,6 @@ function CommentsView() {
             value={tempSearch.display}
             placeholder='请选择显示状态'
             style={{ width: '264px' }}
-            allowClear
             onChange={(value) =>
               handleUpdateSearchParam('display', value as 1 | 2)
             }
@@ -410,7 +406,7 @@ function ReplyForm(props: ReplyFormProps) {
           field='seller_content'
           rules={[{ required: true, message: '请输入商家回复' }]}
         >
-          <Input.TextArea placeholder='请输入商家回复' allowClear />
+          <Input.TextArea placeholder='请输入商家回复' />
         </Form.Item>
         <div className='flex justify-end items-center space-x-4 mt-6'>
           <Button onClick={onCancel}>取消</Button>

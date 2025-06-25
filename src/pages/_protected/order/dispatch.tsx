@@ -163,28 +163,24 @@ function DeliveryView() {
             value={tempSearch.delivery_id}
             style={{ width: '264px' }}
             onChange={(value) => handleUpdateSearchParam('delivery_id', value)}
-            allowClear
           />
           <Input
             placeholder='请输入订单号'
             value={tempSearch.order_id}
             style={{ width: '264px' }}
             onChange={(value) => handleUpdateSearchParam('order_id', value)}
-            allowClear
           />
           <Input
             placeholder='请输入快递单号'
             value={tempSearch.logi_no}
             style={{ width: '264px' }}
             onChange={(value) => handleUpdateSearchParam('logi_no', value)}
-            allowClear
           />
           <Input
             placeholder='请输入电话号'
             value={tempSearch.ship_mobile}
             style={{ width: '264px' }}
             onChange={(value) => handleUpdateSearchParam('ship_mobile', value)}
-            allowClear
           />
           <Button
             type='primary'

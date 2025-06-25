@@ -126,7 +126,6 @@ export function CouponDetail() {
           value={tempSearchParams.discount_name}
           placeholder='请输入优惠券名称'
           style={{ width: '264px' }}
-          allowClear
           suffix={<Search className='inline size-4' />}
           onChange={(val) => handleUpdateSearchParam('discount_name', val)}
         />
@@ -134,7 +133,6 @@ export function CouponDetail() {
           value={tempSearchParams.is_use}
           placeholder='请选择状态'
           style={{ width: '264px' }}
-          allowClear
           onChange={(val) => handleUpdateSearchParam('is_use', val)}
         >
           <Select.Option value={UserCouponIsUse.未使用}>未使用</Select.Option>
