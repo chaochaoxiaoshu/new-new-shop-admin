@@ -14,7 +14,8 @@ import {
 } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { type } from 'arktype'
-import { Ellipsis, RotateCcw, Search } from 'lucide-react'
+import { Ellipsis, FileText, RotateCcw, Search } from 'lucide-react'
+import { Controller, useForm } from 'react-hook-form'
 import {
   confirmReship,
   GetReshipsRes,
@@ -25,7 +26,7 @@ import { MyTable } from '@/components/my-table'
 import { Show } from '@/components/show'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
-import { paginationFields, useMyModal, useTempSearch } from '@/hooks'
+import { useMyModal } from '@/hooks'
 import {
   defineTableColumns,
   formatDateTime,
@@ -72,10 +73,8 @@ function ReshipView() {
   )
   const [openModal, contextHolder] = useMyModal()
 
-  const { tempSearch, updateSearchField, commit, reset } = useTempSearch({
-    search,
-    updateFn: (search) => navigate({ search }),
-    selectDefaultFields: paginationFields
+  const { control, handleSubmit, reset } = useForm({
+    defaultValues: search
   })
 
   /* ------------------------------ Table START ------------------------------ */
@@ -198,51 +197,85 @@ function ReshipView() {
   return (
     <TableLayout
       header={
-        <TableLayout.Header>
-          <Input
-            placeholder='请输入退货单号'
-            value={tempSearch.reship_id}
-            style={{ width: '264px' }}
-            onChange={(value) => updateSearchField('reship_id', value)}
+        <form
+          className='table-header'
+          onSubmit={handleSubmit((values) => navigate({ search: values }))}
+          onReset={() => {
+            reset()
+            navigate({
+              search: {
+                page_index: search.page_index,
+                page_size: search.page_size
+              }
+            })
+          }}
+        >
+          <Controller
+            control={control}
+            name='reship_id'
+            render={({ field }) => (
+              <Input
+                {...field}
+                placeholder='请输入退货单号'
+                style={{ width: '264px' }}
+                suffix={<FileText className='inline size-4' />}
+              />
+            )}
           />
-          <Input
-            placeholder='请输入订单号'
-            value={tempSearch.order_id}
-            style={{ width: '264px' }}
-            onChange={(value) => updateSearchField('order_id', value)}
+          <Controller
+            control={control}
+            name='order_id'
+            render={({ field }) => (
+              <Input
+                {...field}
+                placeholder='请输入订单号'
+                style={{ width: '264px' }}
+                suffix={<FileText className='inline size-4' />}
+              />
+            )}
           />
-          <Input
-            placeholder='请输入快递单号'
-            value={tempSearch.logi_no}
-            style={{ width: '264px' }}
-            onChange={(value) => updateSearchField('logi_no', value)}
+          <Controller
+            control={control}
+            name='logi_no'
+            render={({ field }) => (
+              <Input
+                {...field}
+                placeholder='请输入快递单号'
+                style={{ width: '264px' }}
+                suffix={<FileText className='inline size-4' />}
+              />
+            )}
           />
-          <Select
-            placeholder='请选择状态'
-            value={tempSearch.status}
-            style={{ width: '264px' }}
-            onChange={(value) => updateSearchField('status', value as number)}
-          >
-            <Select.Option value={1}>审核通过待发货</Select.Option>
-            <Select.Option value={2}>已发退货</Select.Option>
-            <Select.Option value={3}>已收退货</Select.Option>
-          </Select>
-
+          <Controller
+            control={control}
+            name='status'
+            render={({ field }) => (
+              <Select
+                {...field}
+                placeholder='请选择状态'
+                style={{ width: '264px' }}
+              >
+                <Select.Option value={1}>审核通过待发货</Select.Option>
+                <Select.Option value={2}>已发退货</Select.Option>
+                <Select.Option value={3}>已收退货</Select.Option>
+              </Select>
+            )}
+          />
           <Button
             type='primary'
+            htmlType='submit'
             icon={<Search className='inline size-4' />}
-            onClick={commit}
           >
             查询
           </Button>
           <Button
             type='outline'
+            htmlType='reset'
             icon={<RotateCcw className='inline size-4' />}
-            onClick={reset}
           >
             重置
           </Button>
-        </TableLayout.Header>
+        </form>
       }
     >
       <MyTable

@@ -47,7 +47,14 @@ export function numberToChinese(num: number) {
 
 export function cleanObject<T extends Record<string, unknown>>(obj: T) {
   return Object.fromEntries(
-    Object.entries(obj).filter(([, v]) => v !== null && v !== undefined)
+    Object.entries(obj).filter(
+      ([, v]) =>
+        v !== null &&
+        v !== undefined &&
+        v !== '' &&
+        v !== 'null' &&
+        v !== 'undefined'
+    )
   ) as Partial<T>
 }
 

@@ -1,8 +1,5 @@
 import { useRef } from 'react'
-
 import { useClientHeight } from '@/hooks'
-import { cn } from '@/lib'
-
 import { BaseLayout } from '../base-layout'
 import { TableSizeContext } from './context'
 
@@ -31,23 +28,5 @@ export function TableLayout(props: TableLayoutProps) {
         </div>
       </BaseLayout>
     </TableSizeContext.Provider>
-  )
-}
-
-interface TableLayoutHeaderProps {
-  className?: string
-  children?: React.ReactNode
-}
-
-TableLayout.Header = function TableLayoutHeader(props: TableLayoutHeaderProps) {
-  return (
-    <div
-      className={cn(
-        'table-layout-header flex-none flex flex-wrap gap-4 items-center',
-        props.className
-      )}
-    >
-      {props.children}
-    </div>
   )
 }

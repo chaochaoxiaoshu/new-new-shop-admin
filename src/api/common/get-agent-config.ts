@@ -1,4 +1,4 @@
-import { api } from '@/lib'
+import { api, cleanObject } from '@/lib'
 
 import type { ApiResponse } from '..'
 
@@ -22,7 +22,7 @@ export const getAgentConfig = (req: GetAgentConfigReq) =>
     .get<ApiResponse<GetAgentConfigRes>>(
       'jshop-user/api/v1/manage/get-agent-config',
       {
-        searchParams: req
+        searchParams: cleanObject(req)
       }
     )
     .json()

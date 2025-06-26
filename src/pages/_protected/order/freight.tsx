@@ -94,13 +94,13 @@ function FreightView() {
   return (
     <TableLayout
       header={
-        <TableLayout.Header>
+        <div>
           <Show when={checkActionPermission('/order/freight/add')}>
             <Button type='primary' icon={<Plus className='inline size-4' />}>
               新增
             </Button>
           </Show>
-        </TableLayout.Header>
+        </div>
       }
     >
       <MyTable

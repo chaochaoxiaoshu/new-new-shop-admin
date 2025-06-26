@@ -7,7 +7,8 @@ import {
 } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { type } from 'arktype'
-import { RotateCcw, Search } from 'lucide-react'
+import { FileText, RotateCcw, Search, Smartphone } from 'lucide-react'
+import { Controller, useForm } from 'react-hook-form'
 import {
   type GetBillLadingsRes,
   type GetStoreListRes,
@@ -20,7 +21,7 @@ import { MyTable } from '@/components/my-table'
 import { Show } from '@/components/show'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
-import { paginationFields, useMyModal, useTempSearch } from '@/hooks'
+import { useMyModal } from '@/hooks'
 import {
   defineTableColumns,
   formatDateTime,
@@ -36,7 +37,7 @@ export const Route = createFileRoute('/_protected/order/billLading')({
     'id?': 'string',
     'name?': 'string',
     'order_id?': 'string',
-    'ship_mobile?': 'string',
+    'mobile?': 'string',
     'store_id?': 'number',
     'status?': 'number',
     page_index: ['number', '=', 1],
@@ -79,10 +80,8 @@ function BillLadingView() {
   )
   const [openModal, contextHolder] = useMyModal()
 
-  const { tempSearch, updateSearchField, commit, reset } = useTempSearch({
-    search,
-    updateFn: (search) => navigate({ search }),
-    selectDefaultFields: paginationFields
+  const { control, handleSubmit, reset } = useForm({
+    defaultValues: search
   })
 
   /* ------------------------------ Table START ------------------------------ */
@@ -208,67 +207,113 @@ function BillLadingView() {
   return (
     <TableLayout
       header={
-        <TableLayout.Header>
-          <Input
-            placeholder='请输入提货单号'
-            value={tempSearch.id}
-            style={{ width: '264px' }}
-            onChange={(value) => updateSearchField('id', value)}
+        <form
+          className='table-header'
+          onSubmit={handleSubmit((values) => navigate({ search: values }))}
+          onReset={() => {
+            reset()
+            navigate({
+              search: {
+                page_index: search.page_index,
+                page_size: search.page_size
+              }
+            })
+          }}
+        >
+          <Controller
+            control={control}
+            name='id'
+            render={({ field }) => (
+              <Input
+                {...field}
+                placeholder='请输入提货单号'
+                style={{ width: '264px' }}
+                suffix={<FileText className='inline size-4' />}
+              />
+            )}
           />
-          <Input
-            placeholder='请输入商品名称'
-            value={tempSearch.name}
-            style={{ width: '264px' }}
-            onChange={(value) => updateSearchField('name', value)}
+          <Controller
+            control={control}
+            name='name'
+            render={({ field }) => (
+              <Input
+                {...field}
+                placeholder='请输入商品名称'
+                style={{ width: '264px' }}
+                suffix={<Search className='inline size-4' />}
+              />
+            )}
           />
-          <Input
-            placeholder='请输入订单号'
-            value={tempSearch.order_id}
-            style={{ width: '264px' }}
-            onChange={(value) => updateSearchField('order_id', value)}
+          <Controller
+            control={control}
+            name='order_id'
+            render={({ field }) => (
+              <Input
+                {...field}
+                placeholder='请输入订单号'
+                style={{ width: '264px' }}
+                suffix={<FileText className='inline size-4' />}
+              />
+            )}
           />
-          <Input
-            placeholder='请输入提货电话'
-            value={tempSearch.ship_mobile}
-            style={{ width: '264px' }}
-            onChange={(value) => updateSearchField('ship_mobile', value)}
+          <Controller
+            control={control}
+            name='mobile'
+            render={({ field }) => (
+              <Input
+                {...field}
+                placeholder='请输入提货电话'
+                style={{ width: '264px' }}
+                suffix={<Smartphone className='inline size-4' />}
+              />
+            )}
           />
-          <Select
-            placeholder='请选择门店'
-            value={tempSearch.store_id}
-            style={{ width: '264px' }}
-            onChange={(value) => updateSearchField('store_id', value as number)}
-          >
-            {storeList?.items.map((store) => (
-              <Select.Option key={store.id} value={store.id!}>
-                {store.store_name}
-              </Select.Option>
-            ))}
-          </Select>
-          <Select
-            placeholder='请选择状态'
-            value={tempSearch.status}
-            style={{ width: '264px' }}
-            onChange={(value) => updateSearchField('status', value as number)}
-          >
-            <Select.Option value={1}>未提货</Select.Option>
-            <Select.Option value={2}>已提货</Select.Option>
-          </Select>
+          <Controller
+            control={control}
+            name='store_id'
+            render={({ field }) => (
+              <Select
+                {...field}
+                placeholder='请选择门店'
+                style={{ width: '264px' }}
+              >
+                {storeList?.items.map((store) => (
+                  <Select.Option key={store.id} value={store.id!}>
+                    {store.store_name}
+                  </Select.Option>
+                ))}
+              </Select>
+            )}
+          />
+          <Controller
+            control={control}
+            name='status'
+            render={({ field }) => (
+              <Select
+                {...field}
+                placeholder='请选择状态'
+                style={{ width: '264px' }}
+              >
+                <Select.Option value={1}>未提货</Select.Option>
+                <Select.Option value={2}>已提货</Select.Option>
+              </Select>
+            )}
+          />
           <Button
             type='primary'
+            htmlType='submit'
             icon={<Search className='inline size-4' />}
-            onClick={commit}
           >
             查询
           </Button>
           <Button
             type='outline'
+            htmlType='reset'
             icon={<RotateCcw className='inline size-4' />}
-            onClick={reset}
           >
             重置
           </Button>
-        </TableLayout.Header>
+        </form>
       }
     >
       <MyTable

@@ -159,3 +159,7 @@
 .actions .arco-btn {
   padding: 0 8px;
 }
+
+.table-header {
+  @apply flex-none flex flex-wrap gap-4 items-center;
+}

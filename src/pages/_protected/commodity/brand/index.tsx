@@ -17,6 +17,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { type } from 'arktype'
 import { Plus, RotateCcw, Search } from 'lucide-react'
 import { useEffect } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import {
   addBrand,
   deleteBrand,
@@ -33,7 +34,7 @@ import { Show } from '@/components/show'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
 import { createMyUploadResource } from '@/helpers/upload'
-import { paginationFields, useMyModal, useTempSearch } from '@/hooks'
+import { useMyModal } from '@/hooks'
 import {
   defineTableColumns,
   formatDateTime,
@@ -91,10 +92,8 @@ function BrandView() {
     (store) => store.checkActionPermission
   )
 
-  const { tempSearch, updateSearchField, commit, reset } = useTempSearch({
-    search,
-    updateFn: (search) => navigate({ search }),
-    selectDefaultFields: paginationFields
+  const { control, handleSubmit, reset } = useForm({
+    defaultValues: search
   })
 
   const { data: departments } = useQuery(context.departmentsQueryOptions)
@@ -205,41 +204,61 @@ function BrandView() {
   return (
     <TableLayout
       header={
-        <TableLayout.Header>
-          <Input
-            value={tempSearch.name}
-            placeholder='请输入品牌名称'
-            style={{ width: '264px' }}
-            suffix={<Search className='inline size-4' />}
-            onChange={(value) => updateSearchField('name', value)}
+        <form
+          className='table-header'
+          onSubmit={handleSubmit((values) => navigate({ search: values }))}
+          onReset={() => {
+            reset()
+            navigate({
+              search: {
+                page_index: search.page_index,
+                page_size: search.page_size
+              }
+            })
+          }}
+        >
+          <Controller
+            control={control}
+            name='name'
+            render={({ field }) => (
+              <Input
+                {...field}
+                placeholder='请输入品牌名称'
+                style={{ width: '264px' }}
+                suffix={<Search className='inline size-4' />}
+              />
+            )}
           />
           <Show when={departmentId === 0}>
-            <Select
-              value={tempSearch.department_id}
-              placeholder='请选择电商事业部'
-              style={{ width: '264px' }}
-              onChange={(value) =>
-                updateSearchField('department_id', value as number)
-              }
-            >
-              {departments?.items.map((item) => (
-                <Select.Option key={item.id} value={item.id!}>
-                  {item.department_name}
-                </Select.Option>
-              ))}
-            </Select>
+            <Controller
+              control={control}
+              name='department_id'
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  placeholder='请选择电商事业部'
+                  style={{ width: '264px' }}
+                >
+                  {departments?.items.map((item) => (
+                    <Select.Option key={item.id} value={item.id!}>
+                      {item.department_name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              )}
+            />
           </Show>
           <Button
             type='primary'
+            htmlType='submit'
             icon={<Search className='inline size-4' />}
-            onClick={commit}
           >
             查询
           </Button>
           <Button
             type='outline'
+            htmlType='reset'
             icon={<RotateCcw className='inline size-4' />}
-            onClick={reset}
           >
             重置
           </Button>
@@ -252,7 +271,7 @@ function BrandView() {
               新增
             </Button>
           </Show>
-        </TableLayout.Header>
+        </form>
       }
     >
       <MyTable

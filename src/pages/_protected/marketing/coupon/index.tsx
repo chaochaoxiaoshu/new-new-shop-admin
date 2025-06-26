@@ -3,12 +3,12 @@ import { keepPreviousData, queryOptions, useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { type } from 'arktype'
 import { Ellipsis, Plus, RotateCcw, Search } from 'lucide-react'
+import { Controller, useForm } from 'react-hook-form'
 import { CouponStatus, GetCouponsRes, getCoupons } from '@/api'
 import { MyTable } from '@/components/my-table'
 import { Show } from '@/components/show'
 import { TableLayout } from '@/components/table-layout'
 import { getHead } from '@/helpers'
-import { paginationFields, useTempSearch } from '@/hooks'
 import {
   defineTableColumns,
   formatDateTime,
@@ -54,10 +54,8 @@ function CouponsView() {
     (store) => store.checkActionPermission
   )
 
-  const { tempSearch, updateSearchField, commit, reset } = useTempSearch({
-    search,
-    updateFn: (search) => navigate({ search }),
-    selectDefaultFields: paginationFields
+  const { control, handleSubmit, reset } = useForm({
+    defaultValues: search
   })
 
   const { data, isFetching } = useQuery(context.couponsQueryOptions)
@@ -223,46 +221,73 @@ function CouponsView() {
   return (
     <TableLayout
       header={
-        <TableLayout.Header>
-          <Input
-            value={tempSearch.name}
-            placeholder='请输入活动名称'
-            style={{ width: '264px' }}
-            suffix={<Search className='inline size-4' />}
-            onChange={(value) => updateSearchField('name', value)}
+        <form
+          className='table-header'
+          onSubmit={handleSubmit((values) => navigate({ search: values }))}
+          onReset={() => {
+            reset()
+            navigate({
+              search: {
+                page_index: search.page_index,
+                page_size: search.page_size
+              }
+            })
+          }}
+        >
+          <Controller
+            control={control}
+            name='name'
+            render={({ field }) => (
+              <Input
+                {...field}
+                placeholder='请输入活动名称'
+                style={{ width: '264px' }}
+                suffix={<Search className='inline size-4' />}
+              />
+            )}
           />
-          <Select
-            value={tempSearch.type}
-            placeholder='请选择类型'
-            style={{ width: '264px' }}
-            onChange={(value) => updateSearchField('type', value as number)}
-          >
-            <Select.Option value={1}>满减券</Select.Option>
-            <Select.Option value={2}>折扣券</Select.Option>
-            <Select.Option value={3}>无门槛券</Select.Option>
-          </Select>
-          <Select
-            value={tempSearch.operate}
-            placeholder='请选择状态'
-            style={{ width: '264px' }}
-            onChange={(value) => updateSearchField('operate', value as number)}
-          >
-            <Select.Option value={5}>未开始</Select.Option>
-            <Select.Option value={3}>进行中</Select.Option>
-            <Select.Option value={4}>已结束</Select.Option>
-            <Select.Option value={2}>已失效</Select.Option>
-          </Select>
+          <Controller
+            control={control}
+            name='type'
+            render={({ field }) => (
+              <Select
+                {...field}
+                placeholder='请选择类型'
+                style={{ width: '264px' }}
+              >
+                <Select.Option value={1}>满减券</Select.Option>
+                <Select.Option value={2}>折扣券</Select.Option>
+                <Select.Option value={3}>无门槛券</Select.Option>
+              </Select>
+            )}
+          />
+          <Controller
+            control={control}
+            name='operate'
+            render={({ field }) => (
+              <Select
+                {...field}
+                placeholder='请选择状态'
+                style={{ width: '264px' }}
+              >
+                <Select.Option value={5}>未开始</Select.Option>
+                <Select.Option value={3}>进行中</Select.Option>
+                <Select.Option value={4}>已结束</Select.Option>
+                <Select.Option value={2}>已失效</Select.Option>
+              </Select>
+            )}
+          />
           <Button
             type='primary'
+            htmlType='submit'
             icon={<Search className='inline size-4' />}
-            onClick={commit}
           >
             查询
           </Button>
           <Button
             type='outline'
+            htmlType='reset'
             icon={<RotateCcw className='inline size-4' />}
-            onClick={reset}
           >
             重置
           </Button>
@@ -276,7 +301,7 @@ function CouponsView() {
               新增
             </Button>
           </Show>
-        </TableLayout.Header>
+        </form>
       }
     >
       <MyTable

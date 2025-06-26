@@ -17,7 +17,7 @@ import {
   TextCursorInput
 } from 'lucide-react'
 import { useState } from 'react'
-
+import { Controller, useForm } from 'react-hook-form'
 import {
   type GetCustomersRes,
   GetTagGroupsRes,
@@ -31,7 +31,7 @@ import { MyTag } from '@/components/my-tag'
 import { Show } from '@/components/show'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
-import { paginationFields, useMyModal, useTempSearch } from '@/hooks'
+import { useMyModal } from '@/hooks'
 import {
   cn,
   defineTableColumns,
@@ -85,10 +85,8 @@ function CustomersView() {
     (store) => store.checkActionPermission
   )
 
-  const { tempSearch, updateSearchField, commit, reset } = useTempSearch({
-    search,
-    updateFn: (search) => navigate({ search }),
-    selectDefaultFields: paginationFields
+  const { control, handleSubmit, reset } = useForm({
+    defaultValues: search
   })
 
   const { data: allTags } = useQuery(context.allTagsQueryOptions)
@@ -255,36 +253,58 @@ function CustomersView() {
   return (
     <TableLayout
       header={
-        <TableLayout.Header>
-          <Input
-            value={tempSearch.mobile}
-            placeholder='请输入手机号'
-            style={{ width: '264px' }}
-            suffix={<Smartphone className='inline size-4' />}
-            onChange={(val) => updateSearchField('mobile', val)}
+        <form
+          className='table-header'
+          onSubmit={handleSubmit((values) => navigate({ search: values }))}
+          onReset={() => {
+            reset()
+            navigate({
+              search: {
+                page_index: search.page_index,
+                page_size: search.page_size
+              }
+            })
+          }}
+        >
+          <Controller
+            control={control}
+            name='mobile'
+            render={({ field }) => (
+              <Input
+                {...field}
+                placeholder='请输入手机号'
+                style={{ width: '264px' }}
+                suffix={<Smartphone className='inline size-4' />}
+              />
+            )}
           />
-          <Input
-            value={tempSearch.nickname}
-            placeholder='请输入昵称'
-            style={{ width: '264px' }}
-            suffix={<TextCursorInput className='inline size-4' />}
-            onChange={(val) => updateSearchField('nickname', val)}
+          <Controller
+            control={control}
+            name='nickname'
+            render={({ field }) => (
+              <Input
+                {...field}
+                placeholder='请输入昵称'
+                style={{ width: '264px' }}
+                suffix={<TextCursorInput className='inline size-4' />}
+              />
+            )}
           />
           <Button
             type='primary'
+            htmlType='submit'
             icon={<Search className='inline size-4' />}
-            onClick={commit}
           >
             查询
           </Button>
           <Button
             type='outline'
+            htmlType='reset'
             icon={<RotateCcw className='inline size-4' />}
-            onClick={reset}
           >
             重置
           </Button>
-        </TableLayout.Header>
+        </form>
       }
     >
       <MyTable

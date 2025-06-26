@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useSearch } from '@tanstack/react-router'
 import { FileText, RotateCcw, Search, Smartphone } from 'lucide-react'
 import { useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import { GetOrdersRes, getOrders } from '@/api'
 import {
   AfterSalesStatus,
@@ -18,7 +19,6 @@ import {
   getPayStatusText,
   getShipStatusText
 } from '@/helpers'
-import { paginationFields, useTempSearch } from '@/hooks'
 import { defineTableColumns, formatDateTime, TableCellWidth } from '@/lib'
 import { useUserStore } from '@/stores'
 
@@ -71,8 +71,7 @@ function Orders() {
 
   type SearchParams = {
     order_ids?: string
-    start_time?: number
-    end_time?: number
+    range?: [number, number]
     ship_mobile?: string
     goods_name?: string
     page_index: number
@@ -82,10 +81,8 @@ function Orders() {
     page_index: 1,
     page_size: 20
   })
-  const { tempSearch, updateSearchField, commit, reset } = useTempSearch({
-    search: searchParams,
-    updateFn: setSearchParams,
-    selectDefaultFields: paginationFields
+  const { control, handleSubmit, reset } = useForm({
+    defaultValues: searchParams
   })
 
   const { data, isPending } = useQuery({
@@ -94,8 +91,8 @@ function Orders() {
       getOrders({
         ...searchParams,
         user_id: search.id,
-        start_time: searchParams.start_time,
-        end_time: searchParams.end_time,
+        start_time: searchParams.range?.[0],
+        end_time: searchParams.range?.[1],
         with_fields: ['order_items', 'users'],
         department_id: useUserStore.getState().departmentId!
       })
@@ -147,8 +144,8 @@ function Orders() {
         item.delivery === 1
           ? '快递邮寄'
           : item.delivery === 2
-            ? '门店自提'
-            : '-',
+          ? '门店自提'
+          : '-',
       align: 'center',
       width: 120,
       ellipsis: true
@@ -205,51 +202,75 @@ function Orders() {
 
   return (
     <>
-      <div className='flex-none flex flex-wrap gap-4 items-center'>
-        <Input
-          value={tempSearch.order_ids}
-          placeholder='请输入订单号'
-          style={{ width: '264px' }}
-          suffix={<FileText className='inline size-4' />}
-          onChange={(val) => updateSearchField('order_ids', val)}
+      <form
+        className='flex-none flex flex-wrap gap-4 items-center'
+        onSubmit={handleSubmit((values) => setSearchParams(values))}
+        onReset={() => {
+          reset()
+          setSearchParams({
+            page_index: searchParams.page_index,
+            page_size: searchParams.page_size
+          })
+        }}
+      >
+        <Controller
+          control={control}
+          name='order_ids'
+          render={({ field }) => (
+            <Input
+              {...field}
+              placeholder='请输入订单号'
+              style={{ width: '264px' }}
+              suffix={<FileText className='inline size-4' />}
+            />
+          )}
         />
-        <MyDatePicker.RangePicker
-          value={[tempSearch.start_time, tempSearch.end_time]}
-          style={{ width: '264px' }}
-          onChange={(val) => {
-            updateSearchField('start_time', val?.[0])
-            updateSearchField('end_time', val?.[1])
-          }}
+        <Controller
+          control={control}
+          name='range'
+          render={({ field }) => (
+            <MyDatePicker.RangePicker {...field} style={{ width: '264px' }} />
+          )}
         />
-        <Input
-          value={tempSearch.ship_mobile}
-          placeholder='请输入收货人手机号'
-          style={{ width: '264px' }}
-          suffix={<Smartphone className='inline size-4' />}
-          onChange={(val) => updateSearchField('ship_mobile', val)}
+        <Controller
+          control={control}
+          name='ship_mobile'
+          render={({ field }) => (
+            <Input
+              {...field}
+              placeholder='请输入收货人手机号'
+              style={{ width: '264px' }}
+              suffix={<Smartphone className='inline size-4' />}
+            />
+          )}
         />
-        <Input
-          value={tempSearch.goods_name}
-          placeholder='请输入商品名称'
-          style={{ width: '264px' }}
-          suffix={<Search className='inline size-4' />}
-          onChange={(val) => updateSearchField('goods_name', val)}
+        <Controller
+          control={control}
+          name='goods_name'
+          render={({ field }) => (
+            <Input
+              {...field}
+              placeholder='请输入商品名称'
+              style={{ width: '264px' }}
+              suffix={<Search className='inline size-4' />}
+            />
+          )}
         />
         <Button
           type='primary'
+          htmlType='submit'
           icon={<Search className='inline size-4' />}
-          onClick={commit}
         >
           查询
         </Button>
         <Button
           type='outline'
+          htmlType='reset'
           icon={<RotateCcw className='inline size-4' />}
-          onClick={reset}
         >
           重置
         </Button>
-      </div>
+      </form>
       <div className='mt-6'>
         <Table
           rowKey='order_id'
@@ -297,10 +318,8 @@ function AfterSales() {
     page_index: 1,
     page_size: 20
   })
-  const { tempSearch, updateSearchField, commit, reset } = useTempSearch({
-    search: searchParams,
-    updateFn: setSearchParams,
-    selectDefaultFields: paginationFields
+  const { control, handleSubmit, reset } = useForm({
+    defaultValues: searchParams
   })
 
   const { data, isPending } = useQuery({
@@ -373,55 +392,85 @@ function AfterSales() {
 
   return (
     <>
-      <div className='flex-none flex flex-wrap gap-4 items-center'>
-        <Input
-          value={tempSearch.after_sales_id}
-          placeholder='请输入售后单号'
-          style={{ width: '264px' }}
-          suffix={<FileText className='inline size-4' />}
-          onChange={(val) => updateSearchField('after_sales_id', val)}
+      <form
+        className='flex-none flex flex-wrap gap-4 items-center'
+        onSubmit={handleSubmit((values) => setSearchParams(values))}
+        onReset={() => {
+          reset()
+          setSearchParams({
+            page_index: searchParams.page_index,
+            page_size: searchParams.page_size
+          })
+        }}
+      >
+        <Controller
+          control={control}
+          name='after_sales_id'
+          render={({ field }) => (
+            <Input
+              {...field}
+              placeholder='请输入售后单号'
+              style={{ width: '264px' }}
+              suffix={<FileText className='inline size-4' />}
+            />
+          )}
         />
-        <Input
-          value={tempSearch.order_id}
-          placeholder='请输入订单号'
-          style={{ width: '264px' }}
-          suffix={<FileText className='inline size-4' />}
-          onChange={(val) => updateSearchField('order_id', val)}
+        <Controller
+          control={control}
+          name='order_id'
+          render={({ field }) => (
+            <Input
+              {...field}
+              placeholder='请输入订单号'
+              style={{ width: '264px' }}
+              suffix={<FileText className='inline size-4' />}
+            />
+          )}
         />
-        <Select
-          value={tempSearch.status}
-          placeholder='请选择状态'
-          style={{ width: '264px' }}
-          onChange={(val) => updateSearchField('status', val as number)}
-        >
-          <Select.Option value={1}>未审核</Select.Option>
-          <Select.Option value={2}>审核通过</Select.Option>
-          <Select.Option value={3}>审核拒绝</Select.Option>
-        </Select>
-        <Select
-          value={tempSearch.type}
-          placeholder='请选择商品状态'
-          style={{ width: '264px' }}
-          onChange={(val) => updateSearchField('type', val as number)}
-        >
-          <Select.Option value={1}>未发货</Select.Option>
-          <Select.Option value={2}>已发货</Select.Option>
-        </Select>
+        <Controller
+          control={control}
+          name='status'
+          render={({ field }) => (
+            <Select
+              {...field}
+              placeholder='请选择状态'
+              style={{ width: '264px' }}
+            >
+              <Select.Option value={1}>未审核</Select.Option>
+              <Select.Option value={2}>审核通过</Select.Option>
+              <Select.Option value={3}>审核拒绝</Select.Option>
+            </Select>
+          )}
+        />
+        <Controller
+          control={control}
+          name='type'
+          render={({ field }) => (
+            <Select
+              {...field}
+              placeholder='请选择商品状态'
+              style={{ width: '264px' }}
+            >
+              <Select.Option value={1}>未发货</Select.Option>
+              <Select.Option value={2}>已发货</Select.Option>
+            </Select>
+          )}
+        />
         <Button
           type='primary'
+          htmlType='submit'
           icon={<Search className='inline size-4' />}
-          onClick={commit}
         >
           查询
         </Button>
         <Button
           type='outline'
+          htmlType='reset'
           icon={<RotateCcw className='inline size-4' />}
-          onClick={reset}
         >
           重置
         </Button>
-      </div>
+      </form>
       <div className='mt-6'>
         <Table
           rowKey='after_sales_id'

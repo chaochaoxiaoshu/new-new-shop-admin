@@ -11,517 +11,517 @@
 // Import Routes
 
 import { Route as rootRoute } from './pages/__root'
-import { Route as ProtectedClientAccountDetailIndexImport } from './pages/_protected/client/account/detail/index'
-import { Route as ProtectedClientAccountIndexImport } from './pages/_protected/client/account/index'
-import { Route as ProtectedClientClientTagsEditImport } from './pages/_protected/client/clientTags/edit'
-import { Route as ProtectedClientClientTagsIndexImport } from './pages/_protected/client/clientTags/index'
-import { Route as ProtectedCommodityBrandIndexImport } from './pages/_protected/commodity/brand/index'
-import { Route as ProtectedCommodityCategoryIndexImport } from './pages/_protected/commodity/category/index'
-import { Route as ProtectedCommodityCategoryInfoImport } from './pages/_protected/commodity/category/info'
-import { Route as ProtectedCommodityCategoryAdminGoodsImport } from './pages/_protected/commodity/categoryAdmin/goods'
-import { Route as ProtectedCommodityCategoryAdminIndexImport } from './pages/_protected/commodity/categoryAdmin/index'
-import { Route as ProtectedCommodityCategoryAdminInfoImport } from './pages/_protected/commodity/categoryAdmin/info'
-import { Route as ProtectedCommodityMerchandiseConDetailIndexImport } from './pages/_protected/commodity/merchandiseCon/detail/index'
-import { Route as ProtectedCommodityMerchandiseConEvaluateImport } from './pages/_protected/commodity/merchandiseCon/evaluate'
-import { Route as ProtectedCommodityMerchandiseConIndexImport } from './pages/_protected/commodity/merchandiseCon/index'
+import { Route as LoginImport } from './pages/login'
+import { Route as ProtectedRouteImport } from './pages/_protected/route'
 import { Route as ProtectedIndexImport } from './pages/_protected/index'
-import { Route as ProtectedMarketingCouponDataImport } from './pages/_protected/marketing/coupon/data'
-import { Route as ProtectedMarketingCouponEditImport } from './pages/_protected/marketing/coupon/edit'
-import { Route as ProtectedMarketingCouponIndexImport } from './pages/_protected/marketing/coupon/index'
-import { Route as ProtectedMarketingCouponTargetedDistributionImport } from './pages/_protected/marketing/coupon/targeted-distribution'
-import { Route as ProtectedMarketingDrpCustomerImport } from './pages/_protected/marketing/drp/customer'
-import { Route as ProtectedMarketingDrpDataImport } from './pages/_protected/marketing/drp/data'
-import { Route as ProtectedMarketingDrpDistrHistoryImport } from './pages/_protected/marketing/drp/distrHistory'
-import { Route as ProtectedMarketingDrpDistrListGoodsListImport } from './pages/_protected/marketing/drp/distrList/goodsList'
-import { Route as ProtectedMarketingDrpDistrListIndexImport } from './pages/_protected/marketing/drp/distrList/index'
-import { Route as ProtectedMarketingDrpRuleImport } from './pages/_protected/marketing/drp/rule'
-import { Route as ProtectedMarketingDrpUserIndexImport } from './pages/_protected/marketing/drp/userIndex'
-import { Route as ProtectedMarketingFulldiscountsDataImport } from './pages/_protected/marketing/fulldiscounts/data'
-import { Route as ProtectedMarketingFulldiscountsEditImport } from './pages/_protected/marketing/fulldiscounts/edit'
-import { Route as ProtectedMarketingFulldiscountsIndexImport } from './pages/_protected/marketing/fulldiscounts/index'
-import { Route as ProtectedMarketingFullMpayNDataImport } from './pages/_protected/marketing/fullMpayN/data'
-import { Route as ProtectedMarketingFullMpayNEditImport } from './pages/_protected/marketing/fullMpayN/edit'
-import { Route as ProtectedMarketingFullMpayNIndexImport } from './pages/_protected/marketing/fullMpayN/index'
-import { Route as ProtectedMarketingLiveDataImport } from './pages/_protected/marketing/live/data'
-import { Route as ProtectedMarketingLiveEditImport } from './pages/_protected/marketing/live/edit'
-import { Route as ProtectedMarketingLiveGoodsImport } from './pages/_protected/marketing/live/goods'
-import { Route as ProtectedMarketingLiveIndexImport } from './pages/_protected/marketing/live/index'
-import { Route as ProtectedMarketingPieceDataImport } from './pages/_protected/marketing/piece/data'
-import { Route as ProtectedMarketingPieceEditImport } from './pages/_protected/marketing/piece/edit'
-import { Route as ProtectedMarketingPieceIndexImport } from './pages/_protected/marketing/piece/index'
-import { Route as ProtectedMarketingPurchaseEditImport } from './pages/_protected/marketing/purchase/edit'
-import { Route as ProtectedMarketingPurchaseIndexImport } from './pages/_protected/marketing/purchase/index'
-import { Route as ProtectedMarketingRaffleDataImport } from './pages/_protected/marketing/raffle/data'
-import { Route as ProtectedMarketingRaffleEditImport } from './pages/_protected/marketing/raffle/edit'
-import { Route as ProtectedMarketingRaffleIndexImport } from './pages/_protected/marketing/raffle/index'
-import { Route as ProtectedMarketingReductionDataImport } from './pages/_protected/marketing/reduction/data'
-import { Route as ProtectedMarketingReductionEditImport } from './pages/_protected/marketing/reduction/edit'
-import { Route as ProtectedMarketingReductionIndexImport } from './pages/_protected/marketing/reduction/index'
-import { Route as ProtectedMarketingSeckillingDataImport } from './pages/_protected/marketing/seckilling/data'
-import { Route as ProtectedMarketingSeckillingEditImport } from './pages/_protected/marketing/seckilling/edit'
-import { Route as ProtectedMarketingSeckillingIndexImport } from './pages/_protected/marketing/seckilling/index'
-import { Route as ProtectedMarketingTeambuyDataImport } from './pages/_protected/marketing/teambuy/data'
-import { Route as ProtectedMarketingTeambuyEditImport } from './pages/_protected/marketing/teambuy/edit'
-import { Route as ProtectedMarketingTeambuyIndexImport } from './pages/_protected/marketing/teambuy/index'
-import { Route as ProtectedMarketingTimelineEditingImport } from './pages/_protected/marketing/timeline/editing'
-import { Route as ProtectedMarketingTimelineIndexImport } from './pages/_protected/marketing/timeline/index'
-import { Route as ProtectedMarketingValuepackDataImport } from './pages/_protected/marketing/valuepack/data'
-import { Route as ProtectedMarketingValuepackEditImport } from './pages/_protected/marketing/valuepack/edit'
-import { Route as ProtectedMarketingValuepackIndexImport } from './pages/_protected/marketing/valuepack/index'
-import { Route as ProtectedOrderAfterSaleImport } from './pages/_protected/order/afterSale'
-import { Route as ProtectedOrderBillLadingImport } from './pages/_protected/order/billLading'
-import { Route as ProtectedOrderDispatchImport } from './pages/_protected/order/dispatch'
-import { Route as ProtectedOrderFreightImport } from './pages/_protected/order/freight'
 import { Route as ProtectedOrderIndexImport } from './pages/_protected/order/index'
 import { Route as ProtectedOrderReshipImport } from './pages/_protected/order/reship'
-import { Route as ProtectedRouteImport } from './pages/_protected/route'
-import { Route as LoginImport } from './pages/login'
+import { Route as ProtectedOrderFreightImport } from './pages/_protected/order/freight'
+import { Route as ProtectedOrderDispatchImport } from './pages/_protected/order/dispatch'
+import { Route as ProtectedOrderBillLadingImport } from './pages/_protected/order/billLading'
+import { Route as ProtectedOrderAfterSaleImport } from './pages/_protected/order/afterSale'
+import { Route as ProtectedMarketingValuepackIndexImport } from './pages/_protected/marketing/valuepack/index'
+import { Route as ProtectedMarketingTimelineIndexImport } from './pages/_protected/marketing/timeline/index'
+import { Route as ProtectedMarketingTeambuyIndexImport } from './pages/_protected/marketing/teambuy/index'
+import { Route as ProtectedMarketingSeckillingIndexImport } from './pages/_protected/marketing/seckilling/index'
+import { Route as ProtectedMarketingReductionIndexImport } from './pages/_protected/marketing/reduction/index'
+import { Route as ProtectedMarketingRaffleIndexImport } from './pages/_protected/marketing/raffle/index'
+import { Route as ProtectedMarketingPurchaseIndexImport } from './pages/_protected/marketing/purchase/index'
+import { Route as ProtectedMarketingPieceIndexImport } from './pages/_protected/marketing/piece/index'
+import { Route as ProtectedMarketingLiveIndexImport } from './pages/_protected/marketing/live/index'
+import { Route as ProtectedMarketingFulldiscountsIndexImport } from './pages/_protected/marketing/fulldiscounts/index'
+import { Route as ProtectedMarketingFullMpayNIndexImport } from './pages/_protected/marketing/fullMpayN/index'
+import { Route as ProtectedMarketingCouponIndexImport } from './pages/_protected/marketing/coupon/index'
+import { Route as ProtectedCommodityMerchandiseConIndexImport } from './pages/_protected/commodity/merchandiseCon/index'
+import { Route as ProtectedCommodityCategoryAdminIndexImport } from './pages/_protected/commodity/categoryAdmin/index'
+import { Route as ProtectedCommodityCategoryIndexImport } from './pages/_protected/commodity/category/index'
+import { Route as ProtectedCommodityBrandIndexImport } from './pages/_protected/commodity/brand/index'
+import { Route as ProtectedClientClientTagsIndexImport } from './pages/_protected/client/clientTags/index'
+import { Route as ProtectedClientAccountIndexImport } from './pages/_protected/client/account/index'
+import { Route as ProtectedMarketingValuepackEditImport } from './pages/_protected/marketing/valuepack/edit'
+import { Route as ProtectedMarketingValuepackDataImport } from './pages/_protected/marketing/valuepack/data'
+import { Route as ProtectedMarketingTimelineEditingImport } from './pages/_protected/marketing/timeline/editing'
+import { Route as ProtectedMarketingTeambuyEditImport } from './pages/_protected/marketing/teambuy/edit'
+import { Route as ProtectedMarketingTeambuyDataImport } from './pages/_protected/marketing/teambuy/data'
+import { Route as ProtectedMarketingSeckillingEditImport } from './pages/_protected/marketing/seckilling/edit'
+import { Route as ProtectedMarketingSeckillingDataImport } from './pages/_protected/marketing/seckilling/data'
+import { Route as ProtectedMarketingReductionEditImport } from './pages/_protected/marketing/reduction/edit'
+import { Route as ProtectedMarketingReductionDataImport } from './pages/_protected/marketing/reduction/data'
+import { Route as ProtectedMarketingRaffleEditImport } from './pages/_protected/marketing/raffle/edit'
+import { Route as ProtectedMarketingRaffleDataImport } from './pages/_protected/marketing/raffle/data'
+import { Route as ProtectedMarketingPurchaseEditImport } from './pages/_protected/marketing/purchase/edit'
+import { Route as ProtectedMarketingPieceEditImport } from './pages/_protected/marketing/piece/edit'
+import { Route as ProtectedMarketingPieceDataImport } from './pages/_protected/marketing/piece/data'
+import { Route as ProtectedMarketingLiveGoodsImport } from './pages/_protected/marketing/live/goods'
+import { Route as ProtectedMarketingLiveEditImport } from './pages/_protected/marketing/live/edit'
+import { Route as ProtectedMarketingLiveDataImport } from './pages/_protected/marketing/live/data'
+import { Route as ProtectedMarketingFulldiscountsEditImport } from './pages/_protected/marketing/fulldiscounts/edit'
+import { Route as ProtectedMarketingFulldiscountsDataImport } from './pages/_protected/marketing/fulldiscounts/data'
+import { Route as ProtectedMarketingFullMpayNEditImport } from './pages/_protected/marketing/fullMpayN/edit'
+import { Route as ProtectedMarketingFullMpayNDataImport } from './pages/_protected/marketing/fullMpayN/data'
+import { Route as ProtectedMarketingDrpUserIndexImport } from './pages/_protected/marketing/drp/userIndex'
+import { Route as ProtectedMarketingDrpRuleImport } from './pages/_protected/marketing/drp/rule'
+import { Route as ProtectedMarketingDrpDistrHistoryImport } from './pages/_protected/marketing/drp/distrHistory'
+import { Route as ProtectedMarketingDrpDataImport } from './pages/_protected/marketing/drp/data'
+import { Route as ProtectedMarketingDrpCustomerImport } from './pages/_protected/marketing/drp/customer'
+import { Route as ProtectedMarketingCouponTargetedDistributionImport } from './pages/_protected/marketing/coupon/targeted-distribution'
+import { Route as ProtectedMarketingCouponEditImport } from './pages/_protected/marketing/coupon/edit'
+import { Route as ProtectedMarketingCouponDataImport } from './pages/_protected/marketing/coupon/data'
+import { Route as ProtectedCommodityMerchandiseConEvaluateImport } from './pages/_protected/commodity/merchandiseCon/evaluate'
+import { Route as ProtectedCommodityCategoryAdminInfoImport } from './pages/_protected/commodity/categoryAdmin/info'
+import { Route as ProtectedCommodityCategoryAdminGoodsImport } from './pages/_protected/commodity/categoryAdmin/goods'
+import { Route as ProtectedCommodityCategoryInfoImport } from './pages/_protected/commodity/category/info'
+import { Route as ProtectedClientClientTagsEditImport } from './pages/_protected/client/clientTags/edit'
+import { Route as ProtectedMarketingDrpDistrListIndexImport } from './pages/_protected/marketing/drp/distrList/index'
+import { Route as ProtectedCommodityMerchandiseConDetailIndexImport } from './pages/_protected/commodity/merchandiseCon/detail/index'
+import { Route as ProtectedClientAccountDetailIndexImport } from './pages/_protected/client/account/detail/index'
+import { Route as ProtectedMarketingDrpDistrListGoodsListImport } from './pages/_protected/marketing/drp/distrList/goodsList'
 
 // Create/Update Routes
 
 const LoginRoute = LoginImport.update({
   id: '/login',
   path: '/login',
-  getParentRoute: () => rootRoute
+  getParentRoute: () => rootRoute,
 } as any)
 
 const ProtectedRouteRoute = ProtectedRouteImport.update({
   id: '/_protected',
-  getParentRoute: () => rootRoute
+  getParentRoute: () => rootRoute,
 } as any)
 
 const ProtectedIndexRoute = ProtectedIndexImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => ProtectedRouteRoute
+  getParentRoute: () => ProtectedRouteRoute,
 } as any)
 
 const ProtectedOrderIndexRoute = ProtectedOrderIndexImport.update({
   id: '/order/',
   path: '/order/',
-  getParentRoute: () => ProtectedRouteRoute
+  getParentRoute: () => ProtectedRouteRoute,
 } as any)
 
 const ProtectedOrderReshipRoute = ProtectedOrderReshipImport.update({
   id: '/order/reship',
   path: '/order/reship',
-  getParentRoute: () => ProtectedRouteRoute
+  getParentRoute: () => ProtectedRouteRoute,
 } as any)
 
 const ProtectedOrderFreightRoute = ProtectedOrderFreightImport.update({
   id: '/order/freight',
   path: '/order/freight',
-  getParentRoute: () => ProtectedRouteRoute
+  getParentRoute: () => ProtectedRouteRoute,
 } as any)
 
 const ProtectedOrderDispatchRoute = ProtectedOrderDispatchImport.update({
   id: '/order/dispatch',
   path: '/order/dispatch',
-  getParentRoute: () => ProtectedRouteRoute
+  getParentRoute: () => ProtectedRouteRoute,
 } as any)
 
 const ProtectedOrderBillLadingRoute = ProtectedOrderBillLadingImport.update({
   id: '/order/billLading',
   path: '/order/billLading',
-  getParentRoute: () => ProtectedRouteRoute
+  getParentRoute: () => ProtectedRouteRoute,
 } as any)
 
 const ProtectedOrderAfterSaleRoute = ProtectedOrderAfterSaleImport.update({
   id: '/order/afterSale',
   path: '/order/afterSale',
-  getParentRoute: () => ProtectedRouteRoute
+  getParentRoute: () => ProtectedRouteRoute,
 } as any)
 
 const ProtectedMarketingValuepackIndexRoute =
   ProtectedMarketingValuepackIndexImport.update({
     id: '/marketing/valuepack/',
     path: '/marketing/valuepack/',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingTimelineIndexRoute =
   ProtectedMarketingTimelineIndexImport.update({
     id: '/marketing/timeline/',
     path: '/marketing/timeline/',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingTeambuyIndexRoute =
   ProtectedMarketingTeambuyIndexImport.update({
     id: '/marketing/teambuy/',
     path: '/marketing/teambuy/',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingSeckillingIndexRoute =
   ProtectedMarketingSeckillingIndexImport.update({
     id: '/marketing/seckilling/',
     path: '/marketing/seckilling/',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingReductionIndexRoute =
   ProtectedMarketingReductionIndexImport.update({
     id: '/marketing/reduction/',
     path: '/marketing/reduction/',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingRaffleIndexRoute =
   ProtectedMarketingRaffleIndexImport.update({
     id: '/marketing/raffle/',
     path: '/marketing/raffle/',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingPurchaseIndexRoute =
   ProtectedMarketingPurchaseIndexImport.update({
     id: '/marketing/purchase/',
     path: '/marketing/purchase/',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingPieceIndexRoute =
   ProtectedMarketingPieceIndexImport.update({
     id: '/marketing/piece/',
     path: '/marketing/piece/',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingLiveIndexRoute =
   ProtectedMarketingLiveIndexImport.update({
     id: '/marketing/live/',
     path: '/marketing/live/',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingFulldiscountsIndexRoute =
   ProtectedMarketingFulldiscountsIndexImport.update({
     id: '/marketing/fulldiscounts/',
     path: '/marketing/fulldiscounts/',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingFullMpayNIndexRoute =
   ProtectedMarketingFullMpayNIndexImport.update({
     id: '/marketing/fullMpayN/',
     path: '/marketing/fullMpayN/',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingCouponIndexRoute =
   ProtectedMarketingCouponIndexImport.update({
     id: '/marketing/coupon/',
     path: '/marketing/coupon/',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedCommodityMerchandiseConIndexRoute =
   ProtectedCommodityMerchandiseConIndexImport.update({
     id: '/commodity/merchandiseCon/',
     path: '/commodity/merchandiseCon/',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedCommodityCategoryAdminIndexRoute =
   ProtectedCommodityCategoryAdminIndexImport.update({
     id: '/commodity/categoryAdmin/',
     path: '/commodity/categoryAdmin/',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedCommodityCategoryIndexRoute =
   ProtectedCommodityCategoryIndexImport.update({
     id: '/commodity/category/',
     path: '/commodity/category/',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedCommodityBrandIndexRoute =
   ProtectedCommodityBrandIndexImport.update({
     id: '/commodity/brand/',
     path: '/commodity/brand/',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedClientClientTagsIndexRoute =
   ProtectedClientClientTagsIndexImport.update({
     id: '/client/clientTags/',
     path: '/client/clientTags/',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedClientAccountIndexRoute =
   ProtectedClientAccountIndexImport.update({
     id: '/client/account/',
     path: '/client/account/',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingValuepackEditRoute =
   ProtectedMarketingValuepackEditImport.update({
     id: '/marketing/valuepack/edit',
     path: '/marketing/valuepack/edit',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingValuepackDataRoute =
   ProtectedMarketingValuepackDataImport.update({
     id: '/marketing/valuepack/data',
     path: '/marketing/valuepack/data',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingTimelineEditingRoute =
   ProtectedMarketingTimelineEditingImport.update({
     id: '/marketing/timeline/editing',
     path: '/marketing/timeline/editing',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingTeambuyEditRoute =
   ProtectedMarketingTeambuyEditImport.update({
     id: '/marketing/teambuy/edit',
     path: '/marketing/teambuy/edit',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingTeambuyDataRoute =
   ProtectedMarketingTeambuyDataImport.update({
     id: '/marketing/teambuy/data',
     path: '/marketing/teambuy/data',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingSeckillingEditRoute =
   ProtectedMarketingSeckillingEditImport.update({
     id: '/marketing/seckilling/edit',
     path: '/marketing/seckilling/edit',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingSeckillingDataRoute =
   ProtectedMarketingSeckillingDataImport.update({
     id: '/marketing/seckilling/data',
     path: '/marketing/seckilling/data',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingReductionEditRoute =
   ProtectedMarketingReductionEditImport.update({
     id: '/marketing/reduction/edit',
     path: '/marketing/reduction/edit',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingReductionDataRoute =
   ProtectedMarketingReductionDataImport.update({
     id: '/marketing/reduction/data',
     path: '/marketing/reduction/data',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingRaffleEditRoute =
   ProtectedMarketingRaffleEditImport.update({
     id: '/marketing/raffle/edit',
     path: '/marketing/raffle/edit',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingRaffleDataRoute =
   ProtectedMarketingRaffleDataImport.update({
     id: '/marketing/raffle/data',
     path: '/marketing/raffle/data',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingPurchaseEditRoute =
   ProtectedMarketingPurchaseEditImport.update({
     id: '/marketing/purchase/edit',
     path: '/marketing/purchase/edit',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingPieceEditRoute =
   ProtectedMarketingPieceEditImport.update({
     id: '/marketing/piece/edit',
     path: '/marketing/piece/edit',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingPieceDataRoute =
   ProtectedMarketingPieceDataImport.update({
     id: '/marketing/piece/data',
     path: '/marketing/piece/data',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingLiveGoodsRoute =
   ProtectedMarketingLiveGoodsImport.update({
     id: '/marketing/live/goods',
     path: '/marketing/live/goods',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingLiveEditRoute = ProtectedMarketingLiveEditImport.update(
   {
     id: '/marketing/live/edit',
     path: '/marketing/live/edit',
-    getParentRoute: () => ProtectedRouteRoute
-  } as any
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any,
 )
 
 const ProtectedMarketingLiveDataRoute = ProtectedMarketingLiveDataImport.update(
   {
     id: '/marketing/live/data',
     path: '/marketing/live/data',
-    getParentRoute: () => ProtectedRouteRoute
-  } as any
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any,
 )
 
 const ProtectedMarketingFulldiscountsEditRoute =
   ProtectedMarketingFulldiscountsEditImport.update({
     id: '/marketing/fulldiscounts/edit',
     path: '/marketing/fulldiscounts/edit',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingFulldiscountsDataRoute =
   ProtectedMarketingFulldiscountsDataImport.update({
     id: '/marketing/fulldiscounts/data',
     path: '/marketing/fulldiscounts/data',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingFullMpayNEditRoute =
   ProtectedMarketingFullMpayNEditImport.update({
     id: '/marketing/fullMpayN/edit',
     path: '/marketing/fullMpayN/edit',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingFullMpayNDataRoute =
   ProtectedMarketingFullMpayNDataImport.update({
     id: '/marketing/fullMpayN/data',
     path: '/marketing/fullMpayN/data',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingDrpUserIndexRoute =
   ProtectedMarketingDrpUserIndexImport.update({
     id: '/marketing/drp/userIndex',
     path: '/marketing/drp/userIndex',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingDrpRuleRoute = ProtectedMarketingDrpRuleImport.update({
   id: '/marketing/drp/rule',
   path: '/marketing/drp/rule',
-  getParentRoute: () => ProtectedRouteRoute
+  getParentRoute: () => ProtectedRouteRoute,
 } as any)
 
 const ProtectedMarketingDrpDistrHistoryRoute =
   ProtectedMarketingDrpDistrHistoryImport.update({
     id: '/marketing/drp/distrHistory',
     path: '/marketing/drp/distrHistory',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingDrpDataRoute = ProtectedMarketingDrpDataImport.update({
   id: '/marketing/drp/data',
   path: '/marketing/drp/data',
-  getParentRoute: () => ProtectedRouteRoute
+  getParentRoute: () => ProtectedRouteRoute,
 } as any)
 
 const ProtectedMarketingDrpCustomerRoute =
   ProtectedMarketingDrpCustomerImport.update({
     id: '/marketing/drp/customer',
     path: '/marketing/drp/customer',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingCouponTargetedDistributionRoute =
   ProtectedMarketingCouponTargetedDistributionImport.update({
     id: '/marketing/coupon/targeted-distribution',
     path: '/marketing/coupon/targeted-distribution',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingCouponEditRoute =
   ProtectedMarketingCouponEditImport.update({
     id: '/marketing/coupon/edit',
     path: '/marketing/coupon/edit',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingCouponDataRoute =
   ProtectedMarketingCouponDataImport.update({
     id: '/marketing/coupon/data',
     path: '/marketing/coupon/data',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedCommodityMerchandiseConEvaluateRoute =
   ProtectedCommodityMerchandiseConEvaluateImport.update({
     id: '/commodity/merchandiseCon/evaluate',
     path: '/commodity/merchandiseCon/evaluate',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedCommodityCategoryAdminInfoRoute =
   ProtectedCommodityCategoryAdminInfoImport.update({
     id: '/commodity/categoryAdmin/info',
     path: '/commodity/categoryAdmin/info',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedCommodityCategoryAdminGoodsRoute =
   ProtectedCommodityCategoryAdminGoodsImport.update({
     id: '/commodity/categoryAdmin/goods',
     path: '/commodity/categoryAdmin/goods',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedCommodityCategoryInfoRoute =
   ProtectedCommodityCategoryInfoImport.update({
     id: '/commodity/category/info',
     path: '/commodity/category/info',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedClientClientTagsEditRoute =
   ProtectedClientClientTagsEditImport.update({
     id: '/client/clientTags/edit',
     path: '/client/clientTags/edit',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingDrpDistrListIndexRoute =
   ProtectedMarketingDrpDistrListIndexImport.update({
     id: '/marketing/drp/distrList/',
     path: '/marketing/drp/distrList/',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedCommodityMerchandiseConDetailIndexRoute =
   ProtectedCommodityMerchandiseConDetailIndexImport.update({
     id: '/commodity/merchandiseCon/detail/',
     path: '/commodity/merchandiseCon/detail/',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedClientAccountDetailIndexRoute =
   ProtectedClientAccountDetailIndexImport.update({
     id: '/client/account/detail/',
     path: '/client/account/detail/',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 const ProtectedMarketingDrpDistrListGoodsListRoute =
   ProtectedMarketingDrpDistrListGoodsListImport.update({
     id: '/marketing/drp/distrList/goodsList',
     path: '/marketing/drp/distrList/goodsList',
-    getParentRoute: () => ProtectedRouteRoute
+    getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
 // Populate the FileRoutesByPath interface
@@ -1133,11 +1133,11 @@ const ProtectedRouteRouteChildren: ProtectedRouteRouteChildren = {
   ProtectedCommodityMerchandiseConDetailIndexRoute:
     ProtectedCommodityMerchandiseConDetailIndexRoute,
   ProtectedMarketingDrpDistrListIndexRoute:
-    ProtectedMarketingDrpDistrListIndexRoute
+    ProtectedMarketingDrpDistrListIndexRoute,
 }
 
 const ProtectedRouteRouteWithChildren = ProtectedRouteRoute._addFileChildren(
-  ProtectedRouteRouteChildren
+  ProtectedRouteRouteChildren,
 )
 
 export interface FileRoutesByFullPath {
@@ -1555,7 +1555,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   ProtectedRouteRoute: ProtectedRouteRouteWithChildren,
-  LoginRoute: LoginRoute
+  LoginRoute: LoginRoute,
 }
 
 export const routeTree = rootRoute

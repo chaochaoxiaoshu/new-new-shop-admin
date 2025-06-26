@@ -3,12 +3,12 @@ import { keepPreviousData, queryOptions, useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { type } from 'arktype'
 import { RotateCcw, Search } from 'lucide-react'
+import { Controller, useForm } from 'react-hook-form'
 import { GetGoodsRes, getGoods } from '@/api'
 import { MyImage } from '@/components/my-image'
 import { MyTable } from '@/components/my-table'
 import { TableLayout } from '@/components/table-layout'
 import { getHead } from '@/helpers'
-import { useTempSearch } from '@/hooks'
 import { defineTableColumns, queryClient, TableCellWidth } from '@/lib'
 import { useUserStore } from '@/stores'
 
@@ -47,14 +47,8 @@ function AdminCategoriesGoodsView() {
   const search = Route.useSearch()
   const navigate = Route.useNavigate()
 
-  const { tempSearch, setTempSearch, commit, reset } = useTempSearch({
-    search,
-    updateFn: (search) => navigate({ search }),
-    selectDefaultFields: (search) => ({
-      goods_cat_id: search.goods_cat_id,
-      page_index: search.page_index,
-      page_size: search.page_size
-    })
+  const { control, handleSubmit, reset } = useForm({
+    defaultValues: search
   })
 
   const { data, isFetching } = useQuery(
@@ -110,31 +104,46 @@ function AdminCategoriesGoodsView() {
   return (
     <TableLayout
       header={
-        <TableLayout.Header>
-          <Input
-            value={tempSearch.name}
-            placeholder='请输入商品名称'
-            style={{ width: '264px' }}
-            suffix={<Search className='inline size-4' />}
-            onChange={(value) =>
-              setTempSearch((prev) => ({ ...prev, name: value }))
-            }
+        <form
+          onSubmit={handleSubmit((values) => navigate({ search: values }))}
+          onReset={() => {
+            reset()
+            navigate({
+              search: {
+                goods_cat_id: search.goods_cat_id,
+                page_index: search.page_index,
+                page_size: search.page_size
+              }
+            })
+          }}
+        >
+          <Controller
+            control={control}
+            name='name'
+            render={({ field }) => (
+              <Input
+                {...field}
+                placeholder='请输入商品名称'
+                style={{ width: '264px' }}
+                suffix={<Search className='inline size-4' />}
+              />
+            )}
           />
           <Button
             type='primary'
+            htmlType='submit'
             icon={<Search className='inline size-4' />}
-            onClick={commit}
           >
             查询
           </Button>
           <Button
             type='outline'
+            htmlType='reset'
             icon={<RotateCcw className='inline size-4' />}
-            onClick={reset}
           >
             重置
           </Button>
-        </TableLayout.Header>
+        </form>
       }
     >
       <MyTable

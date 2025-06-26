@@ -11,6 +11,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { type } from 'arktype'
 import { Ellipsis, GripVertical, Plus, RotateCcw, Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import {
   GetPaginatedTagGroupsRes,
   GetTagsRes,
@@ -22,7 +23,6 @@ import { SortableTable } from '@/components/sortable-table'
 import { SortableTableDragHandle } from '@/components/sortable-table/drag-handle'
 import { TableLayout } from '@/components/table-layout'
 import { getHead } from '@/helpers'
-import { useTempSearch } from '@/hooks'
 import { defineTableColumns, formatDateTime, TableCellWidth } from '@/lib'
 import { useUserStore } from '@/stores'
 
@@ -121,7 +121,7 @@ function TagGroupsView() {
     <TableLayout
       className='min-w-0'
       header={
-        <TableLayout.Header className='flex-nowrap gap-3'>
+        <div className='flex-none flex flex-nowrap gap-3 items-center'>
           <Input.Search
             value={tempSearchText}
             searchButton
@@ -141,7 +141,7 @@ function TagGroupsView() {
               icon={<Plus className='inline size-4' />}
             />
           </Show>
-        </TableLayout.Header>
+        </div>
       }
     >
       <SortableTable<GetPaginatedTagGroupsRes>
@@ -192,21 +192,15 @@ function TagsView() {
     (store) => store.checkActionPermission
   )
 
-  const { tempSearch, updateSearchField, commit, reset } = useTempSearch({
-    search,
-    updateFn: (search) => navigate({ search }),
-    selectDefaultFields: (search) => ({
-      tagGroupId: search.tagGroupId,
-      page_index: search.page_index,
-      page_size: search.page_size
-    })
+  const { control, getValues, setValue, handleSubmit, reset } = useForm({
+    defaultValues: search
   })
 
   useEffect(() => {
-    if (tempSearch.tagGroupId !== search.tagGroupId) {
-      updateSearchField('tagGroupId', search.tagGroupId)
+    if (getValues('tagGroupId') !== search.tagGroupId) {
+      setValue('tagGroupId', search.tagGroupId)
     }
-  }, [search, tempSearch.tagGroupId, updateSearchField])
+  }, [search, getValues, setValue])
 
   const { data, isFetching } = useQuery({
     queryKey: ['tags', search],
@@ -343,44 +337,70 @@ function TagsView() {
     <TableLayout
       className='min-w-0'
       header={
-        <TableLayout.Header>
-          <Input
-            value={tempSearch.tag_name}
-            placeholder='请输入标签名称'
-            style={{ width: 264 }}
-            suffix={<Search className='inline size-4' />}
-            onChange={(val) => updateSearchField('tag_name', val)}
-            onPressEnter={commit}
+        <form
+          className='table-header'
+          onSubmit={handleSubmit((values) => navigate({ search: values }))}
+          onReset={() => {
+            reset()
+            navigate({
+              search: {
+                tagGroupId: search.tagGroupId,
+                page_index: search.page_index,
+                page_size: search.page_size
+              }
+            })
+          }}
+        >
+          <Controller
+            name='tag_name'
+            control={control}
+            render={({ field }) => (
+              <Input
+                {...field}
+                placeholder='请输入标签名称'
+                style={{ width: 264 }}
+                suffix={<Search className='inline size-4' />}
+              />
+            )}
           />
-          <Select
-            value={tempSearch.type}
-            placeholder='请选择标签类型'
-            style={{ width: 264 }}
-            onChange={(val) => updateSearchField('type', val as 1 | 2)}
-          >
-            <Select.Option value={1}>自定义标签</Select.Option>
-            <Select.Option value={2}>智能标签</Select.Option>
-          </Select>
+          <Controller
+            name='type'
+            control={control}
+            render={({ field }) => (
+              <Select
+                {...field}
+                placeholder='请选择标签类型'
+                style={{ width: 264 }}
+              >
+                <Select.Option value={1}>自定义标签</Select.Option>
+                <Select.Option value={2}>智能标签</Select.Option>
+              </Select>
+            )}
+          />
           <Button
             type='primary'
+            htmlType='submit'
             icon={<Search className='inline size-4' />}
-            onClick={commit}
           >
             查询
           </Button>
           <Button
             type='outline'
+            htmlType='reset'
             icon={<RotateCcw className='inline size-4' />}
-            onClick={reset}
           >
             重置
           </Button>
           {checkActionPermission('/client/clientTags/add/tag') && (
-            <Button type='primary' icon={<Plus className='inline size-4' />}>
+            <Button
+              type='primary'
+              htmlType='button'
+              icon={<Plus className='inline size-4' />}
+            >
               添加标签
             </Button>
           )}
-        </TableLayout.Header>
+        </form>
       }
     >
       <SortableTable<GetTagsRes>

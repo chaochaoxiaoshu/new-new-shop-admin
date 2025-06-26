@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useSearch } from '@tanstack/react-router'
 import { RotateCcw, Search } from 'lucide-react'
 import { useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import {
   GetUserBrowsingRes,
   GetUserCartRes,
@@ -14,7 +15,6 @@ import {
 } from '@/api'
 import { MyDatePicker } from '@/components/my-date-picker'
 import { MyImage } from '@/components/my-image'
-import { paginationFields, useTempSearch } from '@/hooks'
 import { defineTableColumns, formatDateTime, TableCellWidth } from '@/lib'
 
 export function BehaviorRecord() {
@@ -102,8 +102,7 @@ function Browsing() {
 
   type SearchParams = {
     goods_name?: string
-    start_time?: number
-    end_time?: number
+    range?: [number, number]
     page_index: number
     page_size: number
   }
@@ -111,18 +110,17 @@ function Browsing() {
     page_index: 1,
     page_size: 20
   })
-  const { tempSearch, setTempSearch, updateSearchField, commit, reset } =
-    useTempSearch({
-      search: searchParams,
-      updateFn: setSearchParams,
-      selectDefaultFields: paginationFields
-    })
+  const { control, handleSubmit, reset } = useForm({
+    defaultValues: searchParams
+  })
 
   const { data, isPending } = useQuery({
     queryKey: ['user-browsing', searchParams, search.id],
     queryFn: () =>
       getUserBrowsing({
         ...searchParams,
+        start_time: searchParams.range?.[0],
+        end_time: searchParams.range?.[1],
         user_id: search.id
       })
   })
@@ -157,40 +155,51 @@ function Browsing() {
 
   return (
     <>
-      <div className='flex-none flex flex-wrap gap-4 items-center'>
-        <Input
-          value={tempSearch.goods_name}
-          placeholder='请输入商品名称'
-          style={{ width: '264px' }}
-          suffix={<Search className='inline size-4' />}
-          onChange={(val) => updateSearchField('goods_name', val)}
+      <form
+        className='flex-none flex flex-wrap gap-4 items-center'
+        onSubmit={handleSubmit((values) => setSearchParams(values))}
+        onReset={() => {
+          reset()
+          setSearchParams({
+            page_index: searchParams.page_index,
+            page_size: searchParams.page_size
+          })
+        }}
+      >
+        <Controller
+          control={control}
+          name='goods_name'
+          render={({ field }) => (
+            <Input
+              {...field}
+              placeholder='请输入商品名称'
+              style={{ width: '264px' }}
+              suffix={<Search className='inline size-4' />}
+            />
+          )}
         />
-        <MyDatePicker.RangePicker
-          value={[tempSearch.start_time, tempSearch.end_time]}
-          style={{ width: '264px' }}
-          onChange={(val) => {
-            setTempSearch((prev) => ({
-              ...prev,
-              start_time: val?.[0],
-              end_time: val?.[1]
-            }))
-          }}
+        <Controller
+          control={control}
+          name='range'
+          render={({ field }) => (
+            <MyDatePicker.RangePicker {...field} style={{ width: '264px' }} />
+          )}
         />
         <Button
           type='primary'
+          htmlType='submit'
           icon={<Search className='inline size-4' />}
-          onClick={commit}
         >
           查询
         </Button>
         <Button
           type='outline'
+          htmlType='reset'
           icon={<RotateCcw className='inline size-4' />}
-          onClick={reset}
         >
           重置
         </Button>
-      </div>
+      </form>
       <div className='mt-6'>
         <Table
           rowKey='id'
@@ -227,8 +236,7 @@ function AddToCart() {
 
   type SearchParams = {
     formtype?: number
-    start_time?: number
-    end_time?: number
+    range?: [number, number]
     page_index: number
     page_size: number
   }
@@ -236,23 +244,22 @@ function AddToCart() {
     page_index: 1,
     page_size: 20
   })
-  const { tempSearch, setTempSearch, updateSearchField, commit, reset } =
-    useTempSearch({
-      search: searchParams,
-      updateFn: setSearchParams,
-      selectDefaultFields: paginationFields
-    })
+  const { control, handleSubmit, reset } = useForm({
+    defaultValues: searchParams
+  })
 
   const { data, isPending } = useQuery({
     queryKey: ['user-cart', searchParams, search.id],
     queryFn: () =>
       getUserCart({
         ...searchParams,
+        start_time: searchParams.range?.[0],
+        end_time: searchParams.range?.[1],
         user_id: search.id
       })
   })
 
-  const { columns } = defineTableColumns<GetUserCartRes>([
+  const { columns, totalWidth } = defineTableColumns<GetUserCartRes>([
     {
       title: '时间',
       render: (_, item) => formatDateTime(item.ctime),
@@ -295,48 +302,60 @@ function AddToCart() {
 
   return (
     <>
-      <div className='flex-none flex flex-wrap gap-4 items-center'>
-        <Select
-          value={tempSearch.formtype}
-          placeholder='请选择状态'
-          style={{ width: '264px' }}
-          onChange={(val) => updateSearchField('formtype', val as number)}
-        >
-          <Select.Option value={1}>加入购物车</Select.Option>
-          <Select.Option value={2}>移除购物车</Select.Option>
-        </Select>
-        <MyDatePicker.RangePicker
-          value={[tempSearch.start_time, tempSearch.end_time]}
-          style={{ width: '264px' }}
-          onChange={(val) => {
-            setTempSearch((prev) => ({
-              ...prev,
-              start_time: val?.[0],
-              end_time: val?.[1]
-            }))
-          }}
+      <form
+        className='flex-none flex flex-wrap gap-4 items-center'
+        onSubmit={handleSubmit((values) => setSearchParams(values))}
+        onReset={() => {
+          reset()
+          setSearchParams({
+            page_index: searchParams.page_index,
+            page_size: searchParams.page_size
+          })
+        }}
+      >
+        <Controller
+          control={control}
+          name='formtype'
+          render={({ field }) => (
+            <Select
+              {...field}
+              placeholder='请选择状态'
+              style={{ width: '264px' }}
+            >
+              <Select.Option value={1}>加入购物车</Select.Option>
+              <Select.Option value={2}>移除购物车</Select.Option>
+            </Select>
+          )}
+        />
+        <Controller
+          control={control}
+          name='range'
+          render={({ field }) => (
+            <MyDatePicker.RangePicker {...field} style={{ width: '264px' }} />
+          )}
         />
         <Button
           type='primary'
+          htmlType='submit'
           icon={<Search className='inline size-4' />}
-          onClick={commit}
         >
           查询
         </Button>
         <Button
           type='outline'
+          htmlType='reset'
           icon={<RotateCcw className='inline size-4' />}
-          onClick={reset}
         >
           重置
         </Button>
-      </div>
+      </form>
       <div className='mt-6'>
         <Table
           rowKey='id'
           data={data?.items ?? []}
           loading={isPending}
           columns={columns}
+          scroll={{ x: totalWidth + 200 }}
           borderCell
           pagination={{
             current: data?.paginate.page_index,
@@ -368,8 +387,7 @@ function Favorites() {
   type SearchParams = {
     goods_name?: string
     type?: number
-    start_time?: number
-    end_time?: number
+    range?: [number, number]
     page_index: number
     page_size: number
   }
@@ -377,18 +395,17 @@ function Favorites() {
     page_index: 1,
     page_size: 20
   })
-  const { tempSearch, setTempSearch, updateSearchField, commit, reset } =
-    useTempSearch({
-      search: searchParams,
-      updateFn: setSearchParams,
-      selectDefaultFields: paginationFields
-    })
+  const { control, handleSubmit, reset } = useForm({
+    defaultValues: searchParams
+  })
 
   const { data, isPending } = useQuery({
     queryKey: ['user-favorites', searchParams, search.id],
     queryFn: () =>
       getUserFavorites({
         ...searchParams,
+        start_time: searchParams.range?.[0],
+        end_time: searchParams.range?.[1],
         user_id: search.id
       })
   })
@@ -423,49 +440,65 @@ function Favorites() {
 
   return (
     <>
-      <div className='flex-none flex flex-wrap gap-4 items-center'>
-        <Input
-          value={tempSearch.goods_name}
-          placeholder='请输入商品名称'
-          style={{ width: '264px' }}
-          suffix={<Search className='inline size-4' />}
-          onChange={(val) => updateSearchField('goods_name', val)}
+      <form
+        className='flex-none flex flex-wrap gap-4 items-center'
+        onSubmit={handleSubmit((values) => setSearchParams(values))}
+        onReset={() => {
+          reset()
+          setSearchParams({
+            page_index: searchParams.page_index,
+            page_size: searchParams.page_size
+          })
+        }}
+      >
+        <Controller
+          control={control}
+          name='goods_name'
+          render={({ field }) => (
+            <Input
+              {...field}
+              placeholder='请输入商品名称'
+              style={{ width: '264px' }}
+              suffix={<Search className='inline size-4' />}
+            />
+          )}
         />
-        <Select
-          value={tempSearch.type}
-          placeholder='请选择状态'
-          style={{ width: '264px' }}
-          onChange={(val) => updateSearchField('type', val as number)}
-        >
-          <Select.Option value={1}>加入</Select.Option>
-          <Select.Option value={2}>移除</Select.Option>
-        </Select>
-        <MyDatePicker.RangePicker
-          value={[tempSearch.start_time, tempSearch.end_time]}
-          style={{ width: '264px' }}
-          onChange={(val) => {
-            setTempSearch((prev) => ({
-              ...prev,
-              start_time: val?.[0],
-              end_time: val?.[1]
-            }))
-          }}
+        <Controller
+          control={control}
+          name='type'
+          render={({ field }) => (
+            <Select
+              {...field}
+              placeholder='请选择状态'
+              style={{ width: '264px' }}
+            >
+              <Select.Option value={1}>加入</Select.Option>
+              <Select.Option value={2}>移除</Select.Option>
+            </Select>
+          )}
+        />
+        <Controller
+          control={control}
+          name='range'
+          render={({ field }) => (
+            <MyDatePicker.RangePicker {...field} style={{ width: '264px' }} />
+          )}
         />
         <Button
           type='primary'
+          htmlType='submit'
           icon={<Search className='inline size-4' />}
-          onClick={commit}
         >
           查询
         </Button>
         <Button
           type='outline'
+          htmlType='reset'
           icon={<RotateCcw className='inline size-4' />}
-          onClick={reset}
         >
           重置
         </Button>
-      </div>
+      </form>
       <div className='mt-6'>
         <Table
           rowKey='id'
@@ -502,8 +535,7 @@ function Sharing() {
 
   type SearchParams = {
     goods_name?: string
-    start_time?: number
-    end_time?: number
+    range?: [number, number]
     page_index: number
     page_size: number
   }
@@ -511,18 +543,17 @@ function Sharing() {
     page_index: 1,
     page_size: 20
   })
-  const { tempSearch, setTempSearch, updateSearchField, commit, reset } =
-    useTempSearch({
-      search: searchParams,
-      updateFn: setSearchParams,
-      selectDefaultFields: paginationFields
-    })
+  const { control, handleSubmit, reset } = useForm({
+    defaultValues: searchParams
+  })
 
   const { data, isPending } = useQuery({
     queryKey: ['user-sharing', searchParams, search.id],
     queryFn: () =>
       getUserSharingRecords({
         ...searchParams,
+        start_time: searchParams.range?.[0],
+        end_time: searchParams.range?.[1],
         user_id: search.id
       })
   })
@@ -551,40 +582,51 @@ function Sharing() {
 
   return (
     <>
-      <div className='flex-none flex flex-wrap gap-4 items-center'>
-        <Input
-          value={tempSearch.goods_name}
-          placeholder='请输入商品名称'
-          style={{ width: '264px' }}
-          suffix={<Search className='inline size-4' />}
-          onChange={(val) => updateSearchField('goods_name', val)}
+      <form
+        className='flex-none flex flex-wrap gap-4 items-center'
+        onSubmit={handleSubmit((values) => setSearchParams(values))}
+        onReset={() => {
+          reset()
+          setSearchParams({
+            page_index: searchParams.page_index,
+            page_size: searchParams.page_size
+          })
+        }}
+      >
+        <Controller
+          control={control}
+          name='goods_name'
+          render={({ field }) => (
+            <Input
+              {...field}
+              placeholder='请输入商品名称'
+              style={{ width: '264px' }}
+              suffix={<Search className='inline size-4' />}
+            />
+          )}
         />
-        <MyDatePicker.RangePicker
-          value={[tempSearch.start_time, tempSearch.end_time]}
-          style={{ width: '264px' }}
-          onChange={(val) => {
-            setTempSearch((prev) => ({
-              ...prev,
-              start_time: val?.[0],
-              end_time: val?.[1]
-            }))
-          }}
+        <Controller
+          control={control}
+          name='range'
+          render={({ field }) => (
+            <MyDatePicker.RangePicker {...field} style={{ width: '264px' }} />
+          )}
         />
         <Button
           type='primary'
+          htmlType='submit'
           icon={<Search className='inline size-4' />}
-          onClick={commit}
         >
           查询
         </Button>
         <Button
           type='outline'
+          htmlType='reset'
           icon={<RotateCcw className='inline size-4' />}
-          onClick={reset}
         >
           重置
         </Button>
-      </div>
+      </form>
       <div className='mt-6'>
         <Table
           rowKey='id'

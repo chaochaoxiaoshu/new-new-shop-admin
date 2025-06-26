@@ -3,10 +3,10 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useSearch } from '@tanstack/react-router'
 import { RotateCcw, Search } from 'lucide-react'
 import { useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import { GetUserCouponsRes, getUserCoupons, UserCouponIsUse } from '@/api'
 import { MyDatePicker } from '@/components/my-date-picker'
 import { getUserCouponIsUseText } from '@/helpers/marketing'
-import { paginationFields, useTempSearch } from '@/hooks'
 import { defineTableColumns, formatDateTime, TableCellWidth } from '@/lib'
 
 export function CouponDetail() {
@@ -15,10 +15,8 @@ export function CouponDetail() {
   type SearchParams = {
     discount_name?: string
     is_use?: UserCouponIsUse
-    collection_start_time?: number
-    collection_end_time?: number
-    use_start_time?: number
-    use_end_time?: number
+    collection_range?: [number, number]
+    use_range?: [number, number]
     page_index: number
     page_size: number
   }
@@ -26,18 +24,19 @@ export function CouponDetail() {
     page_index: 1,
     page_size: 20
   })
-  const { tempSearch, setTempSearch, updateSearchField, commit, reset } =
-    useTempSearch({
-      search: searchParams,
-      updateFn: setSearchParams,
-      selectDefaultFields: paginationFields
-    })
+  const { control, handleSubmit, reset } = useForm({
+    defaultValues: searchParams
+  })
 
   const { data, isFetching } = useQuery({
     queryKey: ['user-coupons', searchParams, search.id],
     queryFn: () =>
       getUserCoupons({
         ...searchParams,
+        collection_start_time: searchParams.collection_range?.[0],
+        collection_end_time: searchParams.collection_range?.[1],
+        use_start_time: searchParams.use_range?.[0],
+        use_end_time: searchParams.use_range?.[1],
         user_id: search.id
       }),
     placeholderData: keepPreviousData
@@ -96,68 +95,90 @@ export function CouponDetail() {
 
   return (
     <>
-      <div className='flex-none flex flex-wrap gap-4 items-center mt-6'>
-        <Input
-          value={tempSearch.discount_name}
-          placeholder='请输入优惠券名称'
-          style={{ width: '264px' }}
-          suffix={<Search className='inline size-4' />}
-          onChange={(val) => updateSearchField('discount_name', val)}
+      <form
+        className='flex-none flex flex-wrap gap-4 items-center mt-6'
+        onSubmit={handleSubmit((values) => {
+          console.log(values)
+          setSearchParams(values)
+        })}
+        onReset={() => {
+          reset()
+          setSearchParams({
+            page_index: searchParams.page_index,
+            page_size: searchParams.page_size
+          })
+        }}
+      >
+        <Controller
+          control={control}
+          name='discount_name'
+          render={({ field }) => (
+            <Input
+              {...field}
+              placeholder='请输入优惠券名称'
+              style={{ width: '264px' }}
+              suffix={<Search className='inline size-4' />}
+            />
+          )}
         />
-        <Select
-          value={tempSearch.is_use}
-          placeholder='请选择状态'
-          style={{ width: '264px' }}
-          onChange={(val) => updateSearchField('is_use', val as number)}
-        >
-          <Select.Option value={UserCouponIsUse.未使用}>未使用</Select.Option>
-          <Select.Option value={UserCouponIsUse.已使用}>已使用</Select.Option>
-          <Select.Option value={UserCouponIsUse.停止使用}>
-            停止使用
-          </Select.Option>
-        </Select>
-        <MyDatePicker.RangePicker
-          value={[
-            tempSearch.collection_start_time,
-            tempSearch.collection_end_time
-          ]}
-          placeholder={['领取开始时间', '领取结束时间']}
-          style={{ width: '264px' }}
-          onChange={(val) => {
-            setTempSearch((prev) => ({
-              ...prev,
-              collection_start_time: val?.[0],
-              collection_end_time: val?.[1]
-            }))
-          }}
+        <Controller
+          control={control}
+          name='is_use'
+          render={({ field }) => (
+            <Select
+              {...field}
+              placeholder='请选择状态'
+              style={{ width: '264px' }}
+            >
+              <Select.Option value={UserCouponIsUse.未使用}>
+                未使用
+              </Select.Option>
+              <Select.Option value={UserCouponIsUse.已使用}>
+                已使用
+              </Select.Option>
+              <Select.Option value={UserCouponIsUse.停止使用}>
+                停止使用
+              </Select.Option>
+            </Select>
+          )}
         />
-        <MyDatePicker.RangePicker
-          value={[tempSearch.use_start_time, tempSearch.use_end_time]}
-          placeholder={['使用开始时间', '使用结束时间']}
-          style={{ width: '264px' }}
-          onChange={(val) => {
-            setTempSearch((prev) => ({
-              ...prev,
-              use_start_time: val?.[0],
-              use_end_time: val?.[1]
-            }))
-          }}
+        <Controller
+          control={control}
+          name='collection_range'
+          render={({ field }) => (
+            <MyDatePicker.RangePicker
+              {...field}
+              placeholder={['领取开始时间', '领取结束时间']}
+              style={{ width: '264px' }}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name='use_range'
+          render={({ field }) => (
+            <MyDatePicker.RangePicker
+              {...field}
+              placeholder={['使用开始时间', '使用结束时间']}
+              style={{ width: '264px' }}
+            />
+          )}
         />
         <Button
           type='primary'
+          htmlType='submit'
           icon={<Search className='inline size-4' />}
-          onClick={commit}
         >
           查询
         </Button>
         <Button
           type='outline'
+          htmlType='reset'
           icon={<RotateCcw className='inline size-4' />}
-          onClick={reset}
         >
           重置
         </Button>
-      </div>
+      </form>
       <div className='mt-6'>
         <Table
           rowKey='id'

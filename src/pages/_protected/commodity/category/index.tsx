@@ -18,6 +18,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { type } from 'arktype'
 import { Plus, RotateCcw, Search } from 'lucide-react'
 import { useMemo } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import {
   addGoodsCategory,
   deleteGoodsCategory,
@@ -32,7 +33,7 @@ import { MyTable } from '@/components/my-table'
 import { Show } from '@/components/show'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
-import { paginationFields, useMyModal, useTempSearch } from '@/hooks'
+import { useMyModal } from '@/hooks'
 import { defineTableColumns, queryClient, TableCellWidth } from '@/lib'
 import { useUserStore } from '@/stores'
 
@@ -103,10 +104,8 @@ function GoodsCategoryView() {
     (store) => store.checkActionPermission
   )
 
-  const { tempSearch, updateSearchField, commit, reset } = useTempSearch({
-    search,
-    updateFn: (search) => navigate({ search }),
-    selectDefaultFields: paginationFields
+  const { control, handleSubmit, reset } = useForm({
+    defaultValues: search
   })
 
   const { data: departments } = useQuery(context.departmentsQueryOptions)
@@ -249,41 +248,59 @@ function GoodsCategoryView() {
   return (
     <TableLayout
       header={
-        <TableLayout.Header>
-          <Input
-            value={tempSearch.name}
-            placeholder='请输入分类名称'
-            style={{ width: '264px' }}
-            suffix={<Search className='inline size-4' />}
-            onChange={(value) => updateSearchField('name', value)}
-          />
-          <Show when={departmentId === 0}>
-            <Select
-              value={tempSearch.department}
-              placeholder='请选择电商事业部'
-              style={{ width: '264px' }}
-              onChange={(value) =>
-                updateSearchField('department', value as number)
+        <form
+          className='table-header'
+          onSubmit={handleSubmit((values) => navigate({ search: values }))}
+          onReset={() => {
+            reset()
+            navigate({
+              search: {
+                page_index: search.page_index,
+                page_size: search.page_size
               }
-            >
-              {departments?.items.map((item) => (
-                <Select.Option key={item.id} value={item.id!}>
-                  {item.department_name}
-                </Select.Option>
-              ))}
-            </Select>
-          </Show>
+            })
+          }}
+        >
+          <Controller
+            control={control}
+            name='name'
+            render={({ field }) => (
+              <Input
+                {...field}
+                placeholder='请输入分类名称'
+                style={{ width: '264px' }}
+                suffix={<Search className='inline size-4' />}
+              />
+            )}
+          />
+          <Controller
+            control={control}
+            name='department'
+            render={({ field }) => (
+              <Select
+                {...field}
+                placeholder='请选择电商事业部'
+                style={{ width: '264px' }}
+              >
+                {departments?.items.map((item) => (
+                  <Select.Option key={item.id} value={item.id!}>
+                    {item.department_name}
+                  </Select.Option>
+                ))}
+              </Select>
+            )}
+          />
           <Button
             type='primary'
+            htmlType='submit'
             icon={<Search className='inline size-4' />}
-            onClick={commit}
           >
             查询
           </Button>
           <Button
             type='outline'
+            htmlType='reset'
             icon={<RotateCcw className='inline size-4' />}
-            onClick={reset}
           >
             重置
           </Button>
@@ -301,7 +318,7 @@ function GoodsCategoryView() {
               新增
             </Button>
           </Show>
-        </TableLayout.Header>
+        </form>
       }
     >
       <MyTable

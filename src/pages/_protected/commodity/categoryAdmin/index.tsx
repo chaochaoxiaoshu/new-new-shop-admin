@@ -217,8 +217,8 @@ function AdminCategoryView() {
   return (
     <TableLayout
       header={
-        <Show when={checkActionPermission('/commodity/categoryAdmin/add')}>
-          <TableLayout.Header>
+        <div>
+          <Show when={checkActionPermission('/commodity/categoryAdmin/add')}>
             <Button
               type='primary'
               icon={<Plus className='inline size-4' />}
@@ -226,8 +226,8 @@ function AdminCategoryView() {
             >
               新增
             </Button>
-          </TableLayout.Header>
-        </Show>
+          </Show>
+        </div>
       }
     >
       <MyTable

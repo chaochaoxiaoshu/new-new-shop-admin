@@ -31,7 +31,6 @@ import {
   XAxis,
   YAxis
 } from 'recharts'
-
 import {
   getCustomersStatistic,
   getOrdersStatistic,

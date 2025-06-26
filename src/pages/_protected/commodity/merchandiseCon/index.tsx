@@ -16,6 +16,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { type } from 'arktype'
 import { ChevronDown, Ellipsis, Plus, RotateCcw, Search } from 'lucide-react'
 import { useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import {
   deleteGoods,
   GetGoodsRes,
@@ -30,7 +31,6 @@ import { MyTable } from '@/components/my-table'
 import { Show } from '@/components/show'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
-import { paginationFields, useTempSearch } from '@/hooks'
 import { defineTableColumns, queryClient, TableCellWidth } from '@/lib'
 import { useUserStore } from '@/stores'
 
@@ -71,7 +71,8 @@ export const Route = createFileRoute('/_protected/commodity/merchandiseCon/')({
       queryFn: () =>
         getGoods({
           ...search,
-          department_id: useUserStore.getState().departmentId!,
+          department_id:
+            search.department_id ?? useUserStore.getState().departmentId!,
           with_fields: [
             'goods_type_name',
             'brand_name',
@@ -104,12 +105,9 @@ function GoodsView() {
     (store) => store.checkActionPermission
   )
 
-  const { tempSearch, setTempSearch, updateSearchField, commit, reset } =
-    useTempSearch({
-      search,
-      updateFn: (search) => navigate({ search }),
-      selectDefaultFields: paginationFields
-    })
+  const { control, setValue, handleSubmit, reset } = useForm({
+    defaultValues: search
+  })
 
   const { data: departments } = useQuery(context.departmentsQueryOptions)
   const { data: brandsData } = useQuery(context.brandsQueryOptions)
@@ -367,114 +365,152 @@ function GoodsView() {
     <TableLayout
       header={
         <div className='flex flex-col'>
-          <TableLayout.Header>
-            <Input
-              value={tempSearch.name}
-              placeholder='请输入商品名称'
-              style={{ width: '264px' }}
-              suffix={<Search className='inline size-4' />}
-              onChange={(value) => updateSearchField('name', value)}
-            />
-            <Select
-              value={tempSearch.marketable}
-              placeholder='请选择上下架状态'
-              style={{ width: '264px' }}
-              onChange={(value) =>
-                updateSearchField('marketable', value as 1 | 2)
-              }
-            >
-              <Select.Option value={1}>上架</Select.Option>
-              <Select.Option value={2}>下架</Select.Option>
-            </Select>
-            <Show when={departmentId === 0}>
-              <Select
-                value={tempSearch.department_id}
-                placeholder='请选择电商事业部'
-                style={{ width: '264px' }}
-                onChange={(value) =>
-                  updateSearchField('department_id', value as number)
+          <form
+            className='table-header'
+            onSubmit={handleSubmit((values) => navigate({ search: values }))}
+            onReset={() => {
+              reset()
+              navigate({
+                search: {
+                  page_index: search.page_index,
+                  page_size: search.page_size
                 }
-              >
-                {departments?.items.map((item) => (
-                  <Select.Option key={item.id} value={item.id!}>
-                    {item.department_name}
-                  </Select.Option>
-                ))}
-              </Select>
+              })
+            }}
+          >
+            <Controller
+              control={control}
+              name='name'
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  placeholder='商品名称'
+                  style={{ width: 264 }}
+                  suffix={<Search className='inline size-4' />}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name='marketable'
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  placeholder='请选择上下架状态'
+                  style={{ width: '264px' }}
+                >
+                  <Select.Option value={1}>上架</Select.Option>
+                  <Select.Option value={2}>下架</Select.Option>
+                </Select>
+              )}
+            />
+            <Show when={departmentId === 0}>
+              <Controller
+                control={control}
+                name='department_id'
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    placeholder='请选择电商事业部'
+                    style={{ width: '264px' }}
+                  >
+                    {departments?.items.map((item) => (
+                      <Select.Option key={item.id} value={item.id!}>
+                        {item.department_name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                )}
+              />
             </Show>
-            <Select
-              value={tempSearch.brand_id}
-              placeholder='请选择商品品牌'
-              style={{ width: '264px' }}
-              onChange={(value) =>
-                updateSearchField('brand_id', value as number)
-              }
-            >
-              {brandsData?.items.map((item) => (
-                <Select.Option key={item.brand_id} value={item.brand_id!}>
-                  {item.name}
-                </Select.Option>
-              ))}
-            </Select>
-            <Select
-              value={tempSearch.is_lnternal}
-              placeholder='请选择是否支持内购'
-              style={{ width: '264px' }}
-              onChange={(value) =>
-                updateSearchField('is_lnternal', value as 1 | 2)
-              }
-            >
-              <Select.Option value={1}>是</Select.Option>
-              <Select.Option value={2}>否</Select.Option>
-            </Select>
-            <Select
-              value={tempSearch.is_member_price}
-              placeholder='请选择是否支持会员价'
-              style={{ width: '264px' }}
-              onChange={(value) =>
-                updateSearchField('is_member_price', value as 1 | 2)
-              }
-            >
-              <Select.Option value={1}>是</Select.Option>
-              <Select.Option value={2}>否</Select.Option>
-            </Select>
-            <Select
-              value={tempSearch.is_approve}
-              placeholder='请选择是否内购专区商品'
-              style={{ width: '264px' }}
-              onChange={(value) =>
-                updateSearchField('is_approve', value as 1 | 2)
-              }
-            >
-              <Select.Option value={1}>是</Select.Option>
-              <Select.Option value={2}>否</Select.Option>
-            </Select>
-            <Select
-              value={tempSearch.is_hidelinks}
-              placeholder='请选择是否隐藏链接'
-              style={{ width: '264px' }}
-              onChange={(value) =>
-                updateSearchField('is_hidelinks', value as 1 | 2)
-              }
-            >
-              <Select.Option value={1}>是</Select.Option>
-              <Select.Option value={2}>否</Select.Option>
-            </Select>
+            <Controller
+              control={control}
+              name='brand_id'
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  placeholder='请选择商品品牌'
+                  style={{ width: '264px' }}
+                >
+                  {brandsData?.items.map((item) => (
+                    <Select.Option key={item.brand_id} value={item.brand_id!}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              )}
+            />
+            <Controller
+              control={control}
+              name='is_lnternal'
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  placeholder='请选择是否支持内购'
+                  style={{ width: '264px' }}
+                >
+                  <Select.Option value={1}>是</Select.Option>
+                  <Select.Option value={2}>否</Select.Option>
+                </Select>
+              )}
+            />
+            <Controller
+              control={control}
+              name='is_member_price'
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  placeholder='请选择是否支持会员价'
+                  style={{ width: '264px' }}
+                >
+                  <Select.Option value={1}>是</Select.Option>
+                  <Select.Option value={2}>否</Select.Option>
+                </Select>
+              )}
+            />
+            <Controller
+              control={control}
+              name='is_approve'
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  placeholder='请选择是否内购专区商品'
+                  style={{ width: '264px' }}
+                >
+                  <Select.Option value={1}>是</Select.Option>
+                  <Select.Option value={2}>否</Select.Option>
+                </Select>
+              )}
+            />
+            <Controller
+              control={control}
+              name='is_hidelinks'
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  placeholder='请选择是否隐藏链接'
+                  style={{ width: '264px' }}
+                >
+                  <Select.Option value={1}>是</Select.Option>
+                  <Select.Option value={2}>否</Select.Option>
+                </Select>
+              )}
+            />
             <Button
               type='primary'
+              htmlType='submit'
               icon={<Search className='inline size-4' />}
-              onClick={commit}
             >
               查询
             </Button>
             <Button
               type='outline'
+              htmlType='reset'
               icon={<RotateCcw className='inline size-4' />}
-              onClick={reset}
             >
               重置
             </Button>
-          </TableLayout.Header>
+          </form>
           <div className='flex items-center h-5 mt-6'>
             <div className='font-semibold mr-4'>商品列表</div>
             <div className='w-[1px] h-4 bg-[var(--color-border-2)]' />
@@ -505,13 +541,13 @@ function GoodsView() {
                 </div>
               }
               onChange={(val) => {
-                setTempSearch((prev) => {
-                  const next = {
-                    ...prev,
-                    marketable: val !== '' ? (val as 1 | 2) : undefined
+                const nextValue = val !== '' ? (val as 1 | 2) : undefined
+                setValue('marketable', nextValue)
+                navigate({
+                  search: {
+                    ...search,
+                    marketable: nextValue
                   }
-                  navigate({ search: next })
-                  return next
                 })
               }}
             >

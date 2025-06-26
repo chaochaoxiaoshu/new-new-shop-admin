@@ -8,6 +8,7 @@ import {
 import { createFileRoute } from '@tanstack/react-router'
 import { type } from 'arktype'
 import { Plus, RotateCcw, Search } from 'lucide-react'
+import { Controller, useForm } from 'react-hook-form'
 import {
   deleteGoodsCategory,
   GetGoodsSecondaryCategoriesRes,
@@ -18,7 +19,7 @@ import { MyTable } from '@/components/my-table'
 import { Show } from '@/components/show'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
-import { useMyModal, useTempSearch } from '@/hooks'
+import { useMyModal } from '@/hooks'
 import { defineTableColumns, queryClient, TableCellWidth } from '@/lib'
 import { useUserStore } from '@/stores'
 import { EditForm } from '.'
@@ -62,14 +63,8 @@ function GoodsSecondaryCategoriesView() {
     (store) => store.checkActionPermission
   )
 
-  const { tempSearch, updateSearchField, commit, reset } = useTempSearch({
-    search,
-    updateFn: (search) => navigate({ search }),
-    selectDefaultFields: (search) => ({
-      id: search.id,
-      page_index: search.page_index,
-      page_size: search.page_size
-    })
+  const { control, handleSubmit, reset } = useForm({
+    defaultValues: search
   })
 
   const { data, isFetching } = useQuery(
@@ -193,25 +188,43 @@ function GoodsSecondaryCategoriesView() {
   return (
     <TableLayout
       header={
-        <TableLayout.Header>
-          <Input
-            value={tempSearch.name}
-            placeholder='请输入分类名称'
-            style={{ width: '264px' }}
-            suffix={<Search className='inline size-4' />}
-            onChange={(value) => updateSearchField('name', value)}
+        <form
+          className='table-header'
+          onSubmit={handleSubmit((values) => navigate({ search: values }))}
+          onReset={() => {
+            reset()
+            navigate({
+              search: {
+                id: search.id,
+                page_index: search.page_index,
+                page_size: search.page_size
+              }
+            })
+          }}
+        >
+          <Controller
+            control={control}
+            name='name'
+            render={({ field }) => (
+              <Input
+                {...field}
+                placeholder='请输入分类名称'
+                style={{ width: '264px' }}
+                suffix={<Search className='inline size-4' />}
+              />
+            )}
           />
           <Button
             type='primary'
+            htmlType='submit'
             icon={<Search className='inline size-4' />}
-            onClick={commit}
           >
             查询
           </Button>
           <Button
             type='outline'
+            htmlType='reset'
             icon={<RotateCcw className='inline size-4' />}
-            onClick={reset}
           >
             重置
           </Button>
@@ -229,7 +242,7 @@ function GoodsSecondaryCategoriesView() {
               新增
             </Button>
           </Show>
-        </TableLayout.Header>
+        </form>
       }
     >
       <MyTable

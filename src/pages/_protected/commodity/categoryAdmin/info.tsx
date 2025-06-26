@@ -193,15 +193,13 @@ function AdminSecondaryCategoryView() {
         <Show
           when={checkActionPermission('/commodity/categoryAdmin/add/second')}
         >
-          <TableLayout.Header>
-            <Button
-              type='primary'
-              icon={<Plus className='inline size-4' />}
-              onClick={handleAdd}
-            >
-              新增
-            </Button>
-          </TableLayout.Header>
+          <Button
+            type='primary'
+            icon={<Plus className='inline size-4' />}
+            onClick={handleAdd}
+          >
+            新增
+          </Button>
         </Show>
       }
     >

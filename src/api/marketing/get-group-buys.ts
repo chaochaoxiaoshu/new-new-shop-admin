@@ -15,6 +15,8 @@ export type GroupBuyStatus =
 export type GetGroupBuysReq = {
   name?: string
   operate?: number
+  start_time?: number
+  end_time?: number
   department: number
 } & PaginatedReq
 

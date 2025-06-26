@@ -17,6 +17,7 @@ import {
 import { createFileRoute } from '@tanstack/react-router'
 import { type } from 'arktype'
 import { FileText, RotateCcw, Search } from 'lucide-react'
+import { Controller, useForm } from 'react-hook-form'
 import {
   GetCommentsRes,
   getCommentDetail,
@@ -31,7 +32,7 @@ import { MyTable } from '@/components/my-table'
 import { Show } from '@/components/show'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
-import { paginationFields, useMyModal, useTempSearch } from '@/hooks'
+import { useMyModal } from '@/hooks'
 import {
   defineTableColumns,
   formatDateTime,
@@ -51,8 +52,7 @@ export const Route = createFileRoute(
     'order_id?': 'string',
     'department?': 'number',
     'display?': '1 | 2',
-    'start_time?': 'number',
-    'end_time?': 'number',
+    'range?': ['number', 'number'],
     page_index: ['number', '=', 1],
     page_size: ['number', '=', 20]
   }),
@@ -72,6 +72,8 @@ export const Route = createFileRoute(
         queryFn: () =>
           getComments({
             ...search,
+            start_time: search.range?.[0],
+            end_time: search.range?.[1],
             department:
               signedDepartment === 0 ? search.department : signedDepartment
           }),
@@ -94,10 +96,8 @@ function CommentsView() {
   const departmentId = useUserStore((store) => store.departmentId)
   const [openModal, contextHolder] = useMyModal()
 
-  const { tempSearch, updateSearchField, commit, reset } = useTempSearch({
-    search,
-    updateFn: (search) => navigate({ search }),
-    selectDefaultFields: paginationFields
+  const { control, handleSubmit, reset } = useForm({
+    defaultValues: search
   })
 
   const { data: departments } = useQuery(context.departmentsQueryOptions)
@@ -225,73 +225,98 @@ function CommentsView() {
   return (
     <TableLayout
       header={
-        <TableLayout.Header>
-          <Input
-            value={tempSearch.name}
-            placeholder='请输入商品名称'
-            style={{ width: '264px' }}
-            suffix={<Search className='inline size-4' />}
-            onChange={(value) => updateSearchField('name', value)}
+        <form
+          className='table-header'
+          onSubmit={handleSubmit((values) => navigate({ search: values }))}
+          onReset={() => {
+            reset()
+            navigate({
+              search: {
+                page_index: search.page_index,
+                page_size: search.page_size
+              }
+            })
+          }}
+        >
+          <Controller
+            control={control}
+            name='name'
+            render={({ field }) => (
+              <Input
+                {...field}
+                placeholder='请输入商品名称'
+                style={{ width: '264px' }}
+                suffix={<Search className='inline size-4' />}
+              />
+            )}
           />
-          <Input
-            value={tempSearch.order_id}
-            placeholder='请输入订单号'
-            style={{ width: '264px' }}
-            suffix={<FileText className='inline size-4' />}
-            onChange={(value) => updateSearchField('order_id', value)}
+          <Controller
+            control={control}
+            name='order_id'
+            render={({ field }) => (
+              <Input
+                {...field}
+                placeholder='请输入订单号'
+                style={{ width: '264px' }}
+                suffix={<FileText className='inline size-4' />}
+              />
+            )}
           />
           <Show when={departmentId === 0}>
-            <Select
-              value={tempSearch.department}
-              placeholder='请选择电商事业部'
-              style={{ width: '264px' }}
-              onChange={(value) =>
-                updateSearchField('department', value as number)
-              }
-            >
-              {departments?.items.map((item) => (
-                <Select.Option key={item.id} value={item.id!}>
-                  {item.department_name}
-                </Select.Option>
-              ))}
-            </Select>
+            <Controller
+              control={control}
+              name='department'
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  placeholder='请选择电商事业部'
+                  style={{ width: '264px' }}
+                >
+                  {departments?.items.map((item) => (
+                    <Select.Option key={item.id} value={item.id!}>
+                      {item.department_name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              )}
+            />
           </Show>
-          <Select
-            value={tempSearch.display}
-            placeholder='请选择显示状态'
-            style={{ width: '264px' }}
-            onChange={(value) => updateSearchField('display', value as 1 | 2)}
-          >
-            <Select.Option value={1}>显示</Select.Option>
-            <Select.Option value={2}>隐藏</Select.Option>
-          </Select>
-          <MyDatePicker.RangePicker
-            value={[tempSearch.start_time, tempSearch.end_time]}
-            style={{ width: '264px' }}
-            onChange={(value) => {
-              updateSearchField('start_time', value?.[0])
-              updateSearchField('end_time', value?.[1])
-            }}
-            onClear={() => {
-              updateSearchField('start_time', undefined)
-              updateSearchField('end_time', undefined)
-            }}
+          <Controller
+            control={control}
+            name='display'
+            render={({ field }) => (
+              <Select
+                {...field}
+                placeholder='请选择显示状态'
+                style={{ width: '264px' }}
+              >
+                <Select.Option value={1}>显示</Select.Option>
+                <Select.Option value={2}>隐藏</Select.Option>
+              </Select>
+            )}
+          />
+          <Controller
+            control={control}
+            name='range'
+            render={({ field }) => (
+              <MyDatePicker.RangePicker {...field} style={{ width: '264px' }} />
+            )}
           />
           <Button
             type='primary'
+            htmlType='submit'
             icon={<Search className='inline size-4' />}
-            onClick={commit}
           >
             查询
           </Button>
           <Button
             type='outline'
+            htmlType='reset'
             icon={<RotateCcw className='inline size-4' />}
-            onClick={reset}
           >
             重置
           </Button>
-        </TableLayout.Header>
+        </form>
       }
     >
       <MyTable

@@ -2,13 +2,13 @@ import { Button, Input } from '@arco-design/web-react'
 import { keepPreviousData, queryOptions, useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { type } from 'arktype'
-import { RotateCcw, Search } from 'lucide-react'
+import { FileText, RotateCcw, Search, Smartphone } from 'lucide-react'
+import { Controller, useForm } from 'react-hook-form'
 import { GetDeliveriesRes, getDeliveries } from '@/api'
 import { MyTable } from '@/components/my-table'
 import { Show } from '@/components/show'
 import { TableLayout } from '@/components/table-layout'
 import { getHead } from '@/helpers'
-import { paginationFields, useTempSearch } from '@/hooks'
 import {
   defineTableColumns,
   formatDateTime,
@@ -54,10 +54,8 @@ function DeliveryView() {
     (store) => store.checkActionPermission
   )
 
-  const { tempSearch, updateSearchField, commit, reset } = useTempSearch({
-    search,
-    updateFn: (search) => navigate({ search }),
-    selectDefaultFields: paginationFields
+  const { control, handleSubmit, reset } = useForm({
+    defaultValues: search
   })
 
   const { data, isFetching } = useQuery(context.deliveriesQueryOptions)
@@ -138,46 +136,82 @@ function DeliveryView() {
   return (
     <TableLayout
       header={
-        <TableLayout.Header>
-          <Input
-            placeholder='请输入发货单号'
-            value={tempSearch.delivery_id}
-            style={{ width: '264px' }}
-            onChange={(value) => updateSearchField('delivery_id', value)}
+        <form
+          className='table-header'
+          onSubmit={handleSubmit((values) => navigate({ search: values }))}
+          onReset={() => {
+            reset()
+            navigate({
+              search: {
+                page_index: search.page_index,
+                page_size: search.page_size
+              }
+            })
+          }}
+        >
+          <Controller
+            control={control}
+            name='delivery_id'
+            render={({ field }) => (
+              <Input
+                {...field}
+                placeholder='请输入发货单号'
+                style={{ width: '264px' }}
+                suffix={<FileText className='inline size-4' />}
+              />
+            )}
           />
-          <Input
-            placeholder='请输入订单号'
-            value={tempSearch.order_id}
-            style={{ width: '264px' }}
-            onChange={(value) => updateSearchField('order_id', value)}
+          <Controller
+            control={control}
+            name='order_id'
+            render={({ field }) => (
+              <Input
+                {...field}
+                placeholder='请输入订单号'
+                style={{ width: '264px' }}
+                suffix={<FileText className='inline size-4' />}
+              />
+            )}
           />
-          <Input
-            placeholder='请输入快递单号'
-            value={tempSearch.logi_no}
-            style={{ width: '264px' }}
-            onChange={(value) => updateSearchField('logi_no', value)}
+          <Controller
+            control={control}
+            name='logi_no'
+            render={({ field }) => (
+              <Input
+                {...field}
+                placeholder='请输入快递单号'
+                style={{ width: '264px' }}
+                suffix={<FileText className='inline size-4' />}
+              />
+            )}
           />
-          <Input
-            placeholder='请输入电话号'
-            value={tempSearch.ship_mobile}
-            style={{ width: '264px' }}
-            onChange={(value) => updateSearchField('ship_mobile', value)}
+          <Controller
+            control={control}
+            name='ship_mobile'
+            render={({ field }) => (
+              <Input
+                {...field}
+                placeholder='请输入电话号'
+                style={{ width: '264px' }}
+                suffix={<Smartphone className='inline size-4' />}
+              />
+            )}
           />
           <Button
             type='primary'
+            htmlType='submit'
             icon={<Search className='inline size-4' />}
-            onClick={commit}
           >
             查询
           </Button>
           <Button
             type='outline'
+            htmlType='reset'
             icon={<RotateCcw className='inline size-4' />}
-            onClick={reset}
           >
             重置
           </Button>
-        </TableLayout.Header>
+        </form>
       }
     >
       <MyTable
