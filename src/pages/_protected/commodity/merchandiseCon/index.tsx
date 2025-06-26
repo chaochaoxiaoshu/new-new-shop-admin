@@ -627,7 +627,7 @@ function GoodsView() {
     >
       <MyTable
         rowKey='goods_id'
-        data={data?.items}
+        data={data?.items ?? []}
         columns={columns}
         loading={isFetching}
         scroll={{ x: totalWidth + 300 }}

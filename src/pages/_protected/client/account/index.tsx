@@ -235,7 +235,7 @@ function CustomersView() {
               </Show>
               <Show when={checkActionPermission('/client/account/edit')}>
                 <Link to='/client/account/detail' search={{ id: item.id! }}>
-                  <Menu.Item key='edit'>查看</Menu.Item>
+                  <Menu.Item key='view'>查看</Menu.Item>
                 </Link>
               </Show>
             </Menu>

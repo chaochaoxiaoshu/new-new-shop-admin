@@ -128,12 +128,12 @@ function FlashSalesView() {
                     item.operate !== FlashSaleStatus.进行中
                   }
                 >
-                  <Menu.Item key='edit'>删除</Menu.Item>
+                  <Menu.Item key='delete'>删除</Menu.Item>
                 </Show>
                 <Show
                   when={checkActionPermission('/marketing/seckilling/copy')}
                 >
-                  <Menu.Item key='edit'>复制</Menu.Item>
+                  <Menu.Item key='copy'>复制</Menu.Item>
                 </Show>
                 <Show
                   when={
@@ -151,7 +151,7 @@ function FlashSalesView() {
                     item.operate === FlashSaleStatus.进行中
                   }
                 >
-                  <Menu.Item key='edit'>失效</Menu.Item>
+                  <Menu.Item key='invalidate'>失效</Menu.Item>
                 </Show>
               </Menu>
             }

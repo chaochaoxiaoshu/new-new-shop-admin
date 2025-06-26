@@ -164,12 +164,12 @@ function FreeGiftsView() {
                     (item.state === 'no_start' || item.state === 'completed')
                   }
                 >
-                  <Menu.Item key='edit'>删除</Menu.Item>
+                  <Menu.Item key='delete'>删除</Menu.Item>
                 </Show>
                 <Show
                   when={checkActionPermission('/marketing/fulldiscounts/copy')}
                 >
-                  <Menu.Item key='edit'>复制</Menu.Item>
+                  <Menu.Item key='copy'>复制</Menu.Item>
                 </Show>
                 <Show
                   when={
@@ -185,7 +185,7 @@ function FreeGiftsView() {
                     item.state === 'in_progress'
                   }
                 >
-                  <Menu.Item key='edit'>立即结束</Menu.Item>
+                  <Menu.Item key='invalidate'>立即结束</Menu.Item>
                 </Show>
               </Menu>
             }

@@ -180,13 +180,13 @@ function CouponsView() {
                     item.operate === CouponStatus.进行中 && item.settings === 2
                   }
                 >
-                  <Menu.Item key='edit'>定向发放</Menu.Item>
+                  <Menu.Item key='send'>定向发放</Menu.Item>
                 </Show>
                 <Show when={checkActionPermission('/marketing/coupon/del')}>
-                  <Menu.Item key='edit'>删除</Menu.Item>
+                  <Menu.Item key='delete'>删除</Menu.Item>
                 </Show>
                 <Show when={checkActionPermission('/marketing/coupon/edit')}>
-                  <Menu.Item key='edit'>复制</Menu.Item>
+                  <Menu.Item key='copy'>复制</Menu.Item>
                 </Show>
                 <Show
                   when={
@@ -203,7 +203,7 @@ function CouponsView() {
                     item.operate === CouponStatus.进行中
                   }
                 >
-                  <Menu.Item key='edit'>失效</Menu.Item>
+                  <Menu.Item key='invalidate'>失效</Menu.Item>
                 </Show>
               </Menu>
             }

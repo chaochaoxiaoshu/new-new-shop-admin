@@ -19,13 +19,13 @@ import { type } from 'arktype'
 import { Plus } from 'lucide-react'
 import { useMemo } from 'react'
 import {
+  addAdminCategory,
   deleteAdminCategory,
   type GetAdminCategoriesRes,
   getAdminCategories,
   getAdminCategoriesTree,
   updateAdminCategory
 } from '@/api'
-import { addAdminCategory } from '@/api/goods/add-admin-category'
 import { MyTable } from '@/components/my-table'
 import { Show } from '@/components/show'
 import { TableLayout } from '@/components/table-layout'

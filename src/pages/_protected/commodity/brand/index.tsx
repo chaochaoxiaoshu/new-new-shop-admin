@@ -22,11 +22,11 @@ import {
   addBrand,
   deleteBrand,
   GetBrandsRes,
+  getBrandDetail,
   getBrands,
   getDepartments,
   updateBrand
 } from '@/api'
-import { getBrandDetail } from '@/api/goods/get-brand-detail'
 import { MyImage } from '@/components/my-image'
 import { MyTable } from '@/components/my-table'
 import { MyUpload, type MyUploadResource } from '@/components/my-upload'

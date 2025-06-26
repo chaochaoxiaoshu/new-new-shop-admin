@@ -1,5 +1,4 @@
-import { GetGoodsDetailRes } from '@/api/goods/get-goods-detail'
-import { GetGoodsDiseaseRes } from '@/api/goods/get-goods-disease'
+import { GetGoodsDetailRes, GetGoodsDiseaseRes } from '@/api'
 import { createMyUploadResource } from '@/helpers/upload'
 import { cleanObject } from '@/lib'
 
@@ -92,8 +91,8 @@ export function b2f(data: GetGoodsDetailRes): GoodsFormData {
             { key: '用法用量', value: '' }
           ],
     // 根据 is_rx 的值，将 parameters 分别赋值给 rx_parameters 和 parameters
-    parameters: data.is_rx === IsRx.非药品 ? (data.parameters ?? []) : [],
-    rx_parameters: data.is_rx !== IsRx.非药品 ? (data.parameters ?? []) : [],
+    parameters: data.is_rx === IsRx.非药品 ? data.parameters ?? [] : [],
+    rx_parameters: data.is_rx !== IsRx.非药品 ? data.parameters ?? [] : [],
     // 接口返回的图片对象转换为 MyUploadResource
     images:
       data.images

@@ -15,16 +15,16 @@ import { createFileRoute } from '@tanstack/react-router'
 import { type } from 'arktype'
 import { Edit, GripVertical, Plus, Trash2 } from 'lucide-react'
 import {
+  addGoods,
+  editGoods,
   getAdminCategoriesTree,
   getBrands,
-  getGoodsCategoriesTree
+  getGoodsCategoriesTree,
+  getGoodsDetail,
+  getGoodsDisease,
+  getGoodsDrugstores,
+  getShipTemplates
 } from '@/api'
-import { addGoods } from '@/api/goods/add-goods'
-import { editGoods } from '@/api/goods/edit-goods'
-import { getGoodsDetail } from '@/api/goods/get-goods-detail'
-import { getGoodsDisease } from '@/api/goods/get-goods-disease'
-import { getGoodsDrugstores } from '@/api/goods/get-goods-drugstores'
-import { getShipTemplates } from '@/api/orders/get-ship-templates'
 import { BaseLayout } from '@/components/base-layout'
 import { MyUpload, MyUploadResource } from '@/components/my-upload'
 import { SectionTitle } from '@/components/section-title'

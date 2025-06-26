@@ -135,10 +135,10 @@ function LuckyDrawsView() {
                     item.operate !== LuckyDrawStatus.进行中
                   }
                 >
-                  <Menu.Item key='edit'>删除</Menu.Item>
+                  <Menu.Item key='delete'>删除</Menu.Item>
                 </Show>
                 <Show when={checkActionPermission('/marketing/raffle/copy')}>
-                  <Menu.Item key='edit'>复制</Menu.Item>
+                  <Menu.Item key='copy'>复制</Menu.Item>
                 </Show>
                 <Show when={checkActionPermission('/marketing/raffle/edit')}>
                   <Menu.Item key='edit'>编辑</Menu.Item>
@@ -149,7 +149,7 @@ function LuckyDrawsView() {
                     item.operate === LuckyDrawStatus.进行中
                   }
                 >
-                  <Menu.Item key='edit'>暂停</Menu.Item>
+                  <Menu.Item key='pause'>暂停</Menu.Item>
                 </Show>
                 <Show
                   when={
@@ -157,7 +157,7 @@ function LuckyDrawsView() {
                     item.operate === LuckyDrawStatus.暂停中
                   }
                 >
-                  <Menu.Item key='edit'>启动</Menu.Item>
+                  <Menu.Item key='start'>启动</Menu.Item>
                 </Show>
                 <Show
                   when={
@@ -165,7 +165,7 @@ function LuckyDrawsView() {
                     item.operate === LuckyDrawStatus.暂停中
                   }
                 >
-                  <Menu.Item key='edit'>结束</Menu.Item>
+                  <Menu.Item key='end'>结束</Menu.Item>
                 </Show>
               </Menu>
             }

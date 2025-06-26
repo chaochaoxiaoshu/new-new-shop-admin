@@ -4,13 +4,14 @@ import { useSearch } from '@tanstack/react-router'
 import { FileText, RotateCcw, Search, Smartphone } from 'lucide-react'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { GetOrdersRes, getOrders } from '@/api'
 import {
   AfterSalesStatus,
   GetAfterSalesRes,
+  GetOrdersRes,
   GoodsType,
-  getAfterSales
-} from '@/api/orders/get-after-sales'
+  getAfterSales,
+  getOrders
+} from '@/api'
 import { GoodsInfo } from '@/components/goods-info'
 import { MyDatePicker } from '@/components/my-date-picker'
 import {
