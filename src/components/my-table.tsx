@@ -1,6 +1,5 @@
-import { useMemo } from 'react'
-
 import { PaginationProps, Table, TableProps } from '@arco-design/web-react'
+import { useMemo } from 'react'
 
 import { Show } from './show'
 import { useTableSizeContext } from './table-layout/context'

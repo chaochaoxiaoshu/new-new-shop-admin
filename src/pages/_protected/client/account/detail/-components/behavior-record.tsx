@@ -1,10 +1,8 @@
-import { RotateCcw, Search } from 'lucide-react'
-import { useState } from 'react'
-
 import { Button, Input, Select, Table } from '@arco-design/web-react'
 import { useQuery } from '@tanstack/react-query'
 import { useSearch } from '@tanstack/react-router'
-
+import { RotateCcw, Search } from 'lucide-react'
+import { useState } from 'react'
 import {
   GetUserBrowsingRes,
   GetUserCartRes,
@@ -17,7 +15,7 @@ import {
 import { MyDatePicker } from '@/components/my-date-picker'
 import { MyImage } from '@/components/my-image'
 import { paginationFields, useTempSearch } from '@/hooks'
-import { TableCellWidth, defineTableColumns, formatDateTime } from '@/lib'
+import { defineTableColumns, formatDateTime, TableCellWidth } from '@/lib'
 
 export function BehaviorRecord() {
   const [tabSelection, setTabSelection] = useState<

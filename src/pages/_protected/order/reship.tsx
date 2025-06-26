@@ -1,6 +1,3 @@
-import { type } from 'arktype'
-import { Ellipsis, RotateCcw, Search } from 'lucide-react'
-
 import {
   Button,
   Dropdown,
@@ -9,13 +6,18 @@ import {
   Select,
   Typography
 } from '@arco-design/web-react'
-import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query'
-import { queryOptions } from '@tanstack/react-query'
-import { createFileRoute } from '@tanstack/react-router'
-
 import {
-  GetReshipsRes,
+  keepPreviousData,
+  queryOptions,
+  useMutation,
+  useQuery
+} from '@tanstack/react-query'
+import { createFileRoute } from '@tanstack/react-router'
+import { type } from 'arktype'
+import { Ellipsis, RotateCcw, Search } from 'lucide-react'
+import {
   confirmReship,
+  GetReshipsRes,
   getReshipDetail,
   getReships
 } from '@/api'
@@ -25,10 +27,10 @@ import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
 import { paginationFields, useMyModal, useTempSearch } from '@/hooks'
 import {
-  TableCellWidth,
   defineTableColumns,
   formatDateTime,
-  queryClient
+  queryClient,
+  TableCellWidth
 } from '@/lib'
 import { useUserStore } from '@/stores/user-store'
 

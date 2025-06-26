@@ -1,9 +1,8 @@
 import { Button, ConfigProvider } from '@arco-design/web-react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { Link, Outlet, createRootRoute } from '@tanstack/react-router'
+import { createRootRoute, Link, Outlet } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-
 import { RouterProgressBar } from '@/components/router-progress-bar'
 import { queryClient } from '@/lib'
 

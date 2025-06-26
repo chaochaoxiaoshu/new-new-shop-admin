@@ -1,7 +1,3 @@
-import { type } from 'arktype'
-import { Plus, RotateCcw, Search } from 'lucide-react'
-import { useEffect } from 'react'
-
 import {
   Button,
   Form,
@@ -18,11 +14,13 @@ import {
   useQuery
 } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
-
+import { type } from 'arktype'
+import { Plus, RotateCcw, Search } from 'lucide-react'
+import { useEffect } from 'react'
 import {
-  GetBrandsRes,
   addBrand,
   deleteBrand,
+  GetBrandsRes,
   getBrands,
   getDepartments,
   updateBrand
@@ -37,10 +35,10 @@ import { getHead, getNotifs } from '@/helpers'
 import { createMyUploadResource } from '@/helpers/upload'
 import { paginationFields, useMyModal, useTempSearch } from '@/hooks'
 import {
-  TableCellWidth,
   defineTableColumns,
   formatDateTime,
-  queryClient
+  queryClient,
+  TableCellWidth
 } from '@/lib'
 import { useUserStore } from '@/stores'
 

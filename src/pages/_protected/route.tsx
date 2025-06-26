@@ -1,7 +1,7 @@
 import {
+  createFileRoute,
   HeadContent,
   Outlet,
-  createFileRoute,
   redirect
 } from '@tanstack/react-router'
 

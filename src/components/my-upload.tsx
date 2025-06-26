@@ -1,30 +1,27 @@
-import { CircleAlert, GripVertical, Plus, X } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
-
 import { Spin } from '@arco-design/web-react'
 import {
+  closestCenter,
   DndContext,
   DragEndEvent,
   DragOverlay,
   DragStartEvent,
   KeyboardSensor,
   PointerSensor,
-  closestCenter,
   useSensor,
   useSensors
 } from '@dnd-kit/core'
 import {
-  SortableContext,
   arrayMove,
   rectSortingStrategy,
-  sortableKeyboardCoordinates
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable
 } from '@dnd-kit/sortable'
-import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-
+import { CircleAlert, GripVertical, Plus, X } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
 import { ApiResponse } from '@/api'
 import { api, cn, generateId } from '@/lib'
-
 import { MyImage } from './my-image'
 import { MyVideoPreview } from './my-video-preview'
 import { Show } from './show'
@@ -54,7 +51,7 @@ export type MyUploadResource = {
   file?: File
 
   // 可以附带其他数据
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: false
   payload?: Record<string, any>
 }
 

@@ -34,9 +34,9 @@ export const getDepartments = async (req?: GetDepartmentsReq) => {
   const searchParams = req ? toSearchParams(req) : void 0
 
   const res = await api
-    .get<
-      PaginatedResponse<GetDepartmentsRes>
-    >('jshop-user/api/v1/department', { searchParams })
+    .get<PaginatedResponse<GetDepartmentsRes>>('jshop-user/api/v1/department', {
+      searchParams
+    })
     .json()
 
   return res.result

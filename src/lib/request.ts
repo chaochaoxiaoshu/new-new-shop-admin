@@ -1,7 +1,5 @@
-import ky from 'ky'
-
 import { redirect } from '@tanstack/react-router'
-
+import ky from 'ky'
 import { useUserStore } from '../stores/user-store'
 
 export const unprotectedApi = ky.create({

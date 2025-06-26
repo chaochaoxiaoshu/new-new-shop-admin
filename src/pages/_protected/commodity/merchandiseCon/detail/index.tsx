@@ -1,6 +1,3 @@
-import { type } from 'arktype'
-import { Edit, GripVertical, Plus, Trash2 } from 'lucide-react'
-
 import {
   Button,
   Form,
@@ -15,7 +12,8 @@ import {
 } from '@arco-design/web-react'
 import { queryOptions, useMutation, useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
-
+import { type } from 'arktype'
+import { Edit, GripVertical, Plus, Trash2 } from 'lucide-react'
 import {
   getAdminCategoriesTree,
   getBrands,
@@ -38,7 +36,6 @@ import { getHead, getNotifs } from '@/helpers'
 import { useMyModal } from '@/hooks'
 import { cn, defineTableColumns, generateId, queryClient } from '@/lib'
 import { useUserStore } from '@/stores'
-
 import { b2f, f2b } from './-adpater'
 import { category, dosage } from './-constants'
 import { DeliveryType, GoodsFormData, IsRx, Product } from './-definition'

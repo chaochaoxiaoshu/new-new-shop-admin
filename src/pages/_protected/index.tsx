@@ -1,3 +1,12 @@
+import {
+  DatePicker,
+  Divider,
+  Select,
+  Spin,
+  Tooltip
+} from '@arco-design/web-react'
+import { queryOptions, useQuery } from '@tanstack/react-query'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { useSize } from 'ahooks'
 import dayjs from 'dayjs'
 import {
@@ -24,16 +33,6 @@ import {
 } from 'recharts'
 
 import {
-  DatePicker,
-  Divider,
-  Select,
-  Spin,
-  Tooltip
-} from '@arco-design/web-react'
-import { queryOptions, useQuery } from '@tanstack/react-query'
-import { Link, createFileRoute } from '@tanstack/react-router'
-
-import {
   getCustomersStatistic,
   getOrdersStatistic,
   getShopOrderData,
@@ -45,8 +44,7 @@ import todo2 from '@/assets/home/todo_2.png'
 import todo3 from '@/assets/home/todo_3.png'
 import { Show } from '@/components/show'
 import { getHead } from '@/helpers'
-import { completeDateFormat } from '@/lib'
-import { queryClient } from '@/lib'
+import { completeDateFormat, queryClient } from '@/lib'
 import { useUserStore } from '@/stores'
 
 type Precision = 'year' | 'month' | 'day'

@@ -1,7 +1,6 @@
+import { Button, Modal } from '@arco-design/web-react'
 import { Play, X } from 'lucide-react'
 import { useState } from 'react'
-
-import { Button, Modal } from '@arco-design/web-react'
 
 interface MyVideoPreviewProps {
   src: string

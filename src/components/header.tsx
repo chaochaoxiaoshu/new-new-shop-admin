@@ -1,5 +1,3 @@
-import { ChevronDownIcon, UserIcon } from 'lucide-react'
-
 import {
   Avatar,
   Button,
@@ -8,7 +6,7 @@ import {
   Notification
 } from '@arco-design/web-react'
 import { useNavigate } from '@tanstack/react-router'
-
+import { ChevronDownIcon, UserIcon } from 'lucide-react'
 import logo from '@/assets/logo.png'
 import { queryClient } from '@/lib'
 import { useUserStore } from '@/stores'

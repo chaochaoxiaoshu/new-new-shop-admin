@@ -1,7 +1,3 @@
-import { type } from 'arktype'
-import { Ellipsis, GripVertical, Plus, RotateCcw, Search } from 'lucide-react'
-import { useEffect, useState } from 'react'
-
 import {
   Button,
   Dropdown,
@@ -12,7 +8,9 @@ import {
 } from '@arco-design/web-react'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
-
+import { type } from 'arktype'
+import { Ellipsis, GripVertical, Plus, RotateCcw, Search } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import {
   GetPaginatedTagGroupsRes,
   GetTagsRes,
@@ -25,7 +23,7 @@ import { SortableTableDragHandle } from '@/components/sortable-table/drag-handle
 import { TableLayout } from '@/components/table-layout'
 import { getHead } from '@/helpers'
 import { useTempSearch } from '@/hooks'
-import { TableCellWidth, defineTableColumns, formatDateTime } from '@/lib'
+import { defineTableColumns, formatDateTime, TableCellWidth } from '@/lib'
 import { useUserStore } from '@/stores'
 
 export const Route = createFileRoute('/_protected/client/clientTags/')({

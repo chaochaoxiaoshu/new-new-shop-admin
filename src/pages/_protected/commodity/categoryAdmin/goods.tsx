@@ -1,17 +1,15 @@
-import { type } from 'arktype'
-import { RotateCcw, Search } from 'lucide-react'
-
 import { Button, Input } from '@arco-design/web-react'
 import { keepPreviousData, queryOptions, useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
-
+import { type } from 'arktype'
+import { RotateCcw, Search } from 'lucide-react'
 import { GetGoodsRes, getGoods } from '@/api'
 import { MyImage } from '@/components/my-image'
 import { MyTable } from '@/components/my-table'
 import { TableLayout } from '@/components/table-layout'
 import { getHead } from '@/helpers'
 import { useTempSearch } from '@/hooks'
-import { TableCellWidth, defineTableColumns, queryClient } from '@/lib'
+import { defineTableColumns, queryClient, TableCellWidth } from '@/lib'
 import { useUserStore } from '@/stores'
 
 const LIST_KEY = 'admin-categories-goods'

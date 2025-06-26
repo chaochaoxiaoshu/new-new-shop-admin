@@ -1,21 +1,19 @@
-import { type } from 'arktype'
-import { Ellipsis, Plus, RotateCcw, Search } from 'lucide-react'
-
 import { Button, Dropdown, Input, Menu, Select } from '@arco-design/web-react'
 import { keepPreviousData, queryOptions, useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
-
-import { GetSpendMPayNRes, SpendMPayNStatus, getSpendMPayN } from '@/api'
+import { type } from 'arktype'
+import { Ellipsis, Plus, RotateCcw, Search } from 'lucide-react'
+import { GetSpendMPayNRes, getSpendMPayN, SpendMPayNStatus } from '@/api'
 import { MyTable } from '@/components/my-table'
 import { Show } from '@/components/show'
 import { TableLayout } from '@/components/table-layout'
 import { getHead } from '@/helpers'
 import { paginationFields, useTempSearch } from '@/hooks'
 import {
-  TableCellWidth,
   defineTableColumns,
   formatDateTime,
-  queryClient
+  queryClient,
+  TableCellWidth
 } from '@/lib'
 import { useUserStore } from '@/stores'
 

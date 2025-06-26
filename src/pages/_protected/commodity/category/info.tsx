@@ -1,6 +1,3 @@
-import { type } from 'arktype'
-import { Plus, RotateCcw, Search } from 'lucide-react'
-
 import { Button, Input, Popconfirm, Switch } from '@arco-design/web-react'
 import {
   keepPreviousData,
@@ -9,10 +6,11 @@ import {
   useQuery
 } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
-
+import { type } from 'arktype'
+import { Plus, RotateCcw, Search } from 'lucide-react'
 import {
-  GetGoodsSecondaryCategoriesRes,
   deleteGoodsCategory,
+  GetGoodsSecondaryCategoriesRes,
   getGoodsSecondaryCategories,
   updateGoodsCategory
 } from '@/api'
@@ -21,9 +19,8 @@ import { Show } from '@/components/show'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
 import { useMyModal, useTempSearch } from '@/hooks'
-import { TableCellWidth, defineTableColumns, queryClient } from '@/lib'
+import { defineTableColumns, queryClient, TableCellWidth } from '@/lib'
 import { useUserStore } from '@/stores'
-
 import { EditForm } from '.'
 
 const LIST_KEY = 'goods-secondary-categories'

@@ -1,7 +1,3 @@
-import { type } from 'arktype'
-import { Plus, RotateCcw, Search } from 'lucide-react'
-import { useMemo } from 'react'
-
 import {
   Button,
   Form,
@@ -19,12 +15,14 @@ import {
   useQuery
 } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
-
+import { type } from 'arktype'
+import { Plus, RotateCcw, Search } from 'lucide-react'
+import { useMemo } from 'react'
 import {
-  GetAdminCategoriesRes,
-  GetGoodsCategoriesRes,
   addGoodsCategory,
   deleteGoodsCategory,
+  GetAdminCategoriesRes,
+  GetGoodsCategoriesRes,
   getDepartments,
   getGoodsCategories,
   getGoodsCategoriesTree,
@@ -35,7 +33,7 @@ import { Show } from '@/components/show'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
 import { paginationFields, useMyModal, useTempSearch } from '@/hooks'
-import { TableCellWidth, defineTableColumns, queryClient } from '@/lib'
+import { defineTableColumns, queryClient, TableCellWidth } from '@/lib'
 import { useUserStore } from '@/stores'
 
 const LIST_KEY = 'goods-categories'

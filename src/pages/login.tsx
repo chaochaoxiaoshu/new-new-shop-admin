@@ -1,8 +1,3 @@
-import { type } from 'arktype'
-import dayjs from 'dayjs'
-import { useEffect, useRef, useState } from 'react'
-import { useDebounce } from 'use-debounce'
-
 import {
   Button,
   Form,
@@ -15,20 +10,23 @@ import {
 import type { RefInputType } from '@arco-design/web-react/es/Input'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
-  HeadContent,
   createFileRoute,
+  HeadContent,
   useNavigate
 } from '@tanstack/react-router'
-
+import { type } from 'arktype'
+import dayjs from 'dayjs'
+import { useEffect, useRef, useState } from 'react'
+import { useDebounce } from 'use-debounce'
 import {
-  type LoginReq,
-  type SwitchAuthorzieReq,
   getActionPermission,
   getAgentConfig,
   getDepartmentsByToken,
   getDepartmentsForAccount,
   getPlatformInfo,
+  type LoginReq,
   login,
+  type SwitchAuthorzieReq,
   switchAuthorzie,
   wecomAuthorize
 } from '@/api'
@@ -119,11 +117,11 @@ function AuthView() {
    */
   const [tempToken, setTempToken] = useState<string>()
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: false
   useEffect(() => {
     if (!search.type) return
     void ssoInWeCom()
     void ssoInBrowser()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   /**
@@ -140,7 +138,6 @@ function AuthView() {
       return
     }
     const agentConfigRes = await getAgentConfig({ url: window.location.href })
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     window.wx.agentConfig({
       ...agentConfigRes,
       jsApiList: ['openDefaultBrowser'],
@@ -155,14 +152,12 @@ function AuthView() {
         authUrl.searchParams.append('state', '')
         authUrl.searchParams.append('connect_redirect', '1')
         authUrl.hash = 'wechat_redirect'
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         window.wx.invoke('openDefaultBrowser', {
           url: authUrl.toString()
         })
       },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // biome-ignore lint/suspicious/noExplicitAny: false
       fail: (res: any) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         Notification.error({ content: res.errMsg })
       }
     })

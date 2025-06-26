@@ -1,7 +1,6 @@
+import { useRouter } from '@tanstack/react-router'
 import { useEffect, useRef } from 'react'
 import LoadingBar, { LoadingBarRef } from 'react-top-loading-bar'
-
-import { useRouter } from '@tanstack/react-router'
 
 export function RouterProgressBar() {
   const router = useRouter()

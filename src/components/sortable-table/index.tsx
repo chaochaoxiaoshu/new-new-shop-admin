@@ -1,25 +1,23 @@
-import React from 'react'
-
 import { Table, type TableProps } from '@arco-design/web-react'
 import {
+  closestCenter,
   DndContext,
   DragEndEvent,
   KeyboardSensor,
   PointerSensor,
   UniqueIdentifier,
-  closestCenter,
   useSensor,
   useSensors
 } from '@dnd-kit/core'
 import {
-  SortableContext,
   arrayMove,
+  SortableContext,
   sortableKeyboardCoordinates,
   useSortable,
   verticalListSortingStrategy
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-
+import React from 'react'
 import { DndListenersContext } from './context'
 
 export function SortableTable<T extends Record<string, unknown>>(
@@ -94,7 +92,7 @@ function SortableRow<T extends Record<string, unknown>>(
   const { children, className, record, rowKey, ...rest } = props
 
   const {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // biome-ignore lint/correctness/noUnusedVariables: false positive
     attributes: { role, ...restAttributes },
     listeners,
     setNodeRef,

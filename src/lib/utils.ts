@@ -1,8 +1,7 @@
+import type { ColumnProps } from '@arco-design/web-react/es/Table'
 import { type ClassValue, clsx } from 'clsx'
 import dayjs from 'dayjs'
 import { twMerge } from 'tailwind-merge'
-
-import type { ColumnProps } from '@arco-design/web-react/es/Table'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))

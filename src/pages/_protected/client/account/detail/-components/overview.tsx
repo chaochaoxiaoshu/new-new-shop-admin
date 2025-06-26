@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import {
   Button,
   Divider,
@@ -10,7 +8,7 @@ import {
 } from '@arco-design/web-react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useNavigate, useRouteContext, useSearch } from '@tanstack/react-router'
-
+import { useState } from 'react'
 import { GetCouponsRes, getCoupons, giveCoupon } from '@/api'
 import customerDetail0 from '@/assets/customer/customer_detail_0.png'
 import customerDetail1 from '@/assets/customer/customer_detail_1.png'

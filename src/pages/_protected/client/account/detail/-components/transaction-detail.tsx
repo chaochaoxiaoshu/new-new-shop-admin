@@ -1,10 +1,8 @@
-import { FileText, RotateCcw, Search, Smartphone } from 'lucide-react'
-import { useState } from 'react'
-
 import { Button, Input, Select, Table } from '@arco-design/web-react'
 import { useQuery } from '@tanstack/react-query'
 import { useSearch } from '@tanstack/react-router'
-
+import { FileText, RotateCcw, Search, Smartphone } from 'lucide-react'
+import { useState } from 'react'
 import { GetOrdersRes, getOrders } from '@/api'
 import {
   AfterSalesStatus,
@@ -21,7 +19,7 @@ import {
   getShipStatusText
 } from '@/helpers'
 import { paginationFields, useTempSearch } from '@/hooks'
-import { TableCellWidth, defineTableColumns, formatDateTime } from '@/lib'
+import { defineTableColumns, formatDateTime, TableCellWidth } from '@/lib'
 import { useUserStore } from '@/stores'
 
 export function TransactionDetail() {

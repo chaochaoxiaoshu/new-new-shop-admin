@@ -1,3 +1,11 @@
+import { Button, Checkbox, Dropdown, Input, Menu } from '@arco-design/web-react'
+import {
+  keepPreviousData,
+  queryOptions,
+  useMutation,
+  useQuery
+} from '@tanstack/react-query'
+import { createFileRoute } from '@tanstack/react-router'
 import { type } from 'arktype'
 import {
   CheckCircle2,
@@ -9,15 +17,6 @@ import {
   TextCursorInput
 } from 'lucide-react'
 import { useState } from 'react'
-
-import { Button, Checkbox, Dropdown, Input, Menu } from '@arco-design/web-react'
-import {
-  keepPreviousData,
-  queryOptions,
-  useMutation,
-  useQuery
-} from '@tanstack/react-query'
-import { createFileRoute } from '@tanstack/react-router'
 
 import {
   type GetCustomersRes,
@@ -34,11 +33,11 @@ import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
 import { paginationFields, useMyModal, useTempSearch } from '@/hooks'
 import {
-  TableCellWidth,
   cn,
   defineTableColumns,
   formatDateTime,
-  queryClient
+  queryClient,
+  TableCellWidth
 } from '@/lib'
 import { useUserStore } from '@/stores'
 

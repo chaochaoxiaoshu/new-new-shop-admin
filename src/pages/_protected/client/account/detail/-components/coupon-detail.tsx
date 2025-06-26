@@ -1,15 +1,13 @@
-import { RotateCcw, Search } from 'lucide-react'
-import { useState } from 'react'
-
 import { Button, Input, Select, Table } from '@arco-design/web-react'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useSearch } from '@tanstack/react-router'
-
-import { GetUserCouponsRes, UserCouponIsUse, getUserCoupons } from '@/api'
+import { RotateCcw, Search } from 'lucide-react'
+import { useState } from 'react'
+import { GetUserCouponsRes, getUserCoupons, UserCouponIsUse } from '@/api'
 import { MyDatePicker } from '@/components/my-date-picker'
 import { getUserCouponIsUseText } from '@/helpers/marketing'
 import { paginationFields, useTempSearch } from '@/hooks'
-import { TableCellWidth, defineTableColumns, formatDateTime } from '@/lib'
+import { defineTableColumns, formatDateTime, TableCellWidth } from '@/lib'
 
 export function CouponDetail() {
   const search = useSearch({ from: '/_protected/client/account/detail/' })

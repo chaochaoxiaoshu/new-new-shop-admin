@@ -1,14 +1,12 @@
-import { type } from 'arktype'
-import { Ellipsis, Plus, RotateCcw, Search } from 'lucide-react'
-
 import { Button, Dropdown, Input, Menu, Select } from '@arco-design/web-react'
 import { keepPreviousData, queryOptions, useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
-
+import { type } from 'arktype'
+import { Ellipsis, Plus, RotateCcw, Search } from 'lucide-react'
 import {
   GetMultiDiscountsRes,
-  MultiDiscountStatus,
-  getMultiDiscounts
+  getMultiDiscounts,
+  MultiDiscountStatus
 } from '@/api'
 import { MyDatePicker } from '@/components/my-date-picker'
 import { MyTable } from '@/components/my-table'
@@ -17,10 +15,10 @@ import { TableLayout } from '@/components/table-layout'
 import { getHead } from '@/helpers'
 import { paginationFields, useTempSearch } from '@/hooks'
 import {
-  TableCellWidth,
   defineTableColumns,
   formatDateTime,
-  queryClient
+  queryClient,
+  TableCellWidth
 } from '@/lib'
 import { useUserStore } from '@/stores'
 

@@ -1,6 +1,3 @@
-import { type } from 'arktype'
-import { RotateCcw, Search } from 'lucide-react'
-
 import { Button, Form, Input, Select } from '@arco-design/web-react'
 import {
   keepPreviousData,
@@ -9,7 +6,8 @@ import {
   useQuery
 } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
-
+import { type } from 'arktype'
+import { RotateCcw, Search } from 'lucide-react'
 import {
   type GetBillLadingsRes,
   type GetStoreListRes,
@@ -24,10 +22,10 @@ import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
 import { paginationFields, useMyModal, useTempSearch } from '@/hooks'
 import {
-  TableCellWidth,
   defineTableColumns,
   formatDateTime,
-  queryClient
+  queryClient,
+  TableCellWidth
 } from '@/lib'
 import { useUserStore } from '@/stores/user-store'
 

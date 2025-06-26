@@ -1,6 +1,5 @@
-import { useState } from 'react'
-
 import { Image, ImageProps } from '@arco-design/web-react'
+import { useState } from 'react'
 
 import imagePlaceholder from '@/assets/image_placeholder.svg'
 import { cn } from '@/lib'

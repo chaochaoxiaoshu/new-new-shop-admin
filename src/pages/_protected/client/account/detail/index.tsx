@@ -1,7 +1,3 @@
-import { type } from 'arktype'
-import { Search } from 'lucide-react'
-import { useState } from 'react'
-
 import {
   Avatar,
   Button,
@@ -20,6 +16,9 @@ import {
   useSuspenseQuery
 } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
+import { type } from 'arktype'
+import { Search } from 'lucide-react'
+import { useState } from 'react'
 
 import {
   bindDistributor,
@@ -78,7 +77,7 @@ export const Route = createFileRoute('/_protected/client/account/detail/')({
       })
     }
   },
-  loader: async ({ context }) => {
+  loader: ({ context }) => {
     queryClient.prefetchQuery(context.customerProfileQueryOptions)
     queryClient.prefetchQuery(context.customerPropertyQueryOptions)
     queryClient.prefetchQuery(context.customerPromotionQueryOptions)

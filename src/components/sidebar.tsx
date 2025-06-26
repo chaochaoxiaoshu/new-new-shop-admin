@@ -1,11 +1,9 @@
-import type { LucideIcon } from 'lucide-react'
-import React, { useEffect, useMemo, useState } from 'react'
-
 import { Menu } from '@arco-design/web-react'
 import { useQuery } from '@tanstack/react-query'
 import { useLocation, useNavigate, useRouter } from '@tanstack/react-router'
-
-import { MenuItemData, getMenuList } from '@/api'
+import type { LucideIcon } from 'lucide-react'
+import React, { useEffect, useMemo, useState } from 'react'
+import { getMenuList, MenuItemData } from '@/api'
 import {
   getMatchedItems,
   getMenuListWithIcons,
