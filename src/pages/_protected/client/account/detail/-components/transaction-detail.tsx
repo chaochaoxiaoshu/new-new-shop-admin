@@ -361,7 +361,7 @@ function AfterSales() {
     },
     {
       title: '用户',
-      render: (_, item) => item.user_info?.nickname.trim() ?? '-',
+      render: (_, item) => item.user_info?.nickname || '-',
       width: 200,
       align: 'center'
     },

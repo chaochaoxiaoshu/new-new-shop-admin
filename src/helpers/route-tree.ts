@@ -330,7 +330,17 @@ export const routeTree: RouteTreeNode = {
             },
             {
               name: '分销员',
-              path: '/marketing/drp/userIndex'
+              path: '/marketing/drp/userIndex',
+              children: [
+                {
+                  name: '分销员列表',
+                  path: '/marketing/drp/userIndex/distributors'
+                },
+                {
+                  name: '分销员审核',
+                  path: '/marketing/drp/userIndex/approval'
+                }
+              ]
             },
             {
               name: '客户关系设置',

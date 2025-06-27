@@ -59,7 +59,6 @@ import { Route as ProtectedMarketingFulldiscountsEditImport } from './pages/_pro
 import { Route as ProtectedMarketingFulldiscountsDataImport } from './pages/_protected/marketing/fulldiscounts/data'
 import { Route as ProtectedMarketingFullMpayNEditImport } from './pages/_protected/marketing/fullMpayN/edit'
 import { Route as ProtectedMarketingFullMpayNDataImport } from './pages/_protected/marketing/fullMpayN/data'
-import { Route as ProtectedMarketingDrpUserIndexImport } from './pages/_protected/marketing/drp/userIndex'
 import { Route as ProtectedMarketingDrpRuleImport } from './pages/_protected/marketing/drp/rule'
 import { Route as ProtectedMarketingDrpDistrHistoryImport } from './pages/_protected/marketing/drp/distrHistory'
 import { Route as ProtectedMarketingDrpDataImport } from './pages/_protected/marketing/drp/data'
@@ -72,9 +71,12 @@ import { Route as ProtectedCommodityCategoryAdminInfoImport } from './pages/_pro
 import { Route as ProtectedCommodityCategoryAdminGoodsImport } from './pages/_protected/commodity/categoryAdmin/goods'
 import { Route as ProtectedCommodityCategoryInfoImport } from './pages/_protected/commodity/category/info'
 import { Route as ProtectedClientClientTagsEditImport } from './pages/_protected/client/clientTags/edit'
+import { Route as ProtectedMarketingDrpUserIndexRouteImport } from './pages/_protected/marketing/drp/userIndex/route'
 import { Route as ProtectedMarketingDrpDistrListIndexImport } from './pages/_protected/marketing/drp/distrList/index'
 import { Route as ProtectedCommodityMerchandiseConDetailIndexImport } from './pages/_protected/commodity/merchandiseCon/detail/index'
 import { Route as ProtectedClientAccountDetailIndexImport } from './pages/_protected/client/account/detail/index'
+import { Route as ProtectedMarketingDrpUserIndexDistributorsImport } from './pages/_protected/marketing/drp/userIndex/distributors'
+import { Route as ProtectedMarketingDrpUserIndexApprovalImport } from './pages/_protected/marketing/drp/userIndex/approval'
 import { Route as ProtectedMarketingDrpDistrListGoodsListImport } from './pages/_protected/marketing/drp/distrList/goodsList'
 
 // Create/Update Routes
@@ -407,13 +409,6 @@ const ProtectedMarketingFullMpayNDataRoute =
     getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
-const ProtectedMarketingDrpUserIndexRoute =
-  ProtectedMarketingDrpUserIndexImport.update({
-    id: '/marketing/drp/userIndex',
-    path: '/marketing/drp/userIndex',
-    getParentRoute: () => ProtectedRouteRoute,
-  } as any)
-
 const ProtectedMarketingDrpRuleRoute = ProtectedMarketingDrpRuleImport.update({
   id: '/marketing/drp/rule',
   path: '/marketing/drp/rule',
@@ -496,6 +491,13 @@ const ProtectedClientClientTagsEditRoute =
     getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
+const ProtectedMarketingDrpUserIndexRouteRoute =
+  ProtectedMarketingDrpUserIndexRouteImport.update({
+    id: '/marketing/drp/userIndex',
+    path: '/marketing/drp/userIndex',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
 const ProtectedMarketingDrpDistrListIndexRoute =
   ProtectedMarketingDrpDistrListIndexImport.update({
     id: '/marketing/drp/distrList/',
@@ -515,6 +517,20 @@ const ProtectedClientAccountDetailIndexRoute =
     id: '/client/account/detail/',
     path: '/client/account/detail/',
     getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedMarketingDrpUserIndexDistributorsRoute =
+  ProtectedMarketingDrpUserIndexDistributorsImport.update({
+    id: '/distributors',
+    path: '/distributors',
+    getParentRoute: () => ProtectedMarketingDrpUserIndexRouteRoute,
+  } as any)
+
+const ProtectedMarketingDrpUserIndexApprovalRoute =
+  ProtectedMarketingDrpUserIndexApprovalImport.update({
+    id: '/approval',
+    path: '/approval',
+    getParentRoute: () => ProtectedMarketingDrpUserIndexRouteRoute,
   } as any)
 
 const ProtectedMarketingDrpDistrListGoodsListRoute =
@@ -589,6 +605,13 @@ declare module '@tanstack/react-router' {
       path: '/order'
       fullPath: '/order'
       preLoaderRoute: typeof ProtectedOrderIndexImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/marketing/drp/userIndex': {
+      id: '/_protected/marketing/drp/userIndex'
+      path: '/marketing/drp/userIndex'
+      fullPath: '/marketing/drp/userIndex'
+      preLoaderRoute: typeof ProtectedMarketingDrpUserIndexRouteImport
       parentRoute: typeof ProtectedRouteImport
     }
     '/_protected/client/clientTags/edit': {
@@ -673,13 +696,6 @@ declare module '@tanstack/react-router' {
       path: '/marketing/drp/rule'
       fullPath: '/marketing/drp/rule'
       preLoaderRoute: typeof ProtectedMarketingDrpRuleImport
-      parentRoute: typeof ProtectedRouteImport
-    }
-    '/_protected/marketing/drp/userIndex': {
-      id: '/_protected/marketing/drp/userIndex'
-      path: '/marketing/drp/userIndex'
-      fullPath: '/marketing/drp/userIndex'
-      preLoaderRoute: typeof ProtectedMarketingDrpUserIndexImport
       parentRoute: typeof ProtectedRouteImport
     }
     '/_protected/marketing/fullMpayN/data': {
@@ -962,6 +978,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedMarketingDrpDistrListGoodsListImport
       parentRoute: typeof ProtectedRouteImport
     }
+    '/_protected/marketing/drp/userIndex/approval': {
+      id: '/_protected/marketing/drp/userIndex/approval'
+      path: '/approval'
+      fullPath: '/marketing/drp/userIndex/approval'
+      preLoaderRoute: typeof ProtectedMarketingDrpUserIndexApprovalImport
+      parentRoute: typeof ProtectedMarketingDrpUserIndexRouteImport
+    }
+    '/_protected/marketing/drp/userIndex/distributors': {
+      id: '/_protected/marketing/drp/userIndex/distributors'
+      path: '/distributors'
+      fullPath: '/marketing/drp/userIndex/distributors'
+      preLoaderRoute: typeof ProtectedMarketingDrpUserIndexDistributorsImport
+      parentRoute: typeof ProtectedMarketingDrpUserIndexRouteImport
+    }
     '/_protected/client/account/detail/': {
       id: '/_protected/client/account/detail/'
       path: '/client/account/detail'
@@ -988,6 +1018,24 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
+interface ProtectedMarketingDrpUserIndexRouteRouteChildren {
+  ProtectedMarketingDrpUserIndexApprovalRoute: typeof ProtectedMarketingDrpUserIndexApprovalRoute
+  ProtectedMarketingDrpUserIndexDistributorsRoute: typeof ProtectedMarketingDrpUserIndexDistributorsRoute
+}
+
+const ProtectedMarketingDrpUserIndexRouteRouteChildren: ProtectedMarketingDrpUserIndexRouteRouteChildren =
+  {
+    ProtectedMarketingDrpUserIndexApprovalRoute:
+      ProtectedMarketingDrpUserIndexApprovalRoute,
+    ProtectedMarketingDrpUserIndexDistributorsRoute:
+      ProtectedMarketingDrpUserIndexDistributorsRoute,
+  }
+
+const ProtectedMarketingDrpUserIndexRouteRouteWithChildren =
+  ProtectedMarketingDrpUserIndexRouteRoute._addFileChildren(
+    ProtectedMarketingDrpUserIndexRouteRouteChildren,
+  )
+
 interface ProtectedRouteRouteChildren {
   ProtectedIndexRoute: typeof ProtectedIndexRoute
   ProtectedOrderAfterSaleRoute: typeof ProtectedOrderAfterSaleRoute
@@ -996,6 +1044,7 @@ interface ProtectedRouteRouteChildren {
   ProtectedOrderFreightRoute: typeof ProtectedOrderFreightRoute
   ProtectedOrderReshipRoute: typeof ProtectedOrderReshipRoute
   ProtectedOrderIndexRoute: typeof ProtectedOrderIndexRoute
+  ProtectedMarketingDrpUserIndexRouteRoute: typeof ProtectedMarketingDrpUserIndexRouteRouteWithChildren
   ProtectedClientClientTagsEditRoute: typeof ProtectedClientClientTagsEditRoute
   ProtectedCommodityCategoryInfoRoute: typeof ProtectedCommodityCategoryInfoRoute
   ProtectedCommodityCategoryAdminGoodsRoute: typeof ProtectedCommodityCategoryAdminGoodsRoute
@@ -1008,7 +1057,6 @@ interface ProtectedRouteRouteChildren {
   ProtectedMarketingDrpDataRoute: typeof ProtectedMarketingDrpDataRoute
   ProtectedMarketingDrpDistrHistoryRoute: typeof ProtectedMarketingDrpDistrHistoryRoute
   ProtectedMarketingDrpRuleRoute: typeof ProtectedMarketingDrpRuleRoute
-  ProtectedMarketingDrpUserIndexRoute: typeof ProtectedMarketingDrpUserIndexRoute
   ProtectedMarketingFullMpayNDataRoute: typeof ProtectedMarketingFullMpayNDataRoute
   ProtectedMarketingFullMpayNEditRoute: typeof ProtectedMarketingFullMpayNEditRoute
   ProtectedMarketingFulldiscountsDataRoute: typeof ProtectedMarketingFulldiscountsDataRoute
@@ -1062,6 +1110,8 @@ const ProtectedRouteRouteChildren: ProtectedRouteRouteChildren = {
   ProtectedOrderFreightRoute: ProtectedOrderFreightRoute,
   ProtectedOrderReshipRoute: ProtectedOrderReshipRoute,
   ProtectedOrderIndexRoute: ProtectedOrderIndexRoute,
+  ProtectedMarketingDrpUserIndexRouteRoute:
+    ProtectedMarketingDrpUserIndexRouteRouteWithChildren,
   ProtectedClientClientTagsEditRoute: ProtectedClientClientTagsEditRoute,
   ProtectedCommodityCategoryInfoRoute: ProtectedCommodityCategoryInfoRoute,
   ProtectedCommodityCategoryAdminGoodsRoute:
@@ -1079,7 +1129,6 @@ const ProtectedRouteRouteChildren: ProtectedRouteRouteChildren = {
   ProtectedMarketingDrpDistrHistoryRoute:
     ProtectedMarketingDrpDistrHistoryRoute,
   ProtectedMarketingDrpRuleRoute: ProtectedMarketingDrpRuleRoute,
-  ProtectedMarketingDrpUserIndexRoute: ProtectedMarketingDrpUserIndexRoute,
   ProtectedMarketingFullMpayNDataRoute: ProtectedMarketingFullMpayNDataRoute,
   ProtectedMarketingFullMpayNEditRoute: ProtectedMarketingFullMpayNEditRoute,
   ProtectedMarketingFulldiscountsDataRoute:
@@ -1150,6 +1199,7 @@ export interface FileRoutesByFullPath {
   '/order/freight': typeof ProtectedOrderFreightRoute
   '/order/reship': typeof ProtectedOrderReshipRoute
   '/order': typeof ProtectedOrderIndexRoute
+  '/marketing/drp/userIndex': typeof ProtectedMarketingDrpUserIndexRouteRouteWithChildren
   '/client/clientTags/edit': typeof ProtectedClientClientTagsEditRoute
   '/commodity/category/info': typeof ProtectedCommodityCategoryInfoRoute
   '/commodity/categoryAdmin/goods': typeof ProtectedCommodityCategoryAdminGoodsRoute
@@ -1162,7 +1212,6 @@ export interface FileRoutesByFullPath {
   '/marketing/drp/data': typeof ProtectedMarketingDrpDataRoute
   '/marketing/drp/distrHistory': typeof ProtectedMarketingDrpDistrHistoryRoute
   '/marketing/drp/rule': typeof ProtectedMarketingDrpRuleRoute
-  '/marketing/drp/userIndex': typeof ProtectedMarketingDrpUserIndexRoute
   '/marketing/fullMpayN/data': typeof ProtectedMarketingFullMpayNDataRoute
   '/marketing/fullMpayN/edit': typeof ProtectedMarketingFullMpayNEditRoute
   '/marketing/fulldiscounts/data': typeof ProtectedMarketingFulldiscountsDataRoute
@@ -1203,6 +1252,8 @@ export interface FileRoutesByFullPath {
   '/marketing/timeline': typeof ProtectedMarketingTimelineIndexRoute
   '/marketing/valuepack': typeof ProtectedMarketingValuepackIndexRoute
   '/marketing/drp/distrList/goodsList': typeof ProtectedMarketingDrpDistrListGoodsListRoute
+  '/marketing/drp/userIndex/approval': typeof ProtectedMarketingDrpUserIndexApprovalRoute
+  '/marketing/drp/userIndex/distributors': typeof ProtectedMarketingDrpUserIndexDistributorsRoute
   '/client/account/detail': typeof ProtectedClientAccountDetailIndexRoute
   '/commodity/merchandiseCon/detail': typeof ProtectedCommodityMerchandiseConDetailIndexRoute
   '/marketing/drp/distrList': typeof ProtectedMarketingDrpDistrListIndexRoute
@@ -1217,6 +1268,7 @@ export interface FileRoutesByTo {
   '/order/freight': typeof ProtectedOrderFreightRoute
   '/order/reship': typeof ProtectedOrderReshipRoute
   '/order': typeof ProtectedOrderIndexRoute
+  '/marketing/drp/userIndex': typeof ProtectedMarketingDrpUserIndexRouteRouteWithChildren
   '/client/clientTags/edit': typeof ProtectedClientClientTagsEditRoute
   '/commodity/category/info': typeof ProtectedCommodityCategoryInfoRoute
   '/commodity/categoryAdmin/goods': typeof ProtectedCommodityCategoryAdminGoodsRoute
@@ -1229,7 +1281,6 @@ export interface FileRoutesByTo {
   '/marketing/drp/data': typeof ProtectedMarketingDrpDataRoute
   '/marketing/drp/distrHistory': typeof ProtectedMarketingDrpDistrHistoryRoute
   '/marketing/drp/rule': typeof ProtectedMarketingDrpRuleRoute
-  '/marketing/drp/userIndex': typeof ProtectedMarketingDrpUserIndexRoute
   '/marketing/fullMpayN/data': typeof ProtectedMarketingFullMpayNDataRoute
   '/marketing/fullMpayN/edit': typeof ProtectedMarketingFullMpayNEditRoute
   '/marketing/fulldiscounts/data': typeof ProtectedMarketingFulldiscountsDataRoute
@@ -1270,6 +1321,8 @@ export interface FileRoutesByTo {
   '/marketing/timeline': typeof ProtectedMarketingTimelineIndexRoute
   '/marketing/valuepack': typeof ProtectedMarketingValuepackIndexRoute
   '/marketing/drp/distrList/goodsList': typeof ProtectedMarketingDrpDistrListGoodsListRoute
+  '/marketing/drp/userIndex/approval': typeof ProtectedMarketingDrpUserIndexApprovalRoute
+  '/marketing/drp/userIndex/distributors': typeof ProtectedMarketingDrpUserIndexDistributorsRoute
   '/client/account/detail': typeof ProtectedClientAccountDetailIndexRoute
   '/commodity/merchandiseCon/detail': typeof ProtectedCommodityMerchandiseConDetailIndexRoute
   '/marketing/drp/distrList': typeof ProtectedMarketingDrpDistrListIndexRoute
@@ -1286,6 +1339,7 @@ export interface FileRoutesById {
   '/_protected/order/freight': typeof ProtectedOrderFreightRoute
   '/_protected/order/reship': typeof ProtectedOrderReshipRoute
   '/_protected/order/': typeof ProtectedOrderIndexRoute
+  '/_protected/marketing/drp/userIndex': typeof ProtectedMarketingDrpUserIndexRouteRouteWithChildren
   '/_protected/client/clientTags/edit': typeof ProtectedClientClientTagsEditRoute
   '/_protected/commodity/category/info': typeof ProtectedCommodityCategoryInfoRoute
   '/_protected/commodity/categoryAdmin/goods': typeof ProtectedCommodityCategoryAdminGoodsRoute
@@ -1298,7 +1352,6 @@ export interface FileRoutesById {
   '/_protected/marketing/drp/data': typeof ProtectedMarketingDrpDataRoute
   '/_protected/marketing/drp/distrHistory': typeof ProtectedMarketingDrpDistrHistoryRoute
   '/_protected/marketing/drp/rule': typeof ProtectedMarketingDrpRuleRoute
-  '/_protected/marketing/drp/userIndex': typeof ProtectedMarketingDrpUserIndexRoute
   '/_protected/marketing/fullMpayN/data': typeof ProtectedMarketingFullMpayNDataRoute
   '/_protected/marketing/fullMpayN/edit': typeof ProtectedMarketingFullMpayNEditRoute
   '/_protected/marketing/fulldiscounts/data': typeof ProtectedMarketingFulldiscountsDataRoute
@@ -1339,6 +1392,8 @@ export interface FileRoutesById {
   '/_protected/marketing/timeline/': typeof ProtectedMarketingTimelineIndexRoute
   '/_protected/marketing/valuepack/': typeof ProtectedMarketingValuepackIndexRoute
   '/_protected/marketing/drp/distrList/goodsList': typeof ProtectedMarketingDrpDistrListGoodsListRoute
+  '/_protected/marketing/drp/userIndex/approval': typeof ProtectedMarketingDrpUserIndexApprovalRoute
+  '/_protected/marketing/drp/userIndex/distributors': typeof ProtectedMarketingDrpUserIndexDistributorsRoute
   '/_protected/client/account/detail/': typeof ProtectedClientAccountDetailIndexRoute
   '/_protected/commodity/merchandiseCon/detail/': typeof ProtectedCommodityMerchandiseConDetailIndexRoute
   '/_protected/marketing/drp/distrList/': typeof ProtectedMarketingDrpDistrListIndexRoute
@@ -1356,6 +1411,7 @@ export interface FileRouteTypes {
     | '/order/freight'
     | '/order/reship'
     | '/order'
+    | '/marketing/drp/userIndex'
     | '/client/clientTags/edit'
     | '/commodity/category/info'
     | '/commodity/categoryAdmin/goods'
@@ -1368,7 +1424,6 @@ export interface FileRouteTypes {
     | '/marketing/drp/data'
     | '/marketing/drp/distrHistory'
     | '/marketing/drp/rule'
-    | '/marketing/drp/userIndex'
     | '/marketing/fullMpayN/data'
     | '/marketing/fullMpayN/edit'
     | '/marketing/fulldiscounts/data'
@@ -1409,6 +1464,8 @@ export interface FileRouteTypes {
     | '/marketing/timeline'
     | '/marketing/valuepack'
     | '/marketing/drp/distrList/goodsList'
+    | '/marketing/drp/userIndex/approval'
+    | '/marketing/drp/userIndex/distributors'
     | '/client/account/detail'
     | '/commodity/merchandiseCon/detail'
     | '/marketing/drp/distrList'
@@ -1422,6 +1479,7 @@ export interface FileRouteTypes {
     | '/order/freight'
     | '/order/reship'
     | '/order'
+    | '/marketing/drp/userIndex'
     | '/client/clientTags/edit'
     | '/commodity/category/info'
     | '/commodity/categoryAdmin/goods'
@@ -1434,7 +1492,6 @@ export interface FileRouteTypes {
     | '/marketing/drp/data'
     | '/marketing/drp/distrHistory'
     | '/marketing/drp/rule'
-    | '/marketing/drp/userIndex'
     | '/marketing/fullMpayN/data'
     | '/marketing/fullMpayN/edit'
     | '/marketing/fulldiscounts/data'
@@ -1475,6 +1532,8 @@ export interface FileRouteTypes {
     | '/marketing/timeline'
     | '/marketing/valuepack'
     | '/marketing/drp/distrList/goodsList'
+    | '/marketing/drp/userIndex/approval'
+    | '/marketing/drp/userIndex/distributors'
     | '/client/account/detail'
     | '/commodity/merchandiseCon/detail'
     | '/marketing/drp/distrList'
@@ -1489,6 +1548,7 @@ export interface FileRouteTypes {
     | '/_protected/order/freight'
     | '/_protected/order/reship'
     | '/_protected/order/'
+    | '/_protected/marketing/drp/userIndex'
     | '/_protected/client/clientTags/edit'
     | '/_protected/commodity/category/info'
     | '/_protected/commodity/categoryAdmin/goods'
@@ -1501,7 +1561,6 @@ export interface FileRouteTypes {
     | '/_protected/marketing/drp/data'
     | '/_protected/marketing/drp/distrHistory'
     | '/_protected/marketing/drp/rule'
-    | '/_protected/marketing/drp/userIndex'
     | '/_protected/marketing/fullMpayN/data'
     | '/_protected/marketing/fullMpayN/edit'
     | '/_protected/marketing/fulldiscounts/data'
@@ -1542,6 +1601,8 @@ export interface FileRouteTypes {
     | '/_protected/marketing/timeline/'
     | '/_protected/marketing/valuepack/'
     | '/_protected/marketing/drp/distrList/goodsList'
+    | '/_protected/marketing/drp/userIndex/approval'
+    | '/_protected/marketing/drp/userIndex/distributors'
     | '/_protected/client/account/detail/'
     | '/_protected/commodity/merchandiseCon/detail/'
     | '/_protected/marketing/drp/distrList/'
@@ -1582,6 +1643,7 @@ export const routeTree = rootRoute
         "/_protected/order/freight",
         "/_protected/order/reship",
         "/_protected/order/",
+        "/_protected/marketing/drp/userIndex",
         "/_protected/client/clientTags/edit",
         "/_protected/commodity/category/info",
         "/_protected/commodity/categoryAdmin/goods",
@@ -1594,7 +1656,6 @@ export const routeTree = rootRoute
         "/_protected/marketing/drp/data",
         "/_protected/marketing/drp/distrHistory",
         "/_protected/marketing/drp/rule",
-        "/_protected/marketing/drp/userIndex",
         "/_protected/marketing/fullMpayN/data",
         "/_protected/marketing/fullMpayN/edit",
         "/_protected/marketing/fulldiscounts/data",
@@ -1671,6 +1732,14 @@ export const routeTree = rootRoute
       "filePath": "_protected/order/index.tsx",
       "parent": "/_protected"
     },
+    "/_protected/marketing/drp/userIndex": {
+      "filePath": "_protected/marketing/drp/userIndex/route.tsx",
+      "parent": "/_protected",
+      "children": [
+        "/_protected/marketing/drp/userIndex/approval",
+        "/_protected/marketing/drp/userIndex/distributors"
+      ]
+    },
     "/_protected/client/clientTags/edit": {
       "filePath": "_protected/client/clientTags/edit.tsx",
       "parent": "/_protected"
@@ -1717,10 +1786,6 @@ export const routeTree = rootRoute
     },
     "/_protected/marketing/drp/rule": {
       "filePath": "_protected/marketing/drp/rule.tsx",
-      "parent": "/_protected"
-    },
-    "/_protected/marketing/drp/userIndex": {
-      "filePath": "_protected/marketing/drp/userIndex.tsx",
       "parent": "/_protected"
     },
     "/_protected/marketing/fullMpayN/data": {
@@ -1882,6 +1947,14 @@ export const routeTree = rootRoute
     "/_protected/marketing/drp/distrList/goodsList": {
       "filePath": "_protected/marketing/drp/distrList/goodsList.tsx",
       "parent": "/_protected"
+    },
+    "/_protected/marketing/drp/userIndex/approval": {
+      "filePath": "_protected/marketing/drp/userIndex/approval.tsx",
+      "parent": "/_protected/marketing/drp/userIndex"
+    },
+    "/_protected/marketing/drp/userIndex/distributors": {
+      "filePath": "_protected/marketing/drp/userIndex/distributors.tsx",
+      "parent": "/_protected/marketing/drp/userIndex"
     },
     "/_protected/client/account/detail/": {
       "filePath": "_protected/client/account/detail/index.tsx",

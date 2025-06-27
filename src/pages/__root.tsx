@@ -2,7 +2,7 @@ import { Button, ConfigProvider } from '@arco-design/web-react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { createRootRoute, Link, Outlet } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+// import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { RouterProgressBar } from '@/components/router-progress-bar'
 import { queryClient } from '@/lib'
 
@@ -27,7 +27,7 @@ export const Route = createRootRoute({
         >
           <Outlet />
         </ConfigProvider>
-        <TanStackRouterDevtools position='bottom-left' />
+        {/* <TanStackRouterDevtools position='bottom-left' /> */}
         <ReactQueryDevtools />
       </QueryClientProvider>
     </>
