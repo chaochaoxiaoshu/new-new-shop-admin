@@ -5,7 +5,7 @@ import {
   Menu,
   Notification
 } from '@arco-design/web-react'
-import { useNavigate } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
 import { ChevronDownIcon, UserIcon } from 'lucide-react'
 import logo from '@/assets/logo.png'
 import { queryClient } from '@/lib'
@@ -27,7 +27,9 @@ export function Header() {
 
   return (
     <header className='flex items-center h-[60px] pl-6 pr-2 border-b bg-background'>
-      <img src={logo} alt='logo' className='w-32' />
+      <Link to='/'>
+        <img src={logo} alt='logo' className='w-32' />
+      </Link>
       <div className='ml-auto'>
         <Dropdown
           trigger='click'

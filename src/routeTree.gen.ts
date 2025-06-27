@@ -20,6 +20,11 @@ import { Route as ProtectedOrderFreightImport } from './pages/_protected/order/f
 import { Route as ProtectedOrderDispatchImport } from './pages/_protected/order/dispatch'
 import { Route as ProtectedOrderBillLadingImport } from './pages/_protected/order/billLading'
 import { Route as ProtectedOrderAfterSaleImport } from './pages/_protected/order/afterSale'
+import { Route as ProtectedFinanceRefundImport } from './pages/_protected/finance/refund'
+import { Route as ProtectedFinancePaymentImport } from './pages/_protected/finance/payment'
+import { Route as ProtectedFinanceMonthlyImport } from './pages/_protected/finance/monthly'
+import { Route as ProtectedFinanceDetailsImport } from './pages/_protected/finance/details'
+import { Route as ProtectedFinanceApplicationImport } from './pages/_protected/finance/application'
 import { Route as ProtectedMarketingValuepackIndexImport } from './pages/_protected/marketing/valuepack/index'
 import { Route as ProtectedMarketingTimelineIndexImport } from './pages/_protected/marketing/timeline/index'
 import { Route as ProtectedMarketingTeambuyIndexImport } from './pages/_protected/marketing/teambuy/index'
@@ -133,6 +138,37 @@ const ProtectedOrderAfterSaleRoute = ProtectedOrderAfterSaleImport.update({
   path: '/order/afterSale',
   getParentRoute: () => ProtectedRouteRoute,
 } as any)
+
+const ProtectedFinanceRefundRoute = ProtectedFinanceRefundImport.update({
+  id: '/finance/refund',
+  path: '/finance/refund',
+  getParentRoute: () => ProtectedRouteRoute,
+} as any)
+
+const ProtectedFinancePaymentRoute = ProtectedFinancePaymentImport.update({
+  id: '/finance/payment',
+  path: '/finance/payment',
+  getParentRoute: () => ProtectedRouteRoute,
+} as any)
+
+const ProtectedFinanceMonthlyRoute = ProtectedFinanceMonthlyImport.update({
+  id: '/finance/monthly',
+  path: '/finance/monthly',
+  getParentRoute: () => ProtectedRouteRoute,
+} as any)
+
+const ProtectedFinanceDetailsRoute = ProtectedFinanceDetailsImport.update({
+  id: '/finance/details',
+  path: '/finance/details',
+  getParentRoute: () => ProtectedRouteRoute,
+} as any)
+
+const ProtectedFinanceApplicationRoute =
+  ProtectedFinanceApplicationImport.update({
+    id: '/finance/application',
+    path: '/finance/application',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
 
 const ProtectedMarketingValuepackIndexRoute =
   ProtectedMarketingValuepackIndexImport.update({
@@ -563,6 +599,41 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof ProtectedIndexImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/finance/application': {
+      id: '/_protected/finance/application'
+      path: '/finance/application'
+      fullPath: '/finance/application'
+      preLoaderRoute: typeof ProtectedFinanceApplicationImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/finance/details': {
+      id: '/_protected/finance/details'
+      path: '/finance/details'
+      fullPath: '/finance/details'
+      preLoaderRoute: typeof ProtectedFinanceDetailsImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/finance/monthly': {
+      id: '/_protected/finance/monthly'
+      path: '/finance/monthly'
+      fullPath: '/finance/monthly'
+      preLoaderRoute: typeof ProtectedFinanceMonthlyImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/finance/payment': {
+      id: '/_protected/finance/payment'
+      path: '/finance/payment'
+      fullPath: '/finance/payment'
+      preLoaderRoute: typeof ProtectedFinancePaymentImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/finance/refund': {
+      id: '/_protected/finance/refund'
+      path: '/finance/refund'
+      fullPath: '/finance/refund'
+      preLoaderRoute: typeof ProtectedFinanceRefundImport
       parentRoute: typeof ProtectedRouteImport
     }
     '/_protected/order/afterSale': {
@@ -1038,6 +1109,11 @@ const ProtectedMarketingDrpUserIndexRouteRouteWithChildren =
 
 interface ProtectedRouteRouteChildren {
   ProtectedIndexRoute: typeof ProtectedIndexRoute
+  ProtectedFinanceApplicationRoute: typeof ProtectedFinanceApplicationRoute
+  ProtectedFinanceDetailsRoute: typeof ProtectedFinanceDetailsRoute
+  ProtectedFinanceMonthlyRoute: typeof ProtectedFinanceMonthlyRoute
+  ProtectedFinancePaymentRoute: typeof ProtectedFinancePaymentRoute
+  ProtectedFinanceRefundRoute: typeof ProtectedFinanceRefundRoute
   ProtectedOrderAfterSaleRoute: typeof ProtectedOrderAfterSaleRoute
   ProtectedOrderBillLadingRoute: typeof ProtectedOrderBillLadingRoute
   ProtectedOrderDispatchRoute: typeof ProtectedOrderDispatchRoute
@@ -1104,6 +1180,11 @@ interface ProtectedRouteRouteChildren {
 
 const ProtectedRouteRouteChildren: ProtectedRouteRouteChildren = {
   ProtectedIndexRoute: ProtectedIndexRoute,
+  ProtectedFinanceApplicationRoute: ProtectedFinanceApplicationRoute,
+  ProtectedFinanceDetailsRoute: ProtectedFinanceDetailsRoute,
+  ProtectedFinanceMonthlyRoute: ProtectedFinanceMonthlyRoute,
+  ProtectedFinancePaymentRoute: ProtectedFinancePaymentRoute,
+  ProtectedFinanceRefundRoute: ProtectedFinanceRefundRoute,
   ProtectedOrderAfterSaleRoute: ProtectedOrderAfterSaleRoute,
   ProtectedOrderBillLadingRoute: ProtectedOrderBillLadingRoute,
   ProtectedOrderDispatchRoute: ProtectedOrderDispatchRoute,
@@ -1193,6 +1274,11 @@ export interface FileRoutesByFullPath {
   '': typeof ProtectedRouteRouteWithChildren
   '/login': typeof LoginRoute
   '/': typeof ProtectedIndexRoute
+  '/finance/application': typeof ProtectedFinanceApplicationRoute
+  '/finance/details': typeof ProtectedFinanceDetailsRoute
+  '/finance/monthly': typeof ProtectedFinanceMonthlyRoute
+  '/finance/payment': typeof ProtectedFinancePaymentRoute
+  '/finance/refund': typeof ProtectedFinanceRefundRoute
   '/order/afterSale': typeof ProtectedOrderAfterSaleRoute
   '/order/billLading': typeof ProtectedOrderBillLadingRoute
   '/order/dispatch': typeof ProtectedOrderDispatchRoute
@@ -1262,6 +1348,11 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/': typeof ProtectedIndexRoute
+  '/finance/application': typeof ProtectedFinanceApplicationRoute
+  '/finance/details': typeof ProtectedFinanceDetailsRoute
+  '/finance/monthly': typeof ProtectedFinanceMonthlyRoute
+  '/finance/payment': typeof ProtectedFinancePaymentRoute
+  '/finance/refund': typeof ProtectedFinanceRefundRoute
   '/order/afterSale': typeof ProtectedOrderAfterSaleRoute
   '/order/billLading': typeof ProtectedOrderBillLadingRoute
   '/order/dispatch': typeof ProtectedOrderDispatchRoute
@@ -1333,6 +1424,11 @@ export interface FileRoutesById {
   '/_protected': typeof ProtectedRouteRouteWithChildren
   '/login': typeof LoginRoute
   '/_protected/': typeof ProtectedIndexRoute
+  '/_protected/finance/application': typeof ProtectedFinanceApplicationRoute
+  '/_protected/finance/details': typeof ProtectedFinanceDetailsRoute
+  '/_protected/finance/monthly': typeof ProtectedFinanceMonthlyRoute
+  '/_protected/finance/payment': typeof ProtectedFinancePaymentRoute
+  '/_protected/finance/refund': typeof ProtectedFinanceRefundRoute
   '/_protected/order/afterSale': typeof ProtectedOrderAfterSaleRoute
   '/_protected/order/billLading': typeof ProtectedOrderBillLadingRoute
   '/_protected/order/dispatch': typeof ProtectedOrderDispatchRoute
@@ -1405,6 +1501,11 @@ export interface FileRouteTypes {
     | ''
     | '/login'
     | '/'
+    | '/finance/application'
+    | '/finance/details'
+    | '/finance/monthly'
+    | '/finance/payment'
+    | '/finance/refund'
     | '/order/afterSale'
     | '/order/billLading'
     | '/order/dispatch'
@@ -1473,6 +1574,11 @@ export interface FileRouteTypes {
   to:
     | '/login'
     | '/'
+    | '/finance/application'
+    | '/finance/details'
+    | '/finance/monthly'
+    | '/finance/payment'
+    | '/finance/refund'
     | '/order/afterSale'
     | '/order/billLading'
     | '/order/dispatch'
@@ -1542,6 +1648,11 @@ export interface FileRouteTypes {
     | '/_protected'
     | '/login'
     | '/_protected/'
+    | '/_protected/finance/application'
+    | '/_protected/finance/details'
+    | '/_protected/finance/monthly'
+    | '/_protected/finance/payment'
+    | '/_protected/finance/refund'
     | '/_protected/order/afterSale'
     | '/_protected/order/billLading'
     | '/_protected/order/dispatch'
@@ -1637,6 +1748,11 @@ export const routeTree = rootRoute
       "filePath": "_protected/route.tsx",
       "children": [
         "/_protected/",
+        "/_protected/finance/application",
+        "/_protected/finance/details",
+        "/_protected/finance/monthly",
+        "/_protected/finance/payment",
+        "/_protected/finance/refund",
         "/_protected/order/afterSale",
         "/_protected/order/billLading",
         "/_protected/order/dispatch",
@@ -1706,6 +1822,26 @@ export const routeTree = rootRoute
     },
     "/_protected/": {
       "filePath": "_protected/index.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/finance/application": {
+      "filePath": "_protected/finance/application.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/finance/details": {
+      "filePath": "_protected/finance/details.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/finance/monthly": {
+      "filePath": "_protected/finance/monthly.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/finance/payment": {
+      "filePath": "_protected/finance/payment.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/finance/refund": {
+      "filePath": "_protected/finance/refund.tsx",
       "parent": "/_protected"
     },
     "/_protected/order/afterSale": {
