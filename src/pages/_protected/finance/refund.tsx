@@ -11,6 +11,7 @@ import { TableLayout } from '@/components/table-layout'
 import { getHead } from '@/helpers'
 import {
   defineTableColumns,
+  formatAmount,
   formatDateTime,
   queryClient,
   TableCellWidth
@@ -24,8 +25,8 @@ export const Route = createFileRoute('/_protected/finance/refund')({
     'refund_id?': 'string',
     'source_id?': 'string',
     'status?': 'number',
-    page_index: ['number', '=', 1],
-    page_size: ['number', '=', 20]
+    page_index: 'number = 1',
+    page_size: 'number = 20'
   }),
   beforeLoad: ({ search }) => ({
     refundListQueryOptions: queryOptions({
@@ -85,7 +86,7 @@ function RouteComponent() {
     },
     {
       title: '退款金额',
-      dataIndex: 'money',
+      render: (_, item) => formatAmount(item.money),
       width: TableCellWidth.amountS,
       ellipsis: true,
       tooltip: true,

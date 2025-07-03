@@ -27,8 +27,8 @@ export const Route = createFileRoute('/_protected/marketing/purchase/')({
   validateSearch: type({
     'name?': 'string',
     'status?': '0 | 1 | 2 | 3 | 4',
-    page_index: ['number', '=', 1],
-    page_size: ['number', '=', 20]
+    page_index: 'number = 1',
+    page_size: 'number = 20'
   }),
   beforeLoad: ({ search }) => ({
     addonPurchaseQueryOptions: queryOptions({
@@ -122,13 +122,13 @@ function AddonPurchaseView() {
     },
     {
       title: '实付金额',
-      dataIndex: 'sum_money',
+      render: (_, item) => (item.sum_money ? `¥ ${item.sum_money}` : '-'),
       width: TableCellWidth.amountS,
       align: 'center'
     },
     {
-      title: '笔单价(元)',
-      dataIndex: 'unit_price',
+      title: '笔单价',
+      render: (_, item) => (item.unit_price ? `¥ ${item.unit_price}` : '-'),
       width: TableCellWidth.amountS,
       align: 'center'
     },

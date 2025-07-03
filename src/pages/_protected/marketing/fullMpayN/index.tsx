@@ -11,6 +11,7 @@ import { TableLayout } from '@/components/table-layout'
 import { getHead } from '@/helpers'
 import {
   defineTableColumns,
+  formatAmount,
   formatDateTime,
   queryClient,
   TableCellWidth
@@ -23,8 +24,8 @@ export const Route = createFileRoute('/_protected/marketing/fullMpayN/')({
   validateSearch: type({
     'name?': 'string',
     'state?': '"no_start" | "in_progress" | "completed"',
-    page_index: ['number', '=', 1],
-    page_size: ['number', '=', 20]
+    page_index: 'number = 1',
+    page_size: 'number = 20'
   }),
   beforeLoad: ({ search }) => ({
     spendMpayNQueryOptions: queryOptions({
@@ -111,13 +112,13 @@ function FreeGiftsView() {
     },
     {
       title: '订单总额',
-      dataIndex: 'total_amount',
+      render: (_, item) => formatAmount(item.total_amount),
       width: 100,
       align: 'center'
     },
     {
       title: '笔单价',
-      dataIndex: 'pen_price',
+      render: (_, item) => formatAmount(item.pen_price),
       width: 100,
       align: 'center'
     },

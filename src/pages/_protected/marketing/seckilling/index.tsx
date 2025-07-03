@@ -23,8 +23,8 @@ export const Route = createFileRoute('/_protected/marketing/seckilling/')({
   validateSearch: type({
     'name?': 'string',
     'operate?': '0 | 1 | 2 | 3',
-    page_index: ['number', '=', 1],
-    page_size: ['number', '=', 20]
+    page_index: 'number = 1',
+    page_size: 'number = 20'
   }),
   beforeLoad: ({ search }) => ({
     flashSalesQueryOptions: queryOptions({

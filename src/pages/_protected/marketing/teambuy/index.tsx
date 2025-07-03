@@ -25,8 +25,8 @@ export const Route = createFileRoute('/_protected/marketing/teambuy/')({
     'name?': 'string',
     'operate?': '0 | 1 | 2 | 3',
     'range?': ['number', 'number'],
-    page_index: ['number', '=', 1],
-    page_size: ['number', '=', 20]
+    page_index: 'number = 1',
+    page_size: 'number = 20'
   }),
   beforeLoad: ({ search }) => ({
     groupBuysQueryOptions: queryOptions({
@@ -121,7 +121,8 @@ function GroupBuyView() {
     },
     {
       title: '销售金额',
-      dataIndex: 'clustering_price',
+      render: (_, item) =>
+        item.clustering_price ? `¥ ${item.clustering_price}` : '-',
       width: TableCellWidth.amountS,
       align: 'center'
     },

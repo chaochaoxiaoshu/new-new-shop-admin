@@ -38,8 +38,8 @@ export const Route = createFileRoute('/_protected/marketing/timeline/')({
     'task_name?': 'string',
     'goods_name?': 'string',
     'status?': 'number',
-    page_index: ['number', '=', 1],
-    page_size: ['number', '=', 20]
+    page_index: 'number = 1',
+    page_size: 'number = 20'
   }),
   beforeLoad: ({ search }) => ({
     timelinesQueryOptions: queryOptions({

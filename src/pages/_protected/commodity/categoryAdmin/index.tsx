@@ -38,8 +38,8 @@ const LIST_KEY = 'admin-categories'
 
 export const Route = createFileRoute('/_protected/commodity/categoryAdmin/')({
   validateSearch: type({
-    page_index: ['number', '=', 1],
-    page_size: ['number', '=', 20]
+    page_index: 'number = 1',
+    page_size: 'number = 20'
   }),
   beforeLoad: ({ search }) => ({
     adminCategoriesTreeQueryOptions: queryOptions({

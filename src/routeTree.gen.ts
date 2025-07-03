@@ -15,6 +15,11 @@ import { Route as LoginImport } from './pages/login'
 import { Route as ProtectedRouteImport } from './pages/_protected/route'
 import { Route as ProtectedIndexImport } from './pages/_protected/index'
 import { Route as ProtectedOrderIndexImport } from './pages/_protected/order/index'
+import { Route as ProtectedStatisticsProductsImport } from './pages/_protected/statistics/products'
+import { Route as ProtectedStatisticsOrdersImport } from './pages/_protected/statistics/orders'
+import { Route as ProtectedStatisticsOrderReportImport } from './pages/_protected/statistics/orderReport'
+import { Route as ProtectedStatisticsGiveawayImport } from './pages/_protected/statistics/giveaway'
+import { Route as ProtectedStatisticsDistributionotcImport } from './pages/_protected/statistics/distributionotc'
 import { Route as ProtectedOrderReshipImport } from './pages/_protected/order/reship'
 import { Route as ProtectedOrderFreightImport } from './pages/_protected/order/freight'
 import { Route as ProtectedOrderDispatchImport } from './pages/_protected/order/dispatch'
@@ -25,6 +30,7 @@ import { Route as ProtectedFinancePaymentImport } from './pages/_protected/finan
 import { Route as ProtectedFinanceMonthlyImport } from './pages/_protected/finance/monthly'
 import { Route as ProtectedFinanceDetailsImport } from './pages/_protected/finance/details'
 import { Route as ProtectedFinanceApplicationImport } from './pages/_protected/finance/application'
+import { Route as ProtectedStatisticsOldDistributionRouteImport } from './pages/_protected/statistics/old-distribution/route'
 import { Route as ProtectedMarketingValuepackIndexImport } from './pages/_protected/marketing/valuepack/index'
 import { Route as ProtectedMarketingTimelineIndexImport } from './pages/_protected/marketing/timeline/index'
 import { Route as ProtectedMarketingTeambuyIndexImport } from './pages/_protected/marketing/teambuy/index'
@@ -43,6 +49,8 @@ import { Route as ProtectedCommodityCategoryIndexImport } from './pages/_protect
 import { Route as ProtectedCommodityBrandIndexImport } from './pages/_protected/commodity/brand/index'
 import { Route as ProtectedClientClientTagsIndexImport } from './pages/_protected/client/clientTags/index'
 import { Route as ProtectedClientAccountIndexImport } from './pages/_protected/client/account/index'
+import { Route as ProtectedStatisticsOldDistributionOrderDimensionImport } from './pages/_protected/statistics/old-distribution/order-dimension'
+import { Route as ProtectedStatisticsOldDistributionGoodsDimensionImport } from './pages/_protected/statistics/old-distribution/goods-dimension'
 import { Route as ProtectedMarketingValuepackEditImport } from './pages/_protected/marketing/valuepack/edit'
 import { Route as ProtectedMarketingValuepackDataImport } from './pages/_protected/marketing/valuepack/data'
 import { Route as ProtectedMarketingTimelineEditingImport } from './pages/_protected/marketing/timeline/editing'
@@ -109,6 +117,40 @@ const ProtectedOrderIndexRoute = ProtectedOrderIndexImport.update({
   getParentRoute: () => ProtectedRouteRoute,
 } as any)
 
+const ProtectedStatisticsProductsRoute =
+  ProtectedStatisticsProductsImport.update({
+    id: '/statistics/products',
+    path: '/statistics/products',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedStatisticsOrdersRoute = ProtectedStatisticsOrdersImport.update({
+  id: '/statistics/orders',
+  path: '/statistics/orders',
+  getParentRoute: () => ProtectedRouteRoute,
+} as any)
+
+const ProtectedStatisticsOrderReportRoute =
+  ProtectedStatisticsOrderReportImport.update({
+    id: '/statistics/orderReport',
+    path: '/statistics/orderReport',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedStatisticsGiveawayRoute =
+  ProtectedStatisticsGiveawayImport.update({
+    id: '/statistics/giveaway',
+    path: '/statistics/giveaway',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedStatisticsDistributionotcRoute =
+  ProtectedStatisticsDistributionotcImport.update({
+    id: '/statistics/distributionotc',
+    path: '/statistics/distributionotc',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
 const ProtectedOrderReshipRoute = ProtectedOrderReshipImport.update({
   id: '/order/reship',
   path: '/order/reship',
@@ -167,6 +209,13 @@ const ProtectedFinanceApplicationRoute =
   ProtectedFinanceApplicationImport.update({
     id: '/finance/application',
     path: '/finance/application',
+    getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedStatisticsOldDistributionRouteRoute =
+  ProtectedStatisticsOldDistributionRouteImport.update({
+    id: '/statistics/old-distribution',
+    path: '/statistics/old-distribution',
     getParentRoute: () => ProtectedRouteRoute,
   } as any)
 
@@ -294,6 +343,20 @@ const ProtectedClientAccountIndexRoute =
     id: '/client/account/',
     path: '/client/account/',
     getParentRoute: () => ProtectedRouteRoute,
+  } as any)
+
+const ProtectedStatisticsOldDistributionOrderDimensionRoute =
+  ProtectedStatisticsOldDistributionOrderDimensionImport.update({
+    id: '/order-dimension',
+    path: '/order-dimension',
+    getParentRoute: () => ProtectedStatisticsOldDistributionRouteRoute,
+  } as any)
+
+const ProtectedStatisticsOldDistributionGoodsDimensionRoute =
+  ProtectedStatisticsOldDistributionGoodsDimensionImport.update({
+    id: '/goods-dimension',
+    path: '/goods-dimension',
+    getParentRoute: () => ProtectedStatisticsOldDistributionRouteRoute,
   } as any)
 
 const ProtectedMarketingValuepackEditRoute =
@@ -601,6 +664,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedIndexImport
       parentRoute: typeof ProtectedRouteImport
     }
+    '/_protected/statistics/old-distribution': {
+      id: '/_protected/statistics/old-distribution'
+      path: '/statistics/old-distribution'
+      fullPath: '/statistics/old-distribution'
+      preLoaderRoute: typeof ProtectedStatisticsOldDistributionRouteImport
+      parentRoute: typeof ProtectedRouteImport
+    }
     '/_protected/finance/application': {
       id: '/_protected/finance/application'
       path: '/finance/application'
@@ -669,6 +739,41 @@ declare module '@tanstack/react-router' {
       path: '/order/reship'
       fullPath: '/order/reship'
       preLoaderRoute: typeof ProtectedOrderReshipImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/statistics/distributionotc': {
+      id: '/_protected/statistics/distributionotc'
+      path: '/statistics/distributionotc'
+      fullPath: '/statistics/distributionotc'
+      preLoaderRoute: typeof ProtectedStatisticsDistributionotcImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/statistics/giveaway': {
+      id: '/_protected/statistics/giveaway'
+      path: '/statistics/giveaway'
+      fullPath: '/statistics/giveaway'
+      preLoaderRoute: typeof ProtectedStatisticsGiveawayImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/statistics/orderReport': {
+      id: '/_protected/statistics/orderReport'
+      path: '/statistics/orderReport'
+      fullPath: '/statistics/orderReport'
+      preLoaderRoute: typeof ProtectedStatisticsOrderReportImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/statistics/orders': {
+      id: '/_protected/statistics/orders'
+      path: '/statistics/orders'
+      fullPath: '/statistics/orders'
+      preLoaderRoute: typeof ProtectedStatisticsOrdersImport
+      parentRoute: typeof ProtectedRouteImport
+    }
+    '/_protected/statistics/products': {
+      id: '/_protected/statistics/products'
+      path: '/statistics/products'
+      fullPath: '/statistics/products'
+      preLoaderRoute: typeof ProtectedStatisticsProductsImport
       parentRoute: typeof ProtectedRouteImport
     }
     '/_protected/order/': {
@@ -916,6 +1021,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedMarketingValuepackEditImport
       parentRoute: typeof ProtectedRouteImport
     }
+    '/_protected/statistics/old-distribution/goods-dimension': {
+      id: '/_protected/statistics/old-distribution/goods-dimension'
+      path: '/goods-dimension'
+      fullPath: '/statistics/old-distribution/goods-dimension'
+      preLoaderRoute: typeof ProtectedStatisticsOldDistributionGoodsDimensionImport
+      parentRoute: typeof ProtectedStatisticsOldDistributionRouteImport
+    }
+    '/_protected/statistics/old-distribution/order-dimension': {
+      id: '/_protected/statistics/old-distribution/order-dimension'
+      path: '/order-dimension'
+      fullPath: '/statistics/old-distribution/order-dimension'
+      preLoaderRoute: typeof ProtectedStatisticsOldDistributionOrderDimensionImport
+      parentRoute: typeof ProtectedStatisticsOldDistributionRouteImport
+    }
     '/_protected/client/account/': {
       id: '/_protected/client/account/'
       path: '/client/account'
@@ -1089,6 +1208,24 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
+interface ProtectedStatisticsOldDistributionRouteRouteChildren {
+  ProtectedStatisticsOldDistributionGoodsDimensionRoute: typeof ProtectedStatisticsOldDistributionGoodsDimensionRoute
+  ProtectedStatisticsOldDistributionOrderDimensionRoute: typeof ProtectedStatisticsOldDistributionOrderDimensionRoute
+}
+
+const ProtectedStatisticsOldDistributionRouteRouteChildren: ProtectedStatisticsOldDistributionRouteRouteChildren =
+  {
+    ProtectedStatisticsOldDistributionGoodsDimensionRoute:
+      ProtectedStatisticsOldDistributionGoodsDimensionRoute,
+    ProtectedStatisticsOldDistributionOrderDimensionRoute:
+      ProtectedStatisticsOldDistributionOrderDimensionRoute,
+  }
+
+const ProtectedStatisticsOldDistributionRouteRouteWithChildren =
+  ProtectedStatisticsOldDistributionRouteRoute._addFileChildren(
+    ProtectedStatisticsOldDistributionRouteRouteChildren,
+  )
+
 interface ProtectedMarketingDrpUserIndexRouteRouteChildren {
   ProtectedMarketingDrpUserIndexApprovalRoute: typeof ProtectedMarketingDrpUserIndexApprovalRoute
   ProtectedMarketingDrpUserIndexDistributorsRoute: typeof ProtectedMarketingDrpUserIndexDistributorsRoute
@@ -1109,6 +1246,7 @@ const ProtectedMarketingDrpUserIndexRouteRouteWithChildren =
 
 interface ProtectedRouteRouteChildren {
   ProtectedIndexRoute: typeof ProtectedIndexRoute
+  ProtectedStatisticsOldDistributionRouteRoute: typeof ProtectedStatisticsOldDistributionRouteRouteWithChildren
   ProtectedFinanceApplicationRoute: typeof ProtectedFinanceApplicationRoute
   ProtectedFinanceDetailsRoute: typeof ProtectedFinanceDetailsRoute
   ProtectedFinanceMonthlyRoute: typeof ProtectedFinanceMonthlyRoute
@@ -1119,6 +1257,11 @@ interface ProtectedRouteRouteChildren {
   ProtectedOrderDispatchRoute: typeof ProtectedOrderDispatchRoute
   ProtectedOrderFreightRoute: typeof ProtectedOrderFreightRoute
   ProtectedOrderReshipRoute: typeof ProtectedOrderReshipRoute
+  ProtectedStatisticsDistributionotcRoute: typeof ProtectedStatisticsDistributionotcRoute
+  ProtectedStatisticsGiveawayRoute: typeof ProtectedStatisticsGiveawayRoute
+  ProtectedStatisticsOrderReportRoute: typeof ProtectedStatisticsOrderReportRoute
+  ProtectedStatisticsOrdersRoute: typeof ProtectedStatisticsOrdersRoute
+  ProtectedStatisticsProductsRoute: typeof ProtectedStatisticsProductsRoute
   ProtectedOrderIndexRoute: typeof ProtectedOrderIndexRoute
   ProtectedMarketingDrpUserIndexRouteRoute: typeof ProtectedMarketingDrpUserIndexRouteRouteWithChildren
   ProtectedClientClientTagsEditRoute: typeof ProtectedClientClientTagsEditRoute
@@ -1180,6 +1323,8 @@ interface ProtectedRouteRouteChildren {
 
 const ProtectedRouteRouteChildren: ProtectedRouteRouteChildren = {
   ProtectedIndexRoute: ProtectedIndexRoute,
+  ProtectedStatisticsOldDistributionRouteRoute:
+    ProtectedStatisticsOldDistributionRouteRouteWithChildren,
   ProtectedFinanceApplicationRoute: ProtectedFinanceApplicationRoute,
   ProtectedFinanceDetailsRoute: ProtectedFinanceDetailsRoute,
   ProtectedFinanceMonthlyRoute: ProtectedFinanceMonthlyRoute,
@@ -1190,6 +1335,12 @@ const ProtectedRouteRouteChildren: ProtectedRouteRouteChildren = {
   ProtectedOrderDispatchRoute: ProtectedOrderDispatchRoute,
   ProtectedOrderFreightRoute: ProtectedOrderFreightRoute,
   ProtectedOrderReshipRoute: ProtectedOrderReshipRoute,
+  ProtectedStatisticsDistributionotcRoute:
+    ProtectedStatisticsDistributionotcRoute,
+  ProtectedStatisticsGiveawayRoute: ProtectedStatisticsGiveawayRoute,
+  ProtectedStatisticsOrderReportRoute: ProtectedStatisticsOrderReportRoute,
+  ProtectedStatisticsOrdersRoute: ProtectedStatisticsOrdersRoute,
+  ProtectedStatisticsProductsRoute: ProtectedStatisticsProductsRoute,
   ProtectedOrderIndexRoute: ProtectedOrderIndexRoute,
   ProtectedMarketingDrpUserIndexRouteRoute:
     ProtectedMarketingDrpUserIndexRouteRouteWithChildren,
@@ -1274,6 +1425,7 @@ export interface FileRoutesByFullPath {
   '': typeof ProtectedRouteRouteWithChildren
   '/login': typeof LoginRoute
   '/': typeof ProtectedIndexRoute
+  '/statistics/old-distribution': typeof ProtectedStatisticsOldDistributionRouteRouteWithChildren
   '/finance/application': typeof ProtectedFinanceApplicationRoute
   '/finance/details': typeof ProtectedFinanceDetailsRoute
   '/finance/monthly': typeof ProtectedFinanceMonthlyRoute
@@ -1284,6 +1436,11 @@ export interface FileRoutesByFullPath {
   '/order/dispatch': typeof ProtectedOrderDispatchRoute
   '/order/freight': typeof ProtectedOrderFreightRoute
   '/order/reship': typeof ProtectedOrderReshipRoute
+  '/statistics/distributionotc': typeof ProtectedStatisticsDistributionotcRoute
+  '/statistics/giveaway': typeof ProtectedStatisticsGiveawayRoute
+  '/statistics/orderReport': typeof ProtectedStatisticsOrderReportRoute
+  '/statistics/orders': typeof ProtectedStatisticsOrdersRoute
+  '/statistics/products': typeof ProtectedStatisticsProductsRoute
   '/order': typeof ProtectedOrderIndexRoute
   '/marketing/drp/userIndex': typeof ProtectedMarketingDrpUserIndexRouteRouteWithChildren
   '/client/clientTags/edit': typeof ProtectedClientClientTagsEditRoute
@@ -1319,6 +1476,8 @@ export interface FileRoutesByFullPath {
   '/marketing/timeline/editing': typeof ProtectedMarketingTimelineEditingRoute
   '/marketing/valuepack/data': typeof ProtectedMarketingValuepackDataRoute
   '/marketing/valuepack/edit': typeof ProtectedMarketingValuepackEditRoute
+  '/statistics/old-distribution/goods-dimension': typeof ProtectedStatisticsOldDistributionGoodsDimensionRoute
+  '/statistics/old-distribution/order-dimension': typeof ProtectedStatisticsOldDistributionOrderDimensionRoute
   '/client/account': typeof ProtectedClientAccountIndexRoute
   '/client/clientTags': typeof ProtectedClientClientTagsIndexRoute
   '/commodity/brand': typeof ProtectedCommodityBrandIndexRoute
@@ -1348,6 +1507,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/': typeof ProtectedIndexRoute
+  '/statistics/old-distribution': typeof ProtectedStatisticsOldDistributionRouteRouteWithChildren
   '/finance/application': typeof ProtectedFinanceApplicationRoute
   '/finance/details': typeof ProtectedFinanceDetailsRoute
   '/finance/monthly': typeof ProtectedFinanceMonthlyRoute
@@ -1358,6 +1518,11 @@ export interface FileRoutesByTo {
   '/order/dispatch': typeof ProtectedOrderDispatchRoute
   '/order/freight': typeof ProtectedOrderFreightRoute
   '/order/reship': typeof ProtectedOrderReshipRoute
+  '/statistics/distributionotc': typeof ProtectedStatisticsDistributionotcRoute
+  '/statistics/giveaway': typeof ProtectedStatisticsGiveawayRoute
+  '/statistics/orderReport': typeof ProtectedStatisticsOrderReportRoute
+  '/statistics/orders': typeof ProtectedStatisticsOrdersRoute
+  '/statistics/products': typeof ProtectedStatisticsProductsRoute
   '/order': typeof ProtectedOrderIndexRoute
   '/marketing/drp/userIndex': typeof ProtectedMarketingDrpUserIndexRouteRouteWithChildren
   '/client/clientTags/edit': typeof ProtectedClientClientTagsEditRoute
@@ -1393,6 +1558,8 @@ export interface FileRoutesByTo {
   '/marketing/timeline/editing': typeof ProtectedMarketingTimelineEditingRoute
   '/marketing/valuepack/data': typeof ProtectedMarketingValuepackDataRoute
   '/marketing/valuepack/edit': typeof ProtectedMarketingValuepackEditRoute
+  '/statistics/old-distribution/goods-dimension': typeof ProtectedStatisticsOldDistributionGoodsDimensionRoute
+  '/statistics/old-distribution/order-dimension': typeof ProtectedStatisticsOldDistributionOrderDimensionRoute
   '/client/account': typeof ProtectedClientAccountIndexRoute
   '/client/clientTags': typeof ProtectedClientClientTagsIndexRoute
   '/commodity/brand': typeof ProtectedCommodityBrandIndexRoute
@@ -1424,6 +1591,7 @@ export interface FileRoutesById {
   '/_protected': typeof ProtectedRouteRouteWithChildren
   '/login': typeof LoginRoute
   '/_protected/': typeof ProtectedIndexRoute
+  '/_protected/statistics/old-distribution': typeof ProtectedStatisticsOldDistributionRouteRouteWithChildren
   '/_protected/finance/application': typeof ProtectedFinanceApplicationRoute
   '/_protected/finance/details': typeof ProtectedFinanceDetailsRoute
   '/_protected/finance/monthly': typeof ProtectedFinanceMonthlyRoute
@@ -1434,6 +1602,11 @@ export interface FileRoutesById {
   '/_protected/order/dispatch': typeof ProtectedOrderDispatchRoute
   '/_protected/order/freight': typeof ProtectedOrderFreightRoute
   '/_protected/order/reship': typeof ProtectedOrderReshipRoute
+  '/_protected/statistics/distributionotc': typeof ProtectedStatisticsDistributionotcRoute
+  '/_protected/statistics/giveaway': typeof ProtectedStatisticsGiveawayRoute
+  '/_protected/statistics/orderReport': typeof ProtectedStatisticsOrderReportRoute
+  '/_protected/statistics/orders': typeof ProtectedStatisticsOrdersRoute
+  '/_protected/statistics/products': typeof ProtectedStatisticsProductsRoute
   '/_protected/order/': typeof ProtectedOrderIndexRoute
   '/_protected/marketing/drp/userIndex': typeof ProtectedMarketingDrpUserIndexRouteRouteWithChildren
   '/_protected/client/clientTags/edit': typeof ProtectedClientClientTagsEditRoute
@@ -1469,6 +1642,8 @@ export interface FileRoutesById {
   '/_protected/marketing/timeline/editing': typeof ProtectedMarketingTimelineEditingRoute
   '/_protected/marketing/valuepack/data': typeof ProtectedMarketingValuepackDataRoute
   '/_protected/marketing/valuepack/edit': typeof ProtectedMarketingValuepackEditRoute
+  '/_protected/statistics/old-distribution/goods-dimension': typeof ProtectedStatisticsOldDistributionGoodsDimensionRoute
+  '/_protected/statistics/old-distribution/order-dimension': typeof ProtectedStatisticsOldDistributionOrderDimensionRoute
   '/_protected/client/account/': typeof ProtectedClientAccountIndexRoute
   '/_protected/client/clientTags/': typeof ProtectedClientClientTagsIndexRoute
   '/_protected/commodity/brand/': typeof ProtectedCommodityBrandIndexRoute
@@ -1501,6 +1676,7 @@ export interface FileRouteTypes {
     | ''
     | '/login'
     | '/'
+    | '/statistics/old-distribution'
     | '/finance/application'
     | '/finance/details'
     | '/finance/monthly'
@@ -1511,6 +1687,11 @@ export interface FileRouteTypes {
     | '/order/dispatch'
     | '/order/freight'
     | '/order/reship'
+    | '/statistics/distributionotc'
+    | '/statistics/giveaway'
+    | '/statistics/orderReport'
+    | '/statistics/orders'
+    | '/statistics/products'
     | '/order'
     | '/marketing/drp/userIndex'
     | '/client/clientTags/edit'
@@ -1546,6 +1727,8 @@ export interface FileRouteTypes {
     | '/marketing/timeline/editing'
     | '/marketing/valuepack/data'
     | '/marketing/valuepack/edit'
+    | '/statistics/old-distribution/goods-dimension'
+    | '/statistics/old-distribution/order-dimension'
     | '/client/account'
     | '/client/clientTags'
     | '/commodity/brand'
@@ -1574,6 +1757,7 @@ export interface FileRouteTypes {
   to:
     | '/login'
     | '/'
+    | '/statistics/old-distribution'
     | '/finance/application'
     | '/finance/details'
     | '/finance/monthly'
@@ -1584,6 +1768,11 @@ export interface FileRouteTypes {
     | '/order/dispatch'
     | '/order/freight'
     | '/order/reship'
+    | '/statistics/distributionotc'
+    | '/statistics/giveaway'
+    | '/statistics/orderReport'
+    | '/statistics/orders'
+    | '/statistics/products'
     | '/order'
     | '/marketing/drp/userIndex'
     | '/client/clientTags/edit'
@@ -1619,6 +1808,8 @@ export interface FileRouteTypes {
     | '/marketing/timeline/editing'
     | '/marketing/valuepack/data'
     | '/marketing/valuepack/edit'
+    | '/statistics/old-distribution/goods-dimension'
+    | '/statistics/old-distribution/order-dimension'
     | '/client/account'
     | '/client/clientTags'
     | '/commodity/brand'
@@ -1648,6 +1839,7 @@ export interface FileRouteTypes {
     | '/_protected'
     | '/login'
     | '/_protected/'
+    | '/_protected/statistics/old-distribution'
     | '/_protected/finance/application'
     | '/_protected/finance/details'
     | '/_protected/finance/monthly'
@@ -1658,6 +1850,11 @@ export interface FileRouteTypes {
     | '/_protected/order/dispatch'
     | '/_protected/order/freight'
     | '/_protected/order/reship'
+    | '/_protected/statistics/distributionotc'
+    | '/_protected/statistics/giveaway'
+    | '/_protected/statistics/orderReport'
+    | '/_protected/statistics/orders'
+    | '/_protected/statistics/products'
     | '/_protected/order/'
     | '/_protected/marketing/drp/userIndex'
     | '/_protected/client/clientTags/edit'
@@ -1693,6 +1890,8 @@ export interface FileRouteTypes {
     | '/_protected/marketing/timeline/editing'
     | '/_protected/marketing/valuepack/data'
     | '/_protected/marketing/valuepack/edit'
+    | '/_protected/statistics/old-distribution/goods-dimension'
+    | '/_protected/statistics/old-distribution/order-dimension'
     | '/_protected/client/account/'
     | '/_protected/client/clientTags/'
     | '/_protected/commodity/brand/'
@@ -1748,6 +1947,7 @@ export const routeTree = rootRoute
       "filePath": "_protected/route.tsx",
       "children": [
         "/_protected/",
+        "/_protected/statistics/old-distribution",
         "/_protected/finance/application",
         "/_protected/finance/details",
         "/_protected/finance/monthly",
@@ -1758,6 +1958,11 @@ export const routeTree = rootRoute
         "/_protected/order/dispatch",
         "/_protected/order/freight",
         "/_protected/order/reship",
+        "/_protected/statistics/distributionotc",
+        "/_protected/statistics/giveaway",
+        "/_protected/statistics/orderReport",
+        "/_protected/statistics/orders",
+        "/_protected/statistics/products",
         "/_protected/order/",
         "/_protected/marketing/drp/userIndex",
         "/_protected/client/clientTags/edit",
@@ -1824,6 +2029,14 @@ export const routeTree = rootRoute
       "filePath": "_protected/index.tsx",
       "parent": "/_protected"
     },
+    "/_protected/statistics/old-distribution": {
+      "filePath": "_protected/statistics/old-distribution/route.tsx",
+      "parent": "/_protected",
+      "children": [
+        "/_protected/statistics/old-distribution/goods-dimension",
+        "/_protected/statistics/old-distribution/order-dimension"
+      ]
+    },
     "/_protected/finance/application": {
       "filePath": "_protected/finance/application.tsx",
       "parent": "/_protected"
@@ -1862,6 +2075,26 @@ export const routeTree = rootRoute
     },
     "/_protected/order/reship": {
       "filePath": "_protected/order/reship.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/statistics/distributionotc": {
+      "filePath": "_protected/statistics/distributionotc.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/statistics/giveaway": {
+      "filePath": "_protected/statistics/giveaway.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/statistics/orderReport": {
+      "filePath": "_protected/statistics/orderReport.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/statistics/orders": {
+      "filePath": "_protected/statistics/orders.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/statistics/products": {
+      "filePath": "_protected/statistics/products.tsx",
       "parent": "/_protected"
     },
     "/_protected/order/": {
@@ -2007,6 +2240,14 @@ export const routeTree = rootRoute
     "/_protected/marketing/valuepack/edit": {
       "filePath": "_protected/marketing/valuepack/edit.tsx",
       "parent": "/_protected"
+    },
+    "/_protected/statistics/old-distribution/goods-dimension": {
+      "filePath": "_protected/statistics/old-distribution/goods-dimension.tsx",
+      "parent": "/_protected/statistics/old-distribution"
+    },
+    "/_protected/statistics/old-distribution/order-dimension": {
+      "filePath": "_protected/statistics/old-distribution/order-dimension.tsx",
+      "parent": "/_protected/statistics/old-distribution"
     },
     "/_protected/client/account/": {
       "filePath": "_protected/client/account/index.tsx",

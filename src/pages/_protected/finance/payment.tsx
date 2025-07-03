@@ -10,6 +10,7 @@ import { TableLayout } from '@/components/table-layout'
 import { getHead } from '@/helpers'
 import {
   defineTableColumns,
+  formatAmount,
   formatDateTime,
   queryClient,
   TableCellWidth
@@ -22,8 +23,8 @@ export const Route = createFileRoute('/_protected/finance/payment')({
   validateSearch: type({
     'payment_id?': 'string',
     'status?': 'number',
-    page_index: ['number', '=', 1],
-    page_size: ['number', '=', 20]
+    page_index: 'number = 1',
+    page_size: 'number = 20'
   }),
   beforeLoad: ({ search }) => ({
     paymentListQueryOptions: queryOptions({
@@ -125,7 +126,7 @@ function RouteComponent() {
     },
     {
       title: '金额',
-      dataIndex: 'money',
+      render: (_, item) => formatAmount(item.money),
       width: TableCellWidth.amountS,
       ellipsis: true,
       tooltip: true,

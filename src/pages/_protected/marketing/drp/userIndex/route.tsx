@@ -16,8 +16,8 @@ export const Route = createFileRoute('/_protected/marketing/drp/userIndex')({
     'first_distributors?': 'string',
     'superior_distributor?': 'string',
     'examine?': '1 | 2 | 3',
-    page_index: ['number', '=', 1],
-    page_size: ['number', '=', 20]
+    page_index: 'number = 1',
+    page_size: 'number = 20'
   }),
   beforeLoad: ({ location }) => {
     if (location.pathname === '/newmanage/marketing/drp/userIndex') {

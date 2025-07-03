@@ -23,8 +23,8 @@ export const Route = createFileRoute('/_protected/marketing/valuepack/')({
   validateSearch: type({
     'name?': 'string',
     'operate?': '1 | 3 | 4 | 2',
-    page_index: ['number', '=', 1],
-    page_size: ['number', '=', 20]
+    page_index: 'number = 1',
+    page_size: 'number = 20'
   }),
   beforeLoad: ({ search }) => ({
     bundleDealsQueryOptions: queryOptions({
@@ -122,7 +122,7 @@ function ValuepackView() {
     },
     {
       title: '实付金额',
-      dataIndex: 'amount',
+      render: (_, item) => (item.amount ? `¥ ${item.amount}` : '-'),
       width: TableCellWidth.amountS,
       align: 'center'
     },

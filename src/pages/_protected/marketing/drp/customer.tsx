@@ -24,8 +24,8 @@ export const Route = createFileRoute('/_protected/marketing/drp/customer')({
     'user_mobile?': 'string',
     'p_user_mobile?': 'string',
     'binding_relationship?': '1 | 2',
-    page_index: ['number', '=', 1],
-    page_size: ['number', '=', 20]
+    page_index: 'number = 1',
+    page_size: 'number = 20'
   }),
   beforeLoad: ({ search }) => ({
     distrCustomersQueryOptions: queryOptions({

@@ -17,8 +17,8 @@ const LIST_KEY = 'distr-rules'
 export const Route = createFileRoute('/_protected/marketing/drp/rule')({
   validateSearch: type({
     'rule_name?': 'string',
-    page_index: ['number', '=', 1],
-    page_size: ['number', '=', 20]
+    page_index: 'number = 1',
+    page_size: 'number = 20'
   }),
   beforeLoad: ({ search }) => ({
     distrRulesQueryOptions: queryOptions({

@@ -31,8 +31,8 @@ export const Route = createFileRoute('/_protected/client/clientTags/')({
     'tagGroupId?': 'number',
     'tag_name?': 'string',
     'type?': 'number',
-    page_index: ['number', '=', 1],
-    page_size: ['number', '=', 20]
+    page_index: 'number = 1',
+    page_size: 'number = 20'
   }),
   component: RouteComponent,
   head: () => getHead('客户标签')

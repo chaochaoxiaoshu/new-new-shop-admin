@@ -31,7 +31,12 @@ import { MyTable } from '@/components/my-table'
 import { Show } from '@/components/show'
 import { TableLayout } from '@/components/table-layout'
 import { getHead, getNotifs } from '@/helpers'
-import { defineTableColumns, queryClient, TableCellWidth } from '@/lib'
+import {
+  defineTableColumns,
+  formatAmount,
+  queryClient,
+  TableCellWidth
+} from '@/lib'
 import { useUserStore } from '@/stores'
 
 const LIST_KEY = 'goods'
@@ -46,8 +51,8 @@ export const Route = createFileRoute('/_protected/commodity/merchandiseCon/')({
     'is_member_price?': '1 | 2',
     'is_approve?': '1 | 2',
     'is_hidelinks?': '1 | 2',
-    page_index: ['number', '=', 1],
-    page_size: ['number', '=', 20]
+    page_index: 'number = 1',
+    page_size: 'number = 20'
   }),
   beforeLoad: ({ search }) => ({
     departmentsQueryOptions: queryOptions({
@@ -245,19 +250,19 @@ function GoodsView() {
     },
     {
       title: '销售价',
-      render: (_, item) => `¥ ${item.price ?? '-'}`,
+      render: (_, item) => formatAmount(item.price),
       width: TableCellWidth.amountS,
       align: 'center'
     },
     {
       title: '成本价',
-      render: (_, item) => `¥ ${item.costprice ?? '-'}`,
+      render: (_, item) => formatAmount(item.costprice),
       width: TableCellWidth.amountS,
       align: 'center'
     },
     {
       title: '市场价',
-      render: (_, item) => `¥ ${item.mktprice ?? '-'}`,
+      render: (_, item) => formatAmount(item.mktprice),
       width: TableCellWidth.amountS,
       align: 'center'
     },
@@ -283,7 +288,7 @@ function GoodsView() {
     },
     {
       title: '内购价',
-      render: (_, item) => `¥ ${item.internal_price ?? '-'}`,
+      render: (_, item) => formatAmount(item.internal_price),
       width: TableCellWidth.amountS,
       align: 'center'
     },

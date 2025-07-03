@@ -40,8 +40,8 @@ export const Route = createFileRoute('/_protected/order/billLading')({
     'mobile?': 'string',
     'store_id?': 'number',
     'status?': 'number',
-    page_index: ['number', '=', 1],
-    page_size: ['number', '=', 20]
+    page_index: 'number = 1',
+    page_size: 'number = 20'
   }),
   beforeLoad: ({ search }) => ({
     billLadingsQueryOptions: queryOptions({

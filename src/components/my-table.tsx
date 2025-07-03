@@ -10,6 +10,15 @@ import { useTableSizeContext } from './table-layout/context'
 export function MyTable(props: TableProps) {
   const { height } = useTableSizeContext()
 
+  // 可用高度应该减去该高度即为 Table 滚动区域的高度
+  const subtractHeight = useMemo(() => {
+    let height = 84
+    if (props.summary) {
+      height += 41
+    }
+    return height
+  }, [props.summary])
+
   const pagination = useMemo(() => {
     if (typeof props.pagination === 'object') {
       return {
@@ -25,7 +34,7 @@ export function MyTable(props: TableProps) {
   return (
     <Table
       {...props}
-      scroll={{ x: props.scroll?.x, y: height ? height - 84 : 1 }}
+      scroll={{ x: props.scroll?.x, y: height ? height - subtractHeight : 1 }}
       pagination={pagination}
       renderPagination={(paginationNode) => (
         <div className='flex justify-between items-center mt-4'>

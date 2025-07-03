@@ -537,7 +537,7 @@ function GoodsEditView() {
       align: 'center'
     },
     {
-      title: <WithAsterisk>成本价</WithAsterisk>,
+      title: '成本价',
       render: (_, _item, index) => (
         <Form.Item
           field={`products[${index}].costprice`}

@@ -23,8 +23,8 @@ export const Route = createFileRoute('/_protected/marketing/reduction/')({
   validateSearch: type({
     'name?': 'string',
     'operate?': '5 | 3 | 4 | 2',
-    page_index: ['number', '=', 1],
-    page_size: ['number', '=', 20]
+    page_index: 'number = 1',
+    page_size: 'number = 20'
   }),
   beforeLoad: ({ search }) => ({
     freeShipsQueryOptions: queryOptions({
@@ -129,7 +129,7 @@ function FreeShipsView() {
     },
     {
       title: '实付金额',
-      dataIndex: 'sum_money',
+      render: (_, item) => (item.sum_money ? `¥ ${item.sum_money}` : '-'),
       width: TableCellWidth.amountS,
       align: 'center'
     },

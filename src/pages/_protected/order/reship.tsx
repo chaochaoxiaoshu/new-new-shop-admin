@@ -43,8 +43,8 @@ export const Route = createFileRoute('/_protected/order/reship')({
     'order_id?': 'string',
     'logi_no?': 'string',
     'status?': 'number',
-    page_index: ['number', '=', 1],
-    page_size: ['number', '=', 20]
+    page_index: 'number = 1',
+    page_size: 'number = 20'
   }),
   beforeLoad: ({ search }) => ({
     reshipsQueryOptions: queryOptions({

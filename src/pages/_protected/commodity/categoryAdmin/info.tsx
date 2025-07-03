@@ -30,8 +30,8 @@ export const Route = createFileRoute(
 )({
   validateSearch: type({
     id: 'number',
-    page_index: ['number', '=', 1],
-    page_size: ['number', '=', 20]
+    page_index: 'number = 1',
+    page_size: 'number = 20'
   }),
   beforeLoad: ({ search }) => ({
     adminSecondaryCategoriesQueryOptions: queryOptions({

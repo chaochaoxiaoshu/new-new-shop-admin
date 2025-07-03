@@ -23,8 +23,8 @@ export const Route = createFileRoute('/_protected/marketing/live/')({
   validateSearch: type({
     'name?': 'string',
     'status?': '1 | 2 | 3 | 4',
-    page_index: ['number', '=', 1],
-    page_size: ['number', '=', 20]
+    page_index: 'number = 1',
+    page_size: 'number = 20'
   }),
   beforeLoad: ({ search }) => ({
     liveListQueryOptions: queryOptions({

@@ -392,7 +392,17 @@ export const routeTree: RouteTreeNode = {
         },
         {
           name: '分销统计',
-          path: '/statistics/old-distribution'
+          path: '/statistics/old-distribution',
+          children: [
+            {
+              name: '订单维度统计',
+              path: '/statistics/old-distribution/order-dimension'
+            },
+            {
+              name: '商品维度统计',
+              path: '/statistics/old-distribution/goods-dimension'
+            }
+          ]
         },
         {
           name: '分佣失败统计',

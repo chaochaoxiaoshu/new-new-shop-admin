@@ -29,8 +29,8 @@ export const Route = createFileRoute('/_protected/marketing/piece/')({
     'name?': 'string',
     'operate?': '0 | 1 | 2 | 3 | 5',
     'range?': ['number', 'number'],
-    page_index: ['number', '=', 1],
-    page_size: ['number', '=', 20]
+    page_index: 'number = 1',
+    page_size: 'number = 20'
   }),
   beforeLoad: ({ search }) => ({
     multiDiscountsQueryOptions: queryOptions({
@@ -97,7 +97,8 @@ function MultiDiscountsView() {
     },
     {
       title: '实付金额',
-      dataIndex: 'payment_amount',
+      render: (_, item) =>
+        item.payment_amount ? `¥ ${item.payment_amount}` : '-',
       width: TableCellWidth.amountS,
       align: 'center'
     },

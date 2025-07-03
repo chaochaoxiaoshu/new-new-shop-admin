@@ -15,8 +15,8 @@ const LIST_KEY = 'ship-temps'
 
 export const Route = createFileRoute('/_protected/order/freight')({
   validateSearch: type({
-    page_index: ['number', '=', 1],
-    page_size: ['number', '=', 20]
+    page_index: 'number = 1',
+    page_size: 'number = 20'
   }),
   beforeLoad: ({ search }) => ({
     shipTempsQueryOptions: queryOptions({

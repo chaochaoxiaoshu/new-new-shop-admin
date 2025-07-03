@@ -11,6 +11,7 @@ import { TableLayout } from '@/components/table-layout'
 import { getHead } from '@/helpers'
 import {
   defineTableColumns,
+  formatAmount,
   formatDateTime,
   queryClient,
   TableCellWidth
@@ -24,8 +25,8 @@ export const Route = createFileRoute('/_protected/marketing/coupon/')({
     'name?': 'string',
     'type?': '1 | 2 | 3',
     'operate?': '5 | 3 | 4 | 2',
-    page_index: ['number', '=', 1],
-    page_size: ['number', '=', 20]
+    page_index: 'number = 1',
+    page_size: 'number = 20'
   }),
   beforeLoad: ({ search }) => ({
     couponsQueryOptions: queryOptions({
@@ -143,13 +144,13 @@ function CouponsView() {
     },
     {
       title: '用券成交总额',
-      dataIndex: 'total_coupons',
+      render: (_, item) => formatAmount(item.total_coupons),
       width: TableCellWidth.amountS,
       align: 'center'
     },
     {
       title: '优惠总金额',
-      dataIndex: 'total_amount',
+      render: (_, item) => formatAmount(item.total_amount),
       width: TableCellWidth.amountS,
       align: 'center'
     },

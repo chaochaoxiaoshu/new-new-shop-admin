@@ -11,6 +11,7 @@ import { TableLayout } from '@/components/table-layout'
 import { downloadFile, generateExportUrl, getHead } from '@/helpers'
 import {
   defineTableColumns,
+  formatAmount,
   formatDateTime,
   queryClient,
   TableCellWidth
@@ -23,8 +24,8 @@ export const Route = createFileRoute('/_protected/finance/monthly')({
   validateSearch: type({
     'order_id?': 'string',
     'range?': ['number', 'number'],
-    page_index: ['number', '=', 1],
-    page_size: ['number', '=', 20]
+    page_index: 'number = 1',
+    page_size: 'number = 20'
   }),
   beforeLoad: ({ search }) => ({
     monthlyReportQueryOptions: queryOptions({
@@ -84,31 +85,31 @@ function RouteComponent() {
     },
     {
       title: '商品金额合计',
-      render: (_, item) => (item.goods_amount ? `¥ ${item.goods_amount}` : '-'),
+      render: (_, item) => formatAmount(Number(item.goods_amount)),
       width: TableCellWidth.amountS,
       align: 'center'
     },
     {
       title: '运费',
-      render: (_, item) => (item.cost_freight ? `¥ ${item.cost_freight}` : '-'),
+      render: (_, item) => formatAmount(Number(item.cost_freight)),
       width: TableCellWidth.amountS,
       align: 'center'
     },
     {
       title: '店铺优惠合计',
-      render: (_, item) => (item.totalAmount ? `¥ ${item.totalAmount}` : '-'),
+      render: (_, item) => formatAmount(Number(item.totalAmount)),
       width: TableCellWidth.amountS,
       align: 'center'
     },
     {
       title: '订单实付金额',
-      render: (_, item) => (item.payed ? `¥ ${item.payed}` : '-'),
+      render: (_, item) => formatAmount(Number(item.payed)),
       width: TableCellWidth.amountS,
       align: 'center'
     },
     {
       title: '退款金额',
-      render: (_, item) => (item.refund_money ? `¥ ${item.refund_money}` : '-'),
+      render: (_, item) => formatAmount(Number(item.refund_money)),
       width: TableCellWidth.amountS,
       align: 'center'
     },
@@ -133,8 +134,7 @@ function RouteComponent() {
     },
     {
       title: '订单佣金金额',
-      render: (_, item) =>
-        item.commission_amount ? `¥ ${item.commission_amount}` : '-',
+      render: (_, item) => formatAmount(Number(item.commission_amount)),
       width: TableCellWidth.amountS,
       align: 'center'
     }

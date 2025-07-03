@@ -23,8 +23,8 @@ export const Route = createFileRoute('/_protected/marketing/drp/distrHistory')({
   validateSearch: type({
     'goods_name?': 'string',
     'is_custom?': '1 | 2',
-    page_index: ['number', '=', 1],
-    page_size: ['number', '=', 20]
+    page_index: 'number = 1',
+    page_size: 'number = 20'
   }),
   beforeLoad: ({ search }) => ({
     distrListQueryOptions: queryOptions({

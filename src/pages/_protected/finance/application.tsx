@@ -10,6 +10,7 @@ import { TableLayout } from '@/components/table-layout'
 import { getHead } from '@/helpers'
 import {
   defineTableColumns,
+  formatAmount,
   formatDateTime,
   queryClient,
   TableCellWidth
@@ -20,8 +21,8 @@ const LIST_KEY = 'withdrawal-list'
 export const Route = createFileRoute('/_protected/finance/application')({
   validateSearch: type({
     'type?': '1 | 2 | 3 | 4',
-    page_index: ['number', '=', 1],
-    page_size: ['number', '=', 20]
+    page_index: 'number = 1',
+    page_size: 'number = 20'
   }),
   beforeLoad: ({ search }) => ({
     withdrawalListQueryOptions: queryOptions({
@@ -75,7 +76,7 @@ function RouteComponent() {
     },
     {
       title: '金额',
-      render: (_, item) => item.money || '-',
+      render: (_, item) => formatAmount(item.money),
       width: TableCellWidth.amountS,
       ellipsis: true,
       tooltip: true,

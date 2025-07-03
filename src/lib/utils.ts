@@ -86,6 +86,11 @@ export function formatDateTime(timestamp: number | null | undefined) {
   return dayjs.unix(timestamp).format('YYYY-MM-DD HH:mm:ss')
 }
 
+export function formatAmount(amount: number | undefined) {
+  if (typeof amount === 'undefined') return '-'
+  return `¥ ${amount}`
+}
+
 export async function urlToFile(url: string, filename: string): Promise<File> {
   const mimeType = getMimeTypeFromUrl(url)
   const response = await fetch(url)

@@ -10,6 +10,7 @@ import { TableLayout } from '@/components/table-layout'
 import { getHead } from '@/helpers'
 import {
   defineTableColumns,
+  formatAmount,
   formatDateTime,
   queryClient,
   TableCellWidth
@@ -21,8 +22,8 @@ const LIST_KEY = 'balance-list'
 export const Route = createFileRoute('/_protected/finance/details')({
   validateSearch: type({
     'type?': 'number',
-    page_index: ['number', '=', 1],
-    page_size: ['number', '=', 20]
+    page_index: 'number = 1',
+    page_size: 'number = 20'
   }),
   beforeLoad: ({ search }) => ({
     balanceListQueryOptions: queryOptions({
@@ -107,7 +108,7 @@ function RouteComponent() {
     },
     {
       title: '金额',
-      render: (_, item) => item.money ?? 0,
+      render: (_, item) => formatAmount(item.money),
       width: TableCellWidth.amountS,
       ellipsis: true,
       tooltip: true,
@@ -115,7 +116,7 @@ function RouteComponent() {
     },
     {
       title: '余额',
-      render: (_, item) => item.balance ?? 0,
+      render: (_, item) => formatAmount(item.balance),
       width: TableCellWidth.amountL,
       ellipsis: true,
       tooltip: true,

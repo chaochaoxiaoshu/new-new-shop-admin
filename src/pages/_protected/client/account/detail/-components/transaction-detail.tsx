@@ -20,7 +20,12 @@ import {
   getPayStatusText,
   getShipStatusText
 } from '@/helpers'
-import { defineTableColumns, formatDateTime, TableCellWidth } from '@/lib'
+import {
+  defineTableColumns,
+  formatAmount,
+  formatDateTime,
+  TableCellWidth
+} from '@/lib'
 import { useUserStore } from '@/stores'
 
 export function TransactionDetail() {
@@ -134,7 +139,7 @@ function Orders() {
     },
     {
       title: '订单总额',
-      render: (_, item) => (item.order_amount ? `¥ ${item.order_amount}` : '-'),
+      render: (_, item) => formatAmount(item.order_amount),
       align: 'center',
       width: TableCellWidth.amountS,
       ellipsis: true

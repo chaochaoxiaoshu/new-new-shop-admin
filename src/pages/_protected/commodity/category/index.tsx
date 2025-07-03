@@ -43,8 +43,8 @@ export const Route = createFileRoute('/_protected/commodity/category/')({
   validateSearch: type({
     'name?': 'string',
     'department?': 'number',
-    page_index: ['number', '=', 1],
-    page_size: ['number', '=', 20]
+    page_index: 'number = 1',
+    page_size: 'number = 20'
   }),
   beforeLoad: ({ search }) => ({
     departmentsQueryOptions: queryOptions({
